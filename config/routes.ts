@@ -52,7 +52,13 @@ export default [
         name: 'menu.menu-list',
         icon: 'table',
         path: '/system-management/menu-list',
-        component: './system/menu/index',
+        component: './system/menu',
+      },
+      {
+        name: 'dict.dict-list',
+        icon: 'table',
+        path: '/system-management/dict',
+        component: './system/dict',
       },
       {
         name: 'tenant.tenant-list',
@@ -61,10 +67,22 @@ export default [
         component: './system/tenant',
       },
       {
+        name: 'organize.organize-list',
+        icon: 'table',
+        path: '/system-management/organize',
+        component: './system/organize',
+      },
+      {
+        name: 'role.role-list',
+        icon: 'table',
+        path: '/system-management/role',
+        component: './system/role',
+      },
+      {
         name: 'user.user-list',
         icon: 'table',
         path: '/system-management/user-list',
-        component: './system/user/index',
+        component: './system/user',
       },
       {
         name: 'account.account-list',

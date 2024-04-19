@@ -46,6 +46,7 @@ declare namespace APISystem {
     success?: boolean;
     data?: MenuListItemDataType[];
   };
+
   type TenantListResponseDataType = {
     data?: TenantItemDataType[];
     code?: string;
@@ -178,5 +179,153 @@ declare namespace APISystem {
     tenantId: string;
     menuIds: React.Key[];
   }
+  type RoleItemDataType = {
+    id?: string;
+    roleName?: string;
+    parentId?: string;
+    code?: string;
+    status?: number,
+    sort?: number,
+    description?: string;
+    createdAt?: string;
+    createdBy?: string;
+    updatedAt?: string;
+    updatedBy?: string;
+  };
+
+  type RoleDetailResponseDataType = {
+    data?: RoleItemDataType;
+    code?: string;
+    success?: boolean;
+    message?: string;
+  };
+
+  type RoleResponseDataType = {
+    data?: RoleItemDataType[];
+    code?: string;
+    success?: boolean;
+    message?: string;
+  };
+
+  type RoleByTenantIdResponseDataType = {
+    data?: RoleItemDataType[];
+    code?: string;
+    success?: boolean;
+    message?: string;
+  };
+  type onSaveMenuInRoleDataType = {
+    roleId: string;
+    checkedMenuId: React.Key[];
+    halfCheckedMenuId: React.Key[];
+  }
+  type RoleTableSearchParams = {
+    current?: number;
+    pageSize?: number;
+    status?: string;
+    roleName?: string;
+    tenantId?: string;
+  };
+
+
+  type MenuListItemDataType = {
+    id?: string;
+    parentId?: string;
+    name?: string;
+    parentName?: string;
+    code?: string;
+    path?: string;
+    location?: number;
+    description?: string;
+    sort?: number;
+    status?: number;
+    type?: number;
+    hidden?: number;
+    usageType?: number;
+    platformUse?: number;
+    icon?: string;
+    url?: string;
+    permission?: string;
+    tenantEnable?: number;
+    createdAt?: string;
+    createdBy?: string;
+    updatedAt?: string;
+    updatedBy?: string;
+    children?: MenuListItemDataType[];
+    checked?: number;
+    checkedMenuId?: string[];
+    halfCheckedMenuId?: string[];
+  };
+
+  type MenuListDataType = {
+    total?: number;
+    success?: boolean;
+    data?: MenuListItemDataType[];
+  };
+
+  type MenuIconDataType = {
+    [key: string]: string;
+  };
+
+  type SelectedRelationMenuDataType = {
+    total?: number;
+    success?: boolean;
+    data?: MenuListItemDataType;
+  };
+
+  type OrganizeListItemDataType = {
+    id?: string;
+    key: string;
+    tenantId?: string;
+    parentId?: string;
+    name?: string;
+    code?: string;
+    shortName?: string;
+    status?: number;
+    sort?: number;
+    description?: string;
+    createdAt?: string;
+    createdBy?: string;
+    updatedAt?: string;
+    updatedBy?: string;
+    children?: OrganizeListItemDataType[];
+  };
+
+  type OrganizeListResponseDataType = {
+    success?: boolean;
+    code?: string;
+    message?: string;
+    data?: OrganizeListItemDataType[];
+  };
+
+  type OrganizeInfoResponseDataType = {
+    success?: boolean;
+    code?: string;
+    message?: string;
+    data?: OrganizeListItemDataType;
+  };
+
+  type DictItemDataType = {
+    id?: string;
+    name?: string;
+    key: string;
+    parentId?: string;
+    tenantId?: string;
+    code?: string;
+    status?: number,
+    sort?: number,
+    description?: string;
+    createdAt?: string;
+    createdBy?: string;
+    updatedAt?: string;
+    updatedBy?: string;
+    children?: DictItemDataType[];
+  };
+
+  type DictListResponseDataType = {
+    code?: string;
+    success?: boolean;
+    message?: string;
+    data?: DictItemDataType[];
+  };
 
 }
