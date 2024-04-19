@@ -10,23 +10,39 @@ import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
+import {getLocalStorage} from '@/utils/utils';
+import {SITE_TITLE, LOGIN_PATH, CURRENT_ACCOUNT_ID} from "@/pages/common/constant";
+import {getLoginInfoService} from '@/services/system-service/user';
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: APIIdentity.CurrentUser;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchUserInfo?: () => Promise<APIIdentity.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
-    try {
-      const msg = await queryCurrentUser({
-        skipErrorHandler: true,
-      });
-      return msg.data;
-    } catch (error) {
-      history.push(loginPath);
+    // try {
+    //   const msg = await queryCurrentUser({
+    //     skipErrorHandler: true,
+    //   });
+    //   return msg.data;
+    // } catch (error) {
+    //   history.push(loginPath);
+    // }
+    const currentAccountId = getLocalStorage(CURRENT_ACCOUNT_ID);
+    const accountInfoResponse = await getLoginInfoService({currentAccountId: currentAccountId || ''});
+
+    let currentUser = accountInfoResponse.data;
+    if (currentUser) {
+      // clean default redirect page
+      // redirect = '';
+      // const dynamicRouteTree = handleRouteTree(accountInfoResponse?.data?.currentLoginAccountUserPermissions || []);
+      // dynamicRouteTree.permission = handleAdminPermission(currentUser, dynamicRouteTree.permission);
+      // currentUser = {...currentUser, ...dynamicRouteTree};
+
+      return currentUser;
     }
     return undefined;
   };
@@ -51,14 +67,15 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
   return {
     actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
     avatarProps: {
-      src: initialState?.currentUser?.avatar,
+      // src: initialState?.currentUser?.avatar,
+      src: "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
       title: <AvatarName />,
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
     },
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: initialState?.currentUser?.currentLoginAccount?.name,
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
@@ -131,6 +148,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request: RequestConfig = {
-  baseURL: 'https://proapi.azurewebsites.net',
+  // baseURL: 'https://proapi.azurewebsites.net',
   ...errorConfig,
+  // requestInterceptors: [authHeaderInterceptor],
+  // responseInterceptors:[]
 };

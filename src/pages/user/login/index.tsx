@@ -1,6 +1,6 @@
-import { Footer } from '@/components';
-import { login } from '@/services/ant-design-pro/api';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+import {Footer} from '@/components';
+import {getFakeCaptcha} from '@/services/ant-design-pro/login';
+import {oauth2TokenService} from '@/services/identity-service/login';
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -15,14 +15,16 @@ import {
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
-import { FormattedMessage, Helmet, SelectLang, useIntl, useModel } from '@umijs/max';
-import { Alert, message, Tabs } from 'antd';
-import { createStyles } from 'antd-style';
-import React, { useState } from 'react';
-import { flushSync } from 'react-dom';
+import {FormattedMessage, Helmet, SelectLang, useIntl, useModel} from '@umijs/max';
+import {Alert, message, Tabs} from 'antd';
+import {createStyles} from 'antd-style';
+import React, {useState} from 'react';
+import {flushSync} from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
+import {removeLocalStorage, setLocalStorage, setToken} from '@/utils/utils';
+// import {SELECT_ACCOUNT_PATH} from "@/pages/common/constant";
 
-const useStyles = createStyles(({ token }) => {
+const useStyles = createStyles(({token}) => {
   return {
     action: {
       marginLeft: '8px',
@@ -59,30 +61,30 @@ const useStyles = createStyles(({ token }) => {
 });
 
 const ActionIcons = () => {
-  const { styles } = useStyles();
+  const {styles} = useStyles();
 
   return (
     <>
-      <AlipayCircleOutlined key="AlipayCircleOutlined" className={styles.action} />
-      <TaobaoCircleOutlined key="TaobaoCircleOutlined" className={styles.action} />
-      <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.action} />
+      <AlipayCircleOutlined key="AlipayCircleOutlined" className={styles.action}/>
+      <TaobaoCircleOutlined key="TaobaoCircleOutlined" className={styles.action}/>
+      <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.action}/>
     </>
   );
 };
 
 const Lang = () => {
-  const { styles } = useStyles();
+  const {styles} = useStyles();
 
   return (
     <div className={styles.lang} data-lang>
-      {SelectLang && <SelectLang />}
+      {SelectLang && <SelectLang/>}
     </div>
   );
 };
 
 const LoginMessage: React.FC<{
   content: string;
-}> = ({ content }) => {
+}> = ({content}) => {
   return (
     <Alert
       style={{
@@ -98,9 +100,10 @@ const LoginMessage: React.FC<{
 const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
-  const { initialState, setInitialState } = useModel('@@initialState');
-  const { styles } = useStyles();
+  const {initialState, setInitialState} = useModel('@@initialState');
+  const {styles} = useStyles();
   const intl = useIntl();
+  const [loginLoading, setLoginLoading] = useState<boolean>(false);
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -113,12 +116,29 @@ const Login: React.FC = () => {
       });
     }
   };
+  const handleRememberMe = (values: APIIdentity.UserLoginBodyDataType) => {
+    setLocalStorage('rememberMe', values.rememberMe);
 
-  const handleSubmit = async (values: API.LoginParams) => {
+    if (values.rememberMe) {
+      setLocalStorage('username', values.username);
+      setLocalStorage('password', values.password);
+    } else {
+      removeLocalStorage('username');
+      removeLocalStorage('password');
+    }
+  }
+  const handleSubmit = async (values: APIIdentity.Oauth2TokenParamsDataType) => {
     try {
+      values.grant_type = 'password';
+      const msg = await oauth2TokenService(values);
+      console.log(msg)
+      console.log(msg.request)
       // 登录
-      const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
+      // const msg = await login({...values, type});
+      // if (msg.status === 'ok') {
+      if (msg.access_token) {
+        setToken(msg.access_token);
+        handleRememberMe(values);
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
@@ -141,7 +161,7 @@ const Login: React.FC = () => {
       message.error(defaultLoginFailureMessage);
     }
   };
-  const { status, type: loginType } = userLoginState;
+  const {status, type: loginType} = userLoginState;
 
   return (
     <div className={styles.container}>
@@ -154,7 +174,7 @@ const Login: React.FC = () => {
           - {Settings.title}
         </title>
       </Helmet>
-      <Lang />
+      <Lang/>
       <div
         style={{
           flex: '1',
@@ -166,9 +186,9 @@ const Login: React.FC = () => {
             minWidth: 280,
             maxWidth: '75vw',
           }}
-          logo={<img alt="logo" src="/logo.svg" />}
+          logo={<img alt="logo" src="/logo.svg"/>}
           title="Ant Design"
-          subTitle={intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
+          subTitle={intl.formatMessage({id: 'pages.layouts.userLayout.title'})}
           initialValues={{
             autoLogin: true,
           }}
@@ -178,10 +198,17 @@ const Login: React.FC = () => {
               id="pages.login.loginWith"
               defaultMessage="其他登录方式"
             />,
-            <ActionIcons key="icons" />,
+            <ActionIcons key="icons"/>,
           ]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+
+            // await handleSubmit(values as API.LoginParams);
+            setLoginLoading(true);
+            message.destroy();
+
+            await handleSubmit(values as APIIdentity.Oauth2TokenParamsDataType);
+
+            setLoginLoading(false);
           }}
         >
           <Tabs
@@ -210,7 +237,7 @@ const Login: React.FC = () => {
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',
-                defaultMessage: '账户或密码错误(admin/ant.design)',
+                defaultMessage: '账户或密码错误',
               })}
             />
           )}
@@ -220,11 +247,11 @@ const Login: React.FC = () => {
                 name="username"
                 fieldProps={{
                   size: 'large',
-                  prefix: <UserOutlined />,
+                  prefix: <UserOutlined/>,
                 }}
                 placeholder={intl.formatMessage({
                   id: 'pages.login.username.placeholder',
-                  defaultMessage: '用户名: admin or user',
+                  defaultMessage: '用户名',
                 })}
                 rules={[
                   {
@@ -242,11 +269,11 @@ const Login: React.FC = () => {
                 name="password"
                 fieldProps={{
                   size: 'large',
-                  prefix: <LockOutlined />,
+                  prefix: <LockOutlined/>,
                 }}
                 placeholder={intl.formatMessage({
                   id: 'pages.login.password.placeholder',
-                  defaultMessage: '密码: ant.design',
+                  defaultMessage: '密码',
                 })}
                 rules={[
                   {
@@ -263,13 +290,13 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
+          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误"/>}
           {type === 'mobile' && (
             <>
               <ProFormText
                 fieldProps={{
                   size: 'large',
-                  prefix: <MobileOutlined />,
+                  prefix: <MobileOutlined/>,
                 }}
                 name="mobile"
                 placeholder={intl.formatMessage({
@@ -300,7 +327,7 @@ const Login: React.FC = () => {
               <ProFormCaptcha
                 fieldProps={{
                   size: 'large',
-                  prefix: <LockOutlined />,
+                  prefix: <LockOutlined/>,
                 }}
                 captchaProps={{
                   size: 'large',
@@ -351,19 +378,19 @@ const Login: React.FC = () => {
             }}
           >
             <ProFormCheckbox noStyle name="autoLogin">
-              <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
+              <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录"/>
             </ProFormCheckbox>
             <a
               style={{
                 float: 'right',
               }}
             >
-              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
+              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码"/>
             </a>
           </div>
         </LoginForm>
       </div>
-      <Footer />
+      <Footer/>
     </div>
   );
 };

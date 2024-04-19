@@ -37,10 +37,10 @@ export default [
         path: '/user/register',
         component: './user/register',
       },
-      {
-        component: '404',
-        path: '/*',
-      },
+      // {
+      //   component: '404',
+      //   path: '/*',
+      // },
     ],
   },
   {

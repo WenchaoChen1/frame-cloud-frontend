@@ -136,21 +136,39 @@ export default defineConfig({
    * @doc https://pro.ant.design/zh-cn/docs/openapi/
    */
   openAPI: [
-    {
-      requestLibPath: "import { request } from '@umijs/max'",
-      // 或者使用在线的版本
-      // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
-      schemaPath: join(__dirname, 'oneapi.json'),
-      mock: false,
-    },
-    {
-      requestLibPath: "import { request } from '@umijs/max'",
-      schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
-      projectName: 'swagger',
-    },
+    // {
+    //   requestLibPath: "import { request } from '@umijs/max'",
+    //   // 或者使用在线的版本
+    //   // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
+    //   schemaPath: join(__dirname, 'oneapi.json'),
+    //   mock: false,
+    // },
+    // {
+    //   requestLibPath: "import { request } from '@umijs/max'",
+    //   schemaPath: 'http://localhost:8201/gstdev-identity/v3/api-docs/openapi.json',
+    //   projectName: 'swagger',
+    // },
+    // {
+    //   requestLibPath: "import { request } from '@umijs/max'", // 要使用的请求库
+    //   schemaPath: 'http://localhost:8201/gstdev-identity/v3/api-docs',
+    //   projectName: '/swagger/identity', // 生成的api目录名（一般按模块划分）
+    //   apiPrefix: 'process.env.IDENTITY_SERVICE', // 接口声明文档中请求的前缀名
+    // },
+    // {
+    //   requestLibPath: "import { request } from '@umijs/max'",
+    //   schemaPath: 'http://localhost:8201/gstdev-system/v3/api-docs',
+    //   projectName: '/swagger/system',
+    //   apiPrefix: 'process.env.SYSTREM_SERVICE',
+    // },
   ],
   mock: {
     include: ['mock/**/*', 'src/pages/**/_mock.ts'],
+  },
+  define: {  // 定义一些全局变量
+    'process.env': {
+      IDENTITY_SERVICE: '/api/gstdev-identity',
+      SYSTREM_SERVICE: '/api/gstdev-system',
+    },
   },
   mfsu: {
     strategy: 'normal',

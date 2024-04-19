@@ -39,3 +39,6 @@ screenshot
 .eslintcache
 
 build
+
+# swagger
+**/swagger

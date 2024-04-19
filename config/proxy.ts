@@ -9,6 +9,7 @@
  *
  * @doc https://umijs.org/docs/guides/proxy
  */
+const target = 'http://192.168.0.229:8201';
 export default {
   // 如果需要自定义本地开发服务器  请取消注释按需调整
   // dev: {
@@ -22,21 +23,33 @@ export default {
   //   },
   // },
 
-  /**
-   * @name 详细的代理配置
-   * @doc https://github.com/chimurai/http-proxy-middleware
-   */
-  test: {
-    // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
-    '/api/': {
-      target: 'https://proapi.azurewebsites.net',
+  // /**
+  //  * @name 详细的代理配置
+  //  * @doc https://github.com/chimurai/http-proxy-middleware
+  //  */
+  // test: {
+  //   // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
+  //   '/api/': {
+  //     target: 'https://proapi.azurewebsites.net',
+  //     changeOrigin: true,
+  //     pathRewrite: { '^': '' },
+  //   },
+  // },
+  // pre: {
+  //   '/api/': {
+  //     target: 'your pre url',
+  //     changeOrigin: true,
+  //     pathRewrite: { '^': '' },
+  //   },
+  // },
+  dev: {
+    '/api': {
+      target,
       changeOrigin: true,
-      pathRewrite: { '^': '' },
+      pathRewrite: { '^/api': '' },
     },
-  },
-  pre: {
-    '/api/': {
-      target: 'your pre url',
+    '/mock': {
+      target: 'https://proapi.azurewebsites.net',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
