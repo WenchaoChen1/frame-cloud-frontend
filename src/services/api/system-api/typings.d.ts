@@ -94,4 +94,89 @@ declare namespace APISystem {
     updatedBy?: string;
     children?: TenantItemDataType[];
   };
+
+  type AccountResponseDataType = {
+    data?: AccountResponseListDataType;
+    code?: string;
+    success?: boolean;
+    message?: string;
+  };
+  type AccountResponseListDataType = {
+    content?: AccountItemDataType[];
+    totalElements?: number;
+  }
+  type AccountDetailResponseDataType = {
+    data?: AccountItemDataType;
+    code?: string;
+    success?: boolean;
+    message?: string;
+  };
+  type AccountItemDataType = {
+    id?: string;
+    identity?: string;
+    name?: string;
+    type?: string;
+    accountTypeConstants?: string;
+    email?: string;
+    tenantId?: string;
+    role?: string;
+    user?: UserItemDataType;
+    createdAt?: string;
+    createdBy?: string;
+    updatedAt?: string;
+    updatedBy?: string;
+  };
+  type AccountListResponseDataType = {
+    data?: AccountItemDataType[];
+    code?: string;
+    success?: boolean;
+    message?: string;
+  };
+
+
+
+  type onSaveRelationMenuResponseDataType = {
+    code?: string;
+    data?: any
+    success?: boolean;
+    message?: string;
+  };
+  type SelectedRelationMenuDataType = {
+    total?: number;
+    success?: boolean;
+    data?: MenuListItemDataType;
+  };
+  type MenuListItemDataType = {
+    id?: string;
+    parentId?: string;
+    name?: string;
+    parentName?: string;
+    code?: string;
+    path?: string;
+    location?: number;
+    description?: string;
+    sort?: number;
+    status?: number;
+    type?: number;
+    hidden?: number;
+    usageType?: number;
+    platformUse?: number;
+    icon?: string;
+    url?: string;
+    permission?: string;
+    tenantEnable?: number;
+    createdAt?: string;
+    createdBy?: string;
+    updatedAt?: string;
+    updatedBy?: string;
+    children?: MenuListItemDataType[];
+    checked?: number;
+    checkedMenuId?: string[];
+    halfCheckedMenuId?: string[];
+  };
+  type onSaveMenuInTenantDataType = {
+    tenantId: string;
+    menuIds: React.Key[];
+  }
+
 }

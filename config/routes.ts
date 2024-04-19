@@ -49,17 +49,30 @@ export default [
     icon: 'table',
     routes: [
       {
+        name: 'menu.menu-list',
+        icon: 'table',
+        path: '/system-management/menu-list',
+        component: './system/menu/index',
+      },
+      {
+        name: 'tenant.tenant-list',
+        icon: 'table',
+        path: '/system-management/tenant',
+        component: './system/tenant',
+      },
+      {
         name: 'user.user-list',
         icon: 'table',
         path: '/system-management/user-list',
         component: './system/user/index',
       },
       {
-        name: 'menu.menu-list',
+        name: 'account.account-list',
         icon: 'table',
-        path: '/system-management/menu-list',
-        component: './system/menu/index',
+        path: '/system-management/account',
+        component: './system/account',
       },
+
     ],
   },
   {

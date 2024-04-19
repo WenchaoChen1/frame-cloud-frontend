@@ -51,8 +51,11 @@ export default {
   'menu.editor.koni': '拓扑编辑器',
 
 
-  
+
   'menu.system-management': '后台管理',
   'menu.system-management.menu.menu-list': '菜单管理',
+  'menu.system-management.tenant.tenant-list': '租户管理',
   'menu.system-management.user.user-list': '用户管理',
+  'menu.system-management.account.account-list': '账户管理',
+
 };
