@@ -44,6 +44,19 @@ export default [
     ],
   },
   {
+    name: '后台管理',
+    path: '/access',
+    icon: 'table',
+    routes: [
+      {
+        name: 'user.user-list',
+        icon: 'table',
+        path: '/access/user-list',
+        component: './system/user/index',
+      },
+    ],
+  },
+  {
     path: '/dashboard',
     name: 'dashboard',
     icon: 'dashboard',

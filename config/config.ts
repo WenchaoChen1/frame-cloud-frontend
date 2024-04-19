@@ -167,7 +167,7 @@ export default defineConfig({
   define: {  // 定义一些全局变量
     'process.env': {
       IDENTITY_SERVICE: '/api/gstdev-identity',
-      SYSTREM_SERVICE: '/api/gstdev-system',
+      SYSTEM_SERVICE: '/api/gstdev-system',
     },
   },
   mfsu: {

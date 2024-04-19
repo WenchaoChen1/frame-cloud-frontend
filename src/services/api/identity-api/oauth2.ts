@@ -2,7 +2,7 @@ import {request} from '@umijs/max';
 
 // login get token
 export async function oauth2Token(params: APIIdentity.Oauth2TokenParamsDataType) {
-  return request<APIIdentity.Oauth2TokenResultDataType>('/api/gstdev-identity/oauth2/token', {
+  return request<APIIdentity.Oauth2TokenResultDataType>(`${process.env.IDENTITY_SERVICE}y/oauth2/token`, {
     method: 'POST',
     headers: {
       Authorization: 'Basic cGFzc3dvcmQtY2xpZW50OjEyMzQ1Ng=='
