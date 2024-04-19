@@ -44,15 +44,21 @@ export default [
     ],
   },
   {
-    name: '后台管理',
-    path: '/access',
+    name: 'system-management',
+    path: '/system-management',
     icon: 'table',
     routes: [
       {
         name: 'user.user-list',
         icon: 'table',
-        path: '/access/user-list',
+        path: '/system-management/user-list',
         component: './system/user/index',
+      },
+      {
+        name: 'menu.menu-list',
+        icon: 'table',
+        path: '/system-management/menu-list',
+        component: './system/menu/index',
       },
     ],
   },

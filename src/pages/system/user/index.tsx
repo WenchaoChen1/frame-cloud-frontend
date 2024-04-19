@@ -21,7 +21,7 @@ import React, {useRef, useState} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
 
 const User: React.FC = () => {
-  const { initialState } = useModel('@@initialState');
+  const {initialState} = useModel('@@initialState');
   const currentUserId = initialState?.currentUser?.userId;
 
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -57,7 +57,7 @@ const User: React.FC = () => {
     delete fields.id;
 
     try {
-      await createUserService({ ...fields });
+      await createUserService({...fields});
       hide();
       message.success('Added successfully');
       return true;
@@ -186,7 +186,7 @@ const User: React.FC = () => {
               setOpenModal(true);
             }}
           >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
           </Button>,
         ]}
         request={getList}
@@ -202,9 +202,9 @@ const User: React.FC = () => {
         <FooterToolbar
           extra={
             <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="Item" />
+              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen"/>{' '}
+              <a style={{fontWeight: 600}}>{selectedRowsState.length}</a>{' '}
+              <FormattedMessage id="pages.searchTable.item" defaultMessage="Item"/>
             </div>
           }
         >
@@ -230,7 +230,7 @@ const User: React.FC = () => {
           onOpenChange={setOpenModal}
           request={async () => {
             if (isEdit) {
-              const userDetailResponse =  await getUserInfoService(currentRow?.id || '');
+              const userDetailResponse = await getUserInfoService(currentRow?.id || '');
               if (userDetailResponse.success === true && userDetailResponse.data) {
                 return userDetailResponse.data;
               }
