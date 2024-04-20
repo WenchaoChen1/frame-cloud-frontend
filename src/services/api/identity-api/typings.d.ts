@@ -86,4 +86,55 @@ declare namespace APIIdentity {
     accessToken: string;
   };
 
+
+  type findByPage4Params = {
+    /** 分页Bo对象 */
+    pager: Pager;
+  };
+
+  type Pager = {
+    /** 排序方向的值只能是大写 ASC 或者 DESC, 默认值：DESC */
+    direction?: string;
+    /** 指定排序的字段名称 */
+    properties?: string[];
+    pageNumber: number;
+    pageSize: number;
+  };
+
+  type authorization = {
+    id?: string;
+    registeredClientId?: string;
+    principalName?: string;
+    authorizationGrantType?: string;
+    authorizedScopes?: string;
+    attributes?: string;
+    state?: string;
+    authorizationCodeValue?: string;
+    authorizationCodeIssuedAt?: string;
+    authorizationCodeExpiresAt?: string;
+    authorizationCodeMetadata?: string;
+    accessTokenValue?: string;
+    accessTokenIssuedAt?: string;
+    accessTokenExpiresAt?: string;
+    accessTokenMetadata?: string;
+    accessTokenType?: string;
+    accessTokenScopes?: string;
+    oidcIdTokenValue?: string;
+    oidcIdTokenIssuedAt?: string;
+    oidcIdTokenExpiresAt?: string;
+    oidcIdTokenMetadata?: string;
+    oidcIdTokenClaims?: string;
+    refreshTokenValue?: string;
+    refreshTokenIssuedAt?: string;
+    refreshTokenExpiresAt?: string;
+    refreshTokenMetadata?: string;
+    userCodeValue?: string;
+    userCodeIssuedAt?: string;
+    userCodeExpiresAt?: string;
+    userCodeMetadata?: string;
+    deviceCodeValue?: string;
+    deviceCodeIssuedAt?: string;
+    deviceCodeExpiresAt?: string;
+    deviceCodeMetadata?: string;
+  };
 }

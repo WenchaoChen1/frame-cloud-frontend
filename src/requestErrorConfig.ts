@@ -27,7 +27,6 @@ const authHeaderInterceptor = (url: string, options: any) => {
     '/api/gstdev-identity/oauth2/token',
     '/api/gstdev-system/v1/user/update-customer-user-password',
   ];
-
   if (!filter.includes(url)) {
     const token = getToken();
     if (token) {
