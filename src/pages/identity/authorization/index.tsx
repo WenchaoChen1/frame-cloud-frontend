@@ -28,8 +28,15 @@ const User: React.FC = () => {
 
   const actionRef = useRef<ActionType>();
 
-  const getList = async (params: APIIdentity.findByPage4Params) => {
-    const response = await getAuthorizationPage(params);
+  const getList = async (params: API.PageParams) => {
+
+    // @ts-ignore
+    const response = await getAuthorizationPage({
+      pager: {
+        pageNumber: params.current || 0,
+        pageSize: params.pageSize || 10
+      }
+    });
 
     let dataSource: APISystem.UserItemDataType[] = [];
     let total = 0;
@@ -37,7 +44,7 @@ const User: React.FC = () => {
       dataSource = response?.data?.content || [];
       total = response?.data?.totalElements || 0;
     }
-
+console.log(dataSource)
     return {
       data: dataSource,
       success: true,
@@ -85,11 +92,12 @@ const User: React.FC = () => {
   // };
 
   const deleteUserRequest = async (id: string) => {
+    console.log(Date.now() - Math.floor(Math.random() * 1000),)
     const hide = message.loading('delete...');
     try {
       await deleteAuthorizationById(id);
       hide();
-      message.success(  'Deleted successfully and will refresh soon');
+      message.success('Deleted successfully and will refresh soon');
 
       setSelectedRows([]);
       actionRef.current?.reloadAndRest?.();
@@ -166,12 +174,6 @@ const User: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        // <a
-        //   key="editUser"
-        //   onClick={async () => await onEditUser(record)}
-        // >
-        //   Edit
-        // </a>,
 
         currentUserId !== record.id &&
         <a
@@ -213,144 +215,6 @@ const User: React.FC = () => {
           },
         }}
       />
-
-      {/*{selectedRowsState?.length > 0 && (*/}
-      {/*  <FooterToolbar*/}
-      {/*    extra={*/}
-      {/*      <div>*/}
-      {/*        <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen"/>{' '}*/}
-      {/*        <a style={{fontWeight: 600}}>{selectedRowsState.length}</a>{' '}*/}
-      {/*        <FormattedMessage id="pages.searchTable.item" defaultMessage="Item"/>*/}
-      {/*      </div>*/}
-      {/*    }*/}
-      {/*  >*/}
-      {/*    <Button*/}
-      {/*      onClick={async () => {*/}
-      {/*        await deleteUserRequest('');*/}
-      {/*        setSelectedRows([]);*/}
-      {/*        actionRef.current?.reloadAndRest?.();*/}
-      {/*      }}*/}
-      {/*    >*/}
-      {/*      <FormattedMessage*/}
-      {/*        id="pages.searchTable.batchDeletion"*/}
-      {/*        defaultMessage="Batch deletion"*/}
-      {/*      />*/}
-      {/*    </Button>*/}
-      {/*  </FooterToolbar>*/}
-      {/*)}*/}
-      {/*{*/}
-      {/*  openModal &&*/}
-      {/*  <ModalForm*/}
-      {/*    title={isEdit ? 'Edit' : 'New'}*/}
-      {/*    open={openModal}*/}
-      {/*    onOpenChange={setOpenModal}*/}
-      {/*    request={async () => {*/}
-      {/*      if (isEdit) {*/}
-      {/*        const userDetailResponse = await getUserInfoService(currentRow?.id || '');*/}
-      {/*        if (userDetailResponse.success === true && userDetailResponse.data) {*/}
-      {/*          return userDetailResponse.data;*/}
-      {/*        }*/}
-      {/*      }*/}
-      {/*      return {*/}
-      {/*        id: '',*/}
-      {/*        username: '',*/}
-      {/*        mobile: '',*/}
-      {/*        email: '',*/}
-      {/*        gender: '',*/}
-      {/*      };*/}
-      {/*    }}*/}
-      {/*    onFinish={async (record) => {*/}
-      {/*      let response = undefined;*/}
-      {/*      if (isEdit) {*/}
-      {/*        response = await editUserRequest(record as APISystem.UserItemDataType);*/}
-      {/*      } else {*/}
-      {/*        response = await createUserRequest(record as APISystem.UserItemDataType);*/}
-      {/*      }*/}
-
-      {/*      if (response) {*/}
-      {/*        setOpenModal(false);*/}
-      {/*        actionRef.current?.reloadAndRest?.();*/}
-      {/*      }*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*    <Space size={20}>*/}
-      {/*      <ProFormText*/}
-      {/*        rules={[*/}
-      {/*          {*/}
-      {/*            required: true,*/}
-      {/*            message: "User Name is required",*/}
-      {/*          }*/}
-      {/*        ]}*/}
-      {/*        label={"User Name"}*/}
-      {/*        width="md"*/}
-      {/*        name="username"*/}
-      {/*        placeholder={"User Name"}*/}
-      {/*      />*/}
-
-      {/*      <ProFormText*/}
-      {/*        rules={[*/}
-      {/*          {*/}
-      {/*            required: true,*/}
-      {/*            message: "Mobile is required",*/}
-      {/*          }*/}
-      {/*        ]}*/}
-      {/*        label={"Mobile"}*/}
-      {/*        width="md"*/}
-      {/*        name="mobile"*/}
-      {/*        placeholder={"Mobile"}*/}
-      {/*      />*/}
-      {/*    </Space>*/}
-
-      {/*    <Space size={20}>*/}
-      {/*      <ProFormText*/}
-      {/*        rules={[*/}
-      {/*          {*/}
-      {/*            required: true,*/}
-      {/*            message: "Email is required",*/}
-      {/*          },*/}
-      {/*        ]}*/}
-      {/*        label={"Email"}*/}
-      {/*        width="md"*/}
-      {/*        name="email"*/}
-      {/*        placeholder={"Email"}*/}
-      {/*      />*/}
-
-      {/*      <ProFormRadio.Group*/}
-      {/*        rules={[*/}
-      {/*          {*/}
-      {/*            required: true,*/}
-      {/*            message: "Gender is required",*/}
-      {/*          },*/}
-      {/*        ]}*/}
-      {/*        initialValue={1}*/}
-      {/*        name="gender"*/}
-      {/*        label={"Gender"}*/}
-      {/*        options={[*/}
-      {/*          {*/}
-      {/*            value: 0,*/}
-      {/*            label: 'male',*/}
-      {/*          },*/}
-      {/*          {*/}
-      {/*            value: 1,*/}
-      {/*            label: 'female',*/}
-      {/*          },*/}
-      {/*        ]}*/}
-      {/*      />*/}
-      {/*    </Space>*/}
-
-      {/*    <Space size={20}>*/}
-      {/*      <ProFormTextArea*/}
-      {/*        label={"Description"}*/}
-      {/*        name="description"*/}
-      {/*        width="md"*/}
-      {/*        placeholder={'Please enter description'}*/}
-      {/*      />*/}
-
-      {/*      <ProFormText name="id" hidden={true}/>*/}
-      {/*    </Space>*/}
-      {/*  </ModalForm>*/}
-      {/*}*/}
-
     </PageContainer>
   );
 };

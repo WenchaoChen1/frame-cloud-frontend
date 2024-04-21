@@ -94,6 +94,19 @@ export default [
     ],
   },
   {
+    name: 'identity-management',
+    path: '/identity-management',
+    icon: 'table',
+    routes: [
+      {
+        name: 'authorization.menu-list',
+        icon: 'table',
+        path: '/identity-management/authorization-list',
+        component: './identity/authorization',
+      },
+    ],
+  },
+  {
     path: '/dashboard',
     name: 'dashboard',
     icon: 'dashboard',

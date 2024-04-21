@@ -148,18 +148,18 @@ export default defineConfig({
     //   schemaPath: 'http://localhost:8201/gstdev-identity/v3/api-docs/openapi.json',
     //   projectName: 'swagger',
     // },
-    // {
-    //   requestLibPath: "import { request } from '@umijs/max'", // 要使用的请求库
-    //   schemaPath: 'http://localhost:8201/gstdev-identity/v3/api-docs',
-    //   projectName: '/swagger/identity', // 生成的api目录名（一般按模块划分）
-    //   apiPrefix: 'process.env.IDENTITY_SERVICE', // 接口声明文档中请求的前缀名
-    // },
-    // {
-    //   requestLibPath: "import { request } from '@umijs/max'",
-    //   schemaPath: 'http://localhost:8201/gstdev-system/v3/api-docs',
-    //   projectName: '/swagger/system',
-    //   apiPrefix: 'process.env.SYSTREM_SERVICE',
-    // },
+    {
+      requestLibPath: "import { request } from '@umijs/max'", // 要使用的请求库
+      schemaPath: 'http://localhost:8201/gstdev-identity/v3/api-docs',
+      projectName: '/swagger/identity', // 生成的api目录名（一般按模块划分）
+      apiPrefix: 'process.env.IDENTITY_SERVICE', // 接口声明文档中请求的前缀名
+    },
+    {
+      requestLibPath: "import { request } from '@umijs/max'",
+      schemaPath: 'http://localhost:8201/gstdev-system/v3/api-docs',
+      projectName: '/swagger/system',
+      apiPrefix: 'process.env.SYSTREM_SERVICE',
+    },
   ],
   mock: {
     include: ['mock/**/*', 'src/pages/**/_mock.ts'],
