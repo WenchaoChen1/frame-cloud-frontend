@@ -35,6 +35,8 @@ const Account: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
   const getList = async (params: APISystem.PageParams) => {
+    params.tenantId=initialState?.currentUser?.tenantId;
+    console.log(params)
     const roleResponse = await getAccountListService(params);
 
     let dataSource: APISystem.AccountItemDataType[] = [];

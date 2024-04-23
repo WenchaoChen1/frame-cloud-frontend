@@ -6,7 +6,8 @@ export async function getAccountList(params: APISystem.PageParams) {
     method: 'GET',
     params: {
       pageNumber: params.current,
-      pageSize: params.pageSize
+      pageSize: params.pageSize,
+      tenantId: params.tenantId
     }
   });
 }

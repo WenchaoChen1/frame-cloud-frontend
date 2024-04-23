@@ -14,6 +14,7 @@ declare namespace APISystem {
   type PageParams = {
     current?: number;
     pageSize?: number;
+    tenantId?: string;
   };
   type AllUserResponseDataType = {
     data?: UserItemDataType[];

@@ -57,7 +57,7 @@ export async function getChildrenByTenantId(tenantId: string) {
 
 //  get relation menu all tree By tenantId
 export async function findAllMenuTreeByTenant(tenantId: string) {
-  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-all-mean-to-tree`, {
+  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-all-menu-to-tree`, {
     method: 'GET',
     params: {
       tenantId: tenantId
