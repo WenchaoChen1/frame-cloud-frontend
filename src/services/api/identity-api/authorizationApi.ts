@@ -5,7 +5,7 @@ import { request } from '@umijs/max';
 /** 分页查询数据 通过pageNumber和pageSize获取分页数据 返回值: 单位列表 GET /authorize/authorization */
 export async function findByPage4(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: APIIdentity.findByPage4Params,
+  params: APIIdentity.Pager,
   options?: { [key: string]: any },
 ) {
   return request<any>(`${process.env.IDENTITY_SERVICE}/authorize/authorization`, {

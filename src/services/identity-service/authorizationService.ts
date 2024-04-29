@@ -1,6 +1,5 @@
 import {findByPage4} from "@/services/api/identity-api/authorizationApi";
-
-export async function getAuthorizationPage(params: APIIdentity.findByPage4Params) {
+export async function getAuthorizationPage(params: APIIdentity.Pager) {
   return await findByPage4(params);
 }
 

@@ -4,38 +4,32 @@ import {
 } from '@/services/identity-service/authorizationService';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
-  FooterToolbar,
-  ModalForm,
   PageContainer,
-  ProFormRadio,
-  ProFormText,
-  ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
 import {FormattedMessage, useModel} from '@umijs/max';
-import {Button, message, Space} from 'antd';
+import {Button, message, Popconfirm} from 'antd';
 import React, {useRef, useState} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
+import {defaultPageSize} from "@/utils/const";
 
 const User: React.FC = () => {
   const {initialState} = useModel('@@initialState');
   const currentUserId = initialState?.currentUser?.userId;
 
   const [openModal, setOpenModal] = useState<boolean>(false);
-  // const [isEdit, setIsEdit] = useState(false);
-  const [currentRow, setCurrentRow] = useState<APISystem.UserItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.UserItemDataType[]>([]);
 
   const actionRef = useRef<ActionType>();
 
-  const getList = async (params: API.PageParams) => {
+  const [total, setTotal] = useState<number>(0);
+  const [pageSize, setPageSize] = useState<number>(defaultPageSize);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-    // @ts-ignore
+  const getList = async (params: API.PageParams) => {
     const response = await getAuthorizationPage({
-      pager: {
-        pageNumber: params.current || 0,
-        pageSize: params.pageSize || 10
-      }
+        pageNumber: params.current || 1,
+        pageSize: params.pageSize || defaultPageSize
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -44,7 +38,9 @@ const User: React.FC = () => {
       dataSource = response?.data?.content || [];
       total = response?.data?.totalElements || 0;
     }
-console.log(dataSource)
+
+    setTotal(total);
+
     return {
       data: dataSource,
       success: true,
@@ -149,10 +145,11 @@ console.log(dataSource)
 //   },
 //   { title: 'actions', dataIndex: 'actions', align: 'center', label: '操作' }
 // ];
+
   const columns: ProColumns<APIIdentity.authorization>[] = [
-    {title: 'registeredClientId', dataIndex: 'registeredClientId',},
-    {title: 'principalName', dataIndex: 'principalName',},
-    {title: 'authorizationGrantType', dataIndex: 'authorizationGrantType',},
+    {title: 'registered', dataIndex: 'registeredClientId'},
+    {title: 'principal', dataIndex: 'principalName'},
+    {title: 'auth', dataIndex: 'authorizationGrantType'},
     {
       title: 'accessTokenIssuedAt',
       dataIndex: 'accessTokenIssuedAt',
@@ -173,18 +170,22 @@ console.log(dataSource)
       title: "Operating",
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [
+      // render: (_, record) => [
+      //   currentUserId !== record.id &&
+      //   <a
+      //     key="deleteUser"
+      //     onClick={async () => {
+      //       await deleteUserRequest(record?.id || '');
+      //     }}
+      //   >
+      //     Delete
+      //   </a>
+      // ],
 
-        currentUserId !== record.id &&
-        <a
-          key="deleteUser"
-          onClick={async () => {
-            await deleteUserRequest(record?.id || '');
-          }}
-        >
-          Delete
-        </a>
-      ],
+      render: (_, record) =>
+          <Popconfirm title="Sure to delete?" onConfirm={async () => await deleteUserRequest(record?.id || '')}>
+            <a>Delete</a>
+          </Popconfirm>
     },
   ];
 
@@ -213,6 +214,17 @@ console.log(dataSource)
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows);
           },
+        }}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: total,
+          // showTotal: () => '',
+          showSizeChanger: true,
+          onChange: (currentPageNumber, pageSizeNumber) => {
+            setPageSize(pageSizeNumber);
+            setCurrentPage(currentPageNumber);
+          }
         }}
       />
     </PageContainer>
