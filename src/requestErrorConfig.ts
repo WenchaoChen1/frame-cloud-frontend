@@ -1,9 +1,10 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
-import { getToken, removeToken} from '@/utils/utils';
+import {getToken, logOut, removeToken} from '@/utils/utils';
 import { history } from '@umijs/max';
 import {LOGIN_PATH} from "@/pages/common/constant";
+
 // 错误处理方案： 错误类型
 enum ErrorShowType {
   SILENT = 0,
@@ -12,6 +13,7 @@ enum ErrorShowType {
   NOTIFICATION = 3,
   REDIRECT = 9,
 }
+
 // 与后端约定的响应数据格式
 interface ResponseStructure {
   success: boolean;
@@ -20,17 +22,22 @@ interface ResponseStructure {
   errorMessage?: string;
   showType?: ErrorShowType;
 }
-const authHeaderInterceptor = (url: string, options: any) => {
+
+const authHeaderInterceptor = (config: RequestOptions) => {
   const filter = [
     '/api/gstdev-system/user/login',
     // login
     '/api/gstdev-identity/oauth2/token',
     '/api/gstdev-system/v1/user/update-customer-user-password',
   ];
+
+  const url = config?.url || '';
+
   if (!filter.includes(url)) {
     const token = getToken();
-    if (token) {
-      options.headers.Authorization = `Bearer ${token}`;
+
+    if (token && config?.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
     } else {
       console.log('authHeaderInterceptor token is empty', url, window.location.href);
       removeToken();
@@ -38,11 +45,9 @@ const authHeaderInterceptor = (url: string, options: any) => {
     }
   }
 
-  return {
-    url: url,
-    options: { ...options, interceptors: true},
-  };
+  return { ...config, url };
 };
+
 /**
  * @name 错误处理
  * pro 自带的错误处理， 可以在这里做自己的改动
@@ -53,6 +58,8 @@ export const errorConfig: RequestConfig = {
   errorConfig: {
     // 错误抛出
     errorThrower: (res) => {
+      // console.log('Interceptors===========01', res);
+
       const { success, data, errorCode, errorMessage, showType } =
         res as unknown as ResponseStructure;
       if (!success) {
@@ -64,6 +71,8 @@ export const errorConfig: RequestConfig = {
     },
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
+      // console.log('Interceptors===========02', error, opts);
+
       if (opts?.skipErrorHandler) throw error;
       // 我们的 errorThrower 抛出的错误。
       if (error.name === 'BizError') {
@@ -111,20 +120,21 @@ export const errorConfig: RequestConfig = {
 
   // 请求拦截器
   requestInterceptors: [authHeaderInterceptor],
-  // (config: RequestOptions) => {
-  //   // 拦截请求配置，进行个性化处理。
-  //   const url = config?.url?.concat('?token = 123');
-  //   return { ...config, url };
-  // },
-
 
   // 响应拦截器
   responseInterceptors: [
     (response) => {
+
+      if (response.status === 401) {
+        console.log('Interceptors===========04', response.status, response)
+        logOut();
+        return response;
+      }
+
       // 拦截响应数据，进行个性化处理
       const { data } = response as unknown as ResponseStructure;
       if (data?.success === false) {
-        message.error('请求失败！');
+        message.error('response error!');
       }
       return response;
     },

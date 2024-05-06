@@ -1,6 +1,6 @@
 import {
   getAuthorizationPage,
-  deleteAuthorizationById
+  deleteAuthorizationByIdService
 } from '@/services/identity-service/authorizationService';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
@@ -11,7 +11,7 @@ import {FormattedMessage, useModel} from '@umijs/max';
 import {Button, message, Popconfirm} from 'antd';
 import React, {useRef, useState} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
-import {defaultPageSize} from "@/utils/const";
+import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 
 const User: React.FC = () => {
   const {initialState} = useModel('@@initialState');
@@ -23,13 +23,13 @@ const User: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
   const [total, setTotal] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(defaultPageSize);
+  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const getList = async (params: API.PageParams) => {
     const response = await getAuthorizationPage({
         pageNumber: params.current || 1,
-        pageSize: params.pageSize || defaultPageSize
+        pageSize: params.pageSize || DEFAULT_PAGE_SIZE
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -88,10 +88,10 @@ const User: React.FC = () => {
   // };
 
   const deleteUserRequest = async (id: string) => {
-    console.log(Date.now() - Math.floor(Math.random() * 1000),)
     const hide = message.loading('delete...');
+
     try {
-      await deleteAuthorizationById(id);
+      await deleteAuthorizationByIdService(id);
       hide();
       message.success('Deleted successfully and will refresh soon');
 
@@ -170,22 +170,13 @@ const User: React.FC = () => {
       title: "Operating",
       dataIndex: 'option',
       valueType: 'option',
-      // render: (_, record) => [
-      //   currentUserId !== record.id &&
-      //   <a
-      //     key="deleteUser"
-      //     onClick={async () => {
-      //       await deleteUserRequest(record?.id || '');
-      //     }}
-      //   >
-      //     Delete
-      //   </a>
-      // ],
-
       render: (_, record) =>
-          <Popconfirm title="Sure to delete?" onConfirm={async () => await deleteUserRequest(record?.id || '')}>
-            <a>Delete</a>
-          </Popconfirm>
+        <Popconfirm
+          title="Sure to delete?"
+          onConfirm={async () => await deleteUserRequest(record?.id || '')}
+        >
+          <a>Delete</a>
+        </Popconfirm>
     },
   ];
 

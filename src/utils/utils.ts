@@ -41,7 +41,7 @@ export function removeLocalStorage(key: string) {
 // token
 export function getToken() {
   const item = localStorage.getItem(ACCESS_TOKEN);
-  return item===null?'':item;
+  return item === null ? '' : item;
 }
 
 export function setToken(accessToken: string) {
@@ -53,7 +53,7 @@ export function removeToken() {
   localStorage.removeItem(CURRENT_ACCOUNT_ID);
 }
 
-export async function logOut() {
+export function logOut() {
   history.push(LOGIN_PATH);
   removeToken();
 }
