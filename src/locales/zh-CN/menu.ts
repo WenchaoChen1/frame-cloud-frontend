@@ -50,8 +50,6 @@ export default {
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
 
-
-
   'menu.system-management': '后台管理',
   'menu.system-management.menu.menu-list': '菜单管理',
   'menu.system-management.dict.dict-list': '数据字典',
@@ -61,9 +59,6 @@ export default {
   'menu.system-management.user.user-list': '用户管理',
   'menu.system-management.account.account-list': '账户管理',
 
-
-
-
-
-
+  'menu.identity-management': 'Authorization',
+  'menu.identity-management.authorization.list': 'Auth-列表',
 };

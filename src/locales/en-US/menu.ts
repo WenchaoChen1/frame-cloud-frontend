@@ -49,4 +49,16 @@ export default {
   'menu.editor.flow': 'Flow Editor',
   'menu.editor.mind': 'Mind Editor',
   'menu.editor.koni': 'Koni Editor',
+
+  'menu.system-management': 'System Manage',
+  'menu.system-management.menu.menu-list': 'Menu Manage',
+  'menu.system-management.dict.dict-list': 'Data Dict',
+  'menu.system-management.tenant.tenant-list': 'Tenant Manage',
+  'menu.system-management.organize.organize-list': 'Organize Manage',
+  'menu.system-management.role.role-list': 'Role Manage',
+  'menu.system-management.user.user-list': 'User Manage',
+  'menu.system-management.account.account-list': 'Account Manage',
+
+  'menu.identity-management': 'Authorization',
+  'menu.identity-management.authorization.list': 'Auth List',
 };

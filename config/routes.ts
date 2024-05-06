@@ -99,7 +99,7 @@ export default [
     icon: 'table',
     routes: [
       {
-        name: 'authorization.menu-list',
+        name: 'authorization.list',
         icon: 'table',
         path: '/identity-management/authorization-list',
         component: './identity/authorization',
