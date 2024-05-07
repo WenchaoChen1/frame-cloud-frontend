@@ -25,7 +25,7 @@ declare namespace APISystem {
   type UserItemDataType = {
     id?: string;
     username?: string;
-    mobile?: string;
+    phoneNumber?: string;
     email?: string,
     gender?: number,
     avatar?: string;
