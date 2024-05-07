@@ -59,6 +59,6 @@ export default {
   'menu.system-management.user.user-list': '用户管理',
   'menu.system-management.account.account-list': '账户管理',
 
-  'menu.identity-management': 'Authorization',
-  'menu.identity-management.authorization.list': 'Auth-列表',
+  'menu.identity-management': 'Auth管理',
+  'menu.identity-management.authorization.list': '列表',
 };
