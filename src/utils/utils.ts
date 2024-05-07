@@ -1,6 +1,6 @@
 import {history} from "@umijs/max";
 import {RuleObject, StoreValue} from "rc-field-form/lib/interface";
-import {ACCESS_TOKEN, CURRENT_ACCOUNT_ID, LOGIN_PATH} from "@/pages/common/constant";
+import {ACCESS_TOKEN, CURRENT_ACCOUNT_ID, LOGIN_PATH, REFRESH_TOKEN} from "@/pages/common/constant";
 
 export function getCookie(name: string) {
   let arr;
@@ -46,6 +46,15 @@ export function getToken() {
 
 export function setToken(accessToken: string) {
   localStorage.setItem(ACCESS_TOKEN, accessToken);
+}
+
+export function getRefreshToken() {
+  const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+  return refreshToken === null ? '' : refreshToken;
+}
+
+export function setRefreshToken(refreshToken: string) {
+  localStorage.setItem(REFRESH_TOKEN, refreshToken);
 }
 
 export function removeToken() {

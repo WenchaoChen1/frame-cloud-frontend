@@ -10,14 +10,14 @@ export async function getDictTree(tenantId: string) {
 }
 
 export async function createDict(data?: any) {
-  return request<APISystem.DictListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/dict/create`, {
+  return request<APISystem.DictListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/dict`, {
     method: 'POST',
     data: data,
   });
 }
 
 export async function editDict(data?: any) {
-  return request<APISystem.DictListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/dict/edit`, {
+  return request<APISystem.DictListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/dict`, {
     method: 'PUT',
     data: data,
   });
@@ -31,7 +31,7 @@ export async function deleteDict(id: string) {
 }
 
 export async function getDictInfo(id: Key) {
-  return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/dict/getInfo`, {
+  return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/dict/get-by-id`, {
     method: 'GET',
     params: {id: id}
   });

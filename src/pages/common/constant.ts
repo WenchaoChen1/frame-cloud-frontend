@@ -1,3 +1,4 @@
+import {getRefreshToken} from "@/utils/utils";
 
 export const HEADERS_AUTHORIZATION: string = 'Basic cGFzc3dvcmQtY2xpZW50OjEyMzQ1Ng==';
 
@@ -16,3 +17,4 @@ export const DEFAULT_PAGE_SIZE = 10;
 
 export const CURRENT_ACCOUNT_ID: string = 'currentAccountId';
 export const ACCESS_TOKEN: string = 'accessToken';
+export const REFRESH_TOKEN: string = 'refreshToken';

@@ -34,6 +34,7 @@ const initFormData = {
 };
 
 type propsType = {
+  isCreate: boolean;
   isEdit: boolean;
   tenantId: string|undefined;
   dictionaryTreeData: APISystem.DictItemDataType[];
@@ -117,7 +118,7 @@ const RightContainer: React.FC<propsType> = (props) => {
   ];
 
   const getDetail = async () => {
-    console.log('getDetail() isEdit', props.selectDictionaryId, props.isEdit);
+    console.log('getDetail isEdit', props.selectDictionaryId, props.isEdit);
 
     if (!props.selectDictionaryId || props.isEdit === false) {
       form.setFieldsValue(initFormData);
@@ -209,8 +210,8 @@ const RightContainer: React.FC<propsType> = (props) => {
               autoClearSearchValue: true,
               treeNodeFilterProp: 'title',
               fieldNames: {
-                value: 'key',
-                label: 'title'
+                value: 'id',
+                label: 'name'
               }
             }}
             width={'md'}
@@ -298,20 +299,20 @@ const RightContainer: React.FC<propsType> = (props) => {
   }, [props.selectDictionaryId, props.isEdit])
 
   return (
-    <Tabs items={[
-      {
-        label: `Detail`,
-        key: 'detailTab',
-        children: <DetailTabItem />
-      },
-      {
-        label: `Table`,
-        key: 'table',
-        children: <TableTabItem />
-      }
-    ]}
+      <Tabs items={[
+        {
+          label: `${props.isEdit ? 'Detail' : 'Add'}`,
+          key: 'detail',
+          children: <DetailTabItem />
+        },
+        {
+          label: `Table`,
+          key: 'table',
+          children: <TableTabItem />
+        }
+      ]}
     />
   )
-};
+}
 
 export default RightContainer;

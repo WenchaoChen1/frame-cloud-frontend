@@ -1,10 +1,11 @@
 import React, {Key, useEffect, useState} from 'react';
-import {Button, Col, Row, Space, Tree, TreeSelect} from 'antd';
-import {PageContainer} from '@ant-design/pro-components';
+import {Button, Col, Modal, Row, Space, Tree, TreeSelect} from 'antd';
+import {
+  PageContainer,
+} from '@ant-design/pro-components';
 import {getTenantTreeService} from "@/services/system-service/tenant";
 import {getDictTreeService} from "@/services/system-service/dict";
 import RightContainer from "@/pages/system/dict/components/rightContainer";
-import commonStyle from '@/pages/common/index.less';
 import styles from "@/pages/system/dict/index.less";
 
 const Dict: React.FC = () => {
@@ -15,7 +16,9 @@ const Dict: React.FC = () => {
   const [selectDictionaryId, setSelectDictionaryId] = useState<Key>('');
 
   const [isEdit, setIsEdit] = useState(true);
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [isCreate, setIsCreate] = useState(true);
+
+  const [openAddModal, setOpenAddModal] = useState<boolean>(false);
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
 
   const getTenantTreeRequest = async () => {
@@ -39,7 +42,9 @@ const Dict: React.FC = () => {
     if (dictionaryTreeResponse.success && dictionaryTreeResponse.data) {
       setDictionaryTreeData(dictionaryTreeResponse.data);
       if (dictionaryTreeResponse.data.length > 0) {
-        setSelectDictionaryId(dictionaryTreeResponse.data[0]?.key || '');
+        setSelectDictionaryId(dictionaryTreeResponse.data[0]?.id || '');
+
+        setIsEdit(true);
       } else {
         setSelectDictionaryId('');
       }
@@ -59,12 +64,14 @@ const Dict: React.FC = () => {
     setIsEdit(true);
   };
 
-  const onAddBtn = () => {
+  const onAddBtn = async () => {
     setIsEdit(false);
+    // setIsCreate(true);
   }
 
   const onCancelBtn = () => {
     setIsEdit(true);
+    // setIsCreate(false);
   }
 
   useEffect(() => {
@@ -78,7 +85,7 @@ const Dict: React.FC = () => {
   }, [tenantId])
 
   return (
-    <PageContainer className={[commonStyle.pageContainer, styles.container].join(' ')} title={' '}>
+    <PageContainer className={styles.container}>
       <Row className={styles.contentBox}>
         <Col className={styles.colLeftBox} span={8}>
           <TreeSelect
@@ -109,37 +116,41 @@ const Dict: React.FC = () => {
               defaultSelectedKeys={[selectDictionaryId]}
               autoExpandParent={autoExpandParent}
               blockNode
-              defaultExpandAll
+              defaultExpandAll={true}
               // expandedKeys={expandedKeys}
-              // fieldNames={{ title: 'name', key: 'id'}}
+              fieldNames={{ title: 'name', key: 'id'}}
+              // className={styles.colLeftBox}
+              className={styles.dictTree}
             />
           }
         </Col>
 
         <Col className={styles.colRightBox} span={16}>
           {
-            selectDictionaryId &&
-            <RightContainer
-              isEdit={isEdit}
-              tenantId={tenantId}
-              dictionaryTreeData={dictionaryTreeData}
-              selectDictionaryId={selectDictionaryId}
-            />
+            selectDictionaryId ?
+              <RightContainer
+                isCreate={isCreate}
+                isEdit={isEdit}
+                tenantId={tenantId}
+                dictionaryTreeData={dictionaryTreeData}
+                selectDictionaryId={selectDictionaryId}
+              />
+              :
+              <></>
           }
         </Col>
       </Row>
 
       {/*{*/}
-      {/*  openModal &&*/}
+      {/*  openAddModal &&*/}
       {/*  <Modal*/}
       {/*    title={'Add'}*/}
       {/*    width={780}*/}
-      {/*    open={openModal}*/}
+      {/*    open={openAddModal}*/}
       {/*    onCancel={onCancelBtn}*/}
       {/*    getContainer={false}*/}
       {/*    footer={false}*/}
       {/*  >*/}
-      {/*    <OrganizeFormContent/>*/}
       {/*  </Modal>*/}
       {/*}*/}
     </PageContainer>

@@ -1,9 +1,12 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
-import {getToken, logOut, removeToken} from '@/utils/utils';
+import {getRefreshToken, getToken, logOut, removeToken, setRefreshToken, setToken} from '@/utils/utils';
 import { history } from '@umijs/max';
 import {LOGIN_PATH} from "@/pages/common/constant";
+import {oauth2RefreshToken} from "@/services/api/identity-api/oauth2";
+import {oauth2RefreshTokenService} from "@/services/identity-service/login";
+import {AxiosResponse} from "axios";
 
 // 错误处理方案： 错误类型
 enum ErrorShowType {
@@ -48,12 +51,56 @@ const authHeaderInterceptor = (config: RequestOptions) => {
   return { ...config, url };
 };
 
+const responseInterceptors = async (response: AxiosResponse) => {
+  console.log('Interceptors===========03', response.status, response)
+
+  if (response.status === 401) {
+    console.log('Interceptors===========04', response.status, response)
+
+    logOut();
+    return response;
+  }
+
+  // 拦截响应数据，进行个性化处理
+  const { data } = response as unknown as ResponseStructure;
+  if (data?.success === false) {
+    message.error('response error!');
+  }
+  return response;
+}
+
+const responseInterceptorsForAuth = async (error: any) => {
+  // console.log('Interceptors===========05', error)
+  if (error.response.status === 401) {
+    // console.log('Interceptors===========06', error)
+
+    const data: APIIdentity.Oauth2TokenParamsDataType = {
+      grant_type: 'refresh_token',
+      refresh_token: getRefreshToken(),
+    }
+    const refreshTokenResponse = await oauth2RefreshTokenService(data);
+
+    if (refreshTokenResponse.access_token) {
+        setToken(refreshTokenResponse.access_token);
+        setRefreshToken(refreshTokenResponse.refresh_token);
+    } else {
+      // console.log('Interceptors===========08')
+
+      message.error(`Axios error, Response status:${error.response.status}`);
+      logOut();
+    }
+  }
+}
+
 /**
  * @name 错误处理
  * pro 自带的错误处理， 可以在这里做自己的改动
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const errorConfig: RequestConfig = {
+  requestInterceptors: [authHeaderInterceptor],
+  // responseInterceptors: [responseInterceptors],
+
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
     // 错误抛出
@@ -62,7 +109,7 @@ export const errorConfig: RequestConfig = {
 
       const { success, data, errorCode, errorMessage, showType } =
         res as unknown as ResponseStructure;
-      if (!success) {
+      if (!success ) {
         const error: any = new Error(errorMessage);
         error.name = 'BizError';
         error.info = { errorCode, errorMessage, showType, data };
@@ -105,7 +152,9 @@ export const errorConfig: RequestConfig = {
       } else if (error.response) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        message.error(`Response status:${error.response.status}`);
+        // message.error(`Response status:${error.response.status}`);
+
+        responseInterceptorsForAuth(error);
       } else if (error.request) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
@@ -116,27 +165,5 @@ export const errorConfig: RequestConfig = {
         message.error('Request error, please retry.');
       }
     },
-  },
-
-  // 请求拦截器
-  requestInterceptors: [authHeaderInterceptor],
-
-  // 响应拦截器
-  responseInterceptors: [
-    (response) => {
-
-      if (response.status === 401) {
-        console.log('Interceptors===========04', response.status, response)
-        logOut();
-        return response;
-      }
-
-      // 拦截响应数据，进行个性化处理
-      const { data } = response as unknown as ResponseStructure;
-      if (data?.success === false) {
-        message.error('response error!');
-      }
-      return response;
-    },
-  ],
+  }
 };

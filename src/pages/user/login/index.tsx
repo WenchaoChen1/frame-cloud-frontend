@@ -21,7 +21,7 @@ import {createStyles} from 'antd-style';
 import React, {useState} from 'react';
 import {flushSync} from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
-import {removeLocalStorage, setLocalStorage, setToken} from '@/utils/utils';
+import {removeLocalStorage, setLocalStorage, setRefreshToken, setToken} from '@/utils/utils';
 // import {SELECT_ACCOUNT_PATH} from "@/pages/common/constant";
 
 const useStyles = createStyles(({token}) => {
@@ -132,12 +132,14 @@ const Login: React.FC = () => {
       values.grant_type = 'password';
       const msg = await oauth2TokenService(values);
       console.log(msg)
-      console.log(msg.request)
+
       // 登录
       // const msg = await login({...values, type});
       // if (msg.status === 'ok') {
       if (msg.access_token) {
         setToken(msg.access_token);
+        setRefreshToken(msg.refresh_token);
+
         handleRememberMe(values);
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
