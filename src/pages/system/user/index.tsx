@@ -238,7 +238,7 @@ const User: React.FC = () => {
             return {
               id: '',
               username: '',
-              mobile: '',
+              phoneNumber: '',
               email: '',
               gender: '',
             };
@@ -275,13 +275,13 @@ const User: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Mobile is required",
+                  message: "Phone Number is required",
                 }
               ]}
-              label={"Mobile"}
+              label={"PhoneNumber"}
               width="md"
-              name="mobile"
-              placeholder={"Mobile"}
+              name="phoneNumber"
+              placeholder={"PhoneNumber"}
             />
           </Space>
 
@@ -322,16 +322,16 @@ const User: React.FC = () => {
             />
           </Space>
 
-          <Space size={20}>
-            <ProFormTextArea
-              label={"Description"}
-              name="description"
-              width="md"
-              placeholder={'Please enter description'}
-            />
+          {/*<Space size={20}>*/}
+          {/*  <ProFormTextArea*/}
+          {/*    label={"Description"}*/}
+          {/*    name="description"*/}
+          {/*    width="md"*/}
+          {/*    placeholder={'Please enter description'}*/}
+          {/*  />*/}
 
-            <ProFormText name="id" hidden={true}/>
-          </Space>
+          {/*  <ProFormText name="id" hidden={true}/>*/}
+          {/*</Space>*/}
         </ModalForm>
       }
 
