@@ -34,7 +34,7 @@ const initFormData = {
 };
 
 type propsType = {
-  isCreate: boolean;
+  refreshParent: () => void;
   isEdit: boolean;
   tenantId: string|undefined;
   dictionaryTreeData: APISystem.DictItemDataType[];
@@ -149,6 +149,8 @@ const RightContainer: React.FC<propsType> = (props) => {
 
       if (response.success === true) {
         message.success('Save successfully!');
+
+        props.refreshParent();
       } else {
         message.error('Save failed, please try again!');
       }

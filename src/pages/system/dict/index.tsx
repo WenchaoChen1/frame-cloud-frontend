@@ -16,10 +16,9 @@ const Dict: React.FC = () => {
   const [selectDictionaryId, setSelectDictionaryId] = useState<Key>('');
 
   const [isEdit, setIsEdit] = useState(true);
-  const [isCreate, setIsCreate] = useState(true);
-
-  const [openAddModal, setOpenAddModal] = useState<boolean>(false);
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
+
+  const [isRefresh, setIsRefresh] = useState(false);
 
   const getTenantTreeRequest = async () => {
     const tenantTreeResponse = await getTenantTreeService();
@@ -37,7 +36,11 @@ const Dict: React.FC = () => {
     }
   }
 
-  const getDictionaryTreeRequest = async (tenantId: string) => {
+  const getDictionaryTreeRequest = async (tenantId: string|undefined) => {
+    if (!tenantId) {
+      return;
+    }
+
     const dictionaryTreeResponse = await getDictTreeService(tenantId);
     if (dictionaryTreeResponse.success && dictionaryTreeResponse.data) {
       setDictionaryTreeData(dictionaryTreeResponse.data);
@@ -66,12 +69,10 @@ const Dict: React.FC = () => {
 
   const onAddBtn = async () => {
     setIsEdit(false);
-    // setIsCreate(true);
   }
 
-  const onCancelBtn = () => {
-    setIsEdit(true);
-    // setIsCreate(false);
+  const refreshParent = () => {
+    setIsRefresh(!isRefresh);
   }
 
   useEffect(() => {
@@ -79,10 +80,8 @@ const Dict: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (tenantId) {
       getDictionaryTreeRequest(tenantId);
-    }
-  }, [tenantId])
+  }, [tenantId, isRefresh])
 
   return (
     <PageContainer className={styles.container}>
@@ -129,7 +128,7 @@ const Dict: React.FC = () => {
           {
             selectDictionaryId ?
               <RightContainer
-                isCreate={isCreate}
+                refreshParent={refreshParent}
                 isEdit={isEdit}
                 tenantId={tenantId}
                 dictionaryTreeData={dictionaryTreeData}
@@ -140,19 +139,6 @@ const Dict: React.FC = () => {
           }
         </Col>
       </Row>
-
-      {/*{*/}
-      {/*  openAddModal &&*/}
-      {/*  <Modal*/}
-      {/*    title={'Add'}*/}
-      {/*    width={780}*/}
-      {/*    open={openAddModal}*/}
-      {/*    onCancel={onCancelBtn}*/}
-      {/*    getContainer={false}*/}
-      {/*    footer={false}*/}
-      {/*  >*/}
-      {/*  </Modal>*/}
-      {/*}*/}
     </PageContainer>
   );
 };
