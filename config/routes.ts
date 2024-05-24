@@ -90,7 +90,12 @@ export default [
         path: '/system-management/account',
         component: './system/account',
       },
-
+      {
+        name: 'permission.permission-list',
+        icon: 'table',
+        path: '/system-management/permission',
+        component: './system/permission',
+      }
     ],
   },
   {

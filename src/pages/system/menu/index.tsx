@@ -210,8 +210,8 @@ const MenuList: React.FC = () => {
         <ModalForm
           title={ isEdit ? 'Edit' :  'New'}
           width="800px"
-          visible={modalVisible}
-          onVisibleChange={handleModalVisible}
+          open={modalVisible}
+          onOpenChange={handleModalVisible}
           onFinish={async (record) => {
             console.log('onFinish record', record);
             let response = undefined;

@@ -58,6 +58,7 @@ export default {
   'menu.system-management.role.role-list': 'Role Manage',
   'menu.system-management.user.user-list': 'User Manage',
   'menu.system-management.account.account-list': 'Account Manage',
+  'menu.system-management.permission.permission-list': 'Permission Manage',
 
   'menu.identity-management': 'Authorization',
   'menu.identity-management.authorization.list': 'Auth List',

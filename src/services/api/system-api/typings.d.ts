@@ -135,7 +135,13 @@ declare namespace APISystem {
     message?: string;
   };
 
-
+  type PermissionItemDataType = {
+    permissionId?: string;
+    permissionName?: string;
+    permissionCode?: string;
+    permissionType?: string;
+    status?: number;
+  };
 
   type onSaveRelationMenuResponseDataType = {
     code?: string;
