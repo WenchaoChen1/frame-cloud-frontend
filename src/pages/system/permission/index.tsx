@@ -118,6 +118,7 @@ const User: React.FC = () => {
     {
       title: 'permissionCode',
       dataIndex: 'permissionCode',
+      hideInForm: false,
     },
     {
       title: 'permissionType',
@@ -126,6 +127,25 @@ const User: React.FC = () => {
     {
       title: 'status',
       dataIndex: 'status',
+      hideInForm: true,
+      valueEnum: {
+        0: {
+          text: '启用',
+          status: 'ENABLE',
+        },
+        1: {
+          text: '禁用',
+          status: 'FORBIDDEN',
+        },
+        2: {
+          text: '锁定',
+          status: 'LOCKING',
+        },
+        3: {
+          text: '过期',
+          status: 'Success',
+        }
+      }
     },
     {
       title: "Operating",
