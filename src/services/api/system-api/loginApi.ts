@@ -1,4 +1,5 @@
 import { request } from '@umijs/max';
+import { getRefreshToken } from '@/utils/utils';
 
 export async function getLoginInfo(data: APISystem.GetAccountInfoBody) {
   return request<{

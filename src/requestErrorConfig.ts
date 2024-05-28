@@ -1,6 +1,7 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
+import { useLocation } from 'react-router-dom';
 import {getRefreshToken, getToken, logOut, removeToken, setRefreshToken, setToken} from '@/utils/utils';
 import { history } from '@umijs/max';
 import {LOGIN_PATH} from "@/pages/common/constant";
@@ -72,24 +73,26 @@ const responseInterceptors = async (response: AxiosResponse) => {
 const responseInterceptorsForAuth = async (error: any) => {
   // console.log('Interceptors===========05', error)
   if (error.response.status === 401) {
-    // console.log('Interceptors===========06', error)
-    logOut();
 
-    // const data: APIIdentity.Oauth2TokenParamsDataType = {
-    //   grant_type: 'refresh_token',
-    //   refresh_token: getRefreshToken(),
-    // }
-    // // const refreshTokenResponse = await oauth2RefreshTokenService(data);
+    const data: APIIdentity.Oauth2TokenParamsDataType = {
+      grant_type: 'refresh_token',
+      refresh_token: getRefreshToken(),
+    }
+    const refreshTokenResponse = await oauth2RefreshTokenService(data);
 
-    // if (refreshTokenResponse.access_token) {
-    //     setToken(refreshTokenResponse.access_token);
-    //     setRefreshToken(refreshTokenResponse.refresh_token);
-    // } else {
-    //   // console.log('Interceptors===========08')
+    if (refreshTokenResponse.access_token) {
+        // const { location } = history;
+        setToken(refreshTokenResponse.access_token);
+        setRefreshToken(refreshTokenResponse.refresh_token);
+        // setTimeout(() => {
+        //   history.push(location.pathname);
+        // }, 77777);
+    } else {
+      // console.log('Interceptors===========08')
 
-    //   message.error(`Axios error, Response status:${error.response.status}`);
-    //   logOut();
-    // }
+      message.error(`Axios error, Response status:${error.response.status}`);
+      logOut();
+    }
   }
 }
 

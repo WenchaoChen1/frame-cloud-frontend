@@ -153,7 +153,7 @@ const User: React.FC = () => {
         };
         return result;
       }, {}),
-      renderFormItem: (_, { type, defaultRender, ...rest }, form) => {
+      renderFormItem: (_, { type, defaultRender, ...rest }) => {
         return (
           <ProFormSelect
             mode="multiple"
@@ -187,7 +187,7 @@ const User: React.FC = () => {
           status: 'EXPIRED',
         }
       },
-      renderFormItem: (_, { type, defaultRender, ...rest }, form) => {
+      renderFormItem: (_, { type, defaultRender, ...rest }) => {
         return (
           <ProFormSelect
             mode="multiple"

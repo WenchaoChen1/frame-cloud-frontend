@@ -1,6 +1,6 @@
 import {request} from '@umijs/max';
 import {HEADERS_AUTHORIZATION} from "@/pages/common/constant";
-import {setRefreshToken, setToken} from "@/utils/utils";
+import { getRefreshToken } from '@/utils/utils';
 
 // login get token
 export async function oauth2Token(params: APIIdentity.Oauth2TokenParamsDataType) {
