@@ -28,10 +28,8 @@ const User: React.FC = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.PermissionItemDataType>();
   const [permissionTypeList, setPermissionTypeList] = useState([]);
-  const [selecTpermission, setSelecTpermission] = useState([]);
 
   const [selectedRowsState, setSelectedRows] = useState<APISystem.PermissionItemDataType[]>([]);
-  const [selectedPermissionTypes, setSelectedPermissionTypes] = useState<string[]>([]);
 
   const [total, setTotal] = useState<number>(0);
   const [size, setSize] = useState<number>(DEFAULT_PAGE_SIZE);
@@ -39,10 +37,12 @@ const User: React.FC = () => {
 
   const actionRef = useRef<ActionType>();
 
-  const getList = async (params: API.PageParams) => {
+  const getList = async (params: API.PageParams,) => {
     const response = await getPermissionListService({
         page: params.current || 1,
         size: params.pageSize || DEFAULT_PAGE_SIZE,
+        permissionType: params.permissionType?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+        status: params.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -63,14 +63,8 @@ const User: React.FC = () => {
 
   const initPermissionTypeChange = async () => {
     const response = await getPermissionTypeService();
-
-    const transformedList = response?.data?.map((item: any) => ({
-      value: item,
-      label: item,
-    }));
-
     if (response?.success === true) {
-      setPermissionTypeList(transformedList);
+      setPermissionTypeList(response?.data);
     }
   };
 
@@ -151,30 +145,59 @@ const User: React.FC = () => {
       title: 'permissionType',
       dataIndex: 'permissionType',
       hideInForm: true,
-      valueEnum: permissionTypeList,
+      // valueEnum: permissionTypeList,
+      valueEnum: permissionTypeList.reduce((result, type) => {
+        result[type] = {
+          text: type,
+          status: type,
+        };
+        return result;
+      }, {}),
+      renderFormItem: (_, { type, defaultRender, ...rest }, form) => {
+        return (
+          <ProFormSelect
+            mode="multiple"
+            {...rest}
+            fieldProps={{
+              mode: 'multiple',
+            }}
+          />
+        )
+      },
     },
     {
       title: 'status',
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
-        0: {
+        ENABLE: {
           text: '启用',
           status: 'ENABLE',
         },
-        1: {
+        FORBIDDEN: {
           text: '禁用',
           status: 'FORBIDDEN',
         },
-        2: {
+        LOCKING: {
           text: '锁定',
           status: 'LOCKING',
         },
-        3: {
+        EXPIRED: {
           text: '过期',
-          status: 'Success',
+          status: 'EXPIRED',
         }
-      }
+      },
+      renderFormItem: (_, { type, defaultRender, ...rest }, form) => {
+        return (
+          <ProFormSelect
+            mode="multiple"
+            {...rest}
+            fieldProps={{
+              mode: 'multiple',
+            }}
+          />
+        )
+      },
     },
     {
       title: "Operating",
@@ -201,82 +224,14 @@ const User: React.FC = () => {
     },
   ];
 
-  const onFinish = async (values: any) => {
-    console.log('Received values from form: ', values?.permissionType);
-    // debugger
-    setSelecTpermission(values)
-    const paramsString = values?.permissionType?.map((param: any) => encodeURIComponent(param)).join(',')
-    const response = await getPermissionListService({
-        page: page || 1,
-        size: size || DEFAULT_PAGE_SIZE,
-        permissionType: paramsString,
-    });
-
-    console.log(response, '00099888')
-
-    // let dataSource: APISystem.UserItemDataType[] = [];
-    // let total = 0;
-    // if (response?.success === true) {
-    //   dataSource = response?.data?.content || [];
-    //   total = response?.data?.totalElements || 0;
-    // }
-
-    // setTotal(total);
-
-    // return {
-    //   data: dataSource,
-    //   success: true,
-    //   total: total,
-    // };
-  };
-
   return (
     <PageContainer>
-      <div className={styles.searchStyle}>
-        <Form
-          name={styles.selectStyle}
-          layout="inline"
-          form={form}
-          onFinish={onFinish}
-        >
-          <Space>
-            <ProFormText
-              label={"permissionName"}
-              width="md"
-              name="permissionName"
-              placeholder={"permissionName"}
-            />
-            <ProFormText
-              label={"permissionCode"}
-              width="md"
-              name="permissionCode"
-              placeholder={"permissionCode"}
-            />
-            <Form.Item
-              name="permissionType"
-              label="PermissionType"
-            >
-              <Select mode="multiple" allowClear options={permissionTypeList} style={{ width: 360 }} />
-            </Form.Item>
-          </Space>
-          
-          <Form.Item>
-            <Button htmlType="button" onClick={() => form.resetFields()} style={{ marginRight: 20 }}>
-              Reset
-            </Button>
-            <Button type="primary" htmlType="submit">
-              Query
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
       <ProTable<APISystem.PermissionItemDataType, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
         className={styles.permission}
         rowKey="id"
         options={false}
-        search={false}
         toolBarRender={() => [
           <Button
             type="primary"
@@ -288,25 +243,8 @@ const User: React.FC = () => {
           >
             <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
           </Button>,
-          // <ProFormSelect
-          //   key="permissionType"
-          //   name="permissionType"
-          //   label="Permission Type"
-          //   width="md"
-          //   fieldProps={{
-          //     mode: 'multiple',
-          //     value: selectedPermissionTypes,
-          //     onChange: setSelectedPermissionTypes,
-          //   }}
-          //   options={[
-          //     { value: 'type1', label: 'Type 1' },
-          //     { value: 'type2', label: 'Type 2' },
-          //     { value: 'type3', label: 'Type 3' },
-          //   ]}
-          // />,
         ]}
         request={getList}
-        // request={(params) => getList({ ...params, permissionType: selectedPermissionTypes })}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
