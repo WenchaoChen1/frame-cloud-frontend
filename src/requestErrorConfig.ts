@@ -81,15 +81,9 @@ const responseInterceptorsForAuth = async (error: any) => {
     const refreshTokenResponse = await oauth2RefreshTokenService(data);
 
     if (refreshTokenResponse.access_token) {
-        // const { location } = history;
         setToken(refreshTokenResponse.access_token);
         setRefreshToken(refreshTokenResponse.refresh_token);
-        // setTimeout(() => {
-        //   history.push(location.pathname);
-        // }, 77777);
     } else {
-      // console.log('Interceptors===========08')
-
       message.error(`Axios error, Response status:${error.response.status}`);
       logOut();
     }
