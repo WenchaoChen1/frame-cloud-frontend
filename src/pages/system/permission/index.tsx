@@ -330,7 +330,7 @@ const User: React.FC = () => {
           </Space>
 
           <Space size={20}>
-            <ProFormText
+            <ProFormSelect
               rules={[
                 {
                   required: true,
@@ -341,26 +341,35 @@ const User: React.FC = () => {
               width="md"
               name="permissionType"
               placeholder={"Permission Type"}
+              options={permissionTypeList}
             />
-            <ProFormRadio.Group
+            <ProFormSelect
+              width="md"
               rules={[
                 {
                   required: true,
                   message: "Status is required",
                 },
               ]}
-              initialValue={1}
               name="status"
               label={"Status"}
               options={[
                 {
-                  value: 0,
-                  label: 'Disable',
+                  label: '启用',
+                  value: 'ENABLE',
                 },
                 {
-                  value: 1,
-                  label: 'Enable',
+                  label: '禁用',
+                  value: 'FORBIDDEN',
                 },
+                {
+                  label: '锁定',
+                  value: 'LOCKING',
+                },
+                {
+                  label: '过期',
+                  value: 'EXPIRED',
+                }
               ]}
             />
           </Space>
