@@ -73,22 +73,23 @@ const responseInterceptorsForAuth = async (error: any) => {
   // console.log('Interceptors===========05', error)
   if (error.response.status === 401) {
     // console.log('Interceptors===========06', error)
+    logOut();
 
-    const data: APIIdentity.Oauth2TokenParamsDataType = {
-      grant_type: 'refresh_token',
-      refresh_token: getRefreshToken(),
-    }
-    const refreshTokenResponse = await oauth2RefreshTokenService(data);
+    // const data: APIIdentity.Oauth2TokenParamsDataType = {
+    //   grant_type: 'refresh_token',
+    //   refresh_token: getRefreshToken(),
+    // }
+    // // const refreshTokenResponse = await oauth2RefreshTokenService(data);
 
-    if (refreshTokenResponse.access_token) {
-        setToken(refreshTokenResponse.access_token);
-        setRefreshToken(refreshTokenResponse.refresh_token);
-    } else {
-      // console.log('Interceptors===========08')
+    // if (refreshTokenResponse.access_token) {
+    //     setToken(refreshTokenResponse.access_token);
+    //     setRefreshToken(refreshTokenResponse.refresh_token);
+    // } else {
+    //   // console.log('Interceptors===========08')
 
-      message.error(`Axios error, Response status:${error.response.status}`);
-      logOut();
-    }
+    //   message.error(`Axios error, Response status:${error.response.status}`);
+    //   logOut();
+    // }
   }
 }
 

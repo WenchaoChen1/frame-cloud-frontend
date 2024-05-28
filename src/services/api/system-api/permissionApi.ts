@@ -5,11 +5,17 @@ export async function getPermissionList(
   options?: { [key: string]: any },
 ) {
   return request<any>(`${process.env.SYSTEM_SERVICE}/v1/permission/page`, {
-    method: 'GET',
+    method: 'POST',
     params: {
       ...params,
     },
     ...(options || {}),
+  });
+}
+
+export async function getPermissionType() {
+  return request<any>(`${process.env.SYSTEM_SERVICE}/v1/permission/permissionType`, {
+    method: 'GET',
   });
 }
 

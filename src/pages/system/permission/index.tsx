@@ -4,38 +4,45 @@ import {
   PageContainer,
   ProColumns,
   ProFormRadio,
+  ProFormSelect,
   ProFormText,
   ProTable
 } from '@ant-design/pro-components';
 import {FormattedMessage} from '@umijs/max';
-import {Button, message, Popconfirm, Space} from 'antd';
-import React, {useRef, useState} from 'react';
+import {Button, message, Popconfirm, Space, Form, Select} from 'antd';
+import React, {useRef, useState, useEffect} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import {
   deletePermissionByIdService,
   getPermissionListService,
-  savePermissionService
+  savePermissionService,
+  getPermissionTypeService,
 } from "@/services/system-service/permissionService";
+import styles from './index.less';
 
 const User: React.FC = () => {
+  const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.PermissionItemDataType>();
+  const [permissionTypeList, setPermissionTypeList] = useState([]);
+  const [selecTpermission, setSelecTpermission] = useState([]);
 
   const [selectedRowsState, setSelectedRows] = useState<APISystem.PermissionItemDataType[]>([]);
+  const [selectedPermissionTypes, setSelectedPermissionTypes] = useState<string[]>([]);
 
   const [total, setTotal] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [size, setSize] = useState<number>(DEFAULT_PAGE_SIZE);
+  const [page, setPage] = useState<number>(1);
 
   const actionRef = useRef<ActionType>();
 
   const getList = async (params: API.PageParams) => {
     const response = await getPermissionListService({
-        pageNumber: params.current || 1,
-        pageSize: params.pageSize || DEFAULT_PAGE_SIZE
+        page: params.current || 1,
+        size: params.pageSize || DEFAULT_PAGE_SIZE,
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -53,6 +60,23 @@ const User: React.FC = () => {
       total: total,
     };
   };
+
+  const initPermissionTypeChange = async () => {
+    const response = await getPermissionTypeService();
+
+    const transformedList = response?.data?.map((item: any) => ({
+      value: item,
+      label: item,
+    }));
+
+    if (response?.success === true) {
+      setPermissionTypeList(transformedList);
+    }
+  };
+
+  useEffect(() => {
+    initPermissionTypeChange()
+  }, []);
 
   /**
    * @en-US Add node
@@ -113,16 +137,21 @@ const User: React.FC = () => {
   }
 
   const columns: ProColumns<APISystem.PermissionItemDataType>[] = [
-    // {title: 'permissionId', dataIndex: 'permissionId'},
-    {title: 'permissionName', dataIndex: 'permissionName'},
+    {
+      title: 'permissionName',
+      dataIndex: 'permissionName',
+      hideInSearch: false,
+    },
     {
       title: 'permissionCode',
       dataIndex: 'permissionCode',
-      hideInForm: false,
+      hideInSearch: false,
     },
     {
       title: 'permissionType',
       dataIndex: 'permissionType',
+      hideInForm: true,
+      valueEnum: permissionTypeList,
     },
     {
       title: 'status',
@@ -172,13 +201,82 @@ const User: React.FC = () => {
     },
   ];
 
+  const onFinish = async (values: any) => {
+    console.log('Received values from form: ', values?.permissionType);
+    // debugger
+    setSelecTpermission(values)
+    const paramsString = values?.permissionType?.map((param: any) => encodeURIComponent(param)).join(',')
+    const response = await getPermissionListService({
+        page: page || 1,
+        size: size || DEFAULT_PAGE_SIZE,
+        permissionType: paramsString,
+    });
+
+    console.log(response, '00099888')
+
+    // let dataSource: APISystem.UserItemDataType[] = [];
+    // let total = 0;
+    // if (response?.success === true) {
+    //   dataSource = response?.data?.content || [];
+    //   total = response?.data?.totalElements || 0;
+    // }
+
+    // setTotal(total);
+
+    // return {
+    //   data: dataSource,
+    //   success: true,
+    //   total: total,
+    // };
+  };
+
   return (
     <PageContainer>
+      <div className={styles.searchStyle}>
+        <Form
+          name={styles.selectStyle}
+          layout="inline"
+          form={form}
+          onFinish={onFinish}
+        >
+          <Space>
+            <ProFormText
+              label={"permissionName"}
+              width="md"
+              name="permissionName"
+              placeholder={"permissionName"}
+            />
+            <ProFormText
+              label={"permissionCode"}
+              width="md"
+              name="permissionCode"
+              placeholder={"permissionCode"}
+            />
+            <Form.Item
+              name="permissionType"
+              label="PermissionType"
+            >
+              <Select mode="multiple" allowClear options={permissionTypeList} style={{ width: 360 }} />
+            </Form.Item>
+          </Space>
+          
+          <Form.Item>
+            <Button htmlType="button" onClick={() => form.resetFields()} style={{ marginRight: 20 }}>
+              Reset
+            </Button>
+            <Button type="primary" htmlType="submit">
+              Query
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
       <ProTable<APISystem.PermissionItemDataType, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
+        className={styles.permission}
         rowKey="id"
         options={false}
+        search={false}
         toolBarRender={() => [
           <Button
             type="primary"
@@ -190,8 +288,25 @@ const User: React.FC = () => {
           >
             <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
           </Button>,
+          // <ProFormSelect
+          //   key="permissionType"
+          //   name="permissionType"
+          //   label="Permission Type"
+          //   width="md"
+          //   fieldProps={{
+          //     mode: 'multiple',
+          //     value: selectedPermissionTypes,
+          //     onChange: setSelectedPermissionTypes,
+          //   }}
+          //   options={[
+          //     { value: 'type1', label: 'Type 1' },
+          //     { value: 'type2', label: 'Type 2' },
+          //     { value: 'type3', label: 'Type 3' },
+          //   ]}
+          // />,
         ]}
         request={getList}
+        // request={(params) => getList({ ...params, permissionType: selectedPermissionTypes })}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -199,14 +314,13 @@ const User: React.FC = () => {
           },
         }}
         pagination={{
-          current: currentPage,
-          pageSize: pageSize,
+          current: page,
+          pageSize: size,
           total: total,
-          // showTotal: () => '',
           showSizeChanger: true,
           onChange: (currentPageNumber, pageSizeNumber) => {
-            setPageSize(pageSizeNumber);
-            setCurrentPage(currentPageNumber);
+            setSize(pageSizeNumber);
+            setPage(currentPageNumber);
           }
         }}
       />

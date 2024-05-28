@@ -29,6 +29,7 @@ export async function oauth2RefreshToken(data: APIIdentity.Oauth2TokenParamsData
   }).catch(function (error) {
     console.log('/oauth2/token catch error', error);
     return error;
+    
   });
 }
 
