@@ -109,6 +109,12 @@ export default [
         path: '/identity-management/authorization-list',
         component: './identity/authorization',
       },
+      {
+        name: 'user.list',
+        icon: 'table',
+        path: '/identity-management/user-list',
+        component: './identity/userList',
+      },
     ],
   },
   {

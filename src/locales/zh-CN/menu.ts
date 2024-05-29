@@ -61,4 +61,5 @@ export default {
 
   'menu.identity-management': 'Auth管理',
   'menu.identity-management.authorization.list': '列表',
+  'menu.identity-management.user.list': '用户列表',
 };
