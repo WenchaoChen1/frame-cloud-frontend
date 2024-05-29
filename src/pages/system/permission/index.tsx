@@ -170,19 +170,19 @@ const User: React.FC = () => {
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
-        ENABLE: {
+        0: {
           text: '启用',
           status: 'ENABLE',
         },
-        FORBIDDEN: {
+        1: {
           text: '禁用',
           status: 'FORBIDDEN',
         },
-        LOCKING: {
+        2: {
           text: '锁定',
           status: 'LOCKING',
         },
-        EXPIRED: {
+        3: {
           text: '过期',
           status: 'EXPIRED',
         }
@@ -356,19 +356,19 @@ const User: React.FC = () => {
               options={[
                 {
                   label: '启用',
-                  value: 'ENABLE',
+                  value: '0',
                 },
                 {
                   label: '禁用',
-                  value: 'FORBIDDEN',
+                  value: '1',
                 },
                 {
                   label: '锁定',
-                  value: 'LOCKING',
+                  value: '2',
                 },
                 {
                   label: '过期',
-                  value: 'EXPIRED',
+                  value: '3',
                 }
               ]}
             />
