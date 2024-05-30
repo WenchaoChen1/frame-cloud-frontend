@@ -2,7 +2,7 @@ import {
   getAllUserList,
   deleteUser,
   editUser,
-} from "@/services/api/identity-api/user";
+} from "@/services/api/identity-api/scope";
 
 
 export async function getAllUserListService(params?: any) {

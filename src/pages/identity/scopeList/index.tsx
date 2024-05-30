@@ -2,7 +2,7 @@ import {
   getAllUserListService,
   editUserService,
   deleteUserService
-} from '@/services/identity-service/user';
+} from '@/services/identity-service/scope';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
   PageContainer,
@@ -101,8 +101,8 @@ const User: React.FC = () => {
   }
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
-    {title: 'userName', dataIndex: 'scopeName', width: '45%'},
-    {title: 'code', dataIndex: 'scopeCode', width: '45%'},
+    {title: 'scopeName', dataIndex: 'scopeName', width: '45%'},
+    {title: 'scopeCode', dataIndex: 'scopeCode', width: '45%'},
     {
       title: "Operating",
       dataIndex: 'option',
@@ -201,29 +201,29 @@ const User: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Menu name is required",
+                  message: "scopeName is required",
                 },
               ]}
-              label={"Name"}
+              label={"scopeName"}
               width="md"
               name="scopeName"
-              placeholder={"Menu name"}
+              placeholder={"scopeName"}
             />
             <ProFormText
               name="scopeCode"
-              label={"Code"}
+              label={"scopeCode"}
               width="md"
-              placeholder={"Code"}
+              placeholder={"scopeCode"}
               rules={[
                 {
                   required: true,
-                  message: "Code is required",
+                  message: "scopeCode is required",
                 },
               ]}
             />
 
             <ProFormText
-              label={"id"}
+              label={"scopeId"}
               width="md"
               name="scopeId"
               hidden={true}

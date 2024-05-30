@@ -62,5 +62,5 @@ export default {
 
   'menu.identity-management': 'Authorization',
   'menu.identity-management.authorization.list': 'Auth List',
-  'menu.identity-management.user.list': 'User List',
+  'menu.identity-management.scope.list': 'Scope List',
 };
