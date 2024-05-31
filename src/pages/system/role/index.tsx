@@ -194,7 +194,6 @@ const Role: React.FC = () => {
   ];
 
   const getList = async (params: APISystem.RoleTableSearchParams) => {
-    console.log('getList========', params);
 
     if (!tenantId) {
       return {

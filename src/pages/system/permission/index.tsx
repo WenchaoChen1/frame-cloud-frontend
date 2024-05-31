@@ -32,15 +32,15 @@ const User: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<APISystem.PermissionItemDataType[]>([]);
 
   const [total, setTotal] = useState<number>(0);
-  const [size, setSize] = useState<number>(DEFAULT_PAGE_SIZE);
-  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const actionRef = useRef<ActionType>();
 
   const getList = async (params: API.PageParams,) => {
     const response = await getPermissionListService({
-        page: params.current || 1,
-        size: params.pageSize || DEFAULT_PAGE_SIZE,
+        pageNumber: params.current || 1,
+        pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
         permissionType: params.permissionType?.map((param: any) => encodeURIComponent(param)).join(',') || [],
         status: params.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
     });
@@ -230,7 +230,7 @@ const User: React.FC = () => {
         headerTitle={'List'}
         actionRef={actionRef}
         className={styles.permission}
-        rowKey="id"
+        rowKey="permissionId"
         options={false}
         toolBarRender={() => [
           <Button
@@ -252,13 +252,13 @@ const User: React.FC = () => {
           },
         }}
         pagination={{
-          current: page,
-          pageSize: size,
+          current: currentPage,
+          pageSize: pageSize,
           total: total,
           showSizeChanger: true,
           onChange: (currentPageNumber, pageSizeNumber) => {
-            setSize(pageSizeNumber);
-            setPage(currentPageNumber);
+            setPageSize(pageSizeNumber);
+            setCurrentPage(currentPageNumber);
           }
         }}
       />

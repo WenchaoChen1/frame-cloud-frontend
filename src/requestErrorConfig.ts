@@ -7,7 +7,7 @@ import { history } from '@umijs/max';
 import {LOGIN_PATH} from "@/pages/common/constant";
 import {oauth2RefreshToken} from "@/services/api/identity-api/oauth2";
 import {oauth2RefreshTokenService} from "@/services/identity-service/login";
-import {AxiosResponse} from "axios";
+const axios = require('axios');
 
 // 错误处理方案： 错误类型
 enum ErrorShowType {
@@ -52,39 +52,44 @@ const authHeaderInterceptor = (config: RequestOptions) => {
   return { ...config, url };
 };
 
-const responseInterceptors = async (response: AxiosResponse) => {
-  console.log('Interceptors===========03', response.status, response)
-
-  if (response.status === 401) {
-    console.log('Interceptors===========04', response.status, response)
-
-    logOut();
-    return response;
-  }
-
-  // 拦截响应数据，进行个性化处理
-  const { data } = response as unknown as ResponseStructure;
-  if (data?.success === false) {
-    message.error('response error!');
-  }
-  return response;
-}
-
+// 全局拦截请求 token无限续期
 const responseInterceptorsForAuth = async (error: any) => {
-  // console.log('Interceptors===========05', error)
-  if (error.response.status === 401) {
+  if (error.response.status === 401 && !error.config._retry) {
+    error.config._retry = true; // 添加一个标记以防止无限重试循环
 
     const data: APIIdentity.Oauth2TokenParamsDataType = {
       grant_type: 'refresh_token',
       refresh_token: getRefreshToken(),
     }
-    const refreshTokenResponse = await oauth2RefreshTokenService(data);
 
-    if (refreshTokenResponse.access_token) {
-        setToken(refreshTokenResponse.access_token);
-        setRefreshToken(refreshTokenResponse.refresh_token);
-    } else {
-      message.error(`Axios error, Response status:${error.response.status}`);
+    try {
+      const refreshTokenResponse = await oauth2RefreshTokenService(data);
+
+      if (refreshTokenResponse.access_token) {
+          const location = useLocation();
+
+          setToken(refreshTokenResponse.access_token);
+          setRefreshToken(refreshTokenResponse.refresh_token);
+
+          const originalRequest = error.config;
+          originalRequest.headers.Authorization = `Bearer ${refreshTokenResponse.access_token}`;
+          
+          // history.push(location?.pathname);
+
+          const response = await axios(originalRequest);
+          const responseDatadata = response.data;
+
+          if (response.status === 200) {
+            return responseData;
+          } else {
+            throw new Error(`接口错误：${response.status}`);
+          }
+      } else {
+        message.error(`Axios error, Response status:${error.response.status}`);
+        logOut();
+      }
+    } catch (refreshError) {
+      message.error('刷新Token时发生错误。');
       logOut();
     }
   }

@@ -1,7 +1,8 @@
 import {
   getAllUserListService,
   editUserService,
-  deleteUserService
+  deleteUserService,
+  editPermisService,
 } from '@/services/identity-service/scope';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
@@ -15,14 +16,18 @@ import {Button, message, Popconfirm, Space} from 'antd';
 import React, {useRef, useState} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
+import ScopePermissions from '@/components/ScopePermissions/scopePermissions';
 
-const User: React.FC = () => {
-
+const Scope: React.FC = () => {
+  const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.MenuListItemDataType>();
+  const [scopeId, setScopeId] = useState('');
+  const [selectedPermissions, setSelectedPermissions] = useState([]);
 
-  const actionRef = useRef<ActionType>();
+
 
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
@@ -30,8 +35,8 @@ const User: React.FC = () => {
 
   const getList = async (params: API.PageParams) => {
     const response = await getAllUserListService({
-        page: params.current || 1,
-        size: params.pageSize || DEFAULT_PAGE_SIZE
+        pageNumber: params.current || 1,
+        pageSize: params.pageSize || DEFAULT_PAGE_SIZE
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -81,6 +86,21 @@ const User: React.FC = () => {
     }
   };
 
+  const editPermiss = async () => {
+    const parms = {
+      scopeId: scopeId || '',
+      permissions: selectedPermissions || '',
+    }
+    try {
+      await editPermisService(parms);
+      message.success('Added successfully');
+      return true;
+    } catch (error) {
+      message.error('Adding failed, please try again!');
+      return false;
+    }
+  };
+
   const deleteUserRequest = async (id: string) => {
     const hide = message.loading('delete...');
 
@@ -100,6 +120,7 @@ const User: React.FC = () => {
     }
   }
 
+
   const columns: ProColumns<APIIdentity.authorization>[] = [
     {title: 'scopeName', dataIndex: 'scopeName', width: '45%'},
     {title: 'scopeCode', dataIndex: 'scopeCode', width: '45%'},
@@ -108,6 +129,15 @@ const User: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) =>[
+        <a
+          key="EditBtn"
+          onClick={() => {
+            setPermissOpenModal(true);
+            setScopeId(record?.scopeId);
+          }}
+        >
+          Permissions
+        </a>,
         <a
           key="EditBtn"
           onClick={() => {
@@ -128,12 +158,16 @@ const User: React.FC = () => {
     },
   ];
 
+  const handleSelectedPermissions = (permissions) => {
+    setSelectedPermissions(permissions);
+  };
+
   return (
     <PageContainer>
       <ProTable<APIIdentity.authorization, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
-        rowKey="id"
+        rowKey="scopeId"
         options={false}
         toolBarRender={() => [
           <Button
@@ -174,14 +208,12 @@ const User: React.FC = () => {
           open={openModal}
           onOpenChange={setOpenModal}
           onFinish={async (record) => {
-            console.log('onFinish record', record);
             let response = undefined;
             if (isEdit) {
               response = await handleUpdate(record as APISystem.MenuListItemDataType);
             } else {
               response = await handleAdd(record as APISystem.MenuListItemDataType);
             }
-            console.log('onFinish response', response);
 
             if (response) {
               setOpenModal(false);
@@ -232,8 +264,30 @@ const User: React.FC = () => {
  
         </ModalForm>
       }
+
+      {
+        PermissOpenModal &&
+        <ModalForm
+          title={'Permissions'}
+          width="70%"
+          open={PermissOpenModal}
+          onOpenChange={setPermissOpenModal}
+          onFinish={async (record) => {
+            let response = await editPermiss();
+
+            if (response) {
+              setPermissOpenModal(false);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+        >
+          <ScopePermissions onSelectedPermissions={handleSelectedPermissions} scopeId={scopeId} />
+        </ModalForm>
+      }
     </PageContainer>
   );
 };
 
-export default User;
+export default Scope;

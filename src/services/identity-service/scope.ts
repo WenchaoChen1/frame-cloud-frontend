@@ -2,6 +2,8 @@ import {
   getAllUserList,
   deleteUser,
   editUser,
+  editPermis,
+  getPermis,
 } from "@/services/api/identity-api/scope";
 
 
@@ -17,3 +19,10 @@ export async function deleteUserService(id: string) {
   return await deleteUser(id);
 }
 
+export async function editPermisService(data?: any) {
+  return await editPermis(data);
+}
+
+export async function getPermisService(params?: any) {
+  return await getPermis(params);
+}
