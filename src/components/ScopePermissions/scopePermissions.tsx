@@ -53,10 +53,9 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
     setTotal(msg?.data?.totalElements)
   }
 
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    const filteredData = permisListData.filter(item => newSelectedRowKeys.includes(item.permissionId));
+  const onSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: any) => {
     setSelectedRowKeys(newSelectedRowKeys);
-    onSelectedPermissions(filteredData);
+    onSelectedPermissions(selectedRows);
   };
 
   const rowSelection = {
