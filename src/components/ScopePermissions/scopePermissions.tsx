@@ -14,10 +14,11 @@ import styles from './index.less';
 type TypeProp = {
   onSelectedPermissions: (permissions: React.Key[]) => void;
   scopeId: any;
+  selectedPermissions: any;
 };
 
 
-const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId }) => {
+const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, selectedPermissions }) => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [permisListData, setPermisListData] = useState([]);
@@ -61,11 +62,11 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId }
   const rowSelection = {
     selectedRowKeys: selectedRowKeys,
     onChange: onSelectChange,
+    preserveSelectedRowKeys: true,
   };
 
   const initPermissList = async () => {
-    const data = await getPermisService({ id: scopeId });
-      const permissionIds = data?.data?.permissions?.map(permission => permission.permissionId);
+      const permissionIds = selectedPermissions?.map(permission => permission.permissionId);
       setSelectedRowKeys(permissionIds);
   };
 
@@ -93,8 +94,8 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId }
           size: "small",
           onChange: (pageNum: number, sizeNum: any) => {
             setPage(pageNum);
-            setSize(sizeNum)
-            getListData(pageNum, sizeNum )
+            setSize(sizeNum);
+            getListData(pageNum, sizeNum);
           }
         }}
       />

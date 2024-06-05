@@ -6,6 +6,7 @@ import {getRefreshToken, getToken, logOut, removeToken, setRefreshToken, setToke
 import { history } from '@umijs/max';
 import {LOGIN_PATH} from "@/pages/common/constant";
 import {oauth2RefreshToken} from "@/services/api/identity-api/oauth2";
+import React, { useState, useEffect} from 'react';
 import {oauth2RefreshTokenService} from "@/services/identity-service/login";
 const axios = require('axios');
 
@@ -53,44 +54,25 @@ const authHeaderInterceptor = (config: RequestOptions) => {
 };
 
 // 全局拦截请求 token无限续期
+let isRefreshing = false;
 const responseInterceptorsForAuth = async (error: any) => {
-  if (error.response.status === 401 && !error.config._retry) {
-    error.config._retry = true; // 添加一个标记以防止无限重试循环
+
+  if (error.response.status === 401 && !isRefreshing) {
 
     const data: APIIdentity.Oauth2TokenParamsDataType = {
       grant_type: 'refresh_token',
       refresh_token: getRefreshToken(),
     }
 
-    try {
+    if (!isRefreshing) {
+      isRefreshing = true;
       const refreshTokenResponse = await oauth2RefreshTokenService(data);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${refreshTokenResponse.access_token}`;
+      
+      setToken(refreshTokenResponse.access_token);
+      setRefreshToken(refreshTokenResponse.refresh_token);
 
-      if (refreshTokenResponse.access_token) {
-          const location = useLocation();
-
-          setToken(refreshTokenResponse.access_token);
-          setRefreshToken(refreshTokenResponse.refresh_token);
-
-          const originalRequest = error.config;
-          originalRequest.headers.Authorization = `Bearer ${refreshTokenResponse.access_token}`;
-          
-          // history.push(location?.pathname);
-
-          const response = await axios(originalRequest);
-          const responseDatadata = response.data;
-
-          if (response.status === 200) {
-            return responseData;
-          } else {
-            throw new Error(`接口错误：${response.status}`);
-          }
-      } else {
-        message.error(`Axios error, Response status:${error.response.status}`);
-        logOut();
-      }
-    } catch (refreshError) {
-      message.error('刷新Token时发生错误。');
-      logOut();
+      window.location.href = window.location.href;
     }
   }
 }

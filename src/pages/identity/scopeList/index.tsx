@@ -17,6 +17,7 @@ import React, {useRef, useState} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import ScopePermissions from '@/components/ScopePermissions/scopePermissions';
+import styles from './index.less';
 
 const Scope: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -130,16 +131,17 @@ const Scope: React.FC = () => {
       valueType: 'option',
       render: (_, record) =>[
         <a
-          key="EditBtn"
+          key={record?.scopeId}
           onClick={() => {
             setPermissOpenModal(true);
             setScopeId(record?.scopeId);
+            setSelectedPermissions(record?.permissions);
           }}
         >
           Permissions
         </a>,
         <a
-          key="EditBtn"
+          key={record?.scopeId}
           onClick={() => {
             setIsEdit(true);
             setCurrentRow(record);
@@ -167,6 +169,7 @@ const Scope: React.FC = () => {
       <ProTable<APIIdentity.authorization, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
+        className={styles.scopeListStyle}
         rowKey="scopeId"
         options={false}
         toolBarRender={() => [
@@ -283,7 +286,7 @@ const Scope: React.FC = () => {
             }
           }}
         >
-          <ScopePermissions onSelectedPermissions={handleSelectedPermissions} scopeId={scopeId} />
+          <ScopePermissions onSelectedPermissions={handleSelectedPermissions} selectedPermissions={selectedPermissions} scopeId={scopeId} />
         </ModalForm>
       }
     </PageContainer>
