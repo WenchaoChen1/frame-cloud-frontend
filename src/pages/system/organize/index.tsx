@@ -74,7 +74,6 @@ const Organize: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    // console.log('useEffect------------02', tenantId);
     if (tenantId) {
       getOrganizeTreeRequest(tenantId);
     }

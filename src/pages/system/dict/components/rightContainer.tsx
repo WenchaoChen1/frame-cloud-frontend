@@ -127,11 +127,9 @@ const RightContainer: React.FC<propsType> = (props) => {
 
     const infoResponse = await getDictInfoService(props.selectDictionaryId);
     if (infoResponse.success === true && infoResponse.data) {
-      // console.log('=======01', infoResponse.data);
       form.setFieldsValue(infoResponse.data);
       return infoResponse.data;
     } else {
-      // console.log('=======02', initFormData);
       form.setFieldsValue(initFormData);
       return initFormData;
     }

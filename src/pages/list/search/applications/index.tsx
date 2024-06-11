@@ -70,7 +70,6 @@ const CardInfo: React.FC<{
 export const Applications: FC<Record<string, any>> = () => {
   const { styles } = useStyles();
   const { data, loading, run } = useRequest((values: any) => {
-    console.log('form data', values);
     return queryFakeList({
       count: 8,
     });

@@ -2,7 +2,6 @@ import {
   getApplicationListService,
   addApplicationService,
   getAuthorizationGrantTypesService,
-  editPermisService,
 } from '@/services/identity-service/application';
 import type {ActionType, ProColumns } from '@ant-design/pro-components';
 import {
@@ -15,28 +14,20 @@ import {
 } from '@ant-design/pro-components';
 import {FormattedMessage} from '@umijs/max';
 import type { InputNumberProps } from 'antd';
-import {Button, message, Popconfirm, Space, Divider, InputNumber} from 'antd';
+import {Button, message, Space, Divider, InputNumber} from 'antd';
 import React, {useRef, useState, useEffect} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
-import ScopePermissions from '@/components/ScopePermissions/scopePermissions';
 import styles from './index.less';
 import moment from 'moment';
 
 const Application: React.FC = () => {
-  const initialData = {
-    accessTokenValidity: 'PT3S',
-    refreshTokenValidity: 'PT3S',
-    authorizationCodeValidity: 'PT3S',
-    deviceCodeValidity: 'PT3S',
-  };
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.MenuListItemDataType>();
   const [authorTypes, setAuthorTypes] = useState([]);
   const [authenticationMethod, setAuthenticationMethod] = useState([]);
-  const [selectedPermissions, setSelectedPermissions] = useState([]);
 
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
@@ -64,7 +55,8 @@ const Application: React.FC = () => {
   const getList = async (params: API.PageParams) => {
     const response = await getApplicationListService({
         pageNumber: params.current || 1,
-        pageSize: params.pageSize || DEFAULT_PAGE_SIZE
+        pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
+        // params
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -122,7 +114,6 @@ const Application: React.FC = () => {
   
 
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
-    // const hide = message.loading('Update');
     fields.accessTokenValidity = mergeAndFormatValidity(fields?.accessTokenValidity, fields?.dayType1);
     fields.refreshTokenValidity = mergeAndFormatValidity(fields?.refreshTokenValidity, fields?.dayType2);
     fields.authorizationCodeValidity = mergeAndFormatValidity(fields?.authorizationCodeValidity, fields?.dayType3);
@@ -234,8 +225,6 @@ const Application: React.FC = () => {
           onClick={() => {
             setIsEdit(true);
             setCurrentRow(record);
-            console.log(record, '数据是啥')
-            console.log(parseAccessTokenValidity(record?.accessTokenValidity), '看一看')
             setOpenModal(true);
           }}
         >
@@ -244,10 +233,6 @@ const Application: React.FC = () => {
       ]
     },
   ];
-
-  const handleSelectedPermissions = (permissions) => {
-    setSelectedPermissions(permissions);
-  };
 
   const formatDuration = (duration) => {
     const momentDuration = moment.duration(duration);
@@ -283,14 +268,9 @@ const Application: React.FC = () => {
   const initAuthorizationGrantTypes = async () => {
     const response = await getAuthorizationGrantTypesService();
     if (response?.success === true) {
-      console.log(response, '88888')
       setAuthorTypes(response?.data?.grantType);
       setAuthenticationMethod(response?.data?.authenticationMethod);
     }
-  };
-
-  const onChange: InputNumberProps['onChange'] = (value) => {
-    console.log('changed', value);
   };
 
   useEffect(() => {
@@ -458,7 +438,7 @@ const Application: React.FC = () => {
             >
               <InputNumber
                 style={{ width: '328px' }}
-                min={0} defaultValue={0} onChange={onChange} />
+                min={0} defaultValue={0} />
             </ProForm.Item>
 
             <ProFormSelect
