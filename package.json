@@ -32,11 +32,16 @@
     "test:update": "npm run jest -- -u",
     "tsc": "tsc --noEmit"
   },
-  "browserslist": ["> 1%", "last 2 versions", "not ie <= 10"],
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
   "dependencies": {
     "@ant-design/icons": "^4.8.1",
     "@ant-design/plots": "^2.1.5",
     "@ant-design/pro-components": "^2.6.44",
+    "@ant-design/pro-form": "^2.27.0",
     "@antv/l7": "^2.20.13",
     "@antv/l7-maps": "^2.20.13",
     "@antv/l7-react": "^2.4.3",
@@ -88,5 +93,7 @@
     "typescript": "^4.9.5",
     "umi-presets-pro": "^2.0.3"
   },
-  "engines": { "node": ">=12.0.0" }
+  "engines": {
+    "node": ">=12.0.0"
+  }
 }

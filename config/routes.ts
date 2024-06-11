@@ -110,6 +110,12 @@ export default [
         component: './identity/authorization',
       },
       {
+        name: 'application',
+        icon: 'table',
+        path: '/identity-management/application',
+        component: './identity/application',
+      },
+      {
         name: 'scope.list',
         icon: 'table',
         path: '/identity-management/scope-list',
