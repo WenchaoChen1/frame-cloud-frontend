@@ -87,12 +87,12 @@ const Application: React.FC = () => {
   // Echoing form data
   const parseAccessTokenValidity = (duration) => {
     const regex = /PT((\d+)D)?((\d+)H)?((\d+)M)?((\d+)S)?/;
-    const match = duration.match(regex);
+    const match = duration?.match(regex);
   
-    let days = parseInt(match[2]) || 0;
-    let hours = parseInt(match[4]) || 0;
-    let minutes = parseInt(match[6]) || 0;
-    let seconds = parseInt(match[8]) || 0;
+    let days = parseInt(match?.[2]) || 0;
+    let hours = parseInt(match?.[4]) || 0;
+    let minutes = parseInt(match?.[6]) || 0;
+    let seconds = parseInt(match?.[8]) || 0;
 
     if (hours >= 24) {
       days += Math.floor(hours / 24);
@@ -150,7 +150,7 @@ const Application: React.FC = () => {
   };
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
-    delete fields.id;
+    delete fields.applicationId;
     fields.accessTokenValidity = mergeAndFormatValidity(fields?.accessTokenValidity, fields?.dayType1);
     fields.refreshTokenValidity = mergeAndFormatValidity(fields?.refreshTokenValidity, fields?.dayType2);
     fields.authorizationCodeValidity = mergeAndFormatValidity(fields?.authorizationCodeValidity, fields?.dayType3);
@@ -230,7 +230,7 @@ const Application: React.FC = () => {
       dataIndex: 'actions',
       render: (_, record) =>[
         <a
-          key={record?.id}
+          key={record?.applicationId}
           onClick={() => {
             setIsEdit(true);
             setCurrentRow(record);
@@ -302,8 +302,8 @@ const Application: React.FC = () => {
       <ProTable<APIIdentity.authorization, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
-        className={styles.scopeListStyle}
-        rowKey="id"
+        className={styles.ApplicationStyle}
+        rowKey="applicationId"
         options={false}
         toolBarRender={() => [
           <Button
@@ -359,7 +359,7 @@ const Application: React.FC = () => {
             }
           }}
           initialValues={{
-            id: currentRow?.id,
+            applicationId: currentRow?.applicationId,
             applicationName: currentRow?.applicationName,
             abbreviation: currentRow?.abbreviation,
             authorizationGrantTypes: currentRow?.authorizationGrantTypes,
@@ -396,9 +396,9 @@ const Application: React.FC = () => {
             />
 
             <ProFormText
-              label={"id"}
+              label={"applicationId"}
               width="md"
-              name="id"
+              name="applicationId"
               hidden={true}
             />
           </Space>
