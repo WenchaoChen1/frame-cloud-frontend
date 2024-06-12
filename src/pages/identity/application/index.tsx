@@ -460,7 +460,7 @@ const Application: React.FC = () => {
             >
               <InputNumber
                 style={{ width: '328px' }}
-                min={0} defaultValue={0} onChange={onChange} />
+                min={0} defaultValue={0} />
             </ProForm.Item>
 
             <ProFormSelect
@@ -479,7 +479,7 @@ const Application: React.FC = () => {
             >
               <InputNumber
                 style={{ width: '328px' }}
-                min={0} defaultValue={0} onChange={onChange} />
+                min={0} defaultValue={0} />
             </ProForm.Item>
 
             <ProFormSelect
@@ -498,7 +498,7 @@ const Application: React.FC = () => {
             >
               <InputNumber
                 style={{ width: '328px' }}
-                min={0} defaultValue={0} onChange={onChange} />
+                min={0} defaultValue={0} />
             </ProForm.Item>
 
             <ProFormSelect
