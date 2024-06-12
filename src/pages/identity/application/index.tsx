@@ -56,7 +56,9 @@ const Application: React.FC = () => {
     const response = await getApplicationListService({
         pageNumber: params.current || 1,
         pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
-        // params
+        applicationName: params?.applicationName,
+        clientAuthenticationMethods: params?.clientAuthenticationMethods?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+        authorizationGrantTypes: params?.authorizationGrantTypes?.map((param: any) => encodeURIComponent(param)).join(',') || [],
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -211,14 +213,15 @@ const Application: React.FC = () => {
         )
       },
     },
-    { title: 'accessTokenValidity', dataIndex: 'accessTokenValidity', render: (text) => formatDuration(text) },
-    { title: 'refreshTokenValidity', dataIndex: 'refreshTokenValidity', render: (text) => formatDuration(text) },
-    { title: 'authorizationCodeValidity', dataIndex: 'authorizationCodeValidity', render: (text) => formatDuration(text) },
-    { title: 'deviceCodeValidity', dataIndex: 'deviceCodeValidity', render: (text) => formatDuration(text) },
+    { title: 'accessTokenValidity', search: false, dataIndex: 'accessTokenValidity', render: (text) => formatDuration(text) },
+    { title: 'refreshTokenValidity', search: false, dataIndex: 'refreshTokenValidity', render: (text) => formatDuration(text) },
+    { title: 'authorizationCodeValidity',search: false, dataIndex: 'authorizationCodeValidity', render: (text) => formatDuration(text) },
+    { title: 'deviceCodeValidity', search: false, dataIndex: 'deviceCodeValidity', render: (text) => formatDuration(text) },
     // {title: 'status', dataIndex: 'status'},
     {
       title: "actions",
       dataIndex: 'actions',
+      search: false,
       render: (_, record) =>[
         <a
           key={record?.applicationId}
