@@ -37,7 +37,9 @@ const Scope: React.FC = () => {
   const getList = async (params: API.PageParams) => {
     const response = await getAllUserListService({
         pageNumber: params.current || 1,
-        pageSize: params.pageSize || DEFAULT_PAGE_SIZE
+        pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
+        scopeName: params?.scopeName || '',
+        scopeCode: params?.scopeCode || '',
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -131,7 +133,6 @@ const Scope: React.FC = () => {
       valueType: 'option',
       render: (_, record) =>[
         <a
-          key={record?.scopeId}
           onClick={() => {
             setPermissOpenModal(true);
             setScopeId(record?.scopeId);
@@ -141,7 +142,6 @@ const Scope: React.FC = () => {
           Permissions
         </a>,
         <a
-          key={record?.scopeId}
           onClick={() => {
             setIsEdit(true);
             setCurrentRow(record);

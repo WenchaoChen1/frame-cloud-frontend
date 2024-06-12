@@ -5,7 +5,6 @@ import {Spin} from 'antd';
 import {createStyles} from 'antd-style';
 import {stringify} from 'querystring';
 import React, {useCallback} from 'react';
-import {flushSync} from 'react-dom';
 import HeaderDropdown from '../HeaderDropdown';
 import {signOutService} from "@/services/identity-service/login";
 import {getToken, logOut} from "@/utils/utils";
@@ -74,9 +73,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
     (event: any) => {
       const {key} = event;
       if (key === 'logout') {
-        flushSync(() => {
-          setInitialState((s) => ({...s, currentUser: undefined}));
-        });
+        setInitialState((s) => ({...s, currentUser: undefined}));
         loginOut();
         return;
       }

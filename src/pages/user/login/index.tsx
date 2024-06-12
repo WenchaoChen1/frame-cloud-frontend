@@ -19,7 +19,6 @@ import {FormattedMessage, Helmet, SelectLang, useIntl, useModel} from '@umijs/ma
 import {Alert, message, Tabs} from 'antd';
 import {createStyles} from 'antd-style';
 import React, {useState} from 'react';
-import {flushSync} from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
 import {removeLocalStorage, setLocalStorage, setRefreshToken, setToken} from '@/utils/utils';
 // import {SELECT_ACCOUNT_PATH} from "@/pages/common/constant";
@@ -108,12 +107,10 @@ const Login: React.FC = () => {
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
     if (userInfo) {
-      flushSync(() => {
-        setInitialState((s) => ({
-          ...s,
-          currentUser: userInfo,
-        }));
-      });
+      setInitialState((s) => ({
+        ...s,
+        currentUser: userInfo,
+      }));
     }
   };
   const handleRememberMe = (values: APIIdentity.UserLoginBodyDataType) => {

@@ -58,6 +58,7 @@ export default {
   'menu.system-management.role.role-list': '角色管理',
   'menu.system-management.user.user-list': '用户管理',
   'menu.system-management.account.account-list': '账户管理',
+  'menu.system-management.permission.permission-list': '权限列表',
 
   'menu.identity-management': 'Auth管理',
   'menu.identity-management.authorization.list': '列表',

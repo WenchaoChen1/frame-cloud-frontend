@@ -237,7 +237,7 @@ const Application: React.FC = () => {
     },
   ];
 
-  const formatDuration = (duration) => {
+  const formatDuration = (duration: any) => {
     const momentDuration = moment.duration(duration);
     const hours = momentDuration.hours();
     const minutes = momentDuration.minutes();
