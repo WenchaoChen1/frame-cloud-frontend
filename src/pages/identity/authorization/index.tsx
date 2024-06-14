@@ -12,8 +12,9 @@ import {Button, message, Popconfirm} from 'antd';
 import React, {useRef, useState} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
+import styles from './index.less';
 
-const User: React.FC = () => {
+const Authorization: React.FC = () => {
   const {initialState} = useModel('@@initialState');
   const currentUserId = initialState?.currentUser?.userId;
 
@@ -48,45 +49,6 @@ const User: React.FC = () => {
     };
   };
 
-  // /**
-  //  * @en-US Add node
-  //  * @param fields
-  //  */
-  // const createUserRequest = async (fields: APISystem.UserItemDataType) => {
-  //   const hide = message.loading('add');
-  //   delete fields.id;
-  //
-  //   try {
-  //     await createUserService({...fields});
-  //     hide();
-  //     message.success('Added successfully');
-  //     return true;
-  //   } catch (error) {
-  //     hide();
-  //     message.error('Adding failed, please try again!');
-  //     return false;
-  //   }
-  // };
-  //
-  // /**
-  //  * @en-US Update node
-  //  * @param fields
-  //  */
-  // const editUserRequest = async (fields: APISystem.UserItemDataType) => {
-  //   const hide = message.loading('Update');
-  //   try {
-  //     await editUserService(fields);
-  //     hide();
-  //
-  //     message.success('Update successfully');
-  //     return true;
-  //   } catch (error) {
-  //     hide();
-  //     message.error('Update failed, please try again!');
-  //     return false;
-  //   }
-  // };
-
   const deleteUserRequest = async (id: string) => {
     const hide = message.loading('delete...');
 
@@ -106,65 +68,43 @@ const User: React.FC = () => {
     }
   }
 
-  // const onEditUser = (record: APISystem.UserItemDataType) => {
-  //   setIsEdit(true);
-  //   setOpenModal(true);
-  //
-  //   setCurrentRow(record);
-  // }
-//   { title: 'registeredClientId', dataIndex: 'registeredClientId', align: 'center', label: '客户端ID' },
-//   { title: 'principalName', dataIndex: 'principalName', align: 'center', label: '用户名' },
-//   { title: 'authorizationGrantType', dataIndex: 'authorizationGrantType', align: 'center', label: '认证模式' },
-//   {
-//     title: 'accessTokenIssuedAt',
-//       dataIndex: 'accessTokenIssuedAt',
-//     align: 'center',
-//     label: '访问Token颁发时间',
-//     format: value => dateFormat(value)
-//   },
-//   {
-//     title: 'accessTokenExpiresAt',
-//       dataIndex: 'accessTokenExpiresAt',
-//     align: 'center',
-//     label: '访问Token过期时间',
-//     format: value => dateFormat(value)
-//   },
-//   {
-//     title: 'refreshTokenIssuedAt',
-//       dataIndex: 'refreshTokenIssuedAt',
-//     align: 'center',
-//     label: '刷新Token颁发时间',
-//     format: value => dateFormat(value)
-//   },
-//   {
-//     title: 'refreshTokenExpiresAt',
-//       dataIndex: 'refreshTokenExpiresAt',
-//     align: 'center',
-//     label: '刷新Token过期时间',
-//     format: value => dateFormat(value)
-//   },
-//   { title: 'actions', dataIndex: 'actions', align: 'center', label: '操作' }
-// ];
+  const timeFormat = (timestamp: any) => {
+    const date = new Date(timestamp * 1000);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    const formattedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    return formattedTime;
+  };
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
-    {title: 'registered', dataIndex: 'registeredClientId'},
-    {title: 'principal', dataIndex: 'principalName'},
-    {title: 'auth', dataIndex: 'authorizationGrantType'},
+    {title: 'Client ID', dataIndex: 'registeredClientId'},
+    {title: 'User Name', dataIndex: 'principalName'},
+    {title: 'Authentication Mode', dataIndex: 'authorizationGrantType'},
     {
       title: 'accessTokenIssuedAt',
       dataIndex: 'accessTokenIssuedAt',
+      render: (text) => timeFormat(text),
     },
     {
       title: 'accessTokenExpiresAt',
       dataIndex: 'accessTokenExpiresAt',
+      render: (text) => timeFormat(text),
     },
     {
       title: 'refreshTokenIssuedAt',
       dataIndex: 'refreshTokenIssuedAt',
+      render: (text) => timeFormat(text),
     },
     {
       title: 'refreshTokenExpiresAt',
       dataIndex: 'refreshTokenExpiresAt',
+      render: (text) => timeFormat(text),
     },
     {
       title: "Operating",
@@ -186,19 +126,20 @@ const User: React.FC = () => {
         headerTitle={'List'}
         actionRef={actionRef}
         rowKey="id"
+        className={styles.Authorization}
         options={false}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              // setIsEdit(false);
-              setOpenModal(true);
-            }}
-          >
-            <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
-          </Button>,
-        ]}
+        // toolBarRender={() => [
+        //   <Button
+        //     type="primary"
+        //     key="primary"
+        //     onClick={() => {
+        //       // setIsEdit(false);
+        //       setOpenModal(true);
+        //     }}
+        //   >
+        //     <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
+        //   </Button>,
+        // ]}
         request={getList}
         columns={columns}
         rowSelection={{
@@ -222,4 +163,4 @@ const User: React.FC = () => {
   );
 };
 
-export default User;
+export default Authorization;

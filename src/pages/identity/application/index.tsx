@@ -13,8 +13,7 @@ import {
   ProFormSelect,
 } from '@ant-design/pro-components';
 import {FormattedMessage} from '@umijs/max';
-import type { InputNumberProps } from 'antd';
-import {Button, message, Space, Divider, InputNumber} from 'antd';
+import {Button, message, Space, Divider, InputNumber, Tooltip, Switch } from 'antd';
 import React, {useRef, useState, useEffect} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
@@ -142,7 +141,8 @@ const Application: React.FC = () => {
     return iso8601Format;
   };
 
-  const handleAdd = async (fields: APISystem.TenantItemDataType) => {
+  const handleAdd = async (fields: any) => {
+    console.log(fields, '====999')
     delete fields.applicationId;
     fields.accessTokenValidity = mergeAndFormatValidity(fields?.accessTokenValidity, fields?.dayType1);
     fields.refreshTokenValidity = mergeAndFormatValidity(fields?.refreshTokenValidity, fields?.dayType2);
@@ -166,34 +166,12 @@ const Application: React.FC = () => {
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
     {title: 'applicationName', dataIndex: 'applicationName'},
-    // {title: 'abbreviation', dataIndex: 'abbreviation'},
-    {
-      title: 'clientAuthenticationMethods',
-      dataIndex: 'clientAuthenticationMethods',
-      hideInForm: true,
-      valueEnum: authenticationMethod.reduce((result, type) => {
-        result[type.value] = {
-          text: type.text,
-          status: type.value,
-        };
-        return result;
-      }, {}),
-      renderFormItem: (_, { type, defaultRender, ...rest }) => {
-        return (
-          <ProFormSelect
-            mode="multiple"
-            {...rest}
-            fieldProps={{
-              mode: 'multiple',
-            }}
-          />
-        )
-      },
-    },
+    {title: 'abbreviation', dataIndex: 'abbreviation'},
     {
       title: 'authorizationGrantTypes',
       dataIndex: 'authorizationGrantTypes',
       hideInForm: true,
+      width: '270px',
       valueEnum: authorTypes.reduce((result, type) => {
         result[type.value] = {
           text: type.text,
@@ -212,12 +190,61 @@ const Application: React.FC = () => {
           />
         )
       },
+      render: (_, record) => {
+        const grantTypes = record.authorizationGrantTypes;
+        const images = grantTypes.map((type: any) => {
+          let imageUrl;
+          let tooltipText;
+          if (type === 'authorization_code') {
+            imageUrl = require('@/images/application_4.png');
+            tooltipText = '授权码认证';
+          } else if (type === 'refresh_token') {
+            imageUrl = require('@/images/application_5.png');
+            tooltipText = '刷新令牌认证';
+          } else if (type === 'client_credentials') {
+            imageUrl = require('@/images/application_6.png');
+            tooltipText = '客户端凭证认证';
+          } else if (type === 'urn:ietf:params:oauth:grant-type:device_code') {
+            imageUrl = require('@/images/application_3.png');
+            tooltipText = '设备激活码认证';
+          } else if (type === 'urn:ietf:params:oauth:grant-type:jwt-bearer') {
+            imageUrl = require('@/images/application_7.png');
+            tooltipText = 'JWT bearer 认证';
+          } else if (type === 'password') {
+            imageUrl = require('@/images/application_1.png');
+            tooltipText = '密码认证';
+          } else if (type === 'social_credentials') {
+            imageUrl = require('@/images/application_2.png');
+            tooltipText = '社交化认证';
+          }
+    
+          return (
+            <Tooltip title={tooltipText} key={type}>
+              <img src={imageUrl} alt={type} style={{ paddingRight: '8px' }} />
+            </Tooltip>
+          );
+        });
+    
+        return <div>{images}</div>;
+      },
     },
     { title: 'accessTokenValidity', search: false, dataIndex: 'accessTokenValidity', render: (text) => formatDuration(text) },
     { title: 'refreshTokenValidity', search: false, dataIndex: 'refreshTokenValidity', render: (text) => formatDuration(text) },
     { title: 'authorizationCodeValidity',search: false, dataIndex: 'authorizationCodeValidity', render: (text) => formatDuration(text) },
     { title: 'deviceCodeValidity', search: false, dataIndex: 'deviceCodeValidity', render: (text) => formatDuration(text) },
-    // {title: 'status', dataIndex: 'status'},
+    {
+      title: 'status',
+      dataIndex: 'status',
+      render: (value, record) => {
+        if (value === 0) {
+          return (
+            <Tooltip title={'启用'} key={value}>
+              <img src={require('@/images/status_1.png')} alt={value} />
+            </Tooltip>
+          );
+        }
+      },
+    },
     {
       title: "actions",
       dataIndex: 'actions',
@@ -355,6 +382,8 @@ const Application: React.FC = () => {
             dayType3: parseAccessTokenValidity(currentRow?.authorizationCodeValidity)?.split(' ')?.[1],
             deviceCodeValidity: parseAccessTokenValidity(currentRow?.deviceCodeValidity)?.split(' ')?.[0],
             dayType4: parseAccessTokenValidity(currentRow?.deviceCodeValidity)?.split(' ')?.[1],
+            requireProofKey: currentRow?.requireProofKey,
+            requireAuthorizationConsent: currentRow?.requireAuthorizationConsent,
           }}
         >
           <Space size={24}>
@@ -430,6 +459,33 @@ const Application: React.FC = () => {
                 });
               }}
             />
+          </Space>
+
+          <Space size={24}>
+            <ProFormText
+              label={"redirectUris"}
+              width="md"
+              name="redirectUris"
+              placeholder={"redirectUris"}
+            />
+          </Space>
+
+          <Divider plain>客户端设置(Client Settings)</Divider>
+
+          <Space size={24} className={styles.flexGapStyle}>
+            <div className={styles.switchStyle}>
+              <ProForm.Item name="requireProofKey">
+                  <Switch />
+              </ProForm.Item>
+              <div>是否需要 Proof Key</div>
+            </div>
+
+            <div className={styles.switchStyle}>
+              <ProForm.Item name="requireAuthorizationConsent" >
+                  <Switch />
+              </ProForm.Item>
+              <div>是否需要认证确认</div>
+            </div>
           </Space>
 
           <Divider plain>令牌设置(Token Settings)</Divider>

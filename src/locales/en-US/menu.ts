@@ -61,7 +61,7 @@ export default {
   'menu.system-management.permission.permission-list': 'Permission Manage',
 
   'menu.identity-management': 'Authorization',
-  'menu.identity-management.authorization.list': 'Auth List',
-  'menu.identity-management.scope.list': 'Scope List',
-  'menu.identity-management.application': 'Application',
+  'menu.identity-management.authorization.list': 'Credentials Management',
+  'menu.identity-management.scope.list': 'Scope Management',
+  'menu.identity-management.application': 'Application Management',
 };

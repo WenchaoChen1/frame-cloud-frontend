@@ -61,7 +61,7 @@ export default {
   'menu.system-management.permission.permission-list': '权限列表',
 
   'menu.identity-management': 'Auth管理',
-  'menu.identity-management.authorization.list': '列表',
-  'menu.identity-management.scope.list': '范围',
-  'menu.identity-management.application': '应用',
+  'menu.identity-management.authorization.list': '凭证管理',
+  'menu.identity-management.scope.list': '范围管理',
+  'menu.identity-management.application': '应用管理',
 };
