@@ -2,7 +2,7 @@ import {
   getApplicationList,
   addApplication,
   getAuthorizationGrantTypes,
-  deleteUser,
+  deleteApplication,
   editPermis,
 } from "@/services/api/identity-api/application";
 
@@ -19,8 +19,8 @@ export async function getAuthorizationGrantTypesService(params?: any) {
   return await getAuthorizationGrantTypes(params);
 }
 
-export async function deleteUserService(id: string) {
-  return await deleteUser(id);
+export async function deleteApplicationService(id: string) {
+  return await deleteApplication(id);
 }
 
 export async function editPermisService(data?: any) {

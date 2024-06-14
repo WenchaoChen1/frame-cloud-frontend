@@ -29,8 +29,8 @@ export async function getAuthorizationGrantTypes() {
   });
 }
 
-export async function deleteUser(id: string) {
-  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/authorize/scope/${id}`, {
+export async function deleteApplication(id: string) {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/authorize/application/${id}`, {
     method: 'DELETE',
   });
 }

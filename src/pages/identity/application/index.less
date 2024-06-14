@@ -9,13 +9,25 @@
   }
 }
 
+.DivStyle{
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
 .switchStyle{
   display: flex;
   flex-direction: row;
   gap: 15px;
 }
+
 .flexGapStyle{
+  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  :global {
+    .ant-space-item{
+      width: 45%;
+    }
+  }
 }

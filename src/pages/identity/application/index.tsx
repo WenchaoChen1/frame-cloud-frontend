@@ -2,6 +2,7 @@ import {
   getApplicationListService,
   addApplicationService,
   getAuthorizationGrantTypesService,
+  deleteApplicationService,
 } from '@/services/identity-service/application';
 import type {ActionType, ProColumns } from '@ant-design/pro-components';
 import {
@@ -13,7 +14,7 @@ import {
   ProFormSelect,
 } from '@ant-design/pro-components';
 import {FormattedMessage} from '@umijs/max';
-import {Button, message, Space, Divider, InputNumber, Tooltip, Switch } from 'antd';
+import {Button, message, Space, Divider, InputNumber, Tooltip, Switch, DatePicker, Popconfirm } from 'antd';
 import React, {useRef, useState, useEffect} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
@@ -26,6 +27,8 @@ const Application: React.FC = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.MenuListItemDataType>();
   const [authorTypes, setAuthorTypes] = useState([]);
+  const [applicationTypeData, setApplicationTypeData] = useState([]);
+  const [idTokenData, setIdTokenData] = useState([]);
   const [authenticationMethod, setAuthenticationMethod] = useState([]);
 
   const [total, setTotal] = useState<number>(0);
@@ -112,13 +115,14 @@ const Application: React.FC = () => {
   
     return result.trim();
   };
-  
 
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
     fields.accessTokenValidity = mergeAndFormatValidity(fields?.accessTokenValidity, fields?.dayType1);
     fields.refreshTokenValidity = mergeAndFormatValidity(fields?.refreshTokenValidity, fields?.dayType2);
     fields.authorizationCodeValidity = mergeAndFormatValidity(fields?.authorizationCodeValidity, fields?.dayType3);
     fields.deviceCodeValidity = mergeAndFormatValidity(fields?.deviceCodeValidity, fields?.dayType4);
+
+    fields.clientSecretExpiresAt = new Date(fields?.clientSecretExpiresAt).toISOString();
 
     delete fields.dayType1;
     delete fields.dayType2;
@@ -142,12 +146,13 @@ const Application: React.FC = () => {
   };
 
   const handleAdd = async (fields: any) => {
-    console.log(fields, '====999')
     delete fields.applicationId;
     fields.accessTokenValidity = mergeAndFormatValidity(fields?.accessTokenValidity, fields?.dayType1);
     fields.refreshTokenValidity = mergeAndFormatValidity(fields?.refreshTokenValidity, fields?.dayType2);
     fields.authorizationCodeValidity = mergeAndFormatValidity(fields?.authorizationCodeValidity, fields?.dayType3);
     fields.deviceCodeValidity = mergeAndFormatValidity(fields?.deviceCodeValidity, fields?.dayType4);
+    
+    fields.clientSecretExpiresAt = new Date(fields?.clientSecretExpiresAt).toISOString();
 
     delete fields.dayType1;
     delete fields.dayType2;
@@ -259,10 +264,34 @@ const Application: React.FC = () => {
           }}
         >
           Edit
+        </a>,
+        <a
+          style={{ marginLeft: 20 }}
+          key={record?.applicationId}
+          onClick={async () => await deleteUserRequest(record?.applicationId || '')}
+        >
+          Delete
         </a>
       ]
     },
   ];
+
+  const deleteUserRequest = async (id: string) => {
+    const hide = message.loading('delete...');
+
+    try {
+      await deleteApplicationService(id);
+      hide();
+      message.success('Deleted successfully!');
+      actionRef.current?.reloadAndRest?.();
+
+      return true;
+    } catch (error) {
+      hide();
+      message.error('Delete failed, please try again');
+      return false;
+    }
+  }
 
   const formatDuration = (duration: any) => {
     const momentDuration = moment.duration(duration);
@@ -298,6 +327,8 @@ const Application: React.FC = () => {
   const initAuthorizationGrantTypes = async () => {
     const response = await getAuthorizationGrantTypesService();
     if (response?.success === true) {
+      setIdTokenData(response?.data?.signatureJwsAlgorithm)
+      setApplicationTypeData(response?.data?.applicationType)
       setAuthorTypes(response?.data?.grantType);
       setAuthenticationMethod(response?.data?.authenticationMethod);
     }
@@ -384,6 +415,19 @@ const Application: React.FC = () => {
             dayType4: parseAccessTokenValidity(currentRow?.deviceCodeValidity)?.split(' ')?.[1],
             requireProofKey: currentRow?.requireProofKey,
             requireAuthorizationConsent: currentRow?.requireAuthorizationConsent,
+            logo: currentRow?.logo,
+            status: currentRow?.status,
+            homepage: currentRow?.homepage,
+            jwkSetUrl: currentRow?.jwkSetUrl,
+            reserved: currentRow?.reserved,
+            reuseRefreshTokens: currentRow?.reuseRefreshTokens,
+            ranking: currentRow?.ranking,
+            idTokenSignatureAlgorithm: currentRow?.idTokenSignatureAlgorithm,
+            postLogoutRedirectUris: currentRow?.postLogoutRedirectUris,
+            redirectUris: currentRow?.redirectUris,
+            applicationType: currentRow?.applicationType,
+            description: currentRow?.description,
+            clientSecretExpiresAt: moment(new Date(currentRow?.clientSecretExpiresAt).toISOString())
           }}
         >
           <Space size={24}>
@@ -412,6 +456,21 @@ const Application: React.FC = () => {
               width="md"
               name="applicationId"
               hidden={true}
+            />
+          </Space>
+
+          <Space size={24}>
+            <ProFormText
+              label={"logo"}
+              width="md"
+              name="logo"
+              placeholder={"logo"}
+            />
+            <ProFormText
+              label={"homepage"}
+              width="md"
+              name="homepage"
+              placeholder={"homepage"}
             />
           </Space>
 
@@ -462,31 +521,69 @@ const Application: React.FC = () => {
           </Space>
 
           <Space size={24}>
+            <ProFormSelect
+              label={"applicationType"}
+              width="md"
+              name="applicationType"
+              placeholder={"applicationType"}
+              request={async () => {
+                return applicationTypeData.map((item) => {
+                  return {
+                    label: item?.text,
+                    value: item?.value,
+                  };
+                });
+              }}
+            />
+            <ProForm.Item label={"clientSecretExpiresAt"} name="clientSecretExpiresAt">
+              <DatePicker
+                showTime
+              />
+            </ProForm.Item>
+          </Space>
+
+          <Space size={24}>
             <ProFormText
               label={"redirectUris"}
               width="md"
               name="redirectUris"
               placeholder={"redirectUris"}
             />
+            <ProFormText
+              label={"postLogoutRedirectUris"}
+              width="md"
+              name="postLogoutRedirectUris"
+              placeholder={"postLogoutRedirectUris"}
+            />
           </Space>
 
           <Divider plain>客户端设置(Client Settings)</Divider>
+
+          <Space size={24}>
+            <ProFormText
+              label={"jwkSetUrl"}
+              width="md"
+              name="jwkSetUrl"
+              placeholder={"jwkSetUrl"}
+            />
+          </Space>
 
           <Space size={24} className={styles.flexGapStyle}>
             <div className={styles.switchStyle}>
               <ProForm.Item name="requireProofKey">
                   <Switch />
               </ProForm.Item>
-              <div>是否需要 Proof Key</div>
+              <div style={{ paddingTop: 8 }}>是否需要 Proof Key</div>
             </div>
 
             <div className={styles.switchStyle}>
               <ProForm.Item name="requireAuthorizationConsent" >
                   <Switch />
               </ProForm.Item>
-              <div>是否需要认证确认</div>
+              <div style={{ paddingTop: 8 }}>是否需要认证确认</div>
             </div>
           </Space>
+          
 
           <Divider plain>令牌设置(Token Settings)</Divider>
 
@@ -564,6 +661,84 @@ const Application: React.FC = () => {
               placeholder={"单位"}
               options={dayType}
             />
+          </Space>
+
+          <Space size={24}>
+            <ProFormSelect
+              label={"idTokenSignatureAlgorithm"}
+              width="md"
+              name="idTokenSignatureAlgorithm"
+              placeholder={"idTokenSignatureAlgorithm"}
+              request={async () => {
+                return idTokenData.map((item) => {
+                  return {
+                    label: item?.text,
+                    value: item?.value,
+                  };
+                });
+              }}
+            />
+
+            <div className={styles.DivStyle}>
+              <ProForm.Item label=' ' name="reuseRefreshTokens" >
+                  <Switch />
+              </ProForm.Item>
+              <div style={{ paddingTop: '35px' }}>是否允许重用刷新令牌</div>
+            </div>
+          </Space>
+
+          <Divider plain>数据条目设置</Divider>
+
+          <Space size={24}>
+            <ProFormText
+              label={"description"}
+              width="md"
+              name="description"
+              placeholder={"description"}
+            />
+
+            <ProForm.Item
+              label="ranking"
+              name="ranking"
+            >
+              <InputNumber
+                style={{ width: '328px' }}
+                min={0} defaultValue={0} />
+            </ProForm.Item>
+          </Space>
+
+          <Space size={24}>
+            <ProFormSelect
+              label={"status"}
+              width="md"
+              name="status"
+              placeholder={"status"}
+              options={[
+                {
+                  label: '启用',
+                  value: '0',
+                },
+                {
+                  label: '禁用',
+                  value: '1',
+                },
+                {
+                  label: '锁定',
+                  value: '2',
+                },
+                {
+                  label: '过期',
+                  value: '3',
+                }
+              ]}
+            />
+
+            <div className={styles.DivStyle}>
+              <ProForm.Item label=' ' name="reserved" >
+                  <Switch />
+              </ProForm.Item>
+              <div style={{ paddingTop: '35px' }}>是否为保留数据</div>
+            </div>
           </Space>
  
         </ModalForm>
