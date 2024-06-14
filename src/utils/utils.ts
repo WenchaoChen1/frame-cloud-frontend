@@ -1,6 +1,9 @@
+import React from "react";
 import {history} from "@umijs/max";
 import {RuleObject, StoreValue} from "rc-field-form/lib/interface";
 import {ACCESS_TOKEN, CURRENT_ACCOUNT_ID, LOGIN_PATH, REFRESH_TOKEN} from "@/pages/common/constant";
+import {MenuDataItem} from "@ant-design/pro-components";
+import * as allIcons from '@ant-design/icons'
 
 export function getCookie(name: string) {
   let arr;
@@ -114,3 +117,15 @@ export const requiredRules = [
     validator: trimValidator
   }
 ]
+
+export const fixMenuItemIcon = (menus:MenuDataItem[]):MenuDataItem[]=>{
+  menus.forEach((item)=>{
+    const {icon,children} = item;
+    if (typeof icon === 'string'){
+      const fixIconName = icon?.slice(0,1)?.toLocaleUpperCase() + icon?.slice(1)
+      item.icon = React.createElement(allIcons[fixIconName] || allIcons[icon])
+    }
+    children && children.length > 0 ? (item.children = fixMenuItemIcon(children)) : null
+  })
+  return menus
+}

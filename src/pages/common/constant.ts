@@ -18,3 +18,4 @@ export const DEFAULT_PAGE_SIZE = 10;
 export const CURRENT_ACCOUNT_ID: string = 'currentAccountId';
 export const ACCESS_TOKEN: string = 'accessToken';
 export const REFRESH_TOKEN: string = 'refreshToken';
+export const USER_ROUTER:string = 'userrouter'

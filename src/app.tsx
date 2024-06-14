@@ -7,12 +7,15 @@ import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+import {fixMenuItemIcon, setLocalStorage} from './utils/utils'
+import * as allIcons from '@ant-design/icons'
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
 import {getLocalStorage} from '@/utils/utils';
-import {SITE_TITLE, LOGIN_PATH, CURRENT_ACCOUNT_ID} from "@/pages/common/constant";
+import {SITE_TITLE, LOGIN_PATH, CURRENT_ACCOUNT_ID,USER_ROUTER} from "@/pages/common/constant";
 import {getLoginInfoService} from '@/services/system-service/user';
+import React from "react";
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
@@ -41,7 +44,7 @@ export async function getInitialState(): Promise<{
       // const dynamicRouteTree = handleRouteTree(accountInfoResponse?.data?.currentLoginAccountUserPermissions || []);
       // dynamicRouteTree.permission = handleAdminPermission(currentUser, dynamicRouteTree.permission);
       // currentUser = {...currentUser, ...dynamicRouteTree};
-
+      setLocalStorage(USER_ROUTER,JSON.stringify(currentUser.currentLoginAccountUserPermissions))
       return currentUser;
     }
     return undefined;
@@ -64,6 +67,11 @@ export async function getInitialState(): Promise<{
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
+  let userRouters:any = []
+  if (initialState){
+    const {currentLoginAccountUserPermissions} = initialState?.currentUser
+    userRouters = changeRouteData(currentLoginAccountUserPermissions)
+  }
   return {
     actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
     avatarProps: {
@@ -139,6 +147,28 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       );
     },
     ...initialState?.settings,
+    // menu: {
+    //   request: async (params, defaultMenuData) => {
+    //     // initialState.currentUser 中包含了所有用户信息
+    //     return userRouters;
+    //   },
+    // },
+    // 服务器返回菜单,icon不显示的问题
+    menuDataRender:(menuData)=> fixMenuItemIcon(menuData),
+    // 二级icon
+    // menuItemRender: (menuItemProps, defaultDom) => {
+    //   if (menuItemProps.isUrl || !menuItemProps.path) {
+    //     return defaultDom;
+    //   }
+    //   return (
+    //     <Link to={menuItemProps.path} className="itemChild" style={{display:'flex'}}>
+    //         {menuItemProps.pro_layout_parentKeys &&
+    //         menuItemProps.pro_layout_parentKeys.length > 0 &&
+    //         menuItemProps.icon}
+    //         {defaultDom}
+    //     </Link>
+    //   );
+    // },
   };
 };
 
@@ -153,3 +183,13 @@ export const request: RequestConfig = {
   // requestInterceptors: [authHeaderInterceptor],
   // responseInterceptors:[]
 };
+
+const changeRouteData = (data) =>{
+  data.forEach(item=>{
+    item.routes = item.children
+    if (item.children && item.children.length > 0){
+      changeRouteData(item.children)
+    }
+  })
+  return data
+}
