@@ -56,8 +56,7 @@ const authHeaderInterceptor = (config: RequestOptions) => {
 // 全局拦截请求 token无限续期
 let isRefreshing = false;
 const responseInterceptorsForAuth = async (error: any) => {
-
-  // console.log(getRefreshToken(), '******')
+  // debugger
 
   if (error.response.status === 401 && !isRefreshing) {
 

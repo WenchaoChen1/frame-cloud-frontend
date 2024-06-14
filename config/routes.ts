@@ -116,6 +116,12 @@ export default [
         component: './identity/application',
       },
       {
+        name: 'compliance',
+        icon: 'table',
+        path: '/identity-management/compliance',
+        component: './identity/compliance',
+      },
+      {
         name: 'scope.list',
         icon: 'table',
         path: '/identity-management/scope-list',

@@ -64,4 +64,5 @@ export default {
   'menu.identity-management.authorization.list': 'Credentials Management',
   'menu.identity-management.scope.list': 'Scope Management',
   'menu.identity-management.application': 'Application Management',
+  'menu.identity-management.compliance': 'Log Audit',
 };

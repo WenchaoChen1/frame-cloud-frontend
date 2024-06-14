@@ -1,10 +1,10 @@
 import { request } from '@umijs/max';
 
-export async function getComplianceList(
+export async function getApplicationList(
   params: APIIdentity.Pager,
   options?: { [key: string]: any },
 ) {
-  return request<any>(`${process.env.IDENTITY_SERVICE}/authorize/compliance`, {
+  return request<any>(`${process.env.IDENTITY_SERVICE}/authorize/application`, {
     method: 'GET',
     params: {
       ...params,

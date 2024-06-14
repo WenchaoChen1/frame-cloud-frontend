@@ -1,14 +1,14 @@
 import {
-  getApplicationList,
+  getComplianceList,
   addApplication,
   getAuthorizationGrantTypes,
   deleteApplication,
   editPermis,
-} from "@/services/api/identity-api/compliance";
+} from "@/services/api/identity-api/application";
 
 
-export async function getApplicationListService(params?: any) {
-  return await getApplicationList(params);
+export async function getComplianceListService(params?: any) {
+  return await getComplianceList(params);
 }
 
 export async function addApplicationService(data?: any) {

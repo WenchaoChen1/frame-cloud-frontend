@@ -64,4 +64,5 @@ export default {
   'menu.identity-management.authorization.list': '凭证管理',
   'menu.identity-management.scope.list': '范围管理',
   'menu.identity-management.application': '应用管理',
+  'menu.identity-management.compliance': '日志审计',
 };
