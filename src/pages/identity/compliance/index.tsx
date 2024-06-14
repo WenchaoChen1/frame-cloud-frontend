@@ -155,25 +155,13 @@ const Compliance: React.FC = () => {
         className={styles.scopeListStyle}
         rowKey="scopeId"
         options={false}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              setIsEdit(false);
-              setOpenModal(true);
-            }}
-          >
-            <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
-          </Button>,
-        ]}
         request={getList}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setCurrentRow(selectedRows);
-          },
-        }}
+        // rowSelection={{
+        //   onChange: (_, selectedRows) => {
+        //     setCurrentRow(selectedRows);
+        //   },
+        // }}
         pagination={{
           current: currentPage,
           pageSize: pageSize,
