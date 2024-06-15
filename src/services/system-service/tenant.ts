@@ -4,7 +4,7 @@ import {
   findAllMenuTreeByTenant,
   findSelectedMenuByTenant,
   getChildrenByTenantId,
-  getTenantTree,
+  getTenantTree, insertAndUpdateTenantManage,
   insertTenant,
   onSaveMenuInTenant,
   updateTenant,
@@ -16,11 +16,11 @@ export async function getTenantTreeService() {
 }
 
 export async function insertTenantService(data?: any) {
-  return await insertTenant(data);
+  return await insertAndUpdateTenantManage(data);
 }
 
 export async function updateTenantService(data?: any) {
-  return await updateTenant(data);
+  return await insertAndUpdateTenantManage(data);
 }
 
 export async function deleteTenantService(id: string) {

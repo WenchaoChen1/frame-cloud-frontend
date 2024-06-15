@@ -14,7 +14,12 @@ export async function getTenantTree(
   });
 }
 
-export async function insertTenant(data?: any) {
+export async function insertAndUpdateTenantManage(data?: any) {
+  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/insert-and-update-tenant-manage`, {
+    method: 'POST',
+    data: data,
+  });
+}export async function insertTenant(data?: any) {
   return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant`, {
     method: 'POST',
     data: data,
