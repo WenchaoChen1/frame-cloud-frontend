@@ -18,7 +18,7 @@ export async function getUserListService(params: API.PageParams) {
 }
 
 export async function getAllUserListService() {
-  return await getAllUserList();
+  return await getUserList(API.PageParams);
 }
 
 export async function createUserService(data?: any) {

@@ -4,7 +4,7 @@ import {
   editAccount,
   getAccountInfo,
   getAccountList,
-  getAccountListInLogin,
+  getAccountListInLogin, insertAndUpdateUserManage,
 } from '@/services/api/system-api/accountApi';
 
 // Account - list
@@ -13,11 +13,11 @@ export async function getAccountListService(params: API.PageParams) {
 }
 
 export async function createAccountService(data?: any) {
-  return await createAccount(data);
+  return await insertAndUpdateUserManage(data);
 }
 
 export async function editAccountService(data?: any) {
-  return await editAccount(data);
+  return await insertAndUpdateUserManage(data);
 }
 
 export async function deleteAccountService(id: string) {
