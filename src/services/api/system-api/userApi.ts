@@ -1,8 +1,6 @@
 import {request} from '@umijs/max';
-
-// User - list - pagination
 export async function getUserList(params: APISystem.PageParams) {
-  return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/user/get-user-page`, {
+  return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/user/get-user-manage-page`, {
     method: 'GET',
     params: {
       pageNumber: params.current,
@@ -10,6 +8,16 @@ export async function getUserList(params: APISystem.PageParams) {
     }
   });
 }
+// User - list - pagination
+// export async function getUserList(params: APISystem.PageParams) {
+//   return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/user/get-user-page`, {
+//     method: 'GET',
+//     params: {
+//       pageNumber: params.current,
+//       pageSize: params.pageSize
+//     }
+//   });
+// }
 
 export async function getAllUserList() {
   return request<APISystem.AllUserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/user/get-all-user`, {
@@ -19,6 +27,12 @@ export async function getAllUserList() {
 
 export async function createUser(data?: any) {
   return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/user`, {
+    method: 'POST',
+    data: data,
+  });
+}
+export async function insertAndUpdateUserManage(data?: any) {
+  return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/user/insert-and-update-user-manage`, {
     method: 'POST',
     data: data,
   });

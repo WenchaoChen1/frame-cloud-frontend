@@ -5,7 +5,7 @@ import {
   editUser,
   getAllUserList,
   getUserInfo,
-  getUserList
+  getUserList, insertAndUpdateUserManage
 } from "@/services/api/system-api/userApi";
 
 export async function getLoginInfoService(data: APISystem.GetAccountInfoBody) {
@@ -22,11 +22,11 @@ export async function getAllUserListService() {
 }
 
 export async function createUserService(data?: any) {
-  return await createUser(data);
+  return await insertAndUpdateUserManage(data);
 }
 
 export async function editUserService(data?: any) {
-  return await editUser(data);
+  return await insertAndUpdateUserManage(data);
 }
 
 export async function deleteUserService(id: string) {
