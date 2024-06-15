@@ -4,7 +4,7 @@ import {
   findSelectedMenuByRole,
   getRoleByTenantId,
   getRoleInfo,
-  getRoleList,
+  getRoleList, insertAndUpdateRoleManage,
   insertRole,
   moveRole,
   onSaveMenuInRole,
@@ -17,11 +17,11 @@ export async function getRoleListService(params: APISystem.RoleTableSearchParams
 }
 
 export async function insertRoleService(data?: any) {
-  return await insertRole(data);
+  return await insertAndUpdateRoleManage(data);
 }
 
 export async function updateRoleService(data?: any) {
-  return await updateRole(data);
+  return await insertAndUpdateRoleManage(data);
 }
 
 export async function deleteRoleService(id: string) {
