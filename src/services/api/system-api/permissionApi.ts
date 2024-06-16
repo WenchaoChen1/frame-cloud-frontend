@@ -19,8 +19,14 @@ export async function getPermissionType() {
   });
 }
 
-export async function insertAndUpdatePermissionManage(data: APISystem.PermissionItemDataType) {
-  return request<APISystem.OrganizeListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/permission/insert-and-update-permission-manage`, {
+export async function insertPermissionManage(data: APISystem.PermissionItemDataType) {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/permission/insert-permission-manage`, {
+    method: 'POST',
+    data: data,
+  });
+}
+export async function updatePermissionManage(data: APISystem.PermissionItemDataType) {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/permission/update-permission-manage`, {
     method: 'POST',
     data: data,
   });

@@ -16,8 +16,7 @@ import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import {
   deletePermissionByIdService,
   getPermissionListService,
-  savePermissionService,
-  getPermissionTypeService,
+  getPermissionTypeService, insertPermissionManageService, updatePermissionManageService,
 } from "@/services/system-service/permissionService";
 import styles from './index.less';
 
@@ -81,7 +80,7 @@ const User: React.FC = () => {
     delete fields.id;
 
     try {
-      await savePermissionService({ ...fields });
+      await insertPermissionManageService({ ...fields });
       hide();
       message.success('Added successfully');
       return true;
@@ -99,7 +98,7 @@ const User: React.FC = () => {
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('Update');
     try {
-      await savePermissionService(fields);
+      await updatePermissionManageService(fields);
       hide();
 
       message.success('Update successfully');

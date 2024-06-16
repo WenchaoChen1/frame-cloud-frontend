@@ -2,8 +2,8 @@ import {
   deletePermissionById,
   getPermissionList,
   getPermissionType,
-  insertAndUpdatePermissionManage,
-  savePermission
+  insertPermissionManage,
+  updatePermissionManage,
 } from "@/services/api/system-api/permissionApi";
 
 export async function getPermissionListService(params: APIIdentity.Pager) {
@@ -14,8 +14,11 @@ export async function getPermissionTypeService() {
   return await getPermissionType();
 }
 
-export async function savePermissionService(data: APISystem.PermissionItemDataType) {
-  return await insertAndUpdatePermissionManage(data);
+export async function insertPermissionManageService(data: APISystem.PermissionItemDataType) {
+  return await insertPermissionManage(data);
+}
+export async function updatePermissionManageService(data: APISystem.PermissionItemDataType) {
+  return await updatePermissionManage(data);
 }
 
 export async function deletePermissionByIdService(id: string) {

@@ -2,7 +2,7 @@ import {request} from '@umijs/max';
 
 // Role - list
 export async function getRoleList(params: APISystem.RoleTableSearchParams) {
-  return request<APISystem.RoleResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-all-role-to-tree`, {
+  return request<APISystem.RoleResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-role-manage-tree`, {
     method: 'GET',
     params: params
   });
