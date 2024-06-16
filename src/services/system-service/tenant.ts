@@ -16,11 +16,11 @@ export async function getTenantTreeService() {
 }
 
 export async function insertTenantService(data?: any) {
-  return await insertAndUpdateTenantManage(data);
+  return await insertTenant(data);
 }
 
 export async function updateTenantService(data?: any) {
-  return await insertAndUpdateTenantManage(data);
+  return await updateTenant(data);
 }
 
 export async function deleteTenantService(id: string) {

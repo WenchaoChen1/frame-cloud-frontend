@@ -9,8 +9,8 @@
  *
  * @doc https://umijs.org/docs/guides/proxy
  */
-const target = 'http://192.168.0.229:8201';
-// const target = 'http://192.168.1.3:8201';
+// const target = 'http://192.168.0.229:8201';
+const target = 'http://192.168.1.2:8201';
 export default {
   // 如果需要自定义本地开发服务器  请取消注释按需调整
   // dev: {

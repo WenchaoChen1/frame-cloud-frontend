@@ -20,14 +20,14 @@ export async function insertAndUpdateTenantManage(data?: any) {
     data: data,
   });
 }export async function insertTenant(data?: any) {
-  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant`, {
+  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/insert-tenant-manage`, {
     method: 'POST',
     data: data,
   });
 }
 
 export async function updateTenant(data?: any) {
-  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant`, {
+  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/update-tenant-manage`, {
     method: 'PUT',
     data: data,
   });

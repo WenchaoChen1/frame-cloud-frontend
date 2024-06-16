@@ -13,11 +13,11 @@ export async function getAccountListService(params: API.PageParams) {
 }
 
 export async function createAccountService(data?: any) {
-  return await insertAndUpdateUserManage(data);
+  return await createAccount(data);
 }
 
 export async function editAccountService(data?: any) {
-  return await insertAndUpdateUserManage(data);
+  return await editAccount(data);
 }
 
 export async function deleteAccountService(id: string) {

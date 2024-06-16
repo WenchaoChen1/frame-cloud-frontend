@@ -17,15 +17,15 @@ export async function getMenuTree(
   });
 }
 
+
 export async function createMenu(data?: any) {
-  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu`, {
+  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/insert-menu-manage`, {
     method: 'POST',
     data: data,
   });
 }
-
 export async function editMenu(data?: any) {
-  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu`, {
+  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/update-menu-manage`, {
     method: 'PUT',
     data: data,
   });

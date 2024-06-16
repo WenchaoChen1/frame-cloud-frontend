@@ -26,7 +26,7 @@ export async function getAllUserList() {
 }
 
 export async function createUser(data?: any) {
-  return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/user`, {
+  return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/user/insert-user-manage`, {
     method: 'POST',
     data: data,
   });
@@ -39,7 +39,7 @@ export async function insertAndUpdateUserManage(data?: any) {
 }
 
 export async function editUser(data?: any) {
-  return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/user`, {
+  return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/user/insert-user-manage-user-manage`, {
     method: 'PUT',
     data: data,
   });

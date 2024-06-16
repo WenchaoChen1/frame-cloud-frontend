@@ -22,11 +22,11 @@ export async function getAllUserListService() {
 }
 
 export async function createUserService(data?: any) {
-  return await insertAndUpdateUserManage(data);
+  return await createUser(data);
 }
 
 export async function editUserService(data?: any) {
-  return await insertAndUpdateUserManage(data);
+  return await editUser(data);
 }
 
 export async function deleteUserService(id: string) {

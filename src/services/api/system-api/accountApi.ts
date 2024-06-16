@@ -29,14 +29,14 @@ export async function insertAndUpdateUserManage(data?: any) {
   });
 }
 export async function createAccount(data?: any) {
-  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/insert-account-initialization`, {
+  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/insert-account-manage`, {
     method: 'POST',
     data: data,
   });
 }
 
 export async function editAccount(data?: any) {
-  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account`, {
+  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/update-account-manage`, {
     method: 'PUT',
     data: data,
   });
