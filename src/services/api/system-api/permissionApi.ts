@@ -27,7 +27,7 @@ export async function insertPermissionManage(data: APISystem.PermissionItemDataT
 }
 export async function updatePermissionManage(data: APISystem.PermissionItemDataType) {
   return request<APISystem.OrganizeListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/permission/update-permission-manage`, {
-    method: 'POST',
+    method: 'PUT',
     data: data,
   });
 }
