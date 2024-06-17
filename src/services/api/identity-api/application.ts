@@ -4,7 +4,7 @@ export async function getComplianceList(
   params: APIIdentity.Pager,
   options?: { [key: string]: any },
 ) {
-  return request<any>(`${process.env.IDENTITY_SERVICE}/authorize/compliance`, {
+  return request<any>(`${process.env.IDENTITY_SERVICE}/v1/authorize/compliance`, {
     method: 'GET',
     params: {
       ...params,
@@ -14,14 +14,14 @@ export async function getComplianceList(
 }
 
 export async function addApplication(data: APISystem.PermissionItemDataType) {
-  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/authorize/application`, {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/application`, {
     method: 'POST',
     data: data,
   });
 }
 
 export async function getAuthorizationGrantTypes() {
-  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/authorize/constant/enums`, {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/constant/enums`, {
     method: 'GET',
     // params: {
     //   ...params,
@@ -30,13 +30,13 @@ export async function getAuthorizationGrantTypes() {
 }
 
 export async function deleteApplication(id: string) {
-  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/authorize/application/${id}`, {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/application/${id}`, {
     method: 'DELETE',
   });
 }
 
 export async function editPermis(data: APISystem.PermissionItemDataType) {
-  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/authorize/scope/assigned`, {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/scope/assigned`, {
     method: 'POST',
     data: data,
   });
