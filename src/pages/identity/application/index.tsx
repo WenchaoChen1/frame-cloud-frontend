@@ -30,7 +30,6 @@ const Application: React.FC = () => {
   const [applicationTypeData, setApplicationTypeData] = useState([]);
   const [idTokenData, setIdTokenData] = useState([]);
   const [authenticationMethod, setAuthenticationMethod] = useState([]);
-  const [formValues, setFormValues] = useState({});
 
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
@@ -54,10 +53,6 @@ const Application: React.FC = () => {
       value: 'seconds',
     }
   ]
-
-  const clearForm = () => {
-    setFormValues({});
-  };
 
   const getList = async (params: API.PageParams) => {
     const response = await getApplicationListService({
@@ -358,7 +353,6 @@ const Application: React.FC = () => {
             onClick={() => {
               setIsEdit(false);
               setOpenModal(true);
-              clearForm();
             }}
           >
             <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
