@@ -4,7 +4,7 @@ import {
   editAccount,
   getAccountInfo,
   getAccountList,
-  getAccountListInLogin,
+  getAccountListInLogin, insertAndUpdateUserManage,
 } from '@/services/api/system-api/accountApi';
 
 // Account - list

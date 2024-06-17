@@ -47,6 +47,7 @@ export default [
     name: 'system-management',
     path: '/system-management',
     icon: 'table',
+    access: 'showButton',
     routes: [
       {
         name: 'menu.menu-list',
@@ -102,6 +103,7 @@ export default [
     name: 'identity-management',
     path: '/identity-management',
     icon: 'table',
+    access: 'showButton',
     routes: [
       {
         name: 'authorization.list',
@@ -133,6 +135,7 @@ export default [
     path: '/dashboard',
     name: 'dashboard',
     icon: 'dashboard',
+    access: 'showButton',
     routes: [
       {
         path: '/dashboard',
@@ -162,6 +165,7 @@ export default [
     path: '/form',
     icon: 'form',
     name: 'form',
+    access: 'showButton',
     routes: [
       {
         path: '/form',
@@ -191,6 +195,7 @@ export default [
     path: '/list',
     icon: 'table',
     name: 'list',
+    access: 'showButton',
     routes: [
       {
         path: '/list/search',
@@ -249,6 +254,7 @@ export default [
     path: '/profile',
     name: 'profile',
     icon: 'profile',
+    access: 'showButton',
     routes: [
       {
         path: '/profile',
@@ -272,6 +278,7 @@ export default [
     name: 'result',
     icon: 'CheckCircleOutlined',
     path: '/result',
+    access: 'showButton',
     routes: [
       {
         path: '/result',
@@ -295,6 +302,7 @@ export default [
     name: 'exception',
     icon: 'warning',
     path: '/exception',
+    access: 'showButton',
     routes: [
       {
         path: '/exception',
@@ -324,6 +332,7 @@ export default [
     name: 'account',
     icon: 'user',
     path: '/account',
+    access: 'showButton',
     routes: [
       {
         path: '/account',
@@ -340,6 +349,42 @@ export default [
         icon: 'smile',
         path: '/account/settings',
         component: './account/settings',
+      },
+    ],
+  },
+  {
+    name: 'person-management',
+    icon: 'user',
+    path: '/person-management',
+    access:'showButton',
+    routes: [
+      {
+        path: '/person-management',
+        redirect: '/person-management/personList',
+      },
+      {
+        name: 'personList',
+        icon: 'smile',
+        path: '/person-management/personList',
+        component: './person/personList',
+      },
+    ],
+  },
+  {
+    name: 'area-management',
+    icon: 'user',
+    path: '/area-management',
+    access:'showButton',
+    routes: [
+      {
+        path: '/area-management',
+        redirect: '/area-management/areaList',
+      },
+      {
+        name: 'areaList',
+        icon: 'smile',
+        path: '/area-management/areaList',
+        component: './areaManagement/areaList',
       },
     ],
   },

@@ -4,7 +4,7 @@ export async function getPermissionList(
   params: APIIdentity.Pager,
   options?: { [key: string]: any },
 ) {
-  return request<any>(`${process.env.SYSTEM_SERVICE}/v1/permission/page`, {
+  return request<any>(`${process.env.SYSTEM_SERVICE}/v1/permission/get-permission-manage-page`, {
     method: 'GET',
     params: {
       ...params,
@@ -19,6 +19,18 @@ export async function getPermissionType() {
   });
 }
 
+export async function insertPermissionManage(data: APISystem.PermissionItemDataType) {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/permission/insert-permission-manage`, {
+    method: 'POST',
+    data: data,
+  });
+}
+export async function updatePermissionManage(data: APISystem.PermissionItemDataType) {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/permission/update-permission-manage`, {
+    method: 'PUT',
+    data: data,
+  });
+}
 export async function savePermission(data: APISystem.PermissionItemDataType) {
   return request<APISystem.OrganizeListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/permission`, {
     method: 'POST',

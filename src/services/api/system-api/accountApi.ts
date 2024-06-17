@@ -2,7 +2,7 @@ import { request } from '@umijs/max';
 
 // Account - list
 export async function getAccountList(params: APISystem.PageParams) {
-  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/get-account-page`, {
+  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/get-account-manage-page`, {
     method: 'GET',
     params: {
       pageNumber: params.current,
@@ -11,16 +11,32 @@ export async function getAccountList(params: APISystem.PageParams) {
     }
   });
 }
+// export async function getAccountList(params: APISystem.PageParams) {
+//   return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/get-account-page`, {
+//     method: 'GET',
+//     params: {
+//       pageNumber: params.current,
+//       pageSize: params.pageSize,
+//       tenantId: params.tenantId
+//     }
+//   });
+// }
 
+export async function insertAndUpdateUserManage(data?: any) {
+  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/insert-and-update-user-manage`, {
+    method: 'POST',
+    data: data,
+  });
+}
 export async function createAccount(data?: any) {
-  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/insert-account-initialization`, {
+  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/insert-account-manage`, {
     method: 'POST',
     data: data,
   });
 }
 
 export async function editAccount(data?: any) {
-  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account`, {
+  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/update-account-manage`, {
     method: 'PUT',
     data: data,
   });

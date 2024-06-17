@@ -4,7 +4,7 @@ import {
   findAllMenuTreeByTenant,
   findSelectedMenuByTenant,
   getChildrenByTenantId,
-  getTenantTree,
+  getTenantTree, insertAndUpdateTenantManage,
   insertTenant,
   onSaveMenuInTenant,
   updateTenant,

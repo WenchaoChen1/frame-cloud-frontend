@@ -1,10 +1,17 @@
-import { request } from '@umijs/max';
+import {request} from '@umijs/max';
 
 // Role - list
 export async function getRoleList(params: APISystem.RoleTableSearchParams) {
-  return request<APISystem.RoleResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-all-role-to-tree`, {
+  return request<APISystem.RoleResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-role-manage-tree`, {
     method: 'GET',
     params: params
+  });
+}
+
+export async function insertAndUpdateRoleManage(data?: any) {
+  return request<APISystem.RoleResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/insert-and-update-role-manage`, {
+    method: 'POST',
+    data: data,
   });
 }
 

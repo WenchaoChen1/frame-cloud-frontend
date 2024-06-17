@@ -8,7 +8,7 @@ export async function getMenuTree(
   },
   options?: { [key: string]: any },
 ) {
-  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-all-menu-to-tree`, {
+  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-menu-manage-to-tree`, {
     method: 'GET',
     params: {
       ...params,
@@ -17,15 +17,15 @@ export async function getMenuTree(
   });
 }
 
+
 export async function createMenu(data?: any) {
-  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu`, {
+  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/insert-menu-manage`, {
     method: 'POST',
     data: data,
   });
 }
-
 export async function editMenu(data?: any) {
-  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu`, {
+  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/update-menu-manage`, {
     method: 'PUT',
     data: data,
   });
