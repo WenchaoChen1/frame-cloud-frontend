@@ -65,8 +65,4 @@ export default {
   'menu.identity-management.scope.list': '范围管理',
   'menu.identity-management.application': '应用管理',
   'menu.identity-management.compliance': '日志审计',
-  'menu.person-management':'人员管理',
-  'menu.person-management.personList':'人员名单',
-  'menu.area-management':'区域管理',
-  'menu.area-management.areaList':'区域列表',
 };
