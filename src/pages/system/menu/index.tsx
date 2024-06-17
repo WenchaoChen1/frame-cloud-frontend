@@ -29,6 +29,7 @@ const MenuList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<APISystem.MenuListItemDataType>();
   const [, setSelectedRows] = useState<APISystem.MenuListItemDataType[]>([]);
+  const [defaultExpanded, setDefaultExpanded] = useState([])
 
   /**
    * @en-US Add node
@@ -173,6 +174,29 @@ const MenuList: React.FC = () => {
     },
   ];
 
+  const getTableLists = async () =>{
+    return await getMenuTreeService()
+  }
+
+  const changeData = async () =>{
+    if (defaultExpanded.length > 0){
+      setDefaultExpanded([])
+      return
+    }
+    const res = await getMenuTreeService()
+    const newExpandedKeys:any = []
+    const render = (treeDatas) => { // 获取到所有可展开的父节点
+      treeDatas.map(item => {
+        if (item.children) {
+          newExpandedKeys.push(item.id)
+          render(item.children)
+        }
+      })
+      return newExpandedKeys
+    }
+    setDefaultExpanded(render(res?.data))
+  }
+
   return (
     <PageContainer>
       <ProTable<APISystem.MenuListItemDataType, APISystem.PageParams>
@@ -184,6 +208,15 @@ const MenuList: React.FC = () => {
         }}
         // pagination={false}
         toolBarRender={() => [
+          // <Button
+          //   type="primary"
+          //   key="primary"
+          //   onClick={() => {
+          //     changeData()
+          //   }}
+          // >
+          //   <PlusOutlined /> 展开
+          // </Button>,
           <Button
             type="primary"
             key="primary"
@@ -196,8 +229,9 @@ const MenuList: React.FC = () => {
             <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
-        request={getMenuTreeService}
+        request={getTableLists}
         columns={columns}
+        expandable={{defaultExpandedRowKeys: defaultExpanded}}
         rowSelection={{
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows);
