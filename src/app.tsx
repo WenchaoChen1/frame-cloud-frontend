@@ -147,53 +147,14 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       );
     },
     ...initialState?.settings,
-    // menu: {
-    //   request: async (params, defaultMenuData) => {
-    //     // initialState.currentUser 中包含了所有用户信息
-    //     return [
-    //       {
-    //         name: 'system-management',
-    //         path: '/system-management',
-    //         icon: 'TabletOutlined',
-    //         routes: [
-    //           {
-    //             name: 'menu.menu-list',
-    //             path: '/system-management/menu-list',
-    //           },
-    //           {
-    //             name: 'dict.dict-list',
-    //             path: '/system-management/dict',
-    //           },
-    //           {
-    //             name: 'tenant.tenant-list',
-    //             path: '/system-management/tenant',
-    //           },
-    //           {
-    //             name: 'organize.organize-list',
-    //             path: '/system-management/organize',
-    //           },
-    //           {
-    //             name: 'role.role-list',
-    //             path: '/system-management/role',
-    //           },
-    //           {
-    //             name: 'user.user-list',
-    //             path: '/system-management/user-list',
-    //           },
-    //           {
-    //             name: 'account.account-list',
-    //             path: '/system-management/account',
-    //           },
-    //           {
-    //             name: 'permission.permission-list',
-    //             path: '/system-management/permission',
-    //           }
-    //         ],
-    //       },
-    //       ...userRouters
-    //       ];
-    //   },
-    // },
+    menu: {
+      request: async (params, defaultMenuData) => {
+        // initialState.currentUser 中包含了所有用户信息
+        return [
+          ...userRouters
+          ];
+      },
+    },
     // 服务器返回菜单,icon不显示的问题
     menuDataRender:(menuData)=> fixMenuItemIcon(menuData),
     // 二级icon

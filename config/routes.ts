@@ -353,42 +353,6 @@ export default [
     ],
   },
   {
-    name: 'person-management',
-    icon: 'user',
-    path: '/person-management',
-    access:'showButton',
-    routes: [
-      {
-        path: '/person-management',
-        redirect: '/person-management/personList',
-      },
-      {
-        name: 'personList',
-        icon: 'smile',
-        path: '/person-management/personList',
-        component: './person/personList',
-      },
-    ],
-  },
-  {
-    name: 'area-management',
-    icon: 'user',
-    path: '/area-management',
-    access:'showButton',
-    routes: [
-      {
-        path: '/area-management',
-        redirect: '/area-management/areaList',
-      },
-      {
-        name: 'areaList',
-        icon: 'smile',
-        path: '/area-management/areaList',
-        component: './areaManagement/areaList',
-      },
-    ],
-  },
-  {
     path: '/',
     redirect: '/dashboard/analysis',
   },
