@@ -58,6 +58,7 @@ export default {
   'pages.searchTable.subscribeAlert': '订阅警报',
   'pages.searchTable.title': '查询表格',
   'pages.searchTable.new': '新建',
+  'pages.searchTable.actions': '操作',
   'pages.searchTable.chosen': '已选择',
   'pages.searchTable.item': '项',
   'pages.searchTable.totalServiceCalls': '服务调用次数总计',
@@ -90,6 +91,9 @@ export default {
       'ranking':'排序值',
       'status':'数据状态',
       'reserved':'是否为保留数据',
+      'label1': '客户端设置',
+      'label2': '令牌设置',
+      'label3': '数据条目设置',
     }
   }
 };

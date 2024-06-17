@@ -61,6 +61,7 @@ export default {
   'pages.searchTable.subscribeAlert': 'Subscribe to alerts',
   'pages.searchTable.title': 'Enquiry Form',
   'pages.searchTable.new': 'New',
+  'pages.searchTable.actions': 'actions',
   'pages.searchTable.chosen': 'chosen',
   'pages.searchTable.item': 'item',
   'pages.searchTable.totalServiceCalls': 'Total Number of Service Calls',
@@ -93,6 +94,9 @@ export default {
       'ranking':'ranking',
       'status':'status',
       'reserved':'reserved',
+      'label1': 'Client Settings',
+      'label2': 'Token Settings',
+      'label3': 'Data Entry Settings',
     }
   }
 };
