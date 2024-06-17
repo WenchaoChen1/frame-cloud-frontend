@@ -39,7 +39,7 @@ export async function insertAndUpdateUserManage(data?: any) {
 }
 
 export async function editUser(data?: any) {
-  return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/user/insert-user-manage-user-manage`, {
+  return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/user/update-user-manage`, {
     method: 'PUT',
     data: data,
   });
