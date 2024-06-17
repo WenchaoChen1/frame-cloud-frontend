@@ -67,4 +67,32 @@ export default {
   'pages.searchTable.tenThousand': '0000',
   'pages.searchTable.batchDeletion': 'batch deletion',
   'pages.searchTable.batchApproval': 'batch approval',
+
+  'application':{
+    'list': {
+      'applicationName':'applicationName',
+      'abbreviation':'abbreviation',
+      'logo':'logo',
+      'homepage':'homepage',
+      'authorizationGrantTypes':'authorizationGrantTypes',
+      'clientAuthenticationMethods':'clientAuthenticationMethods',
+      'applicationType':'applicationType',
+      'clientSecretExpiresAt':'clientSecretExpiresAt',
+      'redirectUris':'redirectUris',
+      'postLogoutRedirectUris':'OIDC Logout callback address',
+      'jwkSetUrl':'Client Keyset URL',
+      'requireProofKey':'requireProofKey',
+      'requireAuthorizationConsent':'requireAuthorizationConsent',
+      'accessTokenValidity':'accessTokenValidity',
+      'refreshTokenValidity':'refreshTokenValidity',
+      'authorizationCodeValidity':'authorizationCodeValidity',
+      'deviceCodeValidity':'deviceCodeValidity',
+      'idTokenSignatureAlgorithm':'OIDC idToken endpoint authentication signature algorithm',
+      'reuseRefreshTokens':'reuseRefreshTokens',
+      'description':'description',
+      'ranking':'ranking',
+      'status':'status',
+      'reserved':'reserved',
+    }
+  }
 };

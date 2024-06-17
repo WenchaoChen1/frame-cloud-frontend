@@ -14,6 +14,7 @@ import {
   ProFormSelect,
 } from '@ant-design/pro-components';
 import {FormattedMessage} from '@umijs/max';
+import { formatMessage } from 'umi';
 import {Button, message, Space, Divider, InputNumber, Tooltip, Switch, DatePicker, Popconfirm } from 'antd';
 import React, {useRef, useState, useEffect} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
@@ -356,6 +357,7 @@ const Application: React.FC = () => {
             }}
           >
             <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
+            {/* {formatMessage({ id: 'pages.searchTable.new', defaultMessage: 'New' })} */}
           </Button>,
         ]}
         request={getList}

@@ -64,4 +64,32 @@ export default {
   'pages.searchTable.tenThousand': '万',
   'pages.searchTable.batchDeletion': '批量删除',
   'pages.searchTable.batchApproval': '批量审批',
+
+  'application':{
+    'list': {
+      'applicationName':'应用名称',
+      'abbreviation':'应用简称',
+      'logo':'应用图标',
+      'homepage':'应用主页',
+      'authorizationGrantTypes':'认证模式',
+      'clientAuthenticationMethods':'客户端验证模式',
+      'applicationType':'应用类型',
+      'clientSecretExpiresAt':'客户端密钥过期时间',
+      'redirectUris':'回调地址',
+      'postLogoutRedirectUris':'OIDC Logout 回调地址',
+      'jwkSetUrl':'客户端密钥集URL',
+      'requireProofKey':'是否需要 Proof Key',
+      'requireAuthorizationConsent':'是否需要认证确认',
+      'accessTokenValidity':'令牌有效期',
+      'refreshTokenValidity':'刷新令牌有效期',
+      'authorizationCodeValidity':'授权码有效期',
+      'deviceCodeValidity':'设备激活码有效期',
+      'idTokenSignatureAlgorithm':'OIDC idToken 端点认证签名算法',
+      'reuseRefreshTokens':'是否允许重用刷新令牌',
+      'description':'备注',
+      'ranking':'排序值',
+      'status':'数据状态',
+      'reserved':'是否为保留数据',
+    }
+  }
 };
