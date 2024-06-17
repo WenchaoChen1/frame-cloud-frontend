@@ -1,9 +1,12 @@
 import {
   getApplicationListService,
   addApplicationService,
-  getAuthorizationGrantTypesService,
   deleteApplicationService,
-} from '@/services/identity-service/application';
+  getApplicationManageDetailService
+} from '@/services/identity-service/applicationService';
+import {
+  getAuthorizationGrantTypesService,
+} from '@/services/identity-service/applicationDictionaryService';
 import type {ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   PageContainer,
@@ -26,11 +29,12 @@ const Application: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [currentRow, setCurrentRow] = useState<APISystem.MenuListItemDataType>();
   const [authorTypes, setAuthorTypes] = useState([]);
   const [applicationTypeData, setApplicationTypeData] = useState([]);
   const [idTokenData, setIdTokenData] = useState([]);
   const [authenticationMethod, setAuthenticationMethod] = useState([]);
+  const [formValues, setFormValues] = useState({});
+  const [currentRow, setCurrentRow] = useState({});
 
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
@@ -61,7 +65,7 @@ const Application: React.FC = () => {
         pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
         applicationName: params?.applicationName,
         clientAuthenticationMethods: params?.clientAuthenticationMethods?.map((param: any) => encodeURIComponent(param)).join(',') || [],
-        authorizationGrantTypes: params?.authorizationGrantTypes?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+        authorizationGrantTypes: params?.authorizationGrantTypes?.split(',')?.map((param: any) => encodeURIComponent(param)).join(',') || [],
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -82,7 +86,7 @@ const Application: React.FC = () => {
   };
 
   // Echoing form data
-  const parseAccessTokenValidity = (duration) => {
+  const parseAccessTokenValidity = (duration: any) => {
     const regex = /PT((\d+)D)?((\d+)H)?((\d+)M)?((\d+)S)?/;
     const match = duration?.match(regex);
   
@@ -118,7 +122,6 @@ const Application: React.FC = () => {
   };
 
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
-    // debugger
     fields.accessTokenValidity = mergeAndFormatValidity(fields?.accessTokenValidity, fields?.dayType1);
     fields.refreshTokenValidity = mergeAndFormatValidity(fields?.refreshTokenValidity, fields?.dayType2);
     fields.authorizationCodeValidity = mergeAndFormatValidity(fields?.authorizationCodeValidity, fields?.dayType3);
@@ -143,7 +146,7 @@ const Application: React.FC = () => {
     }
   };
 
-  const mergeAndFormatValidity = (validity, dayType) => {
+  const mergeAndFormatValidity = (validity: any, dayType: any) => {
     const duration = moment.duration(validity, dayType);
     const iso8601Format = duration.toISOString();
     return iso8601Format;
@@ -202,7 +205,7 @@ const Application: React.FC = () => {
         )
       },
       render: (_, record) => {
-        const grantTypes = record.authorizationGrantTypes;
+        const grantTypes = record.authorizationGrantTypes?.split(',');
         const images = grantTypes.map((type: any) => {
           let imageUrl;
           let tooltipText;
@@ -230,7 +233,7 @@ const Application: React.FC = () => {
           }
     
           return (
-            <Tooltip title={tooltipText} key={type}>
+            <Tooltip title={tooltipText}>
               <img src={imageUrl} alt={type} style={{ paddingRight: '8px' }} />
             </Tooltip>
           );
@@ -249,25 +252,25 @@ const Application: React.FC = () => {
       render: (value, record) => {
         if (value === 0) {
           return (
-            <Tooltip title={'启用'} key={value}>
+            <Tooltip title={'启用'}>
               <img src={require('@/images/status_0.png')} alt={value} />
             </Tooltip>
           );
         } else if (value === 1) {
           return (
-            <Tooltip title={'禁用'} key={value}>
+            <Tooltip title={'禁用'}>
               <img src={require('@/images/status_1.png')} alt={value} />
             </Tooltip>
           );
         } else if (value === 2) {
           return (
-            <Tooltip title={'锁定'} key={value}>
+            <Tooltip title={'锁定'}>
               <img src={require('@/images/status_2.png')} alt={value} />
             </Tooltip>
           );
         } else if (value === 3) {
           return (
-            <Tooltip title={'过期'} key={value}>
+            <Tooltip title={'过期'}>
               <img src={require('@/images/status_3.png')} alt={value} />
             </Tooltip>
           );
@@ -280,18 +283,17 @@ const Application: React.FC = () => {
       search: false,
       render: (_, record) =>[
         <a
-          key={record?.applicationId}
           onClick={() => {
+            setOpenModal(true);
             setIsEdit(true);
             setCurrentRow(record);
-            setOpenModal(true);
+            // getApplicationDetail(record?.applicationId);
           }}
         >
           Edit
         </a>,
         <a
           style={{ marginLeft: 20 }}
-          key={record?.applicationId}
           onClick={async () => await deleteUserRequest(record?.applicationId || '')}
         >
           Delete
@@ -373,23 +375,16 @@ const Application: React.FC = () => {
         toolBarRender={() => [
           <Button
             type="primary"
-            key="primary"
             onClick={() => {
               setIsEdit(false);
               setOpenModal(true);
             }}
           >
             <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
-            {/* {formatMessage({ id: 'pages.searchTable.new', defaultMessage: 'New' })} */}
           </Button>,
         ]}
         request={getList}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setCurrentRow(selectedRows);
-          },
-        }}
         pagination={{
           current: currentPage,
           pageSize: pageSize,
@@ -424,37 +419,31 @@ const Application: React.FC = () => {
               }
             }
           }}
-          initialValues={{
-            applicationId: isEdit?currentRow?.applicationId:'',
-            applicationName: isEdit?currentRow?.applicationName:'',
-            abbreviation: isEdit?currentRow?.abbreviation:'',
-            authorizationGrantTypes: isEdit?currentRow?.authorizationGrantTypes:[],
-            clientAuthenticationMethods: isEdit?currentRow?.clientAuthenticationMethods:[],
-            accessTokenValidity: isEdit?(parseAccessTokenValidity(currentRow?.accessTokenValidity)?.split(' ')?.[0]):'',
-            dayType1: isEdit?(parseAccessTokenValidity(currentRow?.accessTokenValidity)?.split(' ')?.[1]):'',
-            refreshTokenValidity: isEdit?(parseAccessTokenValidity(currentRow?.refreshTokenValidity)?.split(' ')?.[0]):'',
-            dayType2: isEdit?(parseAccessTokenValidity(currentRow?.refreshTokenValidity)?.split(' ')?.[1]):'',
-            authorizationCodeValidity: isEdit?(parseAccessTokenValidity(currentRow?.authorizationCodeValidity)?.split(' ')?.[0]):'',
-            dayType3: isEdit?(parseAccessTokenValidity(currentRow?.authorizationCodeValidity)?.split(' ')?.[1]):'',
-            deviceCodeValidity: isEdit?(parseAccessTokenValidity(currentRow?.deviceCodeValidity)?.split(' ')?.[0]):'',
-            dayType4: isEdit?(parseAccessTokenValidity(currentRow?.deviceCodeValidity)?.split(' ')?.[1]):'',
-            requireProofKey: isEdit?currentRow?.requireProofKey:'',
-            requireAuthorizationConsent: isEdit?currentRow?.requireAuthorizationConsent:'',
-            logo: isEdit?currentRow?.logo:'',
-            status: isEdit?currentRow?.status:'',
-            homepage: isEdit?currentRow?.homepage:'',
-            jwkSetUrl: isEdit?currentRow?.jwkSetUrl:'',
-            reserved: isEdit?currentRow?.reserved:'',
-            reuseRefreshTokens: isEdit?currentRow?.reuseRefreshTokens:'',
-            ranking: isEdit?currentRow?.ranking:'',
-            idTokenSignatureAlgorithm: isEdit?currentRow?.idTokenSignatureAlgorithm:'',
-            postLogoutRedirectUris: isEdit?currentRow?.postLogoutRedirectUris:'',
-            redirectUris: isEdit?currentRow?.redirectUris:'',
-            applicationType: isEdit?currentRow?.applicationType:'',
-            description: isEdit?currentRow?.description:'',
-            clientId: isEdit?currentRow?.clientId:'',
-            clientSecret: isEdit?currentRow?.clientSecret:'',
-            clientSecretExpiresAt: isEdit?(currentRow?.clientSecretExpiresAt?moment(new Date(currentRow?.clientSecretExpiresAt).toISOString()):null):''
+          request={async () => {
+            if (isEdit && currentRow) {
+              const responsePayMethodInfo = await getApplicationManageDetailService(currentRow.applicationId);
+              if (responsePayMethodInfo.success === true && responsePayMethodInfo.data) {
+                let list = {...responsePayMethodInfo.data}
+                list.clientSecretExpiresAt = list?.clientSecretExpiresAt?(moment(new Date(list?.clientSecretExpiresAt).toISOString())):null
+                list.dayType1 =  list?.accessTokenValidity?(parseAccessTokenValidity(list?.accessTokenValidity)?.split(' ')?.[1]):null,
+                list.dayType2 =  list?.authorizationCodeValidity?(parseAccessTokenValidity(list?.authorizationCodeValidity)?.split(' ')?.[1]):null,
+                list.dayType3 =  list?.deviceCodeValidity?(parseAccessTokenValidity(list?.deviceCodeValidity)?.split(' ')?.[1]):null,
+                list.dayType4 =  list?.refreshTokenValidity?(parseAccessTokenValidity(list?.refreshTokenValidity)?.split(' ')?.[1]):null,
+                list.accessTokenValidity = list?.accessTokenValidity?(parseAccessTokenValidity(list?.accessTokenValidity)?.split(' ')?.[0]):null
+                list.authorizationCodeValidity = list?.authorizationCodeValidity?(parseAccessTokenValidity(list?.authorizationCodeValidity)?.split(' ')?.[0]):null
+                list.deviceCodeValidity = list?.deviceCodeValidity?(parseAccessTokenValidity(list?.deviceCodeValidity)?.split(' ')?.[0]):null
+                list.refreshTokenValidity = list?.refreshTokenValidity?(parseAccessTokenValidity(list?.refreshTokenValidity)?.split(' ')?.[0]):null
+                list.authorizationGrantTypes = list?.authorizationGrantTypes?(list?.authorizationGrantTypes?.split(',')):[]
+                list.clientAuthenticationMethods = list?.clientAuthenticationMethods?(list?.clientAuthenticationMethods?.split(',')):[]
+
+                return list;
+              }
+            }
+            return {
+              id: '',
+              clientId: '',
+              secretCreated: '',
+            };
           }}
         >
           <Space size={24} style={{ display: `${isEdit?'':'none'}` }}>

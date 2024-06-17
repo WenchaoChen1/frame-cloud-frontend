@@ -1,8 +1,5 @@
 import {
   getComplianceListService,
-  // editUserService,
-  // deleteUserService,
-  // editPermisService,
 } from '@/services/identity-service/compliance';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
