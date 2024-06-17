@@ -118,12 +118,15 @@ const Application: React.FC = () => {
   };
 
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
+    // debugger
     fields.accessTokenValidity = mergeAndFormatValidity(fields?.accessTokenValidity, fields?.dayType1);
     fields.refreshTokenValidity = mergeAndFormatValidity(fields?.refreshTokenValidity, fields?.dayType2);
     fields.authorizationCodeValidity = mergeAndFormatValidity(fields?.authorizationCodeValidity, fields?.dayType3);
     fields.deviceCodeValidity = mergeAndFormatValidity(fields?.deviceCodeValidity, fields?.dayType4);
 
-    fields.clientSecretExpiresAt = new Date(fields?.clientSecretExpiresAt).toISOString();
+    if (fields.clientSecretExpiresAt) {
+      fields.clientSecretExpiresAt = new Date(fields?.clientSecretExpiresAt).toISOString();
+    }
 
     delete fields.dayType1;
     delete fields.dayType2;
@@ -153,7 +156,9 @@ const Application: React.FC = () => {
     fields.authorizationCodeValidity = mergeAndFormatValidity(fields?.authorizationCodeValidity, fields?.dayType3);
     fields.deviceCodeValidity = mergeAndFormatValidity(fields?.deviceCodeValidity, fields?.dayType4);
     
-    fields.clientSecretExpiresAt = new Date(fields?.clientSecretExpiresAt).toISOString();
+    if (fields.clientSecretExpiresAt) {
+      fields.clientSecretExpiresAt = new Date(fields?.clientSecretExpiresAt).toISOString();
+    }
 
     delete fields.dayType1;
     delete fields.dayType2;
@@ -171,10 +176,10 @@ const Application: React.FC = () => {
   };
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
-    {title: 'applicationName', dataIndex: 'applicationName'},
-    {title: 'abbreviation', dataIndex: 'abbreviation'},
+    {title: formatMessage({ id: 'application.list.applicationName' }), dataIndex: 'applicationName'},
+    {title: formatMessage({ id: 'application.list.abbreviation' }), dataIndex: 'abbreviation'},
     {
-      title: 'authorizationGrantTypes',
+      title: formatMessage({ id: 'application.list.authorizationGrantTypes' }),
       dataIndex: 'authorizationGrantTypes',
       hideInForm: true,
       width: '270px',
@@ -234,25 +239,43 @@ const Application: React.FC = () => {
         return <div>{images}</div>;
       },
     },
-    { title: 'accessTokenValidity', search: false, dataIndex: 'accessTokenValidity', render: (text) => formatDuration(text) },
-    { title: 'refreshTokenValidity', search: false, dataIndex: 'refreshTokenValidity', render: (text) => formatDuration(text) },
-    { title: 'authorizationCodeValidity',search: false, dataIndex: 'authorizationCodeValidity', render: (text) => formatDuration(text) },
-    { title: 'deviceCodeValidity', search: false, dataIndex: 'deviceCodeValidity', render: (text) => formatDuration(text) },
+    { title: formatMessage({ id: 'application.list.accessTokenValidity' }), search: false, dataIndex: 'accessTokenValidity', render: (text) => formatDuration(text) },
+    { title: formatMessage({ id: 'application.list.refreshTokenValidity' }), search: false, dataIndex: 'refreshTokenValidity', render: (text) => formatDuration(text) },
+    { title: formatMessage({ id: 'application.list.authorizationCodeValidity' }),search: false, dataIndex: 'authorizationCodeValidity', render: (text) => formatDuration(text) },
+    { title: formatMessage({ id: 'application.list.deviceCodeValidity' }), search: false, dataIndex: 'deviceCodeValidity', render: (text) => formatDuration(text) },
     {
-      title: 'status',
+      title: formatMessage({ id: 'application.list.status' }),
       dataIndex: 'status',
       render: (value, record) => {
         if (value === 0) {
           return (
             <Tooltip title={'启用'} key={value}>
+              <img src={require('@/images/status_0.png')} alt={value} />
+            </Tooltip>
+          );
+        } else if (value === 1) {
+          return (
+            <Tooltip title={'禁用'} key={value}>
               <img src={require('@/images/status_1.png')} alt={value} />
+            </Tooltip>
+          );
+        } else if (value === 2) {
+          return (
+            <Tooltip title={'锁定'} key={value}>
+              <img src={require('@/images/status_2.png')} alt={value} />
+            </Tooltip>
+          );
+        } else if (value === 3) {
+          return (
+            <Tooltip title={'过期'} key={value}>
+              <img src={require('@/images/status_3.png')} alt={value} />
             </Tooltip>
           );
         }
       },
     },
     {
-      title: "actions",
+      title: formatMessage({ id: 'pages.searchTable.actions' }),
       dataIndex: 'actions',
       search: false,
       render: (_, record) =>[
@@ -436,7 +459,7 @@ const Application: React.FC = () => {
         >
           <Space size={24} style={{ display: `${isEdit?'':'none'}` }}>
             <ProFormText
-              label={"clientId"}
+              label={'clientId'}
               width="md"
               name="clientId"
               placeholder={"clientId"}
@@ -462,7 +485,7 @@ const Application: React.FC = () => {
                   message: "applicationName is required",
                 },
               ]}
-              label={"applicationName"}
+              label={formatMessage({ id: 'application.list.applicationName' })}
               width="md"
               name="applicationName"
               placeholder={"applicationName"}
@@ -470,7 +493,7 @@ const Application: React.FC = () => {
 
             <ProFormText
               name="abbreviation"
-              label={"abbreviation"}
+              label={formatMessage({ id: 'application.list.abbreviation' })}
               width="md"
               placeholder={"abbreviation"}
             />
@@ -485,13 +508,13 @@ const Application: React.FC = () => {
 
           <Space size={24}>
             <ProFormText
-              label={"logo"}
+              label={formatMessage({ id: 'application.list.logo' })}
               width="md"
               name="logo"
               placeholder={"logo"}
             />
             <ProFormText
-              label={"homepage"}
+              label={formatMessage({ id: 'application.list.homepage' })}
               width="md"
               name="homepage"
               placeholder={"homepage"}
@@ -507,7 +530,7 @@ const Application: React.FC = () => {
                 }
               ]}
               mode="multiple"
-              label={"authorizationGrantTypes"}
+              label={formatMessage({ id: 'application.list.authorizationGrantTypes' })}
               width="md"
               name="authorizationGrantTypes"
               placeholder={"authorizationGrantTypes"}
@@ -529,7 +552,7 @@ const Application: React.FC = () => {
                 }
               ]}
               mode="multiple"
-              label={"clientAuthenticationMethods"}
+              label={formatMessage({ id: 'application.list.clientAuthenticationMethods' })}
               width="md"
               name="clientAuthenticationMethods"
               placeholder={"clientAuthenticationMethods"}
@@ -546,7 +569,7 @@ const Application: React.FC = () => {
 
           <Space size={24}>
             <ProFormSelect
-              label={"applicationType"}
+              label={formatMessage({ id: 'application.list.applicationType' })}
               width="md"
               name="applicationType"
               placeholder={"applicationType"}
@@ -559,7 +582,7 @@ const Application: React.FC = () => {
                 });
               }}
             />
-            <ProForm.Item label={"clientSecretExpiresAt"} name="clientSecretExpiresAt">
+            <ProForm.Item label={formatMessage({ id: 'application.list.clientSecretExpiresAt' })} name="clientSecretExpiresAt">
               <DatePicker
                 showTime
               />
@@ -568,24 +591,24 @@ const Application: React.FC = () => {
 
           <Space size={24}>
             <ProFormText
-              label={"redirectUris"}
+              label={formatMessage({ id: 'application.list.redirectUris' })}
               width="md"
               name="redirectUris"
               placeholder={"redirectUris"}
             />
             <ProFormText
-              label={"postLogoutRedirectUris"}
+              label={formatMessage({ id: 'application.list.postLogoutRedirectUris' })}
               width="md"
               name="postLogoutRedirectUris"
               placeholder={"postLogoutRedirectUris"}
             />
           </Space>
 
-          <Divider plain>客户端设置(Client Settings)</Divider>
+          <Divider plain>{formatMessage({ id: 'application.list.label1' })}</Divider>
 
           <Space size={24}>
             <ProFormText
-              label={"jwkSetUrl"}
+              label={formatMessage({ id: 'application.list.jwkSetUrl' })}
               width="md"
               name="jwkSetUrl"
               placeholder={"jwkSetUrl"}
@@ -597,23 +620,23 @@ const Application: React.FC = () => {
               <ProForm.Item name="requireProofKey">
                   <Switch />
               </ProForm.Item>
-              <div style={{ paddingTop: 8 }}>是否需要 Proof Key</div>
+              <div style={{ paddingTop: 8 }}>{formatMessage({ id: 'application.list.requireProofKey' })}</div>
             </div>
 
             <div className={styles.switchStyle}>
               <ProForm.Item name="requireAuthorizationConsent" >
                   <Switch />
               </ProForm.Item>
-              <div style={{ paddingTop: 8 }}>是否需要认证确认</div>
+              <div style={{ paddingTop: 8 }}>{formatMessage({ id: 'application.list.requireAuthorizationConsent' })}</div>
             </div>
           </Space>
           
 
-          <Divider plain>令牌设置(Token Settings)</Divider>
+          <Divider plain>{formatMessage({ id: 'application.list.label2' })}</Divider>
 
           <Space size={24}>
             <ProForm.Item
-              label="accessTokenValidity"
+              label={formatMessage({ id: 'application.list.accessTokenValidity' })}
               name="accessTokenValidity"
             >
               <InputNumber
@@ -632,7 +655,7 @@ const Application: React.FC = () => {
 
           <Space size={24}>
             <ProForm.Item
-              label="refreshTokenValidity"
+              label={formatMessage({ id: 'application.list.refreshTokenValidity' })}
               name="refreshTokenValidity"
             >
               <InputNumber
@@ -651,7 +674,7 @@ const Application: React.FC = () => {
 
           <Space size={24}>
             <ProForm.Item
-              label="authorizationCodeValidity"
+              label={formatMessage({ id: 'application.list.authorizationCodeValidity' })}
               name="authorizationCodeValidity"
             >
               <InputNumber
@@ -670,7 +693,7 @@ const Application: React.FC = () => {
 
           <Space size={24}>
             <ProForm.Item
-              label="deviceCodeValidity"
+              label={formatMessage({ id: 'application.list.deviceCodeValidity' })}
               name="deviceCodeValidity"
             >
               <InputNumber
@@ -689,7 +712,7 @@ const Application: React.FC = () => {
 
           <Space size={24}>
             <ProFormSelect
-              label={"idTokenSignatureAlgorithm"}
+              label={formatMessage({ id: 'application.list.idTokenSignatureAlgorithm' })}
               width="md"
               name="idTokenSignatureAlgorithm"
               placeholder={"idTokenSignatureAlgorithm"}
@@ -707,22 +730,22 @@ const Application: React.FC = () => {
               <ProForm.Item label=' ' name="reuseRefreshTokens" >
                   <Switch />
               </ProForm.Item>
-              <div style={{ paddingTop: '35px' }}>是否允许重用刷新令牌</div>
+              <div style={{ paddingTop: '35px' }}>{formatMessage({ id: 'application.list.reuseRefreshTokens' })}</div>
             </div>
           </Space>
 
-          <Divider plain>数据条目设置</Divider>
+          <Divider plain>{formatMessage({ id: 'application.list.label3' })}</Divider>
 
           <Space size={24}>
             <ProFormText
-              label={"description"}
+              label={formatMessage({ id: 'application.list.description' })}
               width="md"
               name="description"
               placeholder={"description"}
             />
 
             <ProForm.Item
-              label="ranking"
+              label={formatMessage({ id: 'application.list.ranking' })}
               name="ranking"
             >
               <InputNumber
@@ -733,7 +756,7 @@ const Application: React.FC = () => {
 
           <Space size={24}>
             <ProFormSelect
-              label={"status"}
+              label={formatMessage({ id: 'application.list.status' })}
               width="md"
               name="status"
               placeholder={"status"}
@@ -761,7 +784,7 @@ const Application: React.FC = () => {
               <ProForm.Item label=' ' name="reserved" >
                   <Switch />
               </ProForm.Item>
-              <div style={{ paddingTop: '35px' }}>是否为保留数据</div>
+              <div style={{ paddingTop: '35px' }}>{formatMessage({ id: 'application.list.reserved' })}</div>
             </div>
           </Space>
  
