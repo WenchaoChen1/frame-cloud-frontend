@@ -427,9 +427,31 @@ const Application: React.FC = () => {
             redirectUris: currentRow?.redirectUris,
             applicationType: currentRow?.applicationType,
             description: currentRow?.description,
-            clientSecretExpiresAt: moment(new Date(currentRow?.clientSecretExpiresAt).toISOString())
+            clientId: currentRow?.clientId,
+            clientSecret: currentRow?.clientSecret,
+            clientSecretExpiresAt: currentRow?.clientSecretExpiresAt?moment(new Date(currentRow?.clientSecretExpiresAt).toISOString()):null
           }}
         >
+          <Space size={24} style={{ display: `${isEdit?'':'none'}` }}>
+            <ProFormText
+              label={"clientId"}
+              width="md"
+              name="clientId"
+              placeholder={"clientId"}
+              disabled
+              hidden={!isEdit}
+            />
+
+            <ProFormText
+              name="clientSecret"
+              label={"clientSecret"}
+              width="md"
+              placeholder={"clientSecret"}
+              disabled
+              hidden={!isEdit}
+            />
+          </Space>
+
           <Space size={24}>
             <ProFormText
               rules={[
