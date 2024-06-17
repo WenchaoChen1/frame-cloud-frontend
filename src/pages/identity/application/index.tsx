@@ -30,6 +30,7 @@ const Application: React.FC = () => {
   const [applicationTypeData, setApplicationTypeData] = useState([]);
   const [idTokenData, setIdTokenData] = useState([]);
   const [authenticationMethod, setAuthenticationMethod] = useState([]);
+  const [formValues, setFormValues] = useState({});
 
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
@@ -53,6 +54,10 @@ const Application: React.FC = () => {
       value: 'seconds',
     }
   ]
+
+  const clearForm = () => {
+    setFormValues({});
+  };
 
   const getList = async (params: API.PageParams) => {
     const response = await getApplicationListService({
@@ -353,6 +358,7 @@ const Application: React.FC = () => {
             onClick={() => {
               setIsEdit(false);
               setOpenModal(true);
+              clearForm();
             }}
           >
             <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
@@ -400,36 +406,36 @@ const Application: React.FC = () => {
             }
           }}
           initialValues={{
-            applicationId: currentRow?.applicationId,
-            applicationName: currentRow?.applicationName,
-            abbreviation: currentRow?.abbreviation,
-            authorizationGrantTypes: currentRow?.authorizationGrantTypes,
-            clientAuthenticationMethods: currentRow?.clientAuthenticationMethods,
-            accessTokenValidity: parseAccessTokenValidity(currentRow?.accessTokenValidity)?.split(' ')?.[0],
-            dayType1: parseAccessTokenValidity(currentRow?.accessTokenValidity)?.split(' ')?.[1],
-            refreshTokenValidity: parseAccessTokenValidity(currentRow?.refreshTokenValidity)?.split(' ')?.[0],
-            dayType2: parseAccessTokenValidity(currentRow?.refreshTokenValidity)?.split(' ')?.[1],
-            authorizationCodeValidity: parseAccessTokenValidity(currentRow?.authorizationCodeValidity)?.split(' ')?.[0],
-            dayType3: parseAccessTokenValidity(currentRow?.authorizationCodeValidity)?.split(' ')?.[1],
-            deviceCodeValidity: parseAccessTokenValidity(currentRow?.deviceCodeValidity)?.split(' ')?.[0],
-            dayType4: parseAccessTokenValidity(currentRow?.deviceCodeValidity)?.split(' ')?.[1],
-            requireProofKey: currentRow?.requireProofKey,
-            requireAuthorizationConsent: currentRow?.requireAuthorizationConsent,
-            logo: currentRow?.logo,
-            status: currentRow?.status,
-            homepage: currentRow?.homepage,
-            jwkSetUrl: currentRow?.jwkSetUrl,
-            reserved: currentRow?.reserved,
-            reuseRefreshTokens: currentRow?.reuseRefreshTokens,
-            ranking: currentRow?.ranking,
-            idTokenSignatureAlgorithm: currentRow?.idTokenSignatureAlgorithm,
-            postLogoutRedirectUris: currentRow?.postLogoutRedirectUris,
-            redirectUris: currentRow?.redirectUris,
-            applicationType: currentRow?.applicationType,
-            description: currentRow?.description,
-            clientId: currentRow?.clientId,
-            clientSecret: currentRow?.clientSecret,
-            clientSecretExpiresAt: currentRow?.clientSecretExpiresAt?moment(new Date(currentRow?.clientSecretExpiresAt).toISOString()):null
+            applicationId: isEdit?currentRow?.applicationId:'',
+            applicationName: isEdit?currentRow?.applicationName:'',
+            abbreviation: isEdit?currentRow?.abbreviation:'',
+            authorizationGrantTypes: isEdit?currentRow?.authorizationGrantTypes:[],
+            clientAuthenticationMethods: isEdit?currentRow?.clientAuthenticationMethods:[],
+            accessTokenValidity: isEdit?(parseAccessTokenValidity(currentRow?.accessTokenValidity)?.split(' ')?.[0]):'',
+            dayType1: isEdit?(parseAccessTokenValidity(currentRow?.accessTokenValidity)?.split(' ')?.[1]):'',
+            refreshTokenValidity: isEdit?(parseAccessTokenValidity(currentRow?.refreshTokenValidity)?.split(' ')?.[0]):'',
+            dayType2: isEdit?(parseAccessTokenValidity(currentRow?.refreshTokenValidity)?.split(' ')?.[1]):'',
+            authorizationCodeValidity: isEdit?(parseAccessTokenValidity(currentRow?.authorizationCodeValidity)?.split(' ')?.[0]):'',
+            dayType3: isEdit?(parseAccessTokenValidity(currentRow?.authorizationCodeValidity)?.split(' ')?.[1]):'',
+            deviceCodeValidity: isEdit?(parseAccessTokenValidity(currentRow?.deviceCodeValidity)?.split(' ')?.[0]):'',
+            dayType4: isEdit?(parseAccessTokenValidity(currentRow?.deviceCodeValidity)?.split(' ')?.[1]):'',
+            requireProofKey: isEdit?currentRow?.requireProofKey:'',
+            requireAuthorizationConsent: isEdit?currentRow?.requireAuthorizationConsent:'',
+            logo: isEdit?currentRow?.logo:'',
+            status: isEdit?currentRow?.status:'',
+            homepage: isEdit?currentRow?.homepage:'',
+            jwkSetUrl: isEdit?currentRow?.jwkSetUrl:'',
+            reserved: isEdit?currentRow?.reserved:'',
+            reuseRefreshTokens: isEdit?currentRow?.reuseRefreshTokens:'',
+            ranking: isEdit?currentRow?.ranking:'',
+            idTokenSignatureAlgorithm: isEdit?currentRow?.idTokenSignatureAlgorithm:'',
+            postLogoutRedirectUris: isEdit?currentRow?.postLogoutRedirectUris:'',
+            redirectUris: isEdit?currentRow?.redirectUris:'',
+            applicationType: isEdit?currentRow?.applicationType:'',
+            description: isEdit?currentRow?.description:'',
+            clientId: isEdit?currentRow?.clientId:'',
+            clientSecret: isEdit?currentRow?.clientSecret:'',
+            clientSecretExpiresAt: isEdit?(currentRow?.clientSecretExpiresAt?moment(new Date(currentRow?.clientSecretExpiresAt).toISOString()):null):''
           }}
         >
           <Space size={24} style={{ display: `${isEdit?'':'none'}` }}>
