@@ -7,7 +7,7 @@ export async function getTenantTree(
     pageSize?: number;
   }
 ) {
-  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/get-tenant-by-id-to-tree`, {
+  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/get-tenant-manage-tree`, {
     method: 'GET',
     params: params,
     // data: {}
