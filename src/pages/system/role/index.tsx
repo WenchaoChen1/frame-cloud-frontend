@@ -45,7 +45,8 @@ const Role: React.FC = () => {
   const createRoleRequest = async (fields: APISystem.RoleItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
-    delete fields?.parentId
+    // fields.tenantId = currentRow?.parentId
+    fields.parentId = currentRow?.parentId
 
     try {
       await insertRoleManageService({ ...fields });
@@ -358,12 +359,12 @@ const Role: React.FC = () => {
           <Space size={20}>
             <ProFormTreeSelect
               label={"Parent Role"}
-              name="parentId"
+              name="tenantId"
               placeholder="Please select"
               allowClear={false}
               width="md"
               secondary
-              request={getRoleTreeRequest}
+              request={getTenantTreeRequest}
               fieldProps={{
                 onChange: onChangeTenant,
                 showArrow: false,
@@ -373,7 +374,7 @@ const Role: React.FC = () => {
                 autoClearSearchValue: true,
                 treeNodeFilterProp: 'title',
                 fieldNames: {
-                  label: 'roleName',
+                  label: 'tenantName',
                   value: 'id'
                 }
               }}

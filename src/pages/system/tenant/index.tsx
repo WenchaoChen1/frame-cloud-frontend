@@ -38,8 +38,8 @@ const Index: React.FC = () => {
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
-    delete fields.parentId;
     delete fields.id;
+    fields.parentId = currentRow?.parentId
 
     try {
       await insertTenantManageService({...fields});

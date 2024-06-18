@@ -7,10 +7,9 @@ import {
   PageContainer,
   ProTable,
 } from '@ant-design/pro-components';
-import {FormattedMessage, useModel} from '@umijs/max';
-import {Button, message, Popconfirm} from 'antd';
+import { useModel} from '@umijs/max';
+import { message, Popconfirm} from 'antd';
 import React, {useRef, useState} from 'react';
-import {PlusOutlined} from "@ant-design/icons";
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import styles from './index.less';
 
