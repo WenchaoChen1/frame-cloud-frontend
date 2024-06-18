@@ -9,7 +9,7 @@ export async function findByPage4(
   params: APIIdentity.Pager,
   options?: { [key: string]: any },
 ) {
-  return request<any>(`${process.env.IDENTITY_SERVICE}/v1/authorize/authorization`, {
+  return request<any>(`${process.env.IDENTITY_SERVICE}/v1/authorize/authorization/get-authorization-manage-page`, {
     method: 'GET',
     params: {
       ...params,
@@ -19,7 +19,7 @@ export async function findByPage4(
 }
 
 export async function deleteAuthorizationById(id: string) {
-  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/authorization/${id}`, {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/authorization/delete-authorization-manage/${id}`, {
     method: 'DELETE',
   });
 }
