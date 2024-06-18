@@ -21,7 +21,7 @@ import {
   getAccountListService,
 } from '@/services/system-service/account';
 import {getTenantManageTreeService} from '@/services/system-service/tenantService';
-import {getAllUserListService} from "@/services/system-service/user";
+import {getUserManagePageService} from "@/services/system-service/userService";
 
 const Account: React.FC = () => {
   const {initialState} = useModel('@@initialState');
@@ -331,7 +331,7 @@ const Account: React.FC = () => {
               secondary
               disabled={isEdit ? true : false}
               request={async () => {
-                const responseRole = await getAllUserListService();
+                const responseRole = await getUserManagePageService();
                 if (responseRole.success === true && responseRole?.data) {
                   return responseRole?.data;
                 } else {

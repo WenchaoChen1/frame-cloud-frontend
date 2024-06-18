@@ -1,10 +1,10 @@
 import {
-  createUserService,
-  deleteUserService,
-  editUserService,
-  getUserInfoService,
-  getUserListService
-} from '@/services/system-service/user';
+  insertUserManageService,
+  deleteUserManageService,
+  updateUserManageService,
+  getUserManageDetailService,
+  getUserManagePageService
+} from '@/services/system-service/userService';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
   FooterToolbar,
@@ -12,7 +12,6 @@ import {
   PageContainer,
   ProFormRadio,
   ProFormText,
-  ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
 import {FormattedMessage, useModel} from '@umijs/max';
@@ -32,7 +31,7 @@ const User: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
   const getList = async (params: API.PageParams) => {
-    const roleResponse = await getUserListService(params);
+    const roleResponse = await getUserManagePageService(params);
 
     let dataSource: APISystem.UserItemDataType[] = [];
     let total = 0;
@@ -57,7 +56,7 @@ const User: React.FC = () => {
     delete fields.id;
 
     try {
-      await createUserService({...fields});
+      await insertUserManageService({...fields});
       hide();
       message.success('Added successfully');
       return true;
@@ -75,7 +74,7 @@ const User: React.FC = () => {
   const editUserRequest = async (fields: APISystem.UserItemDataType) => {
     const hide = message.loading('Update');
     try {
-      await editUserService(fields);
+      await updateUserManageService(fields);
       hide();
 
       message.success('Update successfully');
@@ -90,7 +89,7 @@ const User: React.FC = () => {
   const deleteUserRequest = async (id: string) => {
     const hide = message.loading('delete...');
     try {
-      await deleteUserService(id);
+      await deleteUserManageService(id);
       hide();
       message.success('Deleted successfully and will refresh soon');
 
@@ -230,7 +229,7 @@ const User: React.FC = () => {
           onOpenChange={setOpenModal}
           request={async () => {
             if (isEdit) {
-              const userDetailResponse = await getUserInfoService(currentRow?.id || '');
+              const userDetailResponse = await getUserManageDetailService(currentRow?.id || '');
               if (userDetailResponse.success === true && userDetailResponse.data) {
                 return userDetailResponse.data;
               }

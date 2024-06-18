@@ -14,7 +14,7 @@ const loginPath = '/user/login';
 
 import {getLocalStorage} from '@/utils/utils';
 import {SITE_TITLE, LOGIN_PATH, CURRENT_ACCOUNT_ID,USER_ROUTER} from "@/pages/common/constant";
-import {getLoginInfoService} from '@/services/system-service/user';
+import {getLoginInfoService} from '@/services/system-service/userService';
 import React from "react";
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
