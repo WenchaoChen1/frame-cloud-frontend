@@ -41,7 +41,7 @@ export async function getPermissionManageDetail(id: string) {
 }
 
 export async function getPermissionType() {
-  return request<any>(`${process.env.SYSTEM_SERVICE}/v1/permission/permissionType`, {
+  return request<any>(`${process.env.SYSTEM_SERVICE}/v1/permission/get-all-distinct-permission-type`, {
     method: 'GET',
   });
 }
