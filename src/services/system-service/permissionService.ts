@@ -1,9 +1,9 @@
 import {
-  deletePermissionById,
   getPermissionList,
   getPermissionType,
   insertPermissionManage,
   updatePermissionManage,
+  deletePermissionById,
 } from "@/services/api/system-api/permissionApi";
 
 export async function getPermissionListService(params: APIIdentity.Pager) {

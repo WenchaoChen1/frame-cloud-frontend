@@ -14,12 +14,12 @@ import {
   ProTable
 } from '@ant-design/pro-components';
 import {
-  createAccountService,
-  deleteAccountService,
-  editAccountService,
-  getAccountInfoService,
-  getAccountListService,
-} from '@/services/system-service/account';
+  insertAccountManageService,
+  deleteAccountManageService,
+  updateAccountManageService,
+  getAccountManageDetailService,
+  getAccountManagePageService,
+} from '@/services/system-service/accountService';
 import {getTenantManageTreeService} from '@/services/system-service/tenantService';
 import {getUserManagePageService} from "@/services/system-service/userService";
 
@@ -37,7 +37,7 @@ const Account: React.FC = () => {
   const getList = async (params: APISystem.PageParams) => {
     params.tenantId=initialState?.currentUser?.tenantId;
     console.log(params)
-    const roleResponse = await getAccountListService(params);
+    const roleResponse = await getAccountManagePageService(params);
 
     let dataSource: APISystem.AccountItemDataType[] = [];
     let total = 0;
@@ -55,7 +55,8 @@ const Account: React.FC = () => {
 
   const getAccountInfoRequest = async () => {
     if (isEdit) {
-      const accountDetailResponse = await getAccountInfoService(currentRow?.id || '');
+      const accountDetailResponse = await getAccountManageDetailService(currentRow?.id || '');
+      console.log(accountDetailResponse, '000999')
       if (accountDetailResponse.success === true && accountDetailResponse.data) {
         return accountDetailResponse.data;
       }
@@ -74,7 +75,7 @@ const Account: React.FC = () => {
     delete fields.id;
 
     try {
-      await createAccountService({...fields});
+      await insertAccountManageService({...fields});
       hide();
       message.success('Added successfully');
       return true;
@@ -92,7 +93,7 @@ const Account: React.FC = () => {
   const updateAccountRequest = async (fields: APISystem.AccountItemDataType) => {
     const hide = message.loading('Update...');
     try {
-      await editAccountService(fields);
+      await updateAccountManageService(fields);
       hide();
 
       message.success('Update successfully');
@@ -107,7 +108,7 @@ const Account: React.FC = () => {
   const deleteRow = async (id: string) => {
     const hide = message.loading('delete...');
     try {
-      await deleteAccountService(id);
+      await deleteAccountManageService(id);
       hide();
       message.success('Deleted successfully and will refresh soon');
 
@@ -303,7 +304,7 @@ const Account: React.FC = () => {
                 }
               }}
               fieldProps={{
-                showArrow: false,
+                suffixIcon: null,
                 filterTreeNode: true,
                 showSearch: true,
                 popupMatchSelectWidth: false,
@@ -331,9 +332,9 @@ const Account: React.FC = () => {
               secondary
               disabled={isEdit ? true : false}
               request={async () => {
-                const responseRole = await getUserManagePageService();
-                if (responseRole.success === true && responseRole?.data) {
-                  return responseRole?.data;
+                const responseRole = await getUserManagePageService({});
+                if (responseRole.success === true && responseRole?.data?.content) {
+                  return responseRole?.data?.content;
                 } else {
                   return [];
                 }
