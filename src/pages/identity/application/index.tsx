@@ -1,6 +1,7 @@
 import {
   getApplicationListService,
-  addApplicationService,
+  updateApplicationManageService,
+  insertApplicationManageService,
   deleteApplicationService,
   getApplicationManageDetailService
 } from '@/services/identity-service/applicationService';
@@ -136,7 +137,7 @@ const Application: React.FC = () => {
     delete fields.dayType3;
     delete fields.dayType4;
     try {
-      await addApplicationService({ ...fields });
+      await updateApplicationManageService({ ...fields });
 
       message.success('Update successfully');
       return true;
@@ -169,7 +170,7 @@ const Application: React.FC = () => {
     delete fields.dayType4;
 
     try {
-      await addApplicationService({ ...fields });
+      await insertApplicationManageService({ ...fields });
       message.success('Added successfully');
       return true;
     } catch (error) {

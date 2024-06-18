@@ -26,6 +26,13 @@ export async function updateApplicationManage(data: APISystem.PermissionItemData
   });
 }
 
+export async function insertApplicationManage(data: APISystem.PermissionItemDataType) {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/application/insert-application-manage`, {
+    method: 'POST',
+    data: data,
+  });
+}
+
 export async function deleteApplicationManage(id: string) {
   return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/application/delete-application-manage/${id}`, {
     method: 'DELETE',
