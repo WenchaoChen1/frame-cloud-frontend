@@ -21,7 +21,7 @@ export async function getApplicationManageDetail(id: string) {
 
 export async function updateApplicationManage(data: APISystem.PermissionItemDataType) {
   return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/application/update-application-manage`, {
-    method: 'POST',
+    method: 'PUT',
     data: data,
   });
 }
