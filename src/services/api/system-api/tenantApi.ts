@@ -41,7 +41,11 @@ export async function findAllMenuTreeByTenant(tenantId: string) {
   });
 }
 
-
+export async function getTenantManageDetail(id: string) {
+  return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/tenant/get-tenant-manage-detail/${id}`, {
+    method: 'GET',
+  });
+}
 
 
 

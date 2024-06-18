@@ -3,6 +3,7 @@ import {
   insertTenantManage,
   updateTenantManage,
   deleteTenantManage,
+  getTenantManageDetail,
 
   batchDeleteTenant,
   findAllMenuTreeByTenant,
@@ -27,6 +28,9 @@ export async function deleteTenantManageService(id: string) {
   return await deleteTenantManage(id);
 }
 
+export async function getTenantManageDetailService(id: string) {
+  return await getTenantManageDetail(id);
+}
 
 
 

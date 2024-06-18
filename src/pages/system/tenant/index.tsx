@@ -18,6 +18,7 @@ import {
   insertTenantManageService,
   updateTenantManageService,
   deleteTenantManageService,
+  getTenantManageDetailService,
 
   batchDeleteTenantService,
   findAllMenuTreeByTenantService,
@@ -37,6 +38,7 @@ const Index: React.FC = () => {
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
+    delete fields.parentId;
     delete fields.id;
 
     try {
@@ -168,6 +170,24 @@ const Index: React.FC = () => {
       message.error('Save menu failed, please try again');
     }
   };
+
+  const getTenantManageInfoRequest = async () => {
+    if (isEdit) {
+      const roleDetailResponse =  await getTenantManageDetailService(currentRow?.id || '');
+      if (roleDetailResponse.success === true && roleDetailResponse.data) {
+        return roleDetailResponse.data;
+      }
+    }
+
+    return {
+      parentId:'',
+      tenantName: '',
+      type: '',
+      status: '',
+      tenantCode: 1,
+      description: '',
+    };
+  }
 
   const columns: ProColumns<APISystem.TenantItemDataType>[] = [
     {
@@ -333,8 +353,9 @@ const Index: React.FC = () => {
         <ModalForm
           title={isEdit ? 'Edit' : 'New'}
           width="400px"
-          visible={modalVisible}
-          onVisibleChange={handleModalVisible}
+          open={modalVisible}
+          onOpenChange={handleModalVisible}
+          request={getTenantManageInfoRequest}
           initialValues={{
             id: currentRow?.id,
             parentId: currentRow?.parentId,

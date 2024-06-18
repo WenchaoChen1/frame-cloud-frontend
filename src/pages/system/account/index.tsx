@@ -56,7 +56,6 @@ const Account: React.FC = () => {
   const getAccountInfoRequest = async () => {
     if (isEdit) {
       const accountDetailResponse = await getAccountManageDetailService(currentRow?.id || '');
-      console.log(accountDetailResponse, '000999')
       if (accountDetailResponse.success === true && accountDetailResponse.data) {
         return accountDetailResponse.data;
       }

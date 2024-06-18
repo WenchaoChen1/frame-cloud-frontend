@@ -4,7 +4,7 @@ import {
 import React, { useState, useEffect} from 'react';
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import {
-  getPermissionListService,
+  getPermissionManagePageService,
 } from "@/services/system-service/permissionService";
 import {
   getPermisService,
@@ -45,7 +45,7 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
   ];
 
   const getListData = async(currentPage: number, pageSize: number) => {
-    const msg = await getPermissionListService({
+    const msg = await getPermissionManagePageService({
       pageNumber: currentPage || 1,
       pageSize: pageSize || DEFAULT_PAGE_SIZE,
   });

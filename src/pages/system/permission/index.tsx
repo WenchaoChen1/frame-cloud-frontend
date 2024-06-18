@@ -13,14 +13,16 @@ import React, {useRef, useState, useEffect} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import {
-  deletePermissionByIdService,
-  getPermissionListService,
-  getPermissionTypeService, insertPermissionManageService, updatePermissionManageService,
+  deletePermissionManageService,
+  getPermissionManagePageService, 
+  insertPermissionManageService, 
+  updatePermissionManageService,
+  getPermissionManageDetailService,
+  getPermissionTypeService,
 } from "@/services/system-service/permissionService";
 import styles from './index.less';
 
 const User: React.FC = () => {
-  const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const [isEdit, setIsEdit] = useState(false);
@@ -36,7 +38,7 @@ const User: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
   const getList = async (params: API.PageParams,) => {
-    const response = await getPermissionListService({
+    const response = await getPermissionManagePageService({
         pageNumber: params.current || 1,
         pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
         permissionType: params.permissionType?.map((param: any) => encodeURIComponent(param)).join(',') || [],
@@ -69,11 +71,25 @@ const User: React.FC = () => {
   useEffect(() => {
     initPermissionTypeChange()
   }, []);
+  
+  const getPermissionInfoRequest = async () => {
+    if (isEdit) {
+      const accountDetailResponse = await getPermissionManageDetailService(currentRow?.permissionId || '');
+      if (accountDetailResponse.success === true && accountDetailResponse.data) {
+        return accountDetailResponse.data;
+      }
+    }
 
-  /**
-   * @en-US Add node
-   * @param fields
-   */
+    return {
+      permissionId:'',
+      permissionCode: '',
+      permissionType: '',
+      permissionName: '',
+      status: '',
+    };
+  };
+
+
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
@@ -90,10 +106,7 @@ const User: React.FC = () => {
     }
   };
 
-  /**
-   * @en-US Update node
-   * @param fields
-   */
+
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('Update');
     try {
@@ -113,7 +126,7 @@ const User: React.FC = () => {
     const hide = message.loading('delete...');
 
     try {
-      await deletePermissionByIdService(id);
+      await deletePermissionManageService(id);
       hide();
       message.success('Deleted successfully and will refresh soon');
 
@@ -285,13 +298,7 @@ const User: React.FC = () => {
               }
             }
           }}
-          initialValues={{
-            permissionId: currentRow?.permissionId,
-            permissionName: currentRow?.permissionName,
-            permissionCode: currentRow?.permissionCode,
-            permissionType: currentRow?.permissionType,
-            status: currentRow?.status,
-          }}
+          request={getPermissionInfoRequest}
         >
           <Space size={20}>
             <ProFormText
