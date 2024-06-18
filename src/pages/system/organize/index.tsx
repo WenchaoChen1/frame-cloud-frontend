@@ -1,7 +1,7 @@
 import React, {Key, useEffect, useState} from 'react';
 import {Button, Col, Row, Space, Tree, TreeSelect} from 'antd';
 import {PageContainer} from '@ant-design/pro-components';
-import {getTenantTreeService} from "@/services/system-service/tenant";
+import {getTenantManageTreeService} from "@/services/system-service/tenantService";
 import {getOrganizeTreeService} from '@/services/system-service/organize';
 import RightContainer from "@/pages/system/organize/components/rightContainer";
 import commonStyle from '@/pages/common/index.less';
@@ -19,7 +19,7 @@ const Organize: React.FC = () => {
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
 
   const getTenantTreeRequest = async () => {
-    const tenantTreeResponse = await getTenantTreeService();
+    const tenantTreeResponse = await getTenantManageTreeService();
     if (tenantTreeResponse.success && tenantTreeResponse.data) {
       if (tenantTreeResponse.data?.length > 0) {
         setTenantId(tenantTreeResponse.data[0].id || undefined);

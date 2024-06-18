@@ -20,7 +20,7 @@ import {
   getAccountInfoService,
   getAccountListService,
 } from '@/services/system-service/account';
-import {getTenantTreeService} from '@/services//system-service/tenant';
+import {getTenantManageTreeService} from '@/services/system-service/tenantService';
 import {getAllUserListService} from "@/services/system-service/user";
 
 const Account: React.FC = () => {
@@ -295,7 +295,7 @@ const Account: React.FC = () => {
               secondary
               disabled={isEdit ? true : false}
               request={async () => {
-                const tenantTreeResponse = await getTenantTreeService();
+                const tenantTreeResponse = await getTenantManageTreeService();
                 if (tenantTreeResponse.success && tenantTreeResponse.data) {
                   return tenantTreeResponse.data;
                 } else {

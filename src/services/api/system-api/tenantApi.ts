@@ -1,7 +1,6 @@
 import { request } from '@umijs/max';
 
-// tenant - list
-export async function getTenantTree(
+export async function getTenantManageTree(
   params?: {
     current?: number;
     pageSize?: number;
@@ -10,37 +9,57 @@ export async function getTenantTree(
   return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/get-tenant-manage-tree`, {
     method: 'GET',
     params: params,
-    // data: {}
   });
 }
 
-export async function insertAndUpdateTenantManage(data?: any) {
-  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/insert-and-update-tenant-manage`, {
-    method: 'POST',
-    data: data,
-  });
-}export async function insertTenant(data?: any) {
+export async function insertTenantManage(data?: any) {
   return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/insert-tenant-manage`, {
     method: 'POST',
     data: data,
   });
 }
 
-export async function updateTenant(data?: any) {
+export async function updateTenantManage(data?: any) {
   return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/update-tenant-manage`, {
     method: 'PUT',
     data: data,
   });
 }
 
-export async function deleteTenant(id: string) {
-  return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/tenant`, {
+export async function deleteTenantManage(id: string) {
+  return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/tenant/delete-tenant-manage/${id}`, {
     method: 'DELETE',
-    params: {
-      id: id,
-    },
   });
 }
+
+export async function findAllMenuTreeByTenant(tenantId: string) {
+  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-all-menu-to-tree`, {
+    method: 'GET',
+    params: {
+      tenantId: tenantId
+    }
+  });
+}
+
+
+
+
+
+
+
+
+
+
+export async function insertAndUpdateTenantManage(data?: any) {
+  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/insert-and-update-tenant-manage`, {
+    method: 'POST',
+    data: data,
+  });
+}
+
+
+
+
 
 export async function batchDeleteTenant(params: any) {
   return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/tenant`, {
@@ -53,16 +72,6 @@ export async function batchDeleteTenant(params: any) {
 //  get children tenant By tenantId
 export async function getChildrenByTenantId(tenantId: string) {
   return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/tenant/findByTenantId`, {
-    method: 'GET',
-    params: {
-      tenantId: tenantId
-    }
-  });
-}
-
-//  get relation menu all tree By tenantId
-export async function findAllMenuTreeByTenant(tenantId: string) {
-  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-all-menu-to-tree`, {
     method: 'GET',
     params: {
       tenantId: tenantId

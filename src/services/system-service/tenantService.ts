@@ -1,36 +1,41 @@
 import {
+  getTenantManageTree,
+  insertTenantManage,
+  updateTenantManage,
+  deleteTenantManage,
+
   batchDeleteTenant,
-  deleteTenant,
   findAllMenuTreeByTenant,
   findSelectedMenuByTenant,
   getChildrenByTenantId,
-  getTenantTree, insertAndUpdateTenantManage,
-  insertTenant,
   onSaveMenuInTenant,
-  updateTenant,
 } from '@/services/api/system-api/tenantApi';
 
-// tenant - list
-export async function getTenantTreeService() {
-  return await getTenantTree();
+export async function getTenantManageTreeService() {
+  return await getTenantManageTree();
 }
 
-export async function insertTenantService(data?: any) {
-  return await insertTenant(data);
+export async function insertTenantManageService(data?: any) {
+  return await insertTenantManage(data);
 }
 
-export async function updateTenantService(data?: any) {
-  return await updateTenant(data);
+export async function updateTenantManageService(data?: any) {
+  return await updateTenantManage(data);
 }
 
-export async function deleteTenantService(id: string) {
-  return await deleteTenant(id);
+export async function deleteTenantManageService(id: string) {
+  return await deleteTenantManage(id);
 }
+
+
+
+
+
+
 
 export async function batchDeleteTenantService(params: any) {
   return await batchDeleteTenant(params);
 }
-
 
 //  get children tenant By tenantId
 export async function getChildrenByTenantIdService(tenantId: string) {

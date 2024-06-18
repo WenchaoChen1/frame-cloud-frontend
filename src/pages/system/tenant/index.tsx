@@ -1,6 +1,8 @@
+import styles from './index.less';
 import React, {useRef, useState} from 'react';
 import {Button, message, Tree} from 'antd';
 import {FormattedMessage} from '@umijs/max';
+import commonStyle from "@/pages/common/index.less";
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
   FooterToolbar,
@@ -12,17 +14,17 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import {
+  getTenantManageTreeService,
+  insertTenantManageService,
+  updateTenantManageService,
+  deleteTenantManageService,
+
   batchDeleteTenantService,
-  deleteTenantService,
   findAllMenuTreeByTenantService,
   findSelectedMenuByTenantService,
-  getTenantTreeService,
-  insertTenantService,
   onSaveMenuInTenantService,
-  updateTenantService
-} from '@/services/system-service/tenant';
-import commonStyle from "@/pages/common/index.less";
-import styles from './index.less';
+} from '@/services/system-service/tenantService';
+
 
 const Index: React.FC = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -38,7 +40,7 @@ const Index: React.FC = () => {
     delete fields.id;
 
     try {
-      await insertTenantService({...fields});
+      await insertTenantManageService({...fields});
       hide();
       message.success('Added successfully');
       return true;
@@ -49,14 +51,10 @@ const Index: React.FC = () => {
     }
   };
 
-  /**
-   * @en-US Update node
-   * @param fields
-   */
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('Update');
     try {
-      await updateTenantService(fields);
+      await updateTenantManageService(fields);
       hide();
 
       message.success('Update successfully');
@@ -71,7 +69,7 @@ const Index: React.FC = () => {
   const deleteRow = async (id: string) => {
     const hide = message.loading('delete...');
     try {
-      await deleteTenantService(id);
+      await deleteTenantManageService(id);
       hide();
       message.success('Deleted successfully and will refresh soon');
       return true;
@@ -82,11 +80,6 @@ const Index: React.FC = () => {
     }
   }
 
-  /**
-   *  Delete node
-   *
-   * @param selectedRows
-   */
   const batchDeleteRow = async (selectedRows: APISystem.TenantItemDataType[]) => {
     const hide = message.loading('delete...');
     if (!selectedRows) return true;
@@ -115,7 +108,6 @@ const Index: React.FC = () => {
 
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
-  // const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
   const [checkedKeys, setCheckedKeys] = useState<{ checked: React.Key[], halfChecked: React.Key[] }>({
     checked: [],
     halfChecked: []
@@ -125,15 +117,11 @@ const Index: React.FC = () => {
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
 
   const onExpand = (expandedKeysValue: React.Key[]) => {
-    console.log('onExpand', expandedKeysValue);
-    // if not set autoExpandParent to false, if children expanded, parent can not collapse.
-    // or, you can remove all expanded children keys.
     setExpandedKeys(expandedKeysValue);
     setAutoExpandParent(false);
   };
 
   const onCheck = (checkedKeysValue: React.Key[], e: any) => {
-    console.log('onCheck', checkedKeysValue, e);
     setCheckedKeys({
       checked: checkedKeysValue,
       halfChecked: e.halfCheckedKeys
@@ -141,7 +129,6 @@ const Index: React.FC = () => {
   };
 
   const onSelect = (selectedKeysValue: React.Key[], info: any) => {
-    console.log('onSelect', info);
     setSelectedKeys(selectedKeysValue);
   };
 
@@ -259,6 +246,15 @@ const Index: React.FC = () => {
       valueType: 'option',
       render: (_, record) => [
         <a
+          key="MenuBtn"
+          onClick={() => {
+            setCurrentRow(record);
+            openMenuModal(record?.id || '');
+          }}
+        >
+          Menu
+        </a>,
+        <a
           key="EditBtn"
           onClick={() => {
             setIsEdit(true);
@@ -285,15 +281,6 @@ const Index: React.FC = () => {
             actionRef.current?.reloadAndRest?.();
           }}
         >Delete</a>,
-        <a
-          key="MenuBtn"
-          onClick={() => {
-            setCurrentRow(record);
-            openMenuModal(record?.id || '');
-          }}
-        >
-          Menu
-        </a>
       ],
     },
   ];
@@ -308,7 +295,7 @@ const Index: React.FC = () => {
           labelWidth: 100,
         }}
         toolBarRender={() => []}
-        request={getTenantTreeService}
+        request={getTenantManageTreeService}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -473,8 +460,8 @@ const Index: React.FC = () => {
         <ModalForm
           title={'Menu'}
           width="400px"
-          visible={menuModalVisible}
-          onVisibleChange={setMenuModalVisible}
+          open={menuModalVisible}
+          onOpenChange={setMenuModalVisible}
           onFinish={async (record) => {
             await onSaveMenu(record?.id);
           }}

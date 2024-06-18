@@ -15,13 +15,13 @@ import {
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {PlusOutlined} from '@ant-design/icons';
 import {
-  deleteRoleService,
-  getRoleInfoService,
-  getRoleListService,
-  insertRoleService,
-  updateRoleService,
-} from '@/services/system-service/role';
-import {getTenantTreeService} from '@/services/system-service/tenant';
+  getRoleManageTreeService,
+  getRoleManageDetailService,
+  deleteRoleManageService,
+  insertRoleManageService,
+  updateRoleManageService,
+} from '@/services/system-service/roleService';
+import {getTenantManageTreeService} from '@/services/system-service/tenantService';
 
 const Role: React.FC = () => {
   const [tenantId, setTenantId] = useState<string|undefined>(undefined);
@@ -42,16 +42,13 @@ const Role: React.FC = () => {
     setOpenModal(true);
   }
 
-  /**
-   * @en-US Add node
-   * @param fields
-   */
   const createRoleRequest = async (fields: APISystem.RoleItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
+    delete fields?.parentId
 
     try {
-      await insertRoleService({ ...fields });
+      await insertRoleManageService({ ...fields });
       hide();
       message.success('Added successfully');
       return true;
@@ -62,14 +59,10 @@ const Role: React.FC = () => {
     }
   };
 
-  /**
-   * @en-US Update node
-   * @param fields
-   */
   const updateRoleRequest = async (fields: APISystem.RoleItemDataType) => {
     const hide = message.loading('Update');
     try {
-      await updateRoleService(fields);
+      await updateRoleManageService(fields);
       hide();
 
       message.success('Update successfully');
@@ -84,7 +77,7 @@ const Role: React.FC = () => {
   const deleteRoleRequest = async (id: string) => {
     const hide = message.loading('delete...');
     try {
-      await deleteRoleService(id);
+      await deleteRoleManageService(id);
       hide();
       message.success('Deleted successfully and will refresh soon');
 
@@ -100,7 +93,7 @@ const Role: React.FC = () => {
   }
 
   const getRoleTreeRequest = async () => {
-    const RoleTreeResponse = await getRoleListService({tenantId: tenantId});
+    const RoleTreeResponse = await getRoleManageTreeService({tenantId: tenantId});
     if (RoleTreeResponse.success && RoleTreeResponse.data) {
       return RoleTreeResponse.data;
     } else {
@@ -204,7 +197,7 @@ const Role: React.FC = () => {
 
     params.tenantId = tenantId;
 
-    const roleResponse = await getRoleListService(params);
+    const roleResponse = await getRoleManageTreeService(params);
 
     let dataSource: APISystem.RoleItemDataType[] = [];
     if (roleResponse?.success === true) {
@@ -219,7 +212,7 @@ const Role: React.FC = () => {
 
   const getRoleInfoRequest = async () => {
     if (isEdit) {
-      const roleDetailResponse =  await getRoleInfoService(currentRow?.id || '');
+      const roleDetailResponse =  await getRoleManageDetailService(currentRow?.id || '');
       if (roleDetailResponse.success === true && roleDetailResponse.data) {
         return roleDetailResponse.data;
       }
@@ -237,7 +230,7 @@ const Role: React.FC = () => {
   }
 
   const getTenantTreeRequest = async () => {
-    const tenantTreeResponse = await getTenantTreeService();
+    const tenantTreeResponse = await getTenantManageTreeService();
     if (tenantTreeResponse.success && tenantTreeResponse.data) {
       if (tenantTreeResponse.data?.length > 0) {
         setTenantId(tenantTreeResponse.data[0].id || undefined);

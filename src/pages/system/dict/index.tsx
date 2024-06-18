@@ -3,7 +3,7 @@ import {Button, Col, Modal, Row, Space, Tree, TreeSelect} from 'antd';
 import {
   PageContainer,
 } from '@ant-design/pro-components';
-import {getTenantTreeService} from "@/services/system-service/tenant";
+import {getTenantManageTreeService} from "@/services/system-service/tenantService";
 import {getDictTreeService} from "@/services/system-service/dict";
 import RightContainer from "@/pages/system/dict/components/rightContainer";
 import styles from "@/pages/system/dict/index.less";
@@ -21,7 +21,7 @@ const Dict: React.FC = () => {
   const [isRefresh, setIsRefresh] = useState(false);
 
   const getTenantTreeRequest = async () => {
-    const tenantTreeResponse = await getTenantTreeService();
+    const tenantTreeResponse = await getTenantManageTreeService();
     if (tenantTreeResponse.success && tenantTreeResponse.data) {
       if (tenantTreeResponse.data?.length > 0) {
         setTenantId(tenantTreeResponse.data[0].id || undefined);
