@@ -5,6 +5,7 @@ import {
   getUserManageDetailService,
   getUserManagePageService
 } from '@/services/system-service/userService';
+import styles from './index.less';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
   FooterToolbar,
@@ -13,6 +14,7 @@ import {
   ProFormRadio,
   ProFormText,
   ProTable,
+  ProFormDigit,
 } from '@ant-design/pro-components';
 import {FormattedMessage, useModel} from '@umijs/max';
 import {Button, message, Space} from 'antd';
@@ -121,8 +123,16 @@ const User: React.FC = () => {
       dataIndex: 'email',
     },
     {
-      title: 'Mobile',
+      title: 'PhoneNumber',
       dataIndex: 'mobile',
+      renderFormItem: (_, { type, defaultRender, ...rest }) => {
+        return (
+          <ProFormDigit
+              width="md"
+              name="PhoneNumber"
+            />      
+        )
+      },
     },
     {
       title: "Status",
@@ -175,6 +185,7 @@ const User: React.FC = () => {
         headerTitle={'List'}
         actionRef={actionRef}
         rowKey="id"
+        className={styles.userStyle}
         options={false}
         toolBarRender={() => [
           <Button
@@ -257,6 +268,9 @@ const User: React.FC = () => {
           }}
         >
           <Space size={20}>
+            <ProFormText name="id" hidden={true} />
+          </Space>
+          <Space size={20}>
             <ProFormText
               rules={[
                 {
@@ -270,18 +284,18 @@ const User: React.FC = () => {
               placeholder={"User Name"}
             />
 
-            <ProFormText
+            <ProFormDigit
               rules={[
                 {
                   required: true,
                   message: "Phone Number is required",
                 }
               ]}
-              label={"PhoneNumber"}
               width="md"
-              name="phoneNumber"
-              placeholder={"PhoneNumber"}
-            />
+              name="PhoneNumber"
+              label="PhoneNumber"
+            />        
+
           </Space>
 
           <Space size={20}>
@@ -320,17 +334,6 @@ const User: React.FC = () => {
               ]}
             />
           </Space>
-
-          {/*<Space size={20}>*/}
-          {/*  <ProFormTextArea*/}
-          {/*    label={"Description"}*/}
-          {/*    name="description"*/}
-          {/*    width="md"*/}
-          {/*    placeholder={'Please enter description'}*/}
-          {/*  />*/}
-
-          {/*  <ProFormText name="id" hidden={true}/>*/}
-          {/*</Space>*/}
         </ModalForm>
       }
 

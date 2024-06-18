@@ -14,10 +14,6 @@ import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import styles from './index.less';
 
 const Authorization: React.FC = () => {
-  const {initialState} = useModel('@@initialState');
-  const currentUserId = initialState?.currentUser?.userId;
-
-  const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectedRowsState, setSelectedRows] = useState<APISystem.UserItemDataType[]>([]);
 
   const actionRef = useRef<ActionType>();
@@ -127,18 +123,6 @@ const Authorization: React.FC = () => {
         rowKey="id"
         className={styles.Authorization}
         options={false}
-        // toolBarRender={() => [
-        //   <Button
-        //     type="primary"
-        //     key="primary"
-        //     onClick={() => {
-        //       // setIsEdit(false);
-        //       setOpenModal(true);
-        //     }}
-        //   >
-        //     <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
-        //   </Button>,
-        // ]}
         request={getList}
         columns={columns}
         rowSelection={{
@@ -150,7 +134,6 @@ const Authorization: React.FC = () => {
           current: currentPage,
           pageSize: pageSize,
           total: total,
-          // showTotal: () => '',
           showSizeChanger: true,
           onChange: (currentPageNumber, pageSizeNumber) => {
             setPageSize(pageSizeNumber);
