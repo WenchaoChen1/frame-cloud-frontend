@@ -39,14 +39,14 @@ const User: React.FC = () => {
 
   const getList = async (params: API.PageParams,) => {
     params.status = params?.status?.map((item: any) => {
-        if (item === 1) {
-          return item = 'ENABLE'
-        } else if (item === 2) {
+        if (item === '1') {
           return item = 'FORBIDDEN'
-        } else if (item === 3) {
+        } else if (item === '2') {
           return item = 'LOCKING'
-        } else {
+        } else if (item === '3') {
           return item = 'EXPIRED'
+        } else {
+          return item = 'ENABLE'
         }
     })
     const response = await getPermissionManagePageService({

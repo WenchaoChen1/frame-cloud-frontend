@@ -30,10 +30,8 @@ const Role: React.FC = () => {
   const [tenantId, setTenantId] = useState<string|undefined>(undefined);
   const [roleNameText, setRoleNameText] = useState('');
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
-
   const [isEdit, setIsEdit] = useState(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
-
   const [currentRow, setCurrentRow] = useState<APISystem.RoleItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.RoleItemDataType[]>([]);
 
@@ -49,7 +47,6 @@ const Role: React.FC = () => {
   const createRoleRequest = async (fields: APISystem.RoleItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
-    // fields.tenantId = currentRow?.parentId
     fields.parentId = currentRow?.parentId
 
     try {
@@ -158,14 +155,13 @@ const Role: React.FC = () => {
           <ProFormTreeSelect
             name="tenant"
             placeholder="Please select"
-            // initialValue={tenantId}
             allowClear={false}
             width={'lg'}
             secondary
+            initialValue={tenantId}
             fieldProps={{
-              // value: tenantId,
-              treeData: tenantTreeData,
               onChange: onChangeTenant,
+              treeData: tenantTreeData,
               showArrow: false,
               filterTreeNode: true,
               showSearch: true,
@@ -182,6 +178,11 @@ const Role: React.FC = () => {
       },
     }
   ];
+
+  const clearDate = () => {
+    // console.log('集')
+    // setTenantId('');
+  };
 
   const getList = async (params: APISystem.RoleTableSearchParams) => {
 
@@ -280,6 +281,7 @@ const Role: React.FC = () => {
             </Button>,
           ]}
           request={getList}
+          onReset={clearDate}
           columns={columns}
           rowSelection={{
             onChange: (_, selectedRows) => {
@@ -399,14 +401,14 @@ const Role: React.FC = () => {
 
             <ProFormTreeSelect
               label={"Parent Role"}
-              name="parentId"
+              name="id"
               placeholder="Please select"
               allowClear={false}
               width="md"
               secondary
               request={getParentRoleTreeRequest}
               fieldProps={{
-                // showArrow: false,
+                showArrow: false,
                 filterTreeNode: true,
                 showSearch: true,
                 popupMatchSelectWidth: false,

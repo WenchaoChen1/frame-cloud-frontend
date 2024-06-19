@@ -15,9 +15,10 @@ import {
   ProFormText,
   ProTable,
   ProFormDigit,
+  ProFormSelect,
 } from '@ant-design/pro-components';
 import {FormattedMessage, useModel} from '@umijs/max';
-import {Button, message, Space} from 'antd';
+import {Button, message, Space } from 'antd';
 import React, {useRef, useState} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
 
@@ -113,6 +114,13 @@ const User: React.FC = () => {
     setCurrentRow(record);
   }
 
+  const numericValidator = (_, value) => {
+    if (value && !/^\d+$/.test(value)) {
+      return Promise.reject('请输入数字类型');
+    }
+    return Promise.resolve();
+  };
+
   const columns: ProColumns<APISystem.UserItemDataType>[] = [
     {
       title: 'User Name',
@@ -124,13 +132,13 @@ const User: React.FC = () => {
     },
     {
       title: 'PhoneNumber',
-      dataIndex: 'mobile',
+      dataIndex: 'phoneNumber',
       renderFormItem: (_, { type, defaultRender, ...rest }) => {
         return (
           <ProFormDigit
-              width="md"
-              name="PhoneNumber"
-            />      
+            width="md"
+            name="phoneNumber"
+          />
         )
       },
     },
@@ -292,7 +300,7 @@ const User: React.FC = () => {
                 }
               ]}
               width="md"
-              name="PhoneNumber"
+              name="phoneNumber"
               label="PhoneNumber"
             />        
 
@@ -334,6 +342,58 @@ const User: React.FC = () => {
               ]}
             />
           </Space>
+
+          <Space size={20}>
+            <ProFormText
+              label={"Nickname"}
+              width="md"
+              rules={[
+                {
+                  required: true,
+                  message: "Nickname is required",
+                },
+              ]}
+              name="nickname"
+              placeholder={"Nickname"}
+            />
+            <ProFormText
+              label={"Avatar"}
+              width="md"
+              name="avatar"
+              rules={[
+                {
+                  required: true,
+                  message: "Avatar is required",
+                },
+              ]}
+              placeholder={"Avatar"}
+            />
+          </Space>
+
+          <Space size={20}>
+            <ProFormSelect
+              width="md"
+              rules={[
+                {
+                  required: true,
+                  message: "Status is required",
+                },
+              ]}
+              name="status"
+              label={"Status"}
+              options={[
+                {
+                  label: '禁用',
+                  value: 0,
+                },
+                {
+                  label: '启用',
+                  value: 1,
+                },
+              ]}
+            />
+          </Space>
+
         </ModalForm>
       }
 

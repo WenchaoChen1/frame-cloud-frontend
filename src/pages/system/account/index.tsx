@@ -36,7 +36,6 @@ const Account: React.FC = () => {
 
   const getList = async (params: APISystem.PageParams) => {
     params.tenantId=initialState?.currentUser?.tenantId;
-    console.log(params)
     const roleResponse = await getAccountManagePageService(params);
 
     let dataSource: APISystem.AccountItemDataType[] = [];
@@ -141,7 +140,7 @@ const Account: React.FC = () => {
     {
       title: 'Created At',
       key: 'showTime',
-      dataIndex: 'createdAt',
+      dataIndex: 'createdDate',
       valueType: 'date',
       sorter: true,
       hideInSearch: true,
@@ -260,7 +259,7 @@ const Account: React.FC = () => {
             />
 
             <ProFormSelect
-              name="accountTypeConstants"
+              name="type"
               label={"Account Type"}
               width="md"
               rules={[
@@ -269,14 +268,17 @@ const Account: React.FC = () => {
                   message: "Account Type is required",
                 },
               ]}
-              initialValue={'ADMIN'}
               options={[
                 {
-                  value: 'ADMIN',
+                  value: 0,
+                  label: 'Super'
+                },
+                {
+                  value: 1,
                   label: 'Admin'
                 },
                 {
-                  value: 'USER',
+                  value: 2,
                   label: 'User'
                 }
               ]}
@@ -350,6 +352,15 @@ const Account: React.FC = () => {
                   message: "User is required",
                 }
               ]}
+            />
+          </Space>
+
+          <Space size={20}>
+            <ProFormText
+              width="md"
+              label={"Identity"}
+              name={"identity"}
+              placeholder={"Identity"}
             />
           </Space>
 
