@@ -8,7 +8,7 @@ export async function getMenuTree(
   },
   options?: { [key: string]: any },
 ) {
-  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-menu-manage-to-tree`, {
+  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-menu-manage-tree`, {
     method: 'GET',
     params: {
       ...params,
