@@ -1,5 +1,6 @@
 import {
   getScopeManagePageService,
+  getScopeManageDetailService,
   insertScopeManageService,
   updateScopeManageService,
   deleteScopeManageService,
@@ -69,6 +70,21 @@ const Scope: React.FC = () => {
       message.error('Update failed, please try again!');
       return false;
     }
+  };
+
+  const getScopeInfoRequest = async () => {
+    if (isEdit) {
+      const accountDetailResponse = await getScopeManageDetailService(currentRow?.scopeId || '');
+      if (accountDetailResponse.success === true && accountDetailResponse.data) {
+        return accountDetailResponse.data;
+      }
+    }
+
+    return {
+      scopeName:'',
+      scopeCode: '',
+      scopeId: '',
+    };
   };
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
@@ -158,7 +174,7 @@ const Scope: React.FC = () => {
     },
   ];
 
-  const handleSelectedPermissions = (permissions) => {
+  const handleSelectedPermissions = (permissions: any) => {
     setSelectedPermissions(permissions);
   };
 
@@ -208,6 +224,7 @@ const Scope: React.FC = () => {
           width="800px"
           open={openModal}
           onOpenChange={setOpenModal}
+          request={getScopeInfoRequest}
           onFinish={async (record) => {
             let response = undefined;
             if (isEdit) {

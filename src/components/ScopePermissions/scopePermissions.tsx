@@ -6,9 +6,6 @@ import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import {
   getPermissionManagePageService,
 } from "@/services/system-service/permissionService";
-import {
-  getPermisService,
-} from '@/services/identity-service/scopeService';
 import styles from './index.less';
 
 type TypeProp = {
@@ -44,13 +41,33 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
     },
   ];
 
-  const getListData = async(currentPage: number, pageSize: number) => {
-    const msg = await getPermissionManagePageService({
-      pageNumber: currentPage || 1,
-      pageSize: pageSize || DEFAULT_PAGE_SIZE,
-  });
-    setPermisListData(msg?.data?.content || [])
-    setTotal(msg?.data?.totalElements)
+  const getList = async(params: API.PageParams) => {
+    const response = await getPermissionManagePageService({
+      pageNumber: params.current || 1,
+      pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
+      permissionName: params?.permissionName || '',
+      permissionCode: params?.permissionCode || '',
+      permissionType: params?.permissionType || '',
+    });
+
+    console.log(response, '******')
+    // debugger
+
+    let dataSource: APISystem.UserItemDataType[] = [];
+    let total = 0;
+    if (response?.success === true) {
+      dataSource = response?.data?.content || [];
+      total = response?.data?.totalElements || 0;
+    }
+
+    setTotal(total);
+    setPermisListData(response?.data?.content);
+
+    return {
+      data: dataSource,
+      success: true,
+      total: total,
+    };
   }
 
   const onSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: any) => {
@@ -69,12 +86,12 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
       setSelectedRowKeys(permissionIds);
   };
 
-  useEffect(() => {
-    initPermissList();
-  }, [scopeId])
+  // useEffect(() => {
+  //   initPermissList();
+  // }, [scopeId])
 
   useEffect(() => {
-    getListData(page, size);
+    getList({});
   }, [])
 
   return (
@@ -82,10 +99,10 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
       <ProTable
         className={styles.permission}
         columns={columns}
-        dataSource={permisListData}
         rowKey={(e: any) => e?.permissionId}
         rowSelection={rowSelection}
         options={false}
+        request={getList}
         pagination={{
           current: page,
           pageSize: size, 
@@ -94,7 +111,6 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
           onChange: (pageNum: number, sizeNum: any) => {
             setPage(pageNum);
             setSize(sizeNum);
-            getListData(pageNum, sizeNum);
           }
         }}
       />
