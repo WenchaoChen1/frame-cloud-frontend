@@ -167,7 +167,7 @@ const Role: React.FC = () => {
             width={'lg'}
             secondary
             fieldProps={{
-              value: tenantId,
+              // value: tenantId,
               treeData: tenantTreeData,
               onChange: onChangeTenant,
               showArrow: false,
@@ -358,7 +358,7 @@ const Role: React.FC = () => {
 
           <Space size={20}>
             <ProFormTreeSelect
-              label={"Parent Role"}
+              label={"Tenant"}
               name="tenantId"
               placeholder="Please select"
               allowClear={false}
