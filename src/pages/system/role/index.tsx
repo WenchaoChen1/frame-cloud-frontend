@@ -111,6 +111,11 @@ const Role: React.FC = () => {
       dataIndex: 'sort',
     },
     {
+      title: 'Tenant',
+      hideInForm: true,
+      dataIndex: 'tenantId',
+    },
+    {
       title: "Status",
       dataIndex: 'status',
       hideInForm: true,

@@ -143,6 +143,11 @@ const User: React.FC = () => {
       },
     },
     {
+      title: 'Tenant',
+      hideInForm: true,
+      dataIndex: 'tenantId',
+    },
+    {
       title: "Status",
       dataIndex: 'status',
       hideInForm: true,
