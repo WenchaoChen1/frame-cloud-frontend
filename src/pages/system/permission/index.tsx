@@ -39,10 +39,12 @@ const User: React.FC = () => {
 
   const getList = async (params: API.PageParams,) => {
     const response = await getPermissionManagePageService({
-        pageNumber: params.current || 1,
-        pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
-        permissionType: params.permissionType?.map((param: any) => encodeURIComponent(param)).join(',') || [],
-        status: params.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+        pageNumber: params?.current || 1,
+        pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
+        permissionType: params?.permissionType?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+        status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+        permissionName: params?.permissionName || '',
+        permissionCode: params?.permissionCode || '',
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
