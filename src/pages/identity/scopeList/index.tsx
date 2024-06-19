@@ -1,9 +1,10 @@
 import {
-  getAllUserListService,
-  editUserService,
-  deleteUserService,
-  editPermisService,
-} from '@/services/identity-service/scope';
+  getScopeManagePageService,
+  insertScopeManageService,
+  updateScopeManageService,
+  deleteScopeManageService,
+  scopeManageAssignedPermissionService,
+} from '@/services/identity-service/scopeService';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
   PageContainer,
@@ -27,15 +28,12 @@ const Scope: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<APISystem.MenuListItemDataType>();
   const [scopeId, setScopeId] = useState('');
   const [selectedPermissions, setSelectedPermissions] = useState([]);
-
-
-
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const getList = async (params: API.PageParams) => {
-    const response = await getAllUserListService({
+    const response = await getScopeManagePageService({
         pageNumber: params.current || 1,
         pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
         scopeName: params?.scopeName || '',
@@ -61,7 +59,7 @@ const Scope: React.FC = () => {
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('Update');
     try {
-      await editUserService(fields);
+      await updateScopeManageService(fields);
       hide();
 
       message.success('Update successfully');
@@ -78,7 +76,7 @@ const Scope: React.FC = () => {
     delete fields.id;
 
     try {
-      await editUserService({ ...fields });
+      await insertScopeManageService({ ...fields });
       hide();
       message.success('Added successfully');
       return true;
@@ -95,7 +93,7 @@ const Scope: React.FC = () => {
       permissions: selectedPermissions || '',
     }
     try {
-      await editPermisService(parms);
+      await scopeManageAssignedPermissionService(parms);
       message.success('Added successfully');
       return true;
     } catch (error) {
@@ -108,7 +106,7 @@ const Scope: React.FC = () => {
     const hide = message.loading('delete...');
 
     try {
-      await deleteUserService(id);
+      await deleteScopeManageService(id);
       hide();
       message.success('Deleted successfully and will refresh soon');
 

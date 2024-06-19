@@ -8,7 +8,7 @@ import {
 } from "@/services/system-service/permissionService";
 import {
   getPermisService,
-} from '@/services/identity-service/scope';
+} from '@/services/identity-service/scopeService';
 import styles from './index.less';
 
 type TypeProp = {

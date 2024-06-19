@@ -11,6 +11,8 @@ import {
   ProFormTextArea,
   ProFormTreeSelect,
   ProTable,
+  ProFormSelect,
+  ProForm,
 } from '@ant-design/pro-components';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {PlusOutlined} from '@ant-design/icons';
@@ -20,11 +22,13 @@ import {
   deleteRoleManageService,
   insertRoleManageService,
   updateRoleManageService,
+  getRoleManageRoleDetailToListService,
 } from '@/services/system-service/roleService';
 import {getTenantManageTreeService} from '@/services/system-service/tenantService';
 
 const Role: React.FC = () => {
   const [tenantId, setTenantId] = useState<string|undefined>(undefined);
+  const [roleNameText, setRoleNameText] = useState('');
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
 
   const [isEdit, setIsEdit] = useState(false);
@@ -246,6 +250,18 @@ const Role: React.FC = () => {
     }
   }
 
+  const getParentRoleTreeRequest = async () => {
+    const Response = await getRoleManageRoleDetailToListService({
+      tenantId: tenantId,
+      roleName: roleNameText || ''
+    });
+    if (Response.success && Response.data) {
+      return Response.data;
+    } else {
+      return [];
+    }
+  }
+
   useEffect(() => {
     getTenantTreeRequest();
   }, [])
@@ -336,6 +352,9 @@ const Role: React.FC = () => {
                   message: "Role Name is required",
                 }
               ]}
+              fieldProps={{
+                onChange: (changeValues) => setRoleNameText(changeValues?.target?.defaultValue)
+              }}
               label={"Role Name"}
               name="roleName"
               width="md"
@@ -386,16 +405,42 @@ const Role: React.FC = () => {
               ]}
             />
 
+            <ProFormTreeSelect
+              label={"Parent Role"}
+              name="parentId"
+              placeholder="Please select"
+              allowClear={false}
+              width="md"
+              secondary
+              request={getParentRoleTreeRequest}
+              fieldProps={{
+                showArrow: false,
+                filterTreeNode: true,
+                showSearch: true,
+                popupMatchSelectWidth: false,
+                autoClearSearchValue: true,
+                treeNodeFilterProp: 'title',
+                fieldNames: {
+                  label: 'roleName',
+                  value: 'id'
+                }
+              }}
+              rules={[
+                {
+                  required: true,
+                  message: "Parent Role is required"
+                }
+              ]}
+            />
+          </Space>
+
+          <Space size={20}>
             <ProFormDigit
               label={"Sort"}
               name="sort"
               width="md"
               placeholder={"Sort"}
             />
-          </Space>
-
-          <Space size={20}>
-            <ProFormTextArea label={"Description"} name="description" width="md" />
             <ProFormRadio.Group
               rules={[
                 {
@@ -417,6 +462,10 @@ const Role: React.FC = () => {
                 }
               ]}
             />
+          </Space>
+
+          <Space size={20}>
+            <ProFormTextArea label={"Description"} name="description" width="md" />
           </Space>
         </ModalForm>
       }

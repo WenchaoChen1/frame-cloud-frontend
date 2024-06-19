@@ -1,13 +1,12 @@
 import {
-  getAuthorizationPage,
-  deleteAuthorizationByIdService
+  getAuthorizationManagePageService,
+  deleteAuthorizationManageService
 } from '@/services/identity-service/authorizationService';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
   PageContainer,
   ProTable,
 } from '@ant-design/pro-components';
-import { useModel} from '@umijs/max';
 import { message, Popconfirm} from 'antd';
 import React, {useRef, useState} from 'react';
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
@@ -22,10 +21,13 @@ const Authorization: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const getList = async (params: API.PageParams) => {
-    const response = await getAuthorizationPage({
+  const getList = async (params: any) => {
+    const response = await getAuthorizationManagePageService({
         pageNumber: params.current || 1,
-        pageSize: params.pageSize || DEFAULT_PAGE_SIZE
+        pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
+        id: params.id || '',
+        principalName: params.principalName || '',
+        authorizationGrantType: params.authorizationGrantType || '',
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -48,7 +50,7 @@ const Authorization: React.FC = () => {
     const hide = message.loading('delete...');
 
     try {
-      await deleteAuthorizationByIdService(id);
+      await deleteAuthorizationManageService(id);
       hide();
       message.success('Deleted successfully and will refresh soon');
 
@@ -78,27 +80,31 @@ const Authorization: React.FC = () => {
   };
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
-    {title: 'Client ID', dataIndex: 'registeredClientId'},
+    {title: 'Client ID', dataIndex: 'id'},
     {title: 'User Name', dataIndex: 'principalName'},
     {title: 'Authentication Mode', dataIndex: 'authorizationGrantType'},
     {
       title: 'accessTokenIssuedAt',
       dataIndex: 'accessTokenIssuedAt',
+      search: false,
       render: (text) => timeFormat(text),
     },
     {
       title: 'accessTokenExpiresAt',
       dataIndex: 'accessTokenExpiresAt',
+      search: false,
       render: (text) => timeFormat(text),
     },
     {
       title: 'refreshTokenIssuedAt',
       dataIndex: 'refreshTokenIssuedAt',
+      search: false,
       render: (text) => timeFormat(text),
     },
     {
       title: 'refreshTokenExpiresAt',
       dataIndex: 'refreshTokenExpiresAt',
+      search: false,
       render: (text) => timeFormat(text),
     },
     {
@@ -125,11 +131,11 @@ const Authorization: React.FC = () => {
         options={false}
         request={getList}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
-        }}
+        // rowSelection={{
+        //   onChange: (_, selectedRows) => {
+        //     setSelectedRows(selectedRows);
+        //   },
+        // }}
         pagination={{
           current: currentPage,
           pageSize: pageSize,

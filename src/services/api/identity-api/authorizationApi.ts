@@ -1,24 +1,14 @@
-// @ts-ignore
-/* eslint-disable */
 import { request } from '@umijs/max';
 import {deleteAuthorizationByIdService} from "@/services/identity-service/authorizationService";
 
-/** 分页查询数据 通过pageNumber和pageSize获取分页数据 返回值: 单位列表 GET /authorize/authorization */
-export async function findByPage4(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: APIIdentity.Pager,
-  options?: { [key: string]: any },
-) {
+export async function getAuthorizationManagePage(params: APIIdentity.Pager) {
   return request<any>(`${process.env.IDENTITY_SERVICE}/v1/authorize/authorization/get-authorization-manage-page`, {
     method: 'GET',
-    params: {
-      ...params,
-    },
-    ...(options || {}),
+    params: params,
   });
 }
 
-export async function deleteAuthorizationById(id: string) {
+export async function deleteAuthorizationManage(id: string) {
   return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/authorization/delete-authorization-manage/${id}`, {
     method: 'DELETE',
   });

@@ -7,6 +7,13 @@ export async function getRoleManageTree(params: APISystem.RoleTableSearchParams)
   });
 }
 
+export async function getRoleManageRoleDetailToList(params: APISystem.RoleTableSearchParams) {
+  return request<APISystem.RoleResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-role-manage-role-detail-to-list`, {
+    method: 'GET',
+    params: params
+  });
+}
+
 export async function getRoleManageDetail(id: string) {
   return request<APISystem.RoleDetailResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-role-manage-detail/${id}`, {
     method: 'GET'

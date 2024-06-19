@@ -1,38 +1,27 @@
 import {
-  getComplianceListService,
-} from '@/services/identity-service/compliance';
+  getComplianceManagePageService,
+} from '@/services/identity-service/complianceService';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
   PageContainer,
   ProTable,
-  ModalForm,
-  ProFormText,
 } from '@ant-design/pro-components';
-import {FormattedMessage} from '@umijs/max';
-import {Button, message, Popconfirm, Space} from 'antd';
+import {message} from 'antd';
 import React, {useRef, useState} from 'react';
-import {PlusOutlined} from "@ant-design/icons";
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
-import ScopePermissions from '@/components/ScopePermissions/scopePermissions';
 import styles from './index.less';
 
 const Compliance: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.MenuListItemDataType>();
   const [scopeId, setScopeId] = useState('');
   const [selectedPermissions, setSelectedPermissions] = useState([]);
-
-
-
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const getList = async (params: API.PageParams) => {
-    const response = await getComplianceListService({
+    const response = await getComplianceManagePageService({
         pageNumber: params.current || 1,
         pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
         principalName: params?.principalName || '',
