@@ -47,7 +47,7 @@ export default [
     name: 'system-management',
     path: '/system-management',
     icon: 'table',
-    access: 'showButton',
+    access: 'systemManagement',
     routes: [
       {
         name: 'menu.menu-list',
@@ -103,7 +103,7 @@ export default [
     name: 'identity-management',
     path: '/identity-management',
     icon: 'table',
-    access: 'showButton',
+    access: 'systemManagement',
     routes: [
       {
         name: 'authorization.list',
@@ -135,7 +135,7 @@ export default [
     path: '/dashboard',
     name: 'dashboard',
     icon: 'dashboard',
-    access: 'showButton',
+    access: 'dashboardPermission',
     routes: [
       {
         path: '/dashboard',
@@ -165,7 +165,7 @@ export default [
     path: '/form',
     icon: 'form',
     name: 'form',
-    access: 'showButton',
+    access: 'formPermission',
     routes: [
       {
         path: '/form',
@@ -195,7 +195,7 @@ export default [
     path: '/list',
     icon: 'table',
     name: 'list',
-    access: 'showButton',
+    access: 'listPermission',
     routes: [
       {
         path: '/list/search',
@@ -254,7 +254,7 @@ export default [
     path: '/profile',
     name: 'profile',
     icon: 'profile',
-    access: 'showButton',
+    access: 'profilePermission',
     routes: [
       {
         path: '/profile',
@@ -278,7 +278,7 @@ export default [
     name: 'result',
     icon: 'CheckCircleOutlined',
     path: '/result',
-    access: 'showButton',
+    access: 'resultPermission',
     routes: [
       {
         path: '/result',
@@ -302,7 +302,7 @@ export default [
     name: 'exception',
     icon: 'warning',
     path: '/exception',
-    access: 'showButton',
+    access: 'exceptionPermission',
     routes: [
       {
         path: '/exception',
@@ -332,7 +332,7 @@ export default [
     name: 'account',
     icon: 'user',
     path: '/account',
-    access: 'showButton',
+    access: 'accountPermission',
     routes: [
       {
         path: '/account',
@@ -354,7 +354,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/dashboard/analysis',
+    redirect: '/system-management/menu-list',
   },
   {
     component: '404',
