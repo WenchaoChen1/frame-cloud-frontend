@@ -325,26 +325,17 @@ const User: React.FC = () => {
               placeholder={"Email"}
             />
 
-            <ProFormRadio.Group
+            <ProFormText
+              label={"Avatar"}
+              width="md"
+              name="avatar"
               rules={[
                 {
                   required: true,
-                  message: "Gender is required",
+                  message: "Avatar is required",
                 },
               ]}
-              initialValue={1}
-              name="gender"
-              label={"Gender"}
-              options={[
-                {
-                  value: 0,
-                  label: 'male',
-                },
-                {
-                  value: 1,
-                  label: 'female',
-                },
-              ]}
+              placeholder={"Avatar"}
             />
           </Space>
 
@@ -361,21 +352,7 @@ const User: React.FC = () => {
               name="nickname"
               placeholder={"Nickname"}
             />
-            <ProFormText
-              label={"Avatar"}
-              width="md"
-              name="avatar"
-              rules={[
-                {
-                  required: true,
-                  message: "Avatar is required",
-                },
-              ]}
-              placeholder={"Avatar"}
-            />
-          </Space>
 
-          <Space size={20}>
             <ProFormSelect
               width="md"
               rules={[
@@ -394,6 +371,30 @@ const User: React.FC = () => {
                 {
                   label: '启用',
                   value: 1,
+                },
+              ]}
+            />
+          </Space>
+
+          <Space size={20}>
+            <ProFormRadio.Group
+              rules={[
+                {
+                  required: true,
+                  message: "Gender is required",
+                },
+              ]}
+              initialValue={1}
+              name="gender"
+              label={"Gender"}
+              options={[
+                {
+                  value: 0,
+                  label: 'male',
+                },
+                {
+                  value: 1,
+                  label: 'female',
                 },
               ]}
             />
