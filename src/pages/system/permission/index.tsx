@@ -38,6 +38,17 @@ const User: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
   const getList = async (params: API.PageParams,) => {
+    params.status = params?.status?.map((item: any) => {
+        if (item === 1) {
+          return item = 'ENABLE'
+        } else if (item === 2) {
+          return item = 'FORBIDDEN'
+        } else if (item === 3) {
+          return item = 'LOCKING'
+        } else {
+          return item = 'EXPIRED'
+        }
+    })
     const response = await getPermissionManagePageService({
         pageNumber: params?.current || 1,
         pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
@@ -371,7 +382,7 @@ const User: React.FC = () => {
                 },
                 {
                   label: '锁定',
-                  value: 2,
+                  value:  2,
                 },
                 {
                   label: '过期',

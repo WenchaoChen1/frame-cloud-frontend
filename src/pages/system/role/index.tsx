@@ -97,18 +97,10 @@ const Role: React.FC = () => {
     }
   }
 
-  const getRoleTreeRequest = async () => {
-    const RoleTreeResponse = await getRoleManageTreeService({tenantId: tenantId});
-    if (RoleTreeResponse.success && RoleTreeResponse.data) {
-      return RoleTreeResponse.data;
-    } else {
-      return [];
-    }
-  }
-
   const onChangeTenant = (tenantId: string) => {
     console.log('onChangeTenantId', tenantId);
     setTenantId(tenantId);
+    getParentRoleTreeRequest(tenantId);
   };
 
   const columns: ProColumns<APISystem.RoleItemDataType>[] = [
@@ -250,9 +242,9 @@ const Role: React.FC = () => {
     }
   }
 
-  const getParentRoleTreeRequest = async () => {
+  const getParentRoleTreeRequest = async (Id: any) => {
     const Response = await getRoleManageRoleDetailToListService({
-      tenantId: tenantId,
+      tenantId: Id ? Id:tenantId,
       roleName: roleNameText || ''
     });
     if (Response.success && Response.data) {
@@ -414,7 +406,7 @@ const Role: React.FC = () => {
               secondary
               request={getParentRoleTreeRequest}
               fieldProps={{
-                showArrow: false,
+                // showArrow: false,
                 filterTreeNode: true,
                 showSearch: true,
                 popupMatchSelectWidth: false,
