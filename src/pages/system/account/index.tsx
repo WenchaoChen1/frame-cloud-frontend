@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {Button, message, Space} from 'antd';
 import {FormattedMessage, useModel} from '@umijs/max';
 import {PlusOutlined} from '@ant-design/icons';
@@ -19,6 +19,7 @@ import {
   updateAccountManageService,
   getAccountManageDetailService,
   getAccountManagePageService,
+  getAccountManageTenantDetailToListService,
 } from '@/services/system-service/accountService';
 import {getTenantManageTreeService} from '@/services/system-service/tenantService';
 import {getUserManagePageService} from "@/services/system-service/userService";
@@ -26,7 +27,8 @@ import {getUserManagePageService} from "@/services/system-service/userService";
 const Account: React.FC = () => {
   const {initialState} = useModel('@@initialState');
   const currentAccountId = initialState?.currentUser?.accountId;
-
+  const [tenantTreeData, setTenantTreeData] = useState([]);
+  const [tenantId, setTenantId] = useState<string|undefined>(undefined);
   const [isEdit, setIsEdit] = useState(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<APISystem.AccountItemDataType>();
@@ -35,7 +37,7 @@ const Account: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
   const getList = async (params: APISystem.PageParams) => {
-    params.tenantId=initialState?.currentUser?.tenantId;
+    params.tenantId = tenantId;
     const roleResponse = await getAccountManagePageService(params);
 
     let dataSource: APISystem.AccountItemDataType[] = [];
@@ -84,10 +86,6 @@ const Account: React.FC = () => {
     }
   };
 
-  /**
-   * @en-US Update node
-   * @param fields
-   */
   const updateAccountRequest = async (fields: APISystem.AccountItemDataType) => {
     const hide = message.loading('Update...');
     try {
@@ -123,10 +121,42 @@ const Account: React.FC = () => {
 
   const onEdit = async (record: APISystem.AccountItemDataType) => {
     setCurrentRow(record);
-
     setIsEdit(true);
     setOpenModal(true);
   }
+
+  const getTenantTreeRequest = async () => {
+    const tenantTreeResponse = await getTenantManageTreeService();
+    if (tenantTreeResponse.success && tenantTreeResponse.data) {
+      if (tenantTreeResponse.data?.length > 0) {
+        setTenantId(tenantTreeResponse.data[0].id || undefined);
+      }
+
+      setTenantTreeData(tenantTreeResponse.data);
+      return tenantTreeResponse.data;
+    } else {
+      setTenantId(undefined);
+      setTenantTreeData([]);
+      return [];
+    }
+  }
+
+  const getParentRoleTreeRequest = async (Id: any) => {
+    const Response = await getAccountManageTenantDetailToListService({
+      tenantId: Id ? Id:tenantId,
+      tenantName: ''
+    });
+    if (Response.success && Response.data) {
+      return Response.data;
+    } else {
+      return [];
+    }
+  }
+
+  const onChangeTenant = (tenantId: string) => {
+    setTenantId(tenantId);
+    getParentRoleTreeRequest(tenantId);
+  };
 
   const columns: ProColumns<APISystem.AccountItemDataType>[] = [
     {
@@ -136,6 +166,39 @@ const Account: React.FC = () => {
     {
       title: 'Identity',
       dataIndex: 'identity',
+    },
+    {
+      title: 'Tenant',
+      key: 'tenant',
+      hideInTable: true,
+      hidden: true,
+      dataIndex: 'direction',
+      renderFormItem: () => {
+        return (
+          <ProFormTreeSelect
+            name="tenant"
+            placeholder="Please select"
+            allowClear={false}
+            width={'lg'}
+            secondary
+            initialValue={tenantId}
+            fieldProps={{
+              onChange: onChangeTenant,
+              treeData: tenantTreeData,
+              showArrow: false,
+              filterTreeNode: true,
+              showSearch: true,
+              popupMatchSelectWidth: false,
+              autoClearSearchValue: true,
+              treeNodeFilterProp: 'title',
+              fieldNames: {
+                label: 'tenantName',
+                value: 'id'
+              }
+            }}
+          />
+        );
+      },
     },
     {
       title: 'Created At',
@@ -168,6 +231,10 @@ const Account: React.FC = () => {
       ],
     },
   ];
+
+  useEffect(() => {
+    getTenantTreeRequest();
+  }, [])
 
   return (
     <PageContainer>
@@ -296,14 +363,7 @@ const Account: React.FC = () => {
               width={'md'}
               secondary
               disabled={isEdit ? true : false}
-              request={async () => {
-                const tenantTreeResponse = await getTenantManageTreeService();
-                if (tenantTreeResponse.success && tenantTreeResponse.data) {
-                  return tenantTreeResponse.data;
-                } else {
-                  return []
-                }
-              }}
+              request={getTenantTreeRequest}
               fieldProps={{
                 suffixIcon: null,
                 filterTreeNode: true,

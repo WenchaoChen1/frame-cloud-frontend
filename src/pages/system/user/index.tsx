@@ -50,10 +50,7 @@ const User: React.FC = () => {
     };
   };
 
-  /**
-   * @en-US Add node
-   * @param fields
-   */
+
   const createUserRequest = async (fields: APISystem.UserItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
@@ -70,10 +67,6 @@ const User: React.FC = () => {
     }
   };
 
-  /**
-   * @en-US Update node
-   * @param fields
-   */
   const editUserRequest = async (fields: APISystem.UserItemDataType) => {
     const hide = message.loading('Update');
     try {
@@ -114,13 +107,6 @@ const User: React.FC = () => {
     setCurrentRow(record);
   }
 
-  const numericValidator = (_, value) => {
-    if (value && !/^\d+$/.test(value)) {
-      return Promise.reject('请输入数字类型');
-    }
-    return Promise.resolve();
-  };
-
   const columns: ProColumns<APISystem.UserItemDataType>[] = [
     {
       title: 'User Name',
@@ -141,11 +127,6 @@ const User: React.FC = () => {
           />
         )
       },
-    },
-    {
-      title: 'Tenant',
-      hideInForm: true,
-      dataIndex: 'tenantId',
     },
     {
       title: "Status",

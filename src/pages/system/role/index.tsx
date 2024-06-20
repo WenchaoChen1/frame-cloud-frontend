@@ -28,6 +28,7 @@ import {getTenantManageTreeService} from '@/services/system-service/tenantServic
 
 const Role: React.FC = () => {
   const [tenantId, setTenantId] = useState<string|undefined>(undefined);
+  const [parentTreeData, setParentTreeData] = useState([]);
   const [roleNameText, setRoleNameText] = useState('');
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
   const [isEdit, setIsEdit] = useState(false);
@@ -95,7 +96,6 @@ const Role: React.FC = () => {
   }
 
   const onChangeTenant = (tenantId: string) => {
-    console.log('onChangeTenantId', tenantId);
     setTenantId(tenantId);
     getParentRoleTreeRequest(tenantId);
   };
@@ -109,11 +109,6 @@ const Role: React.FC = () => {
       title: 'Sort',
       hideInSearch: true,
       dataIndex: 'sort',
-    },
-    {
-      title: 'Tenant',
-      hideInForm: true,
-      dataIndex: 'tenantId',
     },
     {
       title: "Status",
@@ -154,6 +149,7 @@ const Role: React.FC = () => {
       title: 'Tenant',
       key: 'tenant',
       hideInTable: true,
+      hidden: true,
       dataIndex: 'direction',
       renderFormItem: () => {
         return (
@@ -184,13 +180,7 @@ const Role: React.FC = () => {
     }
   ];
 
-  const clearDate = () => {
-    // console.log('集')
-    // setTenantId('');
-  };
-
   const getList = async (params: APISystem.RoleTableSearchParams) => {
-
     if (!tenantId) {
       return {
         data: [],
@@ -248,13 +238,35 @@ const Role: React.FC = () => {
     }
   }
 
+  const removeFields = (obj: any) => {
+    delete obj.id;
+    delete obj.sort;
+  
+    if (obj.children) {
+      obj.children.forEach((child: any) => {
+        removeFields(child);
+      });
+    }
+  };
+  
   const getParentRoleTreeRequest = async (Id: any) => {
     const Response = await getRoleManageRoleDetailToListService({
       tenantId: Id ? Id:tenantId,
-      roleName: roleNameText || ''
+      tenantName: roleNameText || ''
     });
     if (Response.success && Response.data) {
-      return Response.data;
+      const list = Response.data.map((node: any) => {
+        const { parentId, roleName, ...rest } = node;
+        return {
+          ...rest,
+          value: parentId,
+          label: roleName,
+        };
+      });
+  
+      console.log(list, '====888999');
+      setParentTreeData(list);
+      return list;
     } else {
       return [];
     }
@@ -286,7 +298,6 @@ const Role: React.FC = () => {
             </Button>,
           ]}
           request={getList}
-          onReset={clearDate}
           columns={columns}
           rowSelection={{
             onChange: (_, selectedRows) => {
@@ -295,7 +306,7 @@ const Role: React.FC = () => {
           }}
         />
       }
-
+ 
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
           extra={
@@ -406,7 +417,7 @@ const Role: React.FC = () => {
 
             <ProFormTreeSelect
               label={"Parent Role"}
-              name="id"
+              name="parentId"
               placeholder="Please select"
               allowClear={false}
               width="md"
@@ -420,9 +431,9 @@ const Role: React.FC = () => {
                 autoClearSearchValue: true,
                 treeNodeFilterProp: 'title',
                 fieldNames: {
-                  label: 'roleName',
-                  value: 'id'
-                }
+                  label: 'label',
+                  value: 'value'
+                },
               }}
               rules={[
                 {

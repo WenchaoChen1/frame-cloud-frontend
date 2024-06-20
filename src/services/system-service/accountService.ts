@@ -4,6 +4,7 @@ import {
   deleteAccountManage,
   getAccountManageDetail,
   getAccountManagePage,
+  getAccountManageTenantDetailToList,
 } from '@/services/api/system-api/accountApi';
 
 export async function insertAccountManageService(data?: any) {
@@ -26,3 +27,6 @@ export async function getAccountManagePageService(params: API.PageParams) {
   return await getAccountManagePage(params);
 }
 
+export async function getAccountManageTenantDetailToListService(params: API.PageParams) {
+  return await getAccountManageTenantDetailToList(params);
+}

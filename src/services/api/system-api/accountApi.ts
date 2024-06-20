@@ -33,3 +33,9 @@ export async function getAccountManagePage(params: APISystem.PageParams) {
   });
 }
 
+export async function getAccountManageTenantDetailToList(params: APISystem.PageParams) {
+  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/get-account-manage-tenant-detail-to-list`, {
+    method: 'GET',
+    params: params
+  });
+}
