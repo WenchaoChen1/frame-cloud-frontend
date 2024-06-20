@@ -4,7 +4,7 @@ import {
   updateUserManageService,
   getUserManageDetailService,
   getUserManagePageService
-} from '@/services/system-service/userService';
+} from '@/services/base-service/system-service/userService';
 import styles from './index.less';
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
@@ -327,7 +327,7 @@ const User: React.FC = () => {
               width="md"
               name="phoneNumber"
               label="PhoneNumber"
-            />        
+            />
           </Space>
 
           <Space size={20}>
@@ -355,7 +355,7 @@ const User: React.FC = () => {
               width="md"
               name="lastName"
               placeholder={"Last Name"}
-            />    
+            />
           </Space>
 
           <Space size={20}>

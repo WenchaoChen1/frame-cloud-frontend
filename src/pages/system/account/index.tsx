@@ -21,9 +21,9 @@ import {
   getAccountManageDetailService,
   getAccountManagePageService,
   getAccountManageTenantDetailToListService,
-} from '@/services/system-service/accountService';
-import {getTenantManageTreeService} from '@/services/system-service/tenantService';
-import {getUserManagePageService} from "@/services/system-service/userService";
+} from '@/services/base-service/system-service/accountService';
+import {getTenantManageTreeService} from '@/services/base-service/system-service/tenantService';
+import {getUserManagePageService} from "@/services/base-service/system-service/userService";
 
 const Account: React.FC = () => {
   const {initialState} = useModel('@@initialState');

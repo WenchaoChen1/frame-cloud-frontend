@@ -4,10 +4,10 @@ import {
   insertApplicationManageService,
   deleteApplicationService,
   getApplicationManageDetailService
-} from '@/services/identity-service/applicationService';
+} from '@/services/base-service/identity-service/applicationService';
 import {
   getAuthorizationGrantTypesService,
-} from '@/services/identity-service/applicationDictionaryService';
+} from '@/services/base-service/identity-service/applicationDictionaryService';
 import type {ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   PageContainer,

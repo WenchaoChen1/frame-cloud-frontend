@@ -6,7 +6,7 @@ import {createStyles} from 'antd-style';
 import {stringify} from 'querystring';
 import React, {useCallback} from 'react';
 import HeaderDropdown from '../HeaderDropdown';
-import {signOutService} from "@/services/identity-service/login";
+import {signOutService} from "@/services/base-service/identity-service/login";
 import {getToken, logOut} from "@/utils/utils";
 import {useIntl} from "@@/exports";
 

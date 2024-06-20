@@ -1,5 +1,5 @@
 import { request } from '@umijs/max';
-import {deleteAuthorizationByIdService} from "@/services/identity-service/authorizationService";
+import {deleteAuthorizationByIdService} from "@/services/base-service/identity-service/authorizationService";
 
 export async function getAuthorizationManagePage(params: APIIdentity.Pager) {
   return request<any>(`${process.env.IDENTITY_SERVICE}/v1/authorize/authorization/get-authorization-manage-page`, {

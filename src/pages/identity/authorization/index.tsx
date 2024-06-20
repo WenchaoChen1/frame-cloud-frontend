@@ -1,7 +1,7 @@
 import {
   getAuthorizationManagePageService,
   deleteAuthorizationManageService
-} from '@/services/identity-service/authorizationService';
+} from '@/services/base-service/identity-service/authorizationService';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
   PageContainer,

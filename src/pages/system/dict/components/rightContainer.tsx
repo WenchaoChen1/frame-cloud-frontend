@@ -16,7 +16,7 @@ import {
   createDictService,
   editDictService,
   deleteDictService
-} from "@/services/system-service/dict";
+} from "@/services/base-service/system-service/dict";
 import commonStyle from "@/pages/common/index.less";
 import styles from "@/pages/system/dict/index.less";
 

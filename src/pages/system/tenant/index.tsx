@@ -24,7 +24,7 @@ import {
   findAllMenuTreeByTenantService,
   findSelectedMenuByTenantService,
   onSaveMenuInTenantService,
-} from '@/services/system-service/tenantService';
+} from '@/services/base-service/system-service/tenantService';
 
 
 const Index: React.FC = () => {

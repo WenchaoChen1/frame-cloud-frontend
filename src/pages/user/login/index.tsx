@@ -1,6 +1,6 @@
 import {Footer} from '@/components';
 import {getFakeCaptcha} from '@/services/ant-design-pro/login';
-import {oauth2TokenService} from '@/services/identity-service/login';
+import {oauth2TokenService} from '@/services/base-service/identity-service/login';
 import {
   AlipayCircleOutlined,
   LockOutlined,

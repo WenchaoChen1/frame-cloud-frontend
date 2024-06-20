@@ -16,7 +16,7 @@ import {
   createOrganizeService,
   editOrganizeService,
   deleteOrganizeService
-} from "@/services/system-service/organize";
+} from "@/services/base-service/system-service/organize";
 import commonStyle from "@/pages/common/index.less";
 import styles from "@/pages/system/organize/index.less";
 

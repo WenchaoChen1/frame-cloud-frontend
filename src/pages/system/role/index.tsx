@@ -24,8 +24,8 @@ import {
   getAllByTenantMenuToTreeService,
   insertRoleMenuService,
   getAllTenantByRoleIdService,
-} from '@/services/system-service/roleService';
-import {getTenantManageTreeService} from '@/services/system-service/tenantService';
+} from '@/services/base-service/system-service/roleService';
+import {getTenantManageTreeService} from '@/services/base-service/system-service/tenantService';
 
 const Role: React.FC = () => {
   const [tenantId, setTenantId] = useState<string|undefined>(undefined);

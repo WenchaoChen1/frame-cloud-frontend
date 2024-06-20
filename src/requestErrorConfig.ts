@@ -7,7 +7,7 @@ import { history } from '@umijs/max';
 import {LOGIN_PATH} from "@/pages/common/constant";
 import {oauth2RefreshToken} from "@/services/api/identity-api/oauth2";
 import React, { useState, useEffect} from 'react';
-import {oauth2RefreshTokenService} from "@/services/identity-service/login";
+import {oauth2RefreshTokenService} from "@/services/base-service/identity-service/login";
 const axios = require('axios');
 
 // 错误处理方案： 错误类型
@@ -69,7 +69,7 @@ const responseInterceptorsForAuth = async (error: any) => {
       isRefreshing = true;
       const refreshTokenResponse = await oauth2RefreshTokenService(data);
       axios.defaults.headers.common['Authorization'] = `Bearer ${refreshTokenResponse.access_token}`;
-      
+
       setToken(refreshTokenResponse.access_token);
       setRefreshToken(refreshTokenResponse.refresh_token);
 

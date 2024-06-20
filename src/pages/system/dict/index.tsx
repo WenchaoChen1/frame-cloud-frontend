@@ -3,8 +3,8 @@ import {Button, Col, Modal, Row, Space, Tree, TreeSelect} from 'antd';
 import {
   PageContainer,
 } from '@ant-design/pro-components';
-import {getTenantManageTreeService} from "@/services/system-service/tenantService";
-import {getDictTreeService} from "@/services/system-service/dict";
+import {getTenantManageTreeService} from "@/services/base-service/system-service/tenantService";
+import {getDictTreeService} from "@/services/base-service/system-service/dict";
 import RightContainer from "@/pages/system/dict/components/rightContainer";
 import styles from "@/pages/system/dict/index.less";
 

@@ -14,12 +14,12 @@ import {PlusOutlined} from "@ant-design/icons";
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import {
   deletePermissionManageService,
-  getPermissionManagePageService, 
-  insertPermissionManageService, 
+  getPermissionManagePageService,
+  insertPermissionManageService,
   updatePermissionManageService,
   getPermissionManageDetailService,
   getPermissionTypeService,
-} from "@/services/system-service/permissionService";
+} from "@/services/base-service/system-service/permissionService";
 import styles from './index.less';
 
 const User: React.FC = () => {
@@ -82,7 +82,7 @@ const User: React.FC = () => {
   useEffect(() => {
     initPermissionTypeChange()
   }, []);
-  
+
   const getPermissionInfoRequest = async () => {
     if (isEdit) {
       const accountDetailResponse = await getPermissionManageDetailService(currentRow?.permissionId || '');

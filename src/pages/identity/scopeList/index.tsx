@@ -5,7 +5,7 @@ import {
   updateScopeManageService,
   deleteScopeManageService,
   scopeManageAssignedPermissionService,
-} from '@/services/identity-service/scopeService';
+} from '@/services/base-service/identity-service/scopeService';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
   PageContainer,
@@ -279,7 +279,7 @@ const Scope: React.FC = () => {
               hidden={true}
             />
           </Space>
- 
+
         </ModalForm>
       }
 

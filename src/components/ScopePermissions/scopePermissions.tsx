@@ -7,7 +7,7 @@ import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import {
   getPermissionManagePageService,
   getPermissionTypeService
-} from "@/services/system-service/permissionService";
+} from "@/services/base-service/system-service/permissionService";
 import styles from './index.less';
 
 type TypeProp = {

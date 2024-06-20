@@ -4,7 +4,7 @@ import {
   updateMenuManageService,
   deleteMenuManageService,
   getMenuManageDetailService,
-} from '@/services/system-service/menuService';
+} from '@/services/base-service/system-service/menuService';
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {

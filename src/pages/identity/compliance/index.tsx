@@ -1,6 +1,6 @@
 import {
   getComplianceManagePageService,
-} from '@/services/identity-service/complianceService';
+} from '@/services/base-service/identity-service/complianceService';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
   PageContainer,
@@ -220,7 +220,7 @@ const Compliance: React.FC = () => {
               hidden={true}
             />
           </Space>
- 
+
         </ModalForm>
       } */}
     </PageContainer>
