@@ -33,7 +33,7 @@ export async function deleteTenantManage(id: string) {
 }
 
 export async function findAllMenuTreeByTenant(tenantId: string) {
-  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-all-menu-to-tree`, {
+  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-tenant-manage-menu-tree`, {
     method: 'GET',
     params: {
       tenantId: tenantId
@@ -85,7 +85,7 @@ export async function getChildrenByTenantId(tenantId: string) {
 
 // tenant - relation menu - get selected menu by tenantId
 export async function findSelectedMenuByTenant(tenantId: string) {
-  return request<APISystem.SelectedRelationMenuDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-all-tenant-menu-id`, {
+  return request<APISystem.SelectedRelationMenuDataType>(`${process.env.SYSTEM_SERVICE}/v1/rTenantMenu/get-all-by-tenant-id`, {
     method: 'GET',
     params: {
       tenantId: tenantId
@@ -95,7 +95,7 @@ export async function findSelectedMenuByTenant(tenantId: string) {
 
 // tenant - relation menu - save Selected Menu By tenantId
 export async function onSaveMenuInTenant(data: APISystem.onSaveMenuInTenantDataType) {
-  return request<APISystem.onSaveRelationMenuResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/rTenantMenu/insertTenantMenu`, {
+  return request<APISystem.onSaveRelationMenuResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/rTenantMenu/insert-tenant-menu`, {
     method: 'POST',
     data: data
   });
