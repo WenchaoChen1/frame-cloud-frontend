@@ -1,10 +1,11 @@
 import {
-  getMenuTreeService,
-  createMenuService,
-  editMenuService,
-  deleteMenuService,
-} from '@/services/system-service/menu';
+  getMenuManageTreeService,
+  insertMenuManageService,
+  updateMenuManageService,
+  deleteMenuManageService,
+} from '@/services/system-service/menuService';
 import {PlusOutlined} from '@ant-design/icons';
+import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   ModalForm,
@@ -20,27 +21,23 @@ import { Button, message, Row, Space } from 'antd';
 import React, { useRef, useState } from 'react';
 
 const MenuList: React.FC = () => {
-  /**
-   * @en-US Pop-up window of new window
-   */
-  const [modalVisible, handleModalVisible] = useState<boolean>(false);
-
-  const [isEdit, setIsEdit] = useState(false);
   const actionRef = useRef<ActionType>();
+  const [total, setTotal] = useState<number>(0);
+  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [modalVisible, handleModalVisible] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.MenuListItemDataType>();
-  const [, setSelectedRows] = useState<APISystem.MenuListItemDataType[]>([]);
+  const [selectedRows, setSelectedRows] = useState<APISystem.MenuListItemDataType[]>([]);
   const [defaultExpanded, setDefaultExpanded] = useState([])
 
-  /**
-   * @en-US Add node
-   * @param fields
-   */
+
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
 
     try {
-      await createMenuService({ ...fields });
+      await insertMenuManageService({ ...fields });
       hide();
       message.success('Added successfully');
       return true;
@@ -51,14 +48,10 @@ const MenuList: React.FC = () => {
     }
   };
 
-  /**
-   * @en-US Update node
-   * @param fields
-   */
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('Update');
     try {
-      await editMenuService(fields);
+      await updateMenuManageService(fields);
       hide();
 
       message.success('Update successfully');
@@ -73,7 +66,7 @@ const MenuList: React.FC = () => {
   const deleteRow = async (id: string) => {
     const hide = message.loading('delete...');
     try {
-      await deleteMenuService(id);
+      await deleteMenuManageService(id);
       hide();
       message.success('Deleted successfully and will refresh soon');
 
@@ -102,13 +95,10 @@ const MenuList: React.FC = () => {
       title: 'Path',
       dataIndex: 'path',
     },
-    // {
-    //   title: 'Location',
-    //   dataIndex: 'location',
-    // },
     {
       title: 'Sort',
       dataIndex: 'sort',
+      search: false,
     },
     {
       title: "Status",
@@ -174,28 +164,33 @@ const MenuList: React.FC = () => {
     },
   ];
 
-  const getTableLists = async () =>{
-    return await getMenuTreeService()
-  }
+  const getList = async (params: API.PageParams,) => {
+    const response = await getMenuManageTreeService({
+        pageNumber: params?.current || 1,
+        pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
+        name: params?.name,
+        path: params?.path,
+        status: params?.status || '',
+        type: params?.type || '',
+    });
 
-  const changeData = async () =>{
-    if (defaultExpanded.length > 0){
-      setDefaultExpanded([])
-      return
+    console.log(response, '====888')
+
+    let dataSource: APISystem.UserItemDataType[] = [];
+    let total = 0;
+    if (response?.success === true) {
+      dataSource = response?.data || [];
+      // total = response?.data?.totalElements || 0;
     }
-    const res = await getMenuTreeService()
-    const newExpandedKeys:any = []
-    const render = (treeDatas) => { // 获取到所有可展开的父节点
-      treeDatas.map(item => {
-        if (item.children) {
-          newExpandedKeys.push(item.id)
-          render(item.children)
-        }
-      })
-      return newExpandedKeys
-    }
-    setDefaultExpanded(render(res?.data))
-  }
+
+    setTotal(total);
+
+    return {
+      data: dataSource,
+      success: true,
+      total: total,
+    };
+  };
 
   return (
     <PageContainer>
@@ -206,36 +201,24 @@ const MenuList: React.FC = () => {
         search={{
           labelWidth: 100,
         }}
-        // pagination={false}
-        toolBarRender={() => [
-          // <Button
-          //   type="primary"
-          //   key="primary"
-          //   onClick={() => {
-          //     changeData()
-          //   }}
-          // >
-          //   <PlusOutlined /> 展开
-          // </Button>,
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              setIsEdit(false);
-              setCurrentRow({parentId: '0'});
-              handleModalVisible(true);
-            }}
-          >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-          </Button>,
-        ]}
-        request={getTableLists}
+        request={getList}
         columns={columns}
+        options={false}
         expandable={{defaultExpandedRowKeys: defaultExpanded}}
         rowSelection={{
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows);
           },
+        }}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: total,
+          showSizeChanger: true,
+          onChange: (currentPageNumber, pageSizeNumber) => {
+            setPageSize(pageSizeNumber);
+            setCurrentPage(currentPageNumber);
+          }
         }}
       />
 
@@ -292,7 +275,7 @@ const MenuList: React.FC = () => {
               ]}
               label={"Menu name"}
               width="md"
-              name="name"
+              name="menuName"
               placeholder={"Menu name"}
             />
             <ProFormText
@@ -319,6 +302,27 @@ const MenuList: React.FC = () => {
               width="md"
               name="parentId"
               hidden={true}
+            />
+          </Space>
+
+          <Space size={20}>
+            <ProFormText
+              rules={[
+                {
+                  required: true,
+                  message: "Name is required",
+                },
+              ]}
+              label={"Name"}
+              width="md"
+              name="name"
+              placeholder={"Name"}
+            />
+            <ProFormText
+              label={"Icon"}
+              width="md"
+              name="icon"
+              placeholder={"Icon"}
             />
           </Space>
 

@@ -28,9 +28,7 @@ const User: React.FC = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.PermissionItemDataType>();
   const [permissionTypeList, setPermissionTypeList] = useState([]);
-
   const [selectedRowsState, setSelectedRows] = useState<APISystem.PermissionItemDataType[]>([]);
-
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);

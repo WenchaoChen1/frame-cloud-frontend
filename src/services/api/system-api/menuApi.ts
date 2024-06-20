@@ -1,48 +1,28 @@
 import {request} from '@umijs/max';
 
-// menu - list
-export async function getMenuTree(
-  params?: {
-    current?: number;
-    pageSize?: number;
-  },
-  options?: { [key: string]: any },
-) {
+export async function getMenuManageTree(params?: any) {
   return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-menu-manage-tree`, {
     method: 'GET',
-    params: {
-      ...params,
-    },
-    ...(options || {}),
+    params: params,
   });
 }
 
-
-export async function createMenu(data?: any) {
+export async function insertMenuManage(data?: any) {
   return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/insert-menu-manage`, {
     method: 'POST',
     data: data,
   });
 }
-export async function editMenu(data?: any) {
+
+export async function updateMenuManage(data?: any) {
   return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/update-menu-manage`, {
     method: 'PUT',
     data: data,
   });
 }
 
-export async function deleteMenu(id: string) {
-  return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/menu`, {
-    method: 'DELETE',
-    params: {
-      id: id,
-    },
-  });
-}
-
-export async function moveMenu(data: APISystem.moveMenuDataType) {
-  return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/menu/move`, {
-    method: 'PUT',
-    data: data
+export async function deleteMenuManage(id: string) {
+  return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/menu/delete-menu-manage/${id}`, {
+    method: 'DELETE'
   });
 }
