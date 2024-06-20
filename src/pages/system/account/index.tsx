@@ -243,6 +243,7 @@ const Account: React.FC = () => {
         actionRef={actionRef}
         rowKey="id"
         search={{labelWidth: 100}}
+        options={false}
         toolBarRender={() => [
           <Button
             type="primary"
@@ -421,6 +422,36 @@ const Account: React.FC = () => {
               label={"Identity"}
               name={"identity"}
               placeholder={"Identity"}
+            />
+
+            <ProFormSelect
+              width="md"
+              rules={[
+                {
+                  required: true,
+                  message: "Status is required",
+                },
+              ]}
+              name="status"
+              label={"Status"}
+              options={[
+                {
+                  label: '启用',
+                  value: 0,
+                },
+                {
+                  label: '禁用',
+                  value: 1,
+                },
+                {
+                  label: '锁定',
+                  value:  2,
+                },
+                {
+                  label: '过期',
+                  value: 3,
+                }
+              ]}
             />
           </Space>
 

@@ -16,6 +16,7 @@ import {
   ProTable,
   ProFormDigit,
   ProFormSelect,
+  ProFormTextArea,
 } from '@ant-design/pro-components';
 import {FormattedMessage, useModel} from '@umijs/max';
 import {Button, message, Space } from 'antd';
@@ -289,7 +290,34 @@ const User: React.FC = () => {
               name="phoneNumber"
               label="PhoneNumber"
             />        
+          </Space>
 
+          <Space size={20}>
+            <ProFormText
+              rules={[
+                {
+                  required: true,
+                  message: "First Name is required",
+                }
+              ]}
+              label={"First Name"}
+              width="md"
+              name="firstName"
+              placeholder={"First Name"}
+            />
+
+            <ProFormText
+              rules={[
+                {
+                  required: true,
+                  message: "Last Name is required",
+                }
+              ]}
+              label={"Last Name"}
+              width="md"
+              name="lastName"
+              placeholder={"Last Name"}
+            />    
           </Space>
 
           <Space size={20}>
@@ -358,6 +386,12 @@ const User: React.FC = () => {
           </Space>
 
           <Space size={20}>
+            <ProFormTextArea
+              name="description"
+              width="md"
+              label={"Description"}
+              placeholder={'Please enter description'}
+            />
             <ProFormRadio.Group
               rules={[
                 {
