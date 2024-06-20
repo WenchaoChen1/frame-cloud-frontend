@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import {Button, message, Space} from 'antd';
 import {FormattedMessage, useModel} from '@umijs/max';
+import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import {PlusOutlined} from '@ant-design/icons';
 import {
   ActionType,
@@ -37,8 +38,13 @@ const Account: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
   const getList = async (params: APISystem.PageParams) => {
-    params.tenantId = tenantId;
-    const roleResponse = await getAccountManagePageService(params);
+    const roleResponse = await getAccountManagePageService({
+        pageNumber: params?.current || 1,
+        pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
+        tenantId: tenantId || '',
+        name: params?.name || '',
+        identity: params?.identity || '',
+    });
 
     let dataSource: APISystem.AccountItemDataType[] = [];
     let total = 0;

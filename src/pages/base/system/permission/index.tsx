@@ -293,7 +293,6 @@ const User: React.FC = () => {
           open={openModal}
           onOpenChange={setOpenModal}
           onFinish={async (record) => {
-            console.log('onFinish record', record);
             let response = undefined;
             if (isEdit) {
               response = await handleUpdate(record as APISystem.MenuListItemDataType);

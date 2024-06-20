@@ -167,7 +167,6 @@ const User: React.FC = () => {
       title: 'permissionType',
       dataIndex: 'permissionType',
       hideInForm: true,
-      // valueEnum: permissionTypeList,
       valueEnum: permissionTypeList.reduce((result, type) => {
         result[type] = {
           text: type,
@@ -293,7 +292,6 @@ const User: React.FC = () => {
           open={openModal}
           onOpenChange={setOpenModal}
           onFinish={async (record) => {
-            console.log('onFinish record', record);
             let response = undefined;
             if (isEdit) {
               response = await handleUpdate(record as APISystem.MenuListItemDataType);

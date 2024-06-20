@@ -60,12 +60,14 @@ const Application: React.FC = () => {
   ]
 
   const getList = async (params: API.PageParams) => {
+    console.log(params, '====****')
+    debugger
     const response = await getApplicationListService({
         pageNumber: params.current || 1,
         pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
         applicationName: params?.applicationName,
-        clientAuthenticationMethods: params?.clientAuthenticationMethods?.map((param: any) => encodeURIComponent(param)).join(',') || [],
-        authorizationGrantTypes: params?.authorizationGrantTypes?.split(',')?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+        clientAuthenticationMethods: params?.clientAuthenticationMethods?.length > 0?(params?.clientAuthenticationMethods?.map((param: any) => encodeURIComponent(param)).join(',')) : [],
+        authorizationGrantTypes: params?.authorizationGrantTypes?.length > 0?(params?.authorizationGrantTypes?.split(',')?.map((param: any) => encodeURIComponent(param)).join(',')) : [],
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -205,7 +207,8 @@ const Application: React.FC = () => {
         )
       },
       render: (_, record) => {
-        const grantTypes = record.authorizationGrantTypes?.split(',');
+        console.log(record, '====', _)
+        const grantTypes = record?.authorizationGrantTypes?.split(',');
         const images = grantTypes.map((type: any) => {
           let imageUrl;
           let tooltipText;

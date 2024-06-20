@@ -190,8 +190,6 @@ const MenuList: React.FC = () => {
         type: params?.type || '',
     });
 
-    console.log(response, '====888')
-
     let dataSource: APISystem.UserItemDataType[] = [];
     let total = 0;
     if (response?.success === true) {
@@ -247,7 +245,6 @@ const MenuList: React.FC = () => {
           request={getMenuInfoRequest}
           onOpenChange={handleModalVisible}
           onFinish={async (record) => {
-            console.log('onFinish record', record);
             let response = undefined;
             if (isEdit) {
               response = await handleUpdate(record as APISystem.MenuListItemDataType);

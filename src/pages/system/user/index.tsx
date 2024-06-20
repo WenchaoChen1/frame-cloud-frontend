@@ -6,6 +6,7 @@ import {
   getUserManagePageService
 } from '@/services/system-service/userService';
 import styles from './index.less';
+import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {
   FooterToolbar,
@@ -24,18 +25,35 @@ import React, {useRef, useState} from 'react';
 import {PlusOutlined} from "@ant-design/icons";
 
 const User: React.FC = () => {
+  const actionRef = useRef<ActionType>();
   const {initialState} = useModel('@@initialState');
   const currentUserId = initialState?.currentUser?.userId;
-
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.UserItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.UserItemDataType[]>([]);
 
-  const actionRef = useRef<ActionType>();
-
   const getList = async (params: API.PageParams) => {
-    const roleResponse = await getUserManagePageService(params);
+    params.status = params?.status?.map((item: any) => {
+        if (item === '1') {
+          return item = 'FORBIDDEN'
+        } else if (item === '2') {
+          return item = 'LOCKING'
+        } else if (item === '3') {
+          return item = 'EXPIRED'
+        } else {
+          return item = 'ENABLE'
+        }
+    })
+
+    const roleResponse = await getUserManagePageService({
+        pageNumber: params?.current || 1,
+        pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
+        status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+        username: params?.username || '',
+        phoneNumber: params?.phoneNumber || '',
+        email: params?.email || '',
+    });
 
     let dataSource: APISystem.UserItemDataType[] = [];
     let total = 0;
@@ -130,24 +148,44 @@ const User: React.FC = () => {
       },
     },
     {
-      title: "Status",
+      title: 'status',
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
         0: {
-          text: 'Disable',
-          status: 'Processing',
+          text: '启用',
+          status: 'ENABLE',
         },
         1: {
-          text: 'Enable',
-          status: 'Success',
+          text: '禁用',
+          status: 'FORBIDDEN',
+        },
+        2: {
+          text: '锁定',
+          status: 'LOCKING',
+        },
+        3: {
+          text: '过期',
+          status: 'EXPIRED',
         }
+      },
+      renderFormItem: (_, { type, defaultRender, ...rest }) => {
+        return (
+          <ProFormSelect
+            mode="multiple"
+            {...rest}
+            fieldProps={{
+              mode: 'multiple',
+            }}
+          />
+        )
       },
     },
     {
       title: 'Description',
       dataIndex: 'description',
       valueType: 'textarea',
+      search: false,
     },
     {
       title: "Operating",
@@ -374,13 +412,21 @@ const User: React.FC = () => {
               label={"Status"}
               options={[
                 {
-                  label: '禁用',
+                  label: '启用',
                   value: 0,
                 },
                 {
-                  label: '启用',
+                  label: '禁用',
                   value: 1,
                 },
+                {
+                  label: '锁定',
+                  value:  2,
+                },
+                {
+                  label: '过期',
+                  value: 3,
+                }
               ]}
             />
           </Space>
