@@ -34,7 +34,6 @@ const Application: React.FC = () => {
   const [applicationTypeData, setApplicationTypeData] = useState([]);
   const [idTokenData, setIdTokenData] = useState([]);
   const [authenticationMethod, setAuthenticationMethod] = useState([]);
-  const [formValues, setFormValues] = useState({});
   const [currentRow, setCurrentRow] = useState({});
 
   const [total, setTotal] = useState<number>(0);

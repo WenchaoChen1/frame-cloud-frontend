@@ -7,6 +7,12 @@ export async function getMenuManageTree(params?: any) {
   });
 }
 
+export async function getMenuManageDetail(id?: any) {
+  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-menu-manage-detail/${id}`, {
+    method: 'GET'
+  });
+}
+
 export async function insertMenuManage(data?: any) {
   return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/insert-menu-manage`, {
     method: 'POST',

@@ -3,11 +3,15 @@ import {
   insertMenuManage,
   updateMenuManage,
   deleteMenuManage,
-  moveMenu,
+  getMenuManageDetail,
 } from "@/services/api/system-api/menuApi";
 
 export async function getMenuManageTreeService (data?: any) {
   return await getMenuManageTree(data);
+}
+
+export async function getMenuManageDetailService (data?: any) {
+  return await getMenuManageDetail(data);
 }
 
 export async function insertMenuManageService(data?: any) {

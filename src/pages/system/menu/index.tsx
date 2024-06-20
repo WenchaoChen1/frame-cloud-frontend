@@ -3,8 +3,8 @@ import {
   insertMenuManageService,
   updateMenuManageService,
   deleteMenuManageService,
+  getMenuManageDetailService,
 } from '@/services/system-service/menuService';
-import {PlusOutlined} from '@ant-design/icons';
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
@@ -16,7 +16,6 @@ import {
   ProTable,
   ProFormDigit
 } from '@ant-design/pro-components';
-import { FormattedMessage } from '@umijs/max';
 import { Button, message, Row, Space } from 'antd';
 import React, { useRef, useState } from 'react';
 
@@ -31,6 +30,23 @@ const MenuList: React.FC = () => {
   const [selectedRows, setSelectedRows] = useState<APISystem.MenuListItemDataType[]>([]);
   const [defaultExpanded, setDefaultExpanded] = useState([])
 
+  const getMenuInfoRequest = async () => {
+    if (isEdit) {
+      const accountDetailResponse = await getMenuManageDetailService(currentRow?.id || '');
+      if (accountDetailResponse.success === true && accountDetailResponse.data) {
+        return accountDetailResponse.data;
+      }
+    }
+
+    return {
+      menuName:'',
+      code: '',
+      id: '',
+      sort: '',
+      type: '',
+      status: '',
+    };
+  };
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
@@ -228,6 +244,7 @@ const MenuList: React.FC = () => {
           title={ isEdit ? 'Edit' :  'New'}
           width="800px"
           open={modalVisible}
+          request={getMenuInfoRequest}
           onOpenChange={handleModalVisible}
           onFinish={async (record) => {
             console.log('onFinish record', record);

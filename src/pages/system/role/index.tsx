@@ -11,8 +11,6 @@ import {
   ProFormTextArea,
   ProFormTreeSelect,
   ProTable,
-  ProFormSelect,
-  ProForm,
 } from '@ant-design/pro-components';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {PlusOutlined} from '@ant-design/icons';
@@ -264,7 +262,6 @@ const Role: React.FC = () => {
         };
       });
   
-      console.log(list, '====888999');
       setParentTreeData(list);
       return list;
     } else {
