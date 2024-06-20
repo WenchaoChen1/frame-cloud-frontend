@@ -292,7 +292,7 @@ const Role: React.FC = () => {
   const removeFields = (obj: any) => {
     delete obj.id;
     delete obj.sort;
-  
+
     if (obj.children) {
       obj.children.forEach((child: any) => {
         removeFields(child);
@@ -321,7 +321,7 @@ const Role: React.FC = () => {
   const onSelect = (selectedKeysValue: React.Key[], info: any) => {
     setSelectedKeys(selectedKeysValue);
   };
-  
+
   const getParentRoleTreeRequest = async (Id: any) => {
     const Response = await getRoleManageRoleDetailToListService({
       tenantId: Id ? Id:tenantId,
@@ -336,7 +336,7 @@ const Role: React.FC = () => {
           label: roleName,
         };
       });
-  
+
       setParentTreeData(list);
       return list;
     } else {
@@ -378,7 +378,7 @@ const Role: React.FC = () => {
           }}
         />
       }
- 
+
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
           extra={
@@ -573,7 +573,7 @@ const Role: React.FC = () => {
             hidden={true}
           />
 
-          <div 
+          <div
             // className={styles.tenantMenuTree}
           >
             <Tree

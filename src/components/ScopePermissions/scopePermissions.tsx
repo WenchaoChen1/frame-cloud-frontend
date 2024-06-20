@@ -1,10 +1,12 @@
 import {
+  ProFormSelect,
   ProTable
 } from '@ant-design/pro-components';
 import React, { useState, useEffect} from 'react';
 import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import {
   getPermissionManagePageService,
+  getPermissionTypeService
 } from "@/services/system-service/permissionService";
 import styles from './index.less';
 
@@ -22,6 +24,7 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
   const [total, setTotal] = useState<number>(0);
   const [size, setSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [page, setPage] = useState<number>(1);
+  const [permissionTypeList, setPermissionTypeList] = useState([]);
 
   const columns = [
     {
@@ -37,9 +40,27 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
     {
       title: 'permissionType',
       dataIndex: 'permissionType',
+      valueType: 'select',
       key: 'permissionType',
+      valueEnum: permissionTypeList.reduce((result, type) => {
+        result[type] = {
+          text: type,
+          status: type,
+        };
+        return result;
+      }, {}),
     },
   ];
+
+  const initPermissionTypeChange = async () => {
+    const response = await getPermissionTypeService();
+    if (response?.success === true) {
+      setPermissionTypeList(response?.data);
+    }
+  };
+  useEffect(() => {
+    initPermissionTypeChange()
+  }, []);
 
   const getList = async(params: API.PageParams) => {
     const response = await getPermissionManagePageService({
@@ -87,9 +108,6 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
   //   initPermissList();
   // }, [scopeId])
 
-  useEffect(() => {
-    getList({});
-  }, [])
 
   return (
     <div>
@@ -99,10 +117,15 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
         rowKey={(e: any) => e?.permissionId}
         rowSelection={rowSelection}
         options={false}
+        search={{
+          defaultCollapsed: true,
+          span: 8,
+          labelWidth: 'auto',
+        }}
         request={getList}
         pagination={{
           current: page,
-          pageSize: size, 
+          pageSize: size,
           total: total,
           size: "small",
           onChange: (pageNum: number, sizeNum: any) => {

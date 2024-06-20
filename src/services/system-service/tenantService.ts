@@ -6,10 +6,10 @@ import {
   getTenantManageDetail,
 
   batchDeleteTenant,
-  findAllMenuTreeByTenant,
-  findSelectedMenuByTenant,
+  getTenantManageMenuTree,
+  getAllByTenantId,
   getChildrenByTenantId,
-  onSaveMenuInTenant,
+  insertTenantMenu,
 } from '@/services/api/system-api/tenantApi';
 
 export async function getTenantManageTreeService() {
@@ -48,15 +48,15 @@ export async function getChildrenByTenantIdService(tenantId: string) {
 
 //  get relation menu all tree By tenantId
 export async function findAllMenuTreeByTenantService(tenantId: string) {
-  return await findAllMenuTreeByTenant(tenantId);
+  return await getTenantManageMenuTree(tenantId);
 }
 
 // tenant - relation menu - get selected menu by role
 export async function findSelectedMenuByTenantService(tenantId: string) {
-  return await findSelectedMenuByTenant(tenantId);
+  return await getAllByTenantId(tenantId);
 }
 
 // tenant - relation menu - save Selected Menu By Role
 export async function onSaveMenuInTenantService(data: APISystem.onSaveMenuInTenantDataType) {
-  return await onSaveMenuInTenant(data);
+  return await insertTenantMenu(data);
 }

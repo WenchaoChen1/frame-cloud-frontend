@@ -65,7 +65,8 @@ const Application: React.FC = () => {
         pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
         applicationName: params?.applicationName,
         clientAuthenticationMethods: params?.clientAuthenticationMethods?.map((param: any) => encodeURIComponent(param)).join(',') || [],
-        authorizationGrantTypes: params?.authorizationGrantTypes?.split(',')?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+        authorizationGrantTypes: params?.authorizationGrantTypes?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+        status:params?.status
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -89,7 +90,7 @@ const Application: React.FC = () => {
   const parseAccessTokenValidity = (duration: any) => {
     const regex = /PT((\d+)D)?((\d+)H)?((\d+)M)?((\d+)S)?/;
     const match = duration?.match(regex);
-  
+
     let days = parseInt(match?.[2]) || 0;
     let hours = parseInt(match?.[4]) || 0;
     let minutes = parseInt(match?.[6]) || 0;
@@ -99,25 +100,25 @@ const Application: React.FC = () => {
       days += Math.floor(hours / 24);
       hours %= 24;
     }
-  
+
     let result = "";
-  
+
     if (days > 0) {
       result += `${days} days`;
     }
-  
+
     if (hours > 0) {
       result += `${hours} hours`;
     }
-  
+
     if (minutes > 0) {
       result += `${minutes} minutes`;
     }
-  
+
     if (seconds > 0) {
       result += `${seconds} seconds`;
     }
-  
+
     return result.trim();
   };
 
@@ -158,7 +159,7 @@ const Application: React.FC = () => {
     fields.refreshTokenValidity = mergeAndFormatValidity(fields?.refreshTokenValidity, fields?.dayType2);
     fields.authorizationCodeValidity = mergeAndFormatValidity(fields?.authorizationCodeValidity, fields?.dayType3);
     fields.deviceCodeValidity = mergeAndFormatValidity(fields?.deviceCodeValidity, fields?.dayType4);
-    
+
     if (fields.clientSecretExpiresAt) {
       fields.clientSecretExpiresAt = new Date(fields?.clientSecretExpiresAt).toISOString();
     }
@@ -231,14 +232,14 @@ const Application: React.FC = () => {
             imageUrl = require('@/images/application_2.png');
             tooltipText = '社交化认证';
           }
-    
+
           return (
             <Tooltip title={tooltipText}>
               <img src={imageUrl} alt={type} style={{ paddingRight: '8px' }} />
             </Tooltip>
           );
         });
-    
+
         return <div>{images}</div>;
       },
     },
@@ -249,26 +250,34 @@ const Application: React.FC = () => {
     {
       title: formatMessage({ id: 'application.list.status' }),
       dataIndex: 'status',
+      valueType: 'select',
+      valueEnum: {
+        ENABLE: { text: '启用'},
+        FORBIDDEN: {text: '禁用'},
+        LOCKING: {text: '锁定'},
+        EXPIRED: {text: '过期'},
+      },
       render: (value, record) => {
-        if (value === 0) {
+        const {status} = record
+        if (status === 0) {
           return (
             <Tooltip title={'启用'}>
               <img src={require('@/images/status_0.png')} alt={value} />
             </Tooltip>
           );
-        } else if (value === 1) {
+        } else if (status === 1) {
           return (
             <Tooltip title={'禁用'}>
               <img src={require('@/images/status_1.png')} alt={value} />
             </Tooltip>
           );
-        } else if (value === 2) {
+        } else if (status === 2) {
           return (
             <Tooltip title={'锁定'}>
               <img src={require('@/images/status_2.png')} alt={value} />
             </Tooltip>
           );
-        } else if (value === 3) {
+        } else if (status === 3) {
           return (
             <Tooltip title={'过期'}>
               <img src={require('@/images/status_3.png')} alt={value} />
@@ -324,9 +333,9 @@ const Application: React.FC = () => {
     const hours = momentDuration.hours();
     const minutes = momentDuration.minutes();
     const seconds = momentDuration.seconds();
-  
+
     let formattedDuration = "";
-  
+
     if (hours >= 24) {
       const days = Math.floor(hours / 24);
       formattedDuration += `${days}天 `;
@@ -337,16 +346,16 @@ const Application: React.FC = () => {
     } else if (hours > 0) {
       formattedDuration += `${hours}小时 `;
     }
-  
+
     if (minutes > 0) {
       formattedDuration += `${minutes}分钟 `;
     }
-  
+
     if (seconds > 0) {
       const formattedSeconds = seconds > 0 ? seconds.toFixed(1) : seconds;
       formattedDuration += `${formattedSeconds}秒`;
     }
-  
+
     return formattedDuration.trim();
   };
 
@@ -385,6 +394,9 @@ const Application: React.FC = () => {
         ]}
         request={getList}
         columns={columns}
+        search={
+          {labelWidth: 'auto',}
+        }
         pagination={{
           current: currentPage,
           pageSize: pageSize,
@@ -619,7 +631,7 @@ const Application: React.FC = () => {
               <div style={{ paddingTop: 8 }}>{formatMessage({ id: 'application.list.requireAuthorizationConsent' })}</div>
             </div>
           </Space>
-          
+
 
           <Divider plain>{formatMessage({ id: 'application.list.label2' })}</Divider>
 
@@ -752,19 +764,19 @@ const Application: React.FC = () => {
               options={[
                 {
                   label: '启用',
-                  value: '0',
+                  value: 'ENABLE',
                 },
                 {
                   label: '禁用',
-                  value: '1',
+                  value: 'FORBIDDEN',
                 },
                 {
                   label: '锁定',
-                  value: '2',
+                  value: 'LOCKING',
                 },
                 {
                   label: '过期',
-                  value: '3',
+                  value: 'EXPIRED',
                 }
               ]}
             />
@@ -776,7 +788,7 @@ const Application: React.FC = () => {
               <div style={{ paddingTop: '35px' }}>{formatMessage({ id: 'application.list.reserved' })}</div>
             </div>
           </Space>
- 
+
         </ModalForm>
       }
     </PageContainer>
