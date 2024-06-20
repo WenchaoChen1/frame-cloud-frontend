@@ -7,6 +7,15 @@ export async function getRoleManageTree(params: APISystem.RoleTableSearchParams)
   });
 }
 
+export async function getAllByTenantMenuToTree(tenantId: string) {
+  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-all-by-tenant-menu-to-tree`, {
+    method: 'GET',
+    params: {
+      tenantId: tenantId
+    }
+  });
+}
+
 export async function getRoleManageRoleDetailToList(params: APISystem.RoleTableSearchParams) {
   return request<APISystem.RoleResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-role-manage-role-detail-to-list`, {
     method: 'GET',

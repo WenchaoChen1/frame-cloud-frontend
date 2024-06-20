@@ -1,5 +1,5 @@
 import {FormattedMessage} from '@umijs/max';
-import {Button, message, Space} from 'antd';
+import {Button, message, Space, Tree} from 'antd';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   FooterToolbar,
@@ -21,6 +21,7 @@ import {
   insertRoleManageService,
   updateRoleManageService,
   getRoleManageRoleDetailToListService,
+  getAllByTenantMenuToTreeService,
 } from '@/services/system-service/roleService';
 import {getTenantManageTreeService} from '@/services/system-service/tenantService';
 
@@ -33,6 +34,15 @@ const Role: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<APISystem.RoleItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.RoleItemDataType[]>([]);
+  const [menuModalVisible, setMenuModalVisible] = useState<boolean>(false);
+  const [checkedKeys, setCheckedKeys] = useState<{ checked: React.Key[], halfChecked: React.Key[] }>({
+    checked: [],
+    halfChecked: []
+  });
+  const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
+  const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
+  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
+  const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
 
   const actionRef = useRef<ActionType>();
 
@@ -60,6 +70,18 @@ const Role: React.FC = () => {
     }
   };
 
+  const onExpand = (expandedKeysValue: React.Key[]) => {
+    setExpandedKeys(expandedKeysValue);
+    setAutoExpandParent(false);
+  };
+
+  const onCheck = (checkedKeysValue: React.Key[], e: any) => {
+    setCheckedKeys({
+      checked: checkedKeysValue,
+      halfChecked: e.halfCheckedKeys
+    });
+  };
+
   const updateRoleRequest = async (fields: APISystem.RoleItemDataType) => {
     const hide = message.loading('Update');
     try {
@@ -73,6 +95,25 @@ const Role: React.FC = () => {
       message.error('Update failed, please try again!');
       return false;
     }
+  };
+
+  const openMenuModal = async (id: string) => {
+    const allMenuResponse = await getAllByTenantMenuToTreeService(id);
+    if (allMenuResponse.success === true) {
+      setAllMenuTree(allMenuResponse?.data || []);
+    }
+
+    // const selectedMenuResponse = await findSelectedMenuByTenantService(id);
+    // if (selectedMenuResponse.success === true) {
+    //   if (selectedMenuResponse?.data) {
+    //     const checkedKey: string[] = selectedMenuResponse.data?.checkedMenuId || [];
+    //     const halfChecked: string[] = selectedMenuResponse.data?.halfCheckedMenuId || [];
+
+    //     setCheckedKeys({checked: checkedKey, halfChecked: halfChecked});
+    //   }
+    // }
+
+    // setMenuModalVisible(true);
   };
 
   const deleteRoleRequest = async (id: string) => {
@@ -129,6 +170,15 @@ const Role: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
+        <a
+          key="MenuBtn"
+          onClick={() => {
+            setCurrentRow(record);
+            openMenuModal(record?.id || '');
+          }}
+        >
+          Menu
+        </a>,
         <a
           key="editBtn"
           onClick={() => openEdit(record)}
@@ -245,6 +295,28 @@ const Role: React.FC = () => {
         removeFields(child);
       });
     }
+  };
+
+  const onSaveMenu = async (id: string) => {
+    const menuDataBody = {
+      tenantId: id,
+      menuIds: checkedKeys.checked.concat(checkedKeys.halfChecked),
+    };
+
+    const saveMenuResponse = await onSaveMenuInTenantService(menuDataBody);
+    if (saveMenuResponse?.success === true) {
+      message.success('Save success');
+      setMenuModalVisible(false);
+      if (actionRef.current) {
+        actionRef.current.reload();
+      }
+    } else {
+      message.error('Save menu failed, please try again');
+    }
+  };
+
+  const onSelect = (selectedKeysValue: React.Key[], info: any) => {
+    setSelectedKeys(selectedKeysValue);
   };
   
   const getParentRoleTreeRequest = async (Id: any) => {
@@ -474,6 +546,47 @@ const Role: React.FC = () => {
           <Space size={20}>
             <ProFormTextArea label={"Description"} name="description" width="md" />
           </Space>
+        </ModalForm>
+      }
+
+      {
+        menuModalVisible &&
+        <ModalForm
+          title={'Menu'}
+          width="400px"
+          open={menuModalVisible}
+          onOpenChange={setMenuModalVisible}
+          onFinish={async (record) => {
+            await onSaveMenu(record?.id);
+          }}
+          initialValues={{
+            id: currentRow?.id
+          }}
+          // className={commonStyle.pageContainer}
+        >
+          <ProFormText
+            label={"id"}
+            name="id"
+            hidden={true}
+          />
+
+          <div 
+            // className={styles.tenantMenuTree}
+          >
+            <Tree
+              checkable
+              onExpand={onExpand}
+              expandedKeys={expandedKeys}
+              autoExpandParent={autoExpandParent}
+              onCheck={onCheck}
+              checkedKeys={checkedKeys}
+              onSelect={onSelect}
+              selectedKeys={selectedKeys}
+              treeData={allMenuTree}
+              fieldNames={{title: 'name', key: 'id'}}
+            />
+          </div>
+
         </ModalForm>
       }
     </PageContainer>

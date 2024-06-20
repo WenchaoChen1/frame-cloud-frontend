@@ -28,13 +28,20 @@ import {
 
 
 const Index: React.FC = () => {
+  const actionRef = useRef<ActionType>();
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.TenantItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.TenantItemDataType[]>([]);
   const [modalVisible, handleModalVisible] = useState<boolean>(false);
   const [menuModalVisible, setMenuModalVisible] = useState<boolean>(false);
-
-  const actionRef = useRef<ActionType>();
+  const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
+  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
+  const [checkedKeys, setCheckedKeys] = useState<{ checked: React.Key[], halfChecked: React.Key[] }>({
+    checked: [],
+    halfChecked: []
+  });
+  const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
+  const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
@@ -107,16 +114,6 @@ const Index: React.FC = () => {
     setCurrentRow({parentId: record?.id ? record.id : ''});
     handleModalVisible(true);
   }
-
-  const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
-  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
-  const [checkedKeys, setCheckedKeys] = useState<{ checked: React.Key[], halfChecked: React.Key[] }>({
-    checked: [],
-    halfChecked: []
-  });
-
-  const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
-  const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
 
   const onExpand = (expandedKeysValue: React.Key[]) => {
     setExpandedKeys(expandedKeysValue);

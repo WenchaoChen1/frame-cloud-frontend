@@ -4,7 +4,6 @@ import {Button, message, Tree} from 'antd';
 import {FormattedMessage} from '@umijs/max';
 import commonStyle from "@/pages/common/index.less";
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
-import {PlusOutlined} from '@ant-design/icons';
 import {
   FooterToolbar,
   ModalForm,
@@ -29,14 +28,20 @@ import {
 
 
 const Index: React.FC = () => {
+  const actionRef = useRef<ActionType>();
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.TenantItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.TenantItemDataType[]>([]);
   const [modalVisible, handleModalVisible] = useState<boolean>(false);
   const [menuModalVisible, setMenuModalVisible] = useState<boolean>(false);
-  const [defaultExpanded, setDefaultExpanded] = useState([])
-
-  const actionRef = useRef<ActionType>();
+  const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
+  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
+  const [checkedKeys, setCheckedKeys] = useState<{ checked: React.Key[], halfChecked: React.Key[] }>({
+    checked: [],
+    halfChecked: []
+  });
+  const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
+  const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
@@ -110,20 +115,16 @@ const Index: React.FC = () => {
     handleModalVisible(true);
   }
 
-  const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
-  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
-  const [checkedKeys, setCheckedKeys] = useState([]);
-
-  const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
-  const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
-
   const onExpand = (expandedKeysValue: React.Key[]) => {
     setExpandedKeys(expandedKeysValue);
     setAutoExpandParent(false);
   };
 
   const onCheck = (checkedKeysValue: React.Key[], e: any) => {
-    setCheckedKeys(checkedKeysValue);
+    setCheckedKeys({
+      checked: checkedKeysValue,
+      halfChecked: e.halfCheckedKeys
+    });
   };
 
   const onSelect = (selectedKeysValue: React.Key[], info: any) => {
@@ -139,7 +140,10 @@ const Index: React.FC = () => {
     const selectedMenuResponse = await findSelectedMenuByTenantService(id);
     if (selectedMenuResponse.success === true) {
       if (selectedMenuResponse?.data) {
-        setCheckedKeys(selectedMenuResponse?.data);
+        const checkedKey: string[] = selectedMenuResponse.data?.checkedMenuId || [];
+        const halfChecked: string[] = selectedMenuResponse.data?.halfCheckedMenuId || [];
+
+        setCheckedKeys({checked: checkedKey, halfChecked: halfChecked});
       }
     }
 
@@ -149,7 +153,7 @@ const Index: React.FC = () => {
   const onSaveMenu = async (id: string) => {
     const menuDataBody = {
       tenantId: id,
-      menuIds: checkedKeys
+      menuIds: checkedKeys.checked.concat(checkedKeys.halfChecked),
     };
 
     const saveMenuResponse = await onSaveMenuInTenantService(menuDataBody);
@@ -298,25 +302,6 @@ const Index: React.FC = () => {
     },
   ];
 
-  const changeData = async () =>{
-    if (defaultExpanded.length > 0){
-      setDefaultExpanded([])
-      return
-    }
-    const res = await getTenantManageTreeService()
-    const newExpandedKeys:any = []
-    const render = (treeDatas:any) => { // 获取到所有可展开的父节点
-      treeDatas.map((item:any) => {
-        if (item.children) {
-          newExpandedKeys.push(item.id)
-          render(item.children)
-        }
-      })
-      return newExpandedKeys
-    }
-    setDefaultExpanded(render(res?.data))
-  }
-
   return (
     <PageContainer>
       <ProTable<APISystem.TenantItemDataType, APISystem.PageParams>
@@ -326,19 +311,8 @@ const Index: React.FC = () => {
         search={{
           labelWidth: 100,
         }}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              changeData()
-            }}
-          >
-            <PlusOutlined /> {defaultExpanded.length > 0 ? '收起':'展开'}
-          </Button>,
-        ]}
+        toolBarRender={() => []}
         request={getTenantManageTreeService}
-        expandedRowKeys={defaultExpanded}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
