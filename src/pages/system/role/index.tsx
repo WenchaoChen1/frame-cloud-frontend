@@ -22,6 +22,8 @@ import {
   updateRoleManageService,
   getRoleManageRoleDetailToListService,
   getAllByTenantMenuToTreeService,
+  insertRoleMenuService,
+  getAllTenantByRoleIdService,
 } from '@/services/system-service/roleService';
 import {getTenantManageTreeService} from '@/services/system-service/tenantService';
 
@@ -97,23 +99,24 @@ const Role: React.FC = () => {
     }
   };
 
-  const openMenuModal = async (id: string) => {
-    const allMenuResponse = await getAllByTenantMenuToTreeService(id);
+  const openMenuModal = async (id?: any) => {
+    const allMenuResponse = await getAllByTenantMenuToTreeService(tenantId);
+
     if (allMenuResponse.success === true) {
       setAllMenuTree(allMenuResponse?.data || []);
     }
 
-    // const selectedMenuResponse = await findSelectedMenuByTenantService(id);
-    // if (selectedMenuResponse.success === true) {
-    //   if (selectedMenuResponse?.data) {
-    //     const checkedKey: string[] = selectedMenuResponse.data?.checkedMenuId || [];
-    //     const halfChecked: string[] = selectedMenuResponse.data?.halfCheckedMenuId || [];
+    const selectedMenuResponse = await getAllTenantByRoleIdService(id);
+    if (selectedMenuResponse.success === true) {
+      if (selectedMenuResponse?.data) {
+        const checkedKey: string[] = selectedMenuResponse.data?.checkedMenuId || [];
+        const halfChecked: string[] = selectedMenuResponse.data?.halfCheckedMenuId || [];
 
-    //     setCheckedKeys({checked: checkedKey, halfChecked: halfChecked});
-    //   }
-    // }
+        setCheckedKeys({checked: checkedKey, halfChecked: halfChecked});
+      }
+    }
 
-    // setMenuModalVisible(true);
+    setMenuModalVisible(true);
   };
 
   const deleteRoleRequest = async (id: string) => {
@@ -174,7 +177,7 @@ const Role: React.FC = () => {
           key="MenuBtn"
           onClick={() => {
             setCurrentRow(record);
-            openMenuModal(record?.id || '');
+            openMenuModal(record?.id);
           }}
         >
           Menu
@@ -299,11 +302,11 @@ const Role: React.FC = () => {
 
   const onSaveMenu = async (id: string) => {
     const menuDataBody = {
-      tenantId: id,
+      roleId: id,
       menuIds: checkedKeys.checked.concat(checkedKeys.halfChecked),
     };
 
-    const saveMenuResponse = await onSaveMenuInTenantService(menuDataBody);
+    const saveMenuResponse = await insertRoleMenuService(menuDataBody);
     if (saveMenuResponse?.success === true) {
       message.success('Save success');
       setMenuModalVisible(false);

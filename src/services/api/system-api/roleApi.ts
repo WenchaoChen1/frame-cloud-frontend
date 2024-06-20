@@ -16,6 +16,20 @@ export async function getAllByTenantMenuToTree(tenantId: string) {
   });
 }
 
+export async function getAllTenantByRoleId(roleId: string) {
+  return request<APISystem.SelectedRelationMenuDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-all-tenant-by-role-id/${roleId}`, {
+    method: 'GET'
+  });
+}
+
+export async function insertRoleMenu(data: APISystem.onSaveMenuInTenantDataType) {
+  return request<APISystem.onSaveRelationMenuResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/insert-role-menu`, {
+    method: 'POST',
+    data: data
+  });
+}
+
+
 export async function getRoleManageRoleDetailToList(params: APISystem.RoleTableSearchParams) {
   return request<APISystem.RoleResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-role-manage-role-detail-to-list`, {
     method: 'GET',

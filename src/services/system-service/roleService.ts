@@ -6,6 +6,8 @@ import {
   updateRoleManage,
   getRoleManageRoleDetailToList,
   getAllByTenantMenuToTree,
+  insertRoleMenu,
+  getAllTenantByRoleId,
 } from "@/services/api/system-api/roleApi";
 
 export async function getRoleManageTreeService(params: APISystem.RoleTableSearchParams) {
@@ -34,4 +36,12 @@ export async function insertRoleManageService(data?: any) {
 
 export async function updateRoleManageService(data?: any) {
   return await updateRoleManage(data);
+}
+
+export async function insertRoleMenuService(data?: any) {
+  return await insertRoleMenu(data);
+}
+
+export async function getAllTenantByRoleIdService(data?: any) {
+  return await getAllTenantByRoleId(data);
 }
