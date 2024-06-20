@@ -6,7 +6,7 @@ import {
   getDictInfo,
   getDictTree,
   moveDict
-} from "@/services/api/system-api/dictApi";
+} from "@/services/base-service/api/system-api/dictApi";
 import {Key} from "react";
 
 export async function getDictTreeService(tenantId: string) {

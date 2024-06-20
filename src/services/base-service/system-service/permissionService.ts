@@ -5,7 +5,7 @@ import {
   deletePermissionManage,
   getPermissionType,
   getPermissionManageDetail,
-} from "@/services/api/system-api/permissionApi";
+} from "@/services/base-service/api/system-api/permissionApi";
 
 export async function getPermissionManagePageService(params: APIIdentity.Pager) {
   return await getPermissionManagePage(params);

@@ -1,6 +1,6 @@
 import {
   getComplianceManagePage,
-} from "@/services/api/identity-api/complianceApi";
+} from "@/services/base-service/api/identity-api/complianceApi";
 
 
 export async function getComplianceManagePageService(params?: any) {

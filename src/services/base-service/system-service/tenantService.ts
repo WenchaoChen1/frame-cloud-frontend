@@ -10,7 +10,7 @@ import {
   getAllByTenantId,
   getChildrenByTenantId,
   insertTenantMenu,
-} from '@/services/api/system-api/tenantApi';
+} from '@/services/base-service/api/system-api/tenantApi';
 
 export async function getTenantManageTreeService() {
   return await getTenantManageTree();

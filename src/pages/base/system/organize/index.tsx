@@ -3,9 +3,9 @@ import {Button, Col, Row, Space, Tree, TreeSelect} from 'antd';
 import {PageContainer} from '@ant-design/pro-components';
 import {getTenantManageTreeService} from "@/services/base-service/system-service/tenantService";
 import {getOrganizeTreeService} from '@/services/base-service/system-service/organize';
-import RightContainer from "@/pages/system/organize/components/rightContainer";
+import RightContainer from "@/pages/base/system/organize/components/rightContainer";
 import commonStyle from '@/pages/common/index.less';
-import styles from "@/pages/system/organize/index.less";
+import styles from "@/pages/base/system/organize/index.less";
 
 const Organize: React.FC = () => {
   const [tenantId, setTenantId] = useState<string|undefined>(undefined);

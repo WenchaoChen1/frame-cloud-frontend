@@ -1,4 +1,4 @@
-import {getLoginInfo} from "@/services/api/system-api/loginApi";
+import {getLoginInfo} from "@/services/base-service/api/system-api/loginApi";
 
 import {
   deleteUserManage,
@@ -6,7 +6,7 @@ import {
   updateUserManage,
   getUserManageDetail,
   getUserManagePage,
-} from "@/services/api/system-api/userApi";
+} from "@/services/base-service/api/system-api/userApi";
 
 export async function getUserManagePageService(params: API.PageParams) {
   return await getUserManagePage(params);

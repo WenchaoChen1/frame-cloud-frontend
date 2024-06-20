@@ -5,7 +5,7 @@ import {
   insertScopeManage,
   deleteScopeManage,
   scopeManageAssignedPermission,
-} from "@/services/api/identity-api/scopeApi";
+} from "@/services/base-service/api/identity-api/scopeApi";
 
 export async function getScopeManagePageService(params?: any) {
   return await getScopeManagePage(params);

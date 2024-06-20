@@ -18,7 +18,7 @@ import {
   deleteOrganizeService
 } from "@/services/base-service/system-service/organize";
 import commonStyle from "@/pages/common/index.less";
-import styles from "@/pages/system/organize/index.less";
+import styles from "@/pages/base/system/organize/index.less";
 
 const initFormData = {
   id: "",

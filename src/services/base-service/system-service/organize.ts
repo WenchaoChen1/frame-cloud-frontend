@@ -3,7 +3,7 @@ import {
   createOrganize,
   editOrganize,
   getOrganizeInfo, deleteOrganize
-} from "@/services/api/system-api/organizeApi";
+} from "@/services/base-service/api/system-api/organizeApi";
 import {Key} from "react";
 
 // list

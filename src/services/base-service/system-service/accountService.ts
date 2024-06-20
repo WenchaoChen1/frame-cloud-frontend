@@ -5,7 +5,7 @@ import {
   getAccountManageDetail,
   getAccountManagePage,
   getAccountManageTenantDetailToList,
-} from '@/services/api/system-api/accountApi';
+} from '@/services/base-service/api/system-api/accountApi';
 
 export async function insertAccountManageService(data?: any) {
   return await insertAccountManage(data);

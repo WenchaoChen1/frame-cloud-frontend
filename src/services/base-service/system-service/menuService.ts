@@ -4,7 +4,7 @@ import {
   updateMenuManage,
   deleteMenuManage,
   getMenuManageDetail,
-} from "@/services/api/system-api/menuApi";
+} from "@/services/base-service/api/system-api/menuApi";
 
 export async function getMenuManageTreeService (data?: any) {
   return await getMenuManageTree(data);

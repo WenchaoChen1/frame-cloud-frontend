@@ -18,7 +18,7 @@ import {
   deleteDictService
 } from "@/services/base-service/system-service/dict";
 import commonStyle from "@/pages/common/index.less";
-import styles from "@/pages/system/dict/index.less";
+import styles from "@/pages/base/system/dict/index.less";
 
 const initFormData = {
   id: "",

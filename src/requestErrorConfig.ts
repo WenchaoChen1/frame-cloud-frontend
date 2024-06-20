@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import {getRefreshToken, getToken, logOut, removeToken, setRefreshToken, setToken} from '@/utils/utils';
 import { history } from '@umijs/max';
 import {LOGIN_PATH} from "@/pages/common/constant";
-import {oauth2RefreshToken} from "@/services/api/identity-api/oauth2";
+import {oauth2RefreshToken} from "@/services/base-service/api/identity-api/oauth2";
 import React, { useState, useEffect} from 'react';
 import {oauth2RefreshTokenService} from "@/services/base-service/identity-service/login";
 const axios = require('axios');

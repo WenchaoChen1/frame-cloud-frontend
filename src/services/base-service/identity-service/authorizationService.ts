@@ -1,7 +1,7 @@
 import {
-  deleteAuthorizationManage, 
+  deleteAuthorizationManage,
   getAuthorizationManagePage,
-} from "@/services/api/identity-api/authorizationApi";
+} from "@/services/base-service/api/identity-api/authorizationApi";
 
 export async function getAuthorizationManagePageService(params: APIIdentity.Pager) {
   return await getAuthorizationManagePage(params);

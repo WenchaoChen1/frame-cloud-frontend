@@ -4,7 +4,7 @@ import {
   updateApplicationManage,
   deleteApplicationManage,
   insertApplicationManage,
-} from "@/services/api/identity-api/applicationApi";
+} from "@/services/base-service/api/identity-api/applicationApi";
 
 export async function getApplicationListService(params?: any) {
   return await getApplicationManagePage(params);

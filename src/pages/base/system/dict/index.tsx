@@ -5,8 +5,8 @@ import {
 } from '@ant-design/pro-components';
 import {getTenantManageTreeService} from "@/services/base-service/system-service/tenantService";
 import {getDictTreeService} from "@/services/base-service/system-service/dict";
-import RightContainer from "@/pages/system/dict/components/rightContainer";
-import styles from "@/pages/system/dict/index.less";
+import RightContainer from "@/pages/base/system/dict/components/rightContainer";
+import styles from "@/pages/base/system/dict/index.less";
 
 const Dict: React.FC = () => {
   const [tenantId, setTenantId] = useState<string|undefined>(undefined);
