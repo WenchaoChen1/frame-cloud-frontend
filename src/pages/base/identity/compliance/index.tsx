@@ -121,7 +121,6 @@ const Compliance: React.FC = () => {
       dataIndex: 'android',
       search: false,
       render: (value, record) => {
-        console.log(value, '-===')
         return (<div>{!value?'false':''}</div>);
       },
     },

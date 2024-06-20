@@ -50,9 +50,6 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
       permissionType: params?.permissionType || '',
     });
 
-    console.log(response, '******')
-    // debugger
-
     let dataSource: APISystem.UserItemDataType[] = [];
     let total = 0;
     if (response?.success === true) {
