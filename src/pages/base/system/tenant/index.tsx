@@ -312,6 +312,7 @@ const Index: React.FC = () => {
           labelWidth: 100,
         }}
         toolBarRender={() => []}
+        options={false}
         request={getTenantManageTreeService}
         columns={columns}
         rowSelection={{

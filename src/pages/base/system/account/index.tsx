@@ -174,6 +174,30 @@ const Account: React.FC = () => {
       dataIndex: 'identity',
     },
     {
+      title: "Status",
+      dataIndex: 'status',
+      hideInForm: true,
+      hideInSearch: true,
+      valueEnum: {
+        0: {
+          text: '启用',
+          status: 'ENABLE',
+        },
+        1: {
+          text: '禁用',
+          status: 'FORBIDDEN',
+        },
+        2: {
+          text: '锁定',
+          status: 'LOCKING',
+        },
+        3: {
+          text: '过期',
+          status: 'EXPIRED',
+        }
+      },
+    },
+    {
       title: 'Tenant',
       key: 'tenant',
       hideInTable: true,
@@ -211,12 +235,13 @@ const Account: React.FC = () => {
       key: 'showTime',
       dataIndex: 'createdDate',
       valueType: 'date',
-      sorter: true,
+      // sorter: true,
       hideInSearch: true,
     },
     {
       title: "Operating",
       dataIndex: 'option',
+      width: '220px',
       valueType: 'option',
       render: (_, record) => [
         <a

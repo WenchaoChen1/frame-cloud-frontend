@@ -125,7 +125,7 @@ const Compliance: React.FC = () => {
       },
     },
     {title: 'operation', dataIndex: 'operation', search: false, },
-    {title: 'createTime', dataIndex: 'createTime', search: false, }
+    {title: 'createTime', dataIndex: 'createdDate', search: false, }
   ];
 
   const handleSelectedPermissions = (permissions) => {

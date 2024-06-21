@@ -6,7 +6,7 @@ import {
   ModalForm,
   PageContainer,
   ProFormDigit,
-  ProFormRadio,
+  ProFormSelect,
   ProFormText,
   ProFormTextArea,
   ProFormTreeSelect,
@@ -162,12 +162,20 @@ const Role: React.FC = () => {
       hideInSearch: true,
       valueEnum: {
         0: {
-          text: 'Disable',
-          status: 'Processing',
+          text: '启用',
+          status: 'ENABLE',
         },
         1: {
-          text: 'Enable',
-          status: 'Success',
+          text: '禁用',
+          status: 'FORBIDDEN',
+        },
+        2: {
+          text: '锁定',
+          status: 'LOCKING',
+        },
+        3: {
+          text: '过期',
+          status: 'EXPIRED',
         }
       },
     },
@@ -175,6 +183,7 @@ const Role: React.FC = () => {
       title: "Operating",
       dataIndex: 'option',
       valueType: 'option',
+      width: '220px',
       render: (_, record) => [
         <a
           key="MenuBtn"
@@ -243,9 +252,7 @@ const Role: React.FC = () => {
     }
 
     params.tenantId = tenantId;
-
     const roleResponse = await getRoleManageTreeService(params);
-
     let dataSource: APISystem.RoleItemDataType[] = [];
     if (roleResponse?.success === true) {
       dataSource = roleResponse?.data || [];
@@ -351,6 +358,7 @@ const Role: React.FC = () => {
           rowKey="id"
           headerTitle={'List'}
           actionRef={actionRef}
+          options={false}
           toolBarRender={() => [
             <Button
               type="primary"
@@ -514,24 +522,33 @@ const Role: React.FC = () => {
               width="md"
               placeholder={"Sort"}
             />
-            <ProFormRadio.Group
+
+            <ProFormSelect
+              width="md"
               rules={[
                 {
                   required: true,
-                  message: "Status is required"
-                }
+                  message: "Status is required",
+                },
               ]}
-              initialValue={1}
               name="status"
               label={"Status"}
               options={[
                 {
+                  label: '启用',
                   value: 0,
-                  label: 'Disable',
                 },
                 {
+                  label: '禁用',
                   value: 1,
-                  label: 'Enable',
+                },
+                {
+                  label: '锁定',
+                  value:  2,
+                },
+                {
+                  label: '过期',
+                  value: 3,
                 }
               ]}
             />
@@ -556,7 +573,6 @@ const Role: React.FC = () => {
           initialValues={{
             id: currentRow?.id
           }}
-          // className={commonStyle.pageContainer}
         >
           <ProFormText
             label={"id"}
@@ -564,9 +580,7 @@ const Role: React.FC = () => {
             hidden={true}
           />
 
-          <div
-            // className={styles.tenantMenuTree}
-          >
+          <div>
             <Tree
               checkable
               onExpand={onExpand}

@@ -16,7 +16,7 @@ import {
   ProTable,
   ProFormDigit
 } from '@ant-design/pro-components';
-import { Button, message, Row, Space } from 'antd';
+import { message, Space } from 'antd';
 import React, { useRef, useState } from 'react';
 
 const MenuList: React.FC = () => {
@@ -122,13 +122,32 @@ const MenuList: React.FC = () => {
       hideInForm: true,
       valueEnum: {
         0: {
-          text: 'Disable',
-          status: 'Processing',
+          text: '启用',
+          status: 'ENABLE',
         },
         1: {
-          text: 'Enable',
-          status: 'Success',
+          text: '禁用',
+          status: 'FORBIDDEN',
+        },
+        2: {
+          text: '锁定',
+          status: 'LOCKING',
+        },
+        3: {
+          text: '过期',
+          status: 'EXPIRED',
         }
+      },
+      renderFormItem: (_, { type, defaultRender, ...rest }) => {
+        return (
+          <ProFormSelect
+            mode="multiple"
+            {...rest}
+            fieldProps={{
+              mode: 'multiple',
+            }}
+          />
+        )
       },
     },
     {
@@ -181,12 +200,24 @@ const MenuList: React.FC = () => {
   ];
 
   const getList = async (params: API.PageParams,) => {
+    params.status = params?.status?.map((item: any) => {
+        if (item === '1') {
+          return item = 'FORBIDDEN'
+        } else if (item === '2') {
+          return item = 'LOCKING'
+        } else if (item === '3') {
+          return item = 'EXPIRED'
+        } else {
+          return item = 'ENABLE'
+        }
+    })
+
     const response = await getMenuManageTreeService({
         pageNumber: params?.current || 1,
         pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
         name: params?.name,
         path: params?.path,
-        status: params?.status || '',
+        status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
         type: params?.type || '',
     });
 
@@ -417,34 +448,42 @@ const MenuList: React.FC = () => {
             />
           </Space>
 
-          <Space size={20}>
-            <ProFormTextArea
-              name="description"
+          <Space size={20} style={{ alignItems: 'baseline' }}>
+            <ProFormSelect
               width="md"
-              label={"Description"}
-              placeholder={'Please enter at least five characters'}
-            />
-
-            <ProFormRadio.Group
               rules={[
                 {
                   required: true,
                   message: "Status is required",
                 },
               ]}
-              initialValue={1}
               name="status"
               label={"Status"}
               options={[
                 {
+                  label: '启用',
                   value: 0,
-                  label: 'Disable',
                 },
                 {
+                  label: '禁用',
                   value: 1,
-                  label: 'Enable',
                 },
+                {
+                  label: '锁定',
+                  value:  2,
+                },
+                {
+                  label: '过期',
+                  value: 3,
+                }
               ]}
+            />
+
+            <ProFormTextArea
+              name="description"
+              width="md"
+              label={"Description"}
+              placeholder={'Please enter at least five characters'}
             />
           </Space>
         </ModalForm>

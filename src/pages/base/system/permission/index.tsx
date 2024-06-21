@@ -187,7 +187,7 @@ const User: React.FC = () => {
       },
     },
     {
-      title: 'status',
+      title: 'Status',
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
