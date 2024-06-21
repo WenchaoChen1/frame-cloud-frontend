@@ -145,8 +145,8 @@ const Index: React.FC = () => {
     const selectedMenuResponse = await findSelectedMenuByTenantService(id);
     if (selectedMenuResponse.success === true) {
       if (selectedMenuResponse?.data) {
-        const checkedKey: string[] = selectedMenuResponse.data?.checkedMenuId || [];
-        const halfChecked: string[] = selectedMenuResponse.data?.halfCheckedMenuId || [];
+        const checkedKey: string[] = selectedMenuResponse.data || [];
+        const halfChecked: string[] = selectedMenuResponse.data || [];
 
         setCheckedKeys({ checked: checkedKey, halfChecked: halfChecked });
       }
