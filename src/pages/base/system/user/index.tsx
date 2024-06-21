@@ -1,32 +1,32 @@
+import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
 import {
-  insertUserManageService,
   deleteUserManageService,
-  updateUserManageService,
   getUserManageDetailService,
-  getUserManagePageService
+  getUserManagePageService,
+  insertUserManageService,
+  updateUserManageService,
 } from '@/services/base-service/system-service/userService';
-import styles from './index.less';
-import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
-import type {ActionType, ProColumns} from '@ant-design/pro-components';
+import { PlusOutlined } from '@ant-design/icons';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   FooterToolbar,
   ModalForm,
   PageContainer,
-  ProFormRadio,
-  ProFormText,
-  ProTable,
   ProFormDigit,
+  ProFormRadio,
   ProFormSelect,
+  ProFormText,
   ProFormTextArea,
+  ProTable,
 } from '@ant-design/pro-components';
-import {FormattedMessage, useModel} from '@umijs/max';
-import {Button, message, Space } from 'antd';
-import React, {useRef, useState} from 'react';
-import {PlusOutlined} from "@ant-design/icons";
+import { FormattedMessage, useModel } from '@umijs/max';
+import { Button, message, Space } from 'antd';
+import React, { useRef, useState } from 'react';
+import styles from './index.less';
 
 const User: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const {initialState} = useModel('@@initialState');
+  const { initialState } = useModel('@@initialState');
   const currentUserId = initialState?.currentUser?.userId;
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -35,24 +35,24 @@ const User: React.FC = () => {
 
   const getList = async (params: API.PageParams) => {
     params.status = params?.status?.map((item: any) => {
-        if (item === '1') {
-          return item = 'FORBIDDEN'
-        } else if (item === '2') {
-          return item = 'LOCKING'
-        } else if (item === '3') {
-          return item = 'EXPIRED'
-        } else {
-          return item = 'ENABLE'
-        }
-    })
+      if (item === '1') {
+        return (item = 'FORBIDDEN');
+      } else if (item === '2') {
+        return (item = 'LOCKING');
+      } else if (item === '3') {
+        return (item = 'EXPIRED');
+      } else {
+        return (item = 'ENABLE');
+      }
+    });
 
     const roleResponse = await getUserManagePageService({
-        pageNumber: params?.current || 1,
-        pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-        status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
-        username: params?.username || '',
-        phoneNumber: params?.phoneNumber || '',
-        email: params?.email || '',
+      pageNumber: params?.current || 1,
+      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
+      status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+      username: params?.username || '',
+      phoneNumber: params?.phoneNumber || '',
+      email: params?.email || '',
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -69,13 +69,12 @@ const User: React.FC = () => {
     };
   };
 
-
   const createUserRequest = async (fields: APISystem.UserItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
 
     try {
-      await insertUserManageService({...fields});
+      await insertUserManageService({ ...fields });
       hide();
       message.success('Added successfully');
       return true;
@@ -117,14 +116,14 @@ const User: React.FC = () => {
       message.error('Delete failed, please try again');
       return false;
     }
-  }
+  };
 
   const onEditUser = (record: APISystem.UserItemDataType) => {
     setIsEdit(true);
     setOpenModal(true);
 
     setCurrentRow(record);
-  }
+  };
 
   const columns: ProColumns<APISystem.UserItemDataType>[] = [
     {
@@ -139,12 +138,7 @@ const User: React.FC = () => {
       title: 'PhoneNumber',
       dataIndex: 'phoneNumber',
       renderFormItem: (_, { type, defaultRender, ...rest }) => {
-        return (
-          <ProFormDigit
-            width="md"
-            name="phoneNumber"
-          />
-        )
+        return <ProFormDigit width="md" name="phoneNumber" />;
       },
     },
     {
@@ -167,7 +161,7 @@ const User: React.FC = () => {
         3: {
           text: '过期',
           status: 'EXPIRED',
-        }
+        },
       },
       renderFormItem: (_, { type, defaultRender, ...rest }) => {
         return (
@@ -178,7 +172,7 @@ const User: React.FC = () => {
               mode: 'multiple',
             }}
           />
-        )
+        );
       },
     },
     {
@@ -188,26 +182,24 @@ const User: React.FC = () => {
       search: false,
     },
     {
-      title: "Operating",
+      title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="editUser"
-          onClick={async () => await onEditUser(record)}
-        >
+        <a key="editUser" onClick={async () => await onEditUser(record)}>
           Edit
         </a>,
 
-        currentUserId !== record.id &&
-        <a
-          key="deleteUser"
-          onClick={async () => {
-            await deleteUserRequest(record?.id || '');
-          }}
-        >
-          Delete
-        </a>
+        currentUserId !== record.id && (
+          <a
+            key="deleteUser"
+            onClick={async () => {
+              await deleteUserRequest(record?.id || '');
+            }}
+          >
+            Delete
+          </a>
+        ),
       ],
     },
   ];
@@ -229,7 +221,7 @@ const User: React.FC = () => {
               setOpenModal(true);
             }}
           >
-            <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
+            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
         request={getList}
@@ -245,9 +237,9 @@ const User: React.FC = () => {
         <FooterToolbar
           extra={
             <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen"/>{' '}
-              <a style={{fontWeight: 600}}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="Item"/>
+              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
+              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
+              <FormattedMessage id="pages.searchTable.item" defaultMessage="Item" />
             </div>
           }
         >
@@ -265,8 +257,7 @@ const User: React.FC = () => {
           </Button>
         </FooterToolbar>
       )}
-      {
-        openModal &&
+      {openModal && (
         <ModalForm
           title={isEdit ? 'Edit' : 'New'}
           open={openModal}
@@ -308,21 +299,21 @@ const User: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "User Name is required",
-                }
+                  message: 'User Name is required',
+                },
               ]}
-              label={"User Name"}
+              label={'User Name'}
               width="md"
               name="username"
-              placeholder={"User Name"}
+              placeholder={'User Name'}
             />
 
             <ProFormDigit
               rules={[
                 {
                   required: true,
-                  message: "Phone Number is required",
-                }
+                  message: 'Phone Number is required',
+                },
               ]}
               width="md"
               name="phoneNumber"
@@ -335,26 +326,26 @@ const User: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "First Name is required",
-                }
+                  message: 'First Name is required',
+                },
               ]}
-              label={"First Name"}
+              label={'First Name'}
               width="md"
               name="firstName"
-              placeholder={"First Name"}
+              placeholder={'First Name'}
             />
 
             <ProFormText
               rules={[
                 {
                   required: true,
-                  message: "Last Name is required",
-                }
+                  message: 'Last Name is required',
+                },
               ]}
-              label={"Last Name"}
+              label={'Last Name'}
               width="md"
               name="lastName"
-              placeholder={"Last Name"}
+              placeholder={'Last Name'}
             />
           </Space>
 
@@ -363,41 +354,41 @@ const User: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Email is required",
+                  message: 'Email is required',
                 },
               ]}
-              label={"Email"}
+              label={'Email'}
               width="md"
               name="email"
-              placeholder={"Email"}
+              placeholder={'Email'}
             />
 
             <ProFormText
-              label={"Avatar"}
+              label={'Avatar'}
               width="md"
               name="avatar"
               rules={[
                 {
                   required: true,
-                  message: "Avatar is required",
+                  message: 'Avatar is required',
                 },
               ]}
-              placeholder={"Avatar"}
+              placeholder={'Avatar'}
             />
           </Space>
 
           <Space size={20}>
             <ProFormText
-              label={"Nickname"}
+              label={'Nickname'}
               width="md"
               rules={[
                 {
                   required: true,
-                  message: "Nickname is required",
+                  message: 'Nickname is required',
                 },
               ]}
               name="nickname"
-              placeholder={"Nickname"}
+              placeholder={'Nickname'}
             />
 
             <ProFormSelect
@@ -405,11 +396,11 @@ const User: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Status is required",
+                  message: 'Status is required',
                 },
               ]}
               name="status"
-              label={"Status"}
+              label={'Status'}
               options={[
                 {
                   label: '启用',
@@ -421,12 +412,12 @@ const User: React.FC = () => {
                 },
                 {
                   label: '锁定',
-                  value:  2,
+                  value: 2,
                 },
                 {
                   label: '过期',
                   value: 3,
-                }
+                },
               ]}
             />
           </Space>
@@ -435,19 +426,19 @@ const User: React.FC = () => {
             <ProFormTextArea
               name="description"
               width="md"
-              label={"Description"}
+              label={'Description'}
               placeholder={'Please enter description'}
             />
             <ProFormRadio.Group
               rules={[
                 {
                   required: true,
-                  message: "Gender is required",
+                  message: 'Gender is required',
                 },
               ]}
               initialValue={1}
               name="gender"
-              label={"Gender"}
+              label={'Gender'}
               options={[
                 {
                   value: 0,
@@ -460,10 +451,8 @@ const User: React.FC = () => {
               ]}
             />
           </Space>
-
         </ModalForm>
-      }
-
+      )}
     </PageContainer>
   );
 };

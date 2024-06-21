@@ -1,42 +1,42 @@
-import React, {Key, useEffect, useRef} from 'react';
-import {ConfigProvider, Form, message, Row, Space, Tabs} from 'antd';
+import styles from '@/pages/base/system/dict/index.less';
+import commonStyle from '@/pages/common/index.less';
+import {
+  createDictService,
+  deleteDictService,
+  editDictService,
+  getDictInfoService,
+} from '@/services/base-service/system-service/dict';
 import {
   ActionType,
-  ProTable,
   ProColumns,
   ProForm,
   ProFormDigit,
   ProFormRadio,
   ProFormText,
   ProFormTextArea,
-  ProFormTreeSelect
-} from "@ant-design/pro-components";
-import {
-  getDictInfoService,
-  createDictService,
-  editDictService,
-  deleteDictService
-} from "@/services/base-service/system-service/dict";
-import commonStyle from "@/pages/common/index.less";
-import styles from "@/pages/base/system/dict/index.less";
+  ProFormTreeSelect,
+  ProTable,
+} from '@ant-design/pro-components';
+import { ConfigProvider, Form, message, Row, Space, Tabs } from 'antd';
+import React, { Key, useEffect, useRef } from 'react';
 
 const initFormData = {
-  id: "",
-  key: "",
-  tenantId: "",
-  parentId: "",
-  name: "",
-  code: "",
+  id: '',
+  key: '',
+  tenantId: '',
+  parentId: '',
+  name: '',
+  code: '',
   status: 1,
   sort: 0,
-  shortName: "",
-  description: "",
+  shortName: '',
+  description: '',
 };
 
 type propsType = {
   refreshParent: () => void;
   isEdit: boolean;
-  tenantId: string|undefined;
+  tenantId: string | undefined;
   dictionaryTreeData: APISystem.DictItemDataType[];
   selectDictionaryId: Key;
 };
@@ -58,7 +58,7 @@ const RightContainer: React.FC<propsType> = (props) => {
       message.error('Delete failed, please try again');
       return false;
     }
-  }
+  };
 
   const columns: ProColumns<APISystem.DictItemDataType>[] = [
     {
@@ -76,7 +76,7 @@ const RightContainer: React.FC<propsType> = (props) => {
       hideInSearch: true,
     },
     {
-      title: "Status",
+      title: 'Status',
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
@@ -87,24 +87,18 @@ const RightContainer: React.FC<propsType> = (props) => {
         1: {
           text: 'Enable',
           status: 'Success',
-        }
-      }
+        },
+      },
     },
     {
-      title: "Operating",
+      title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="EditBtn"
-          onClick={() => {}}
-        >
+        <a key="EditBtn" onClick={() => {}}>
           Edit
         </a>,
-        <a
-          key="NewBtn"
-          onClick={() => {}}
-        >
+        <a key="NewBtn" onClick={() => {}}>
           Add
         </a>,
         <a
@@ -112,7 +106,9 @@ const RightContainer: React.FC<propsType> = (props) => {
           onClick={async () => {
             await deleteRequest(record?.id || '');
           }}
-        >Delete</a>
+        >
+          Delete
+        </a>,
       ],
     },
   ];
@@ -133,7 +129,7 @@ const RightContainer: React.FC<propsType> = (props) => {
       form.setFieldsValue(initFormData);
       return initFormData;
     }
-  }
+  };
 
   const onSaveForm = async (fields: APISystem.DictItemDataType) => {
     try {
@@ -162,13 +158,12 @@ const RightContainer: React.FC<propsType> = (props) => {
       <ProForm<APISystem.DictItemDataType>
         form={form}
         layout={'vertical'}
-        // request={}
         onFinish={onSaveForm}
         className={styles.detailForm}
       >
         <Row>
-          <ProFormText name="id" hidden={true}/>
-          <ProFormText name="tenantId" hidden={true}/>
+          <ProFormText name="id" hidden={true} />
+          <ProFormText name="tenantId" hidden={true} />
         </Row>
 
         <Space size={20}>
@@ -176,23 +171,23 @@ const RightContainer: React.FC<propsType> = (props) => {
             rules={[
               {
                 required: true,
-                message: "Name is required"
-              }
+                message: 'Name is required',
+              },
             ]}
-            label={"Name"}
+            label={'Name'}
             name="name"
             width="md"
-            placeholder={"name"}
+            placeholder={'name'}
           />
 
           <ProFormText
             rules={[
               {
                 required: true,
-                message: "Code is required",
+                message: 'Code is required',
               },
             ]}
-            label={"Code"}
+            label={'Code'}
             name="code"
             width="md"
           />
@@ -201,7 +196,7 @@ const RightContainer: React.FC<propsType> = (props) => {
         <Space size={20}>
           <ProFormTreeSelect
             name="parentId"
-            label={"Parent dictionary"}
+            label={'Parent dictionary'}
             fieldProps={{
               treeData: props.dictionaryTreeData,
               filterTreeNode: true,
@@ -211,8 +206,8 @@ const RightContainer: React.FC<propsType> = (props) => {
               treeNodeFilterProp: 'title',
               fieldNames: {
                 value: 'id',
-                label: 'name'
-              }
+                label: 'name',
+              },
             }}
             width={'md'}
             placeholder="Please select parent"
@@ -221,29 +216,20 @@ const RightContainer: React.FC<propsType> = (props) => {
             rules={[
               {
                 required: true,
-                message: "Parent dictionary is required"
-              }
+                message: 'Parent dictionary is required',
+              },
             ]}
           />
 
-          <ProFormDigit
-            label={"Sort"}
-            width="md"
-            name="sort"
-            placeholder={"Sort"}
-          />
+          <ProFormDigit label={'Sort'} width="md" name="sort" placeholder={'Sort'} />
         </Space>
 
         <Space size={20}>
-          <ProFormTextArea
-            name="description"
-            label={"Description"}
-            width="md"
-          />
+          <ProFormTextArea name="description" label={'Description'} width="md" />
 
           <ProFormRadio.Group
             name="status"
-            label={"Status"}
+            label={'Status'}
             initialValue={1}
             options={[
               {
@@ -253,66 +239,68 @@ const RightContainer: React.FC<propsType> = (props) => {
               {
                 value: 1,
                 label: 'Enable',
-              }
+              },
             ]}
             rules={[
               {
                 required: true,
-                message: "Status is required",
-              }
+                message: 'Status is required',
+              },
             ]}
           />
         </Space>
       </ProForm>
-    )
-  }
+    );
+  };
 
   const TableTabItem: React.FC = () => {
     return (
-      <ConfigProvider renderEmpty={() => (
-        <div className={[commonStyle.justifyCenter, commonStyle.emptyList].join(' ')}>
-          <p className={commonStyle.noDataListText}>No data were found</p>
-        </div>
-      )}>
+      <ConfigProvider
+        renderEmpty={() => (
+          <div className={[commonStyle.justifyCenter, commonStyle.emptyList].join(' ')}>
+            <p className={commonStyle.noDataListText}>No data were found</p>
+          </div>
+        )}
+      >
         <ProTable<APISystem.DictItemDataType, APISystem.PageParams>
           rowKey="id"
           actionRef={actionRef}
           columns={columns}
-          // request={}
           headerTitle={''}
           options={false}
         />
       </ConfigProvider>
-    )
-  }
+    );
+  };
 
   const DetailTabItem: React.FC = () => {
     return (
       <div className={styles.detailTabBox}>
         <FormContent />
       </div>
-    )
-  }
+    );
+  };
 
   useEffect(() => {
     getDetail();
-  }, [props.selectDictionaryId, props.isEdit])
+  }, [props.selectDictionaryId, props.isEdit]);
 
   return (
-      <Tabs items={[
+    <Tabs
+      items={[
         {
           label: `${props.isEdit ? 'Detail' : 'Add'}`,
           key: 'detail',
-          children: <DetailTabItem />
+          children: <DetailTabItem />,
         },
         {
           label: `Table`,
           key: 'table',
-          children: <TableTabItem />
-        }
+          children: <TableTabItem />,
+        },
       ]}
     />
-  )
-}
+  );
+};
 
 export default RightContainer;

@@ -1,20 +1,20 @@
+import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
 import {
+  deleteMenuManageService,
+  getMenuManageDetailService,
   getMenuManageTreeService,
   insertMenuManageService,
   updateMenuManageService,
-  deleteMenuManageService,
-  getMenuManageDetailService,
 } from '@/services/base-service/system-service/menuService';
-import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   ModalForm,
   PageContainer,
-  ProFormRadio, ProFormSelect,
+  ProFormDigit,
+  ProFormSelect,
   ProFormText,
   ProFormTextArea,
   ProTable,
-  ProFormDigit
 } from '@ant-design/pro-components';
 import { message, Space } from 'antd';
 import React, { useRef, useState } from 'react';
@@ -27,8 +27,7 @@ const MenuList: React.FC = () => {
   const [modalVisible, handleModalVisible] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.MenuListItemDataType>();
-  const [selectedRows, setSelectedRows] = useState<APISystem.MenuListItemDataType[]>([]);
-  const [defaultExpanded, setDefaultExpanded] = useState([])
+  const [defaultExpanded, setDefaultExpanded] = useState([]);
 
   const getMenuInfoRequest = async () => {
     if (isEdit) {
@@ -39,7 +38,7 @@ const MenuList: React.FC = () => {
     }
 
     return {
-      menuName:'',
+      menuName: '',
       code: '',
       id: '',
       sort: '',
@@ -69,7 +68,6 @@ const MenuList: React.FC = () => {
     try {
       await updateMenuManageService(fields);
       hide();
-
       message.success('Update successfully');
       return true;
     } catch (error) {
@@ -86,7 +84,6 @@ const MenuList: React.FC = () => {
       hide();
       message.success('Deleted successfully and will refresh soon');
 
-      setSelectedRows([]);
       actionRef.current?.reloadAndRest?.();
 
       return true;
@@ -95,7 +92,7 @@ const MenuList: React.FC = () => {
       message.error('Delete failed, please try again');
       return false;
     }
-  }
+  };
 
   const columns: ProColumns<APISystem.MenuListItemDataType>[] = [
     {
@@ -117,7 +114,7 @@ const MenuList: React.FC = () => {
       search: false,
     },
     {
-      title: "Status",
+      title: 'Status',
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
@@ -136,7 +133,7 @@ const MenuList: React.FC = () => {
         3: {
           text: '过期',
           status: 'EXPIRED',
-        }
+        },
       },
       renderFormItem: (_, { type, defaultRender, ...rest }) => {
         return (
@@ -147,11 +144,11 @@ const MenuList: React.FC = () => {
               mode: 'multiple',
             }}
           />
-        )
+        );
       },
     },
     {
-      title: "Type",
+      title: 'Type',
       dataIndex: 'type',
       hideInForm: true,
       valueEnum: {
@@ -160,11 +157,11 @@ const MenuList: React.FC = () => {
         },
         1: {
           text: 'Button',
-        }
+        },
       },
     },
     {
-      title: "Operating",
+      title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
@@ -183,7 +180,7 @@ const MenuList: React.FC = () => {
           key="NewBtn"
           onClick={() => {
             setIsEdit(false);
-            setCurrentRow({parentId: record?.id ? record.id : ''});
+            setCurrentRow({ parentId: record?.id ? record.id : '' });
             handleModalVisible(true);
           }}
         >
@@ -194,38 +191,39 @@ const MenuList: React.FC = () => {
           onClick={async () => {
             await deleteRow(record?.id || '');
           }}
-        >Delete</a>,
+        >
+          Delete
+        </a>,
       ],
     },
   ];
 
-  const getList = async (params: API.PageParams,) => {
+  const getList = async (params: API.PageParams) => {
     params.status = params?.status?.map((item: any) => {
-        if (item === '1') {
-          return item = 'FORBIDDEN'
-        } else if (item === '2') {
-          return item = 'LOCKING'
-        } else if (item === '3') {
-          return item = 'EXPIRED'
-        } else {
-          return item = 'ENABLE'
-        }
-    })
+      if (item === '1') {
+        return (item = 'FORBIDDEN');
+      } else if (item === '2') {
+        return (item = 'LOCKING');
+      } else if (item === '3') {
+        return (item = 'EXPIRED');
+      } else {
+        return (item = 'ENABLE');
+      }
+    });
 
     const response = await getMenuManageTreeService({
-        pageNumber: params?.current || 1,
-        pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-        name: params?.name,
-        path: params?.path,
-        status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
-        type: params?.type || '',
+      pageNumber: params?.current || 1,
+      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
+      name: params?.name,
+      path: params?.path,
+      status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+      type: params?.type || '',
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
     let total = 0;
     if (response?.success === true) {
       dataSource = response?.data || [];
-      // total = response?.data?.totalElements || 0;
     }
 
     setTotal(total);
@@ -249,12 +247,7 @@ const MenuList: React.FC = () => {
         request={getList}
         columns={columns}
         options={false}
-        expandable={{defaultExpandedRowKeys: defaultExpanded}}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
-        }}
+        expandable={{ defaultExpandedRowKeys: defaultExpanded }}
         pagination={{
           current: currentPage,
           pageSize: pageSize,
@@ -263,14 +256,13 @@ const MenuList: React.FC = () => {
           onChange: (currentPageNumber, pageSizeNumber) => {
             setPageSize(pageSizeNumber);
             setCurrentPage(currentPageNumber);
-          }
+          },
         }}
       />
 
-      {
-        modalVisible &&
+      {modalVisible && (
         <ModalForm
-          title={ isEdit ? 'Edit' :  'New'}
+          title={isEdit ? 'Edit' : 'New'}
           width="800px"
           open={modalVisible}
           request={getMenuInfoRequest}
@@ -315,39 +307,29 @@ const MenuList: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Menu name is required",
+                  message: 'Menu name is required',
                 },
               ]}
-              label={"Menu name"}
+              label={'Menu name'}
               width="md"
               name="menuName"
-              placeholder={"Menu name"}
+              placeholder={'Menu name'}
             />
             <ProFormText
               name="code"
-              label={"Code"}
+              label={'Code'}
               width="md"
-              placeholder={"Code"}
+              placeholder={'Code'}
               rules={[
                 {
                   required: true,
-                  message: "Code is required",
+                  message: 'Code is required',
                 },
               ]}
             />
 
-            <ProFormText
-              label={"id"}
-              width="md"
-              name="id"
-              hidden={true}
-            />
-            <ProFormText
-              label={"parentId"}
-              width="md"
-              name="parentId"
-              hidden={true}
-            />
+            <ProFormText label={'id'} width="md" name="id" hidden={true} />
+            <ProFormText label={'parentId'} width="md" name="parentId" hidden={true} />
           </Space>
 
           <Space size={20}>
@@ -355,20 +337,15 @@ const MenuList: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Name is required",
+                  message: 'Name is required',
                 },
               ]}
-              label={"Name"}
+              label={'Name'}
               width="md"
               name="name"
-              placeholder={"Name"}
+              placeholder={'Name'}
             />
-            <ProFormText
-              label={"Icon"}
-              width="md"
-              name="icon"
-              placeholder={"Icon"}
-            />
+            <ProFormText label={'Icon'} width="md" name="icon" placeholder={'Icon'} />
           </Space>
 
           <Space size={20}>
@@ -376,26 +353,26 @@ const MenuList: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Path is required",
-                }
+                  message: 'Path is required',
+                },
               ]}
-              label={"Path"}
+              label={'Path'}
               width="md"
               name="path"
-              placeholder={"Path"}
+              placeholder={'Path'}
             />
 
             <ProFormDigit
               rules={[
                 {
                   required: true,
-                  message: "Sort is required",
+                  message: 'Sort is required',
                 },
               ]}
-              label={"Sort"}
+              label={'Sort'}
               width="md"
               name="sort"
-              placeholder={"Sort"}
+              placeholder={'Sort'}
             />
           </Space>
 
@@ -403,34 +380,34 @@ const MenuList: React.FC = () => {
             <ProFormSelect
               name="type"
               width="md"
-              label={"Type"}
+              label={'Type'}
               rules={[
                 {
                   required: true,
-                  message: "Type is required",
+                  message: 'Type is required',
                 },
               ]}
               initialValue={0}
               options={[
                 {
                   value: 1,
-                  label: 'Button'
+                  label: 'Button',
                 },
                 {
                   value: 0,
-                  label: 'Menu'
-                }
+                  label: 'Menu',
+                },
               ]}
             />
 
             <ProFormSelect
               name="location"
-              label={"Location"}
+              label={'Location'}
               width="md"
               rules={[
                 {
                   required: true,
-                  message: "Location is required",
+                  message: 'Location is required',
                 },
               ]}
               allowClear={false}
@@ -438,12 +415,12 @@ const MenuList: React.FC = () => {
               options={[
                 {
                   value: 'LEFT-MENU',
-                  label: 'Left Menu'
+                  label: 'Left Menu',
                 },
                 {
                   value: 'OTHER',
-                  label: 'Other'
-                }
+                  label: 'Other',
+                },
               ]}
             />
           </Space>
@@ -454,11 +431,11 @@ const MenuList: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Status is required",
+                  message: 'Status is required',
                 },
               ]}
               name="status"
-              label={"Status"}
+              label={'Status'}
               options={[
                 {
                   label: '启用',
@@ -470,27 +447,26 @@ const MenuList: React.FC = () => {
                 },
                 {
                   label: '锁定',
-                  value:  2,
+                  value: 2,
                 },
                 {
                   label: '过期',
                   value: 3,
-                }
+                },
               ]}
             />
 
             <ProFormTextArea
               name="description"
               width="md"
-              label={"Description"}
+              label={'Description'}
               placeholder={'Please enter at least five characters'}
             />
           </Space>
         </ModalForm>
-      }
-
+      )}
     </PageContainer>
   );
-}
+};
 
 export default MenuList;

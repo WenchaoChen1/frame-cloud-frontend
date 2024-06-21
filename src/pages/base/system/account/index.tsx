@@ -1,8 +1,15 @@
-import React, { useRef, useState, useEffect } from 'react';
-import {Button, message, Space} from 'antd';
-import {FormattedMessage, useModel} from '@umijs/max';
-import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
-import {PlusOutlined} from '@ant-design/icons';
+import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
+import {
+  deleteAccountManageService,
+  getAccountManageDetailService,
+  getAccountManagePageService,
+  getAccountManageTenantDetailToListService,
+  insertAccountManageService,
+  updateAccountManageService,
+} from '@/services/base-service/system-service/accountService';
+import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
+import { getUserManagePageService } from '@/services/base-service/system-service/userService';
+import { PlusOutlined } from '@ant-design/icons';
 import {
   ActionType,
   FooterToolbar,
@@ -12,38 +19,30 @@ import {
   ProFormSelect,
   ProFormText,
   ProFormTreeSelect,
-  ProTable
+  ProTable,
 } from '@ant-design/pro-components';
-import {
-  insertAccountManageService,
-  deleteAccountManageService,
-  updateAccountManageService,
-  getAccountManageDetailService,
-  getAccountManagePageService,
-  getAccountManageTenantDetailToListService,
-} from '@/services/base-service/system-service/accountService';
-import {getTenantManageTreeService} from '@/services/base-service/system-service/tenantService';
-import {getUserManagePageService} from "@/services/base-service/system-service/userService";
+import { FormattedMessage, useModel } from '@umijs/max';
+import { Button, message, Space } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Account: React.FC = () => {
-  const {initialState} = useModel('@@initialState');
+  const actionRef = useRef<ActionType>();
+  const { initialState } = useModel('@@initialState');
   const currentAccountId = initialState?.currentUser?.accountId;
   const [tenantTreeData, setTenantTreeData] = useState([]);
-  const [tenantId, setTenantId] = useState<string|undefined>(undefined);
+  const [tenantId, setTenantId] = useState<string | undefined>(undefined);
   const [isEdit, setIsEdit] = useState(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<APISystem.AccountItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.AccountItemDataType[]>([]);
 
-  const actionRef = useRef<ActionType>();
-
   const getList = async (params: APISystem.PageParams) => {
     const roleResponse = await getAccountManagePageService({
-        pageNumber: params?.current || 1,
-        pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-        tenantId: tenantId || '',
-        name: params?.name || '',
-        identity: params?.identity || '',
+      pageNumber: params?.current || 1,
+      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
+      tenantId: tenantId || '',
+      name: params?.name || '',
+      identity: params?.identity || '',
     });
 
     let dataSource: APISystem.AccountItemDataType[] = [];
@@ -74,14 +73,14 @@ const Account: React.FC = () => {
       tenantId: '',
       userId: '',
     };
-  }
+  };
 
   const createAccountRequest = async (fields: APISystem.AccountItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
 
     try {
-      await insertAccountManageService({...fields});
+      await insertAccountManageService({ ...fields });
       hide();
       message.success('Added successfully');
       return true;
@@ -123,41 +122,41 @@ const Account: React.FC = () => {
       message.error('Delete failed, please try again');
       return false;
     }
-  }
+  };
 
   const onEdit = async (record: APISystem.AccountItemDataType) => {
     setCurrentRow(record);
     setIsEdit(true);
     setOpenModal(true);
-  }
+  };
 
   const getTenantTreeRequest = async () => {
-    const tenantTreeResponse = await getTenantManageTreeService();
+    const tenantTreeResponse = await getTenantManageTreeService({});
     if (tenantTreeResponse.success && tenantTreeResponse.data) {
       if (tenantTreeResponse.data?.length > 0) {
         setTenantId(tenantTreeResponse.data[0].id || undefined);
       }
 
-      setTenantTreeData(tenantTreeResponse.data);
+      setTenantTreeData(tenantTreeResponse?.data);
       return tenantTreeResponse.data;
     } else {
       setTenantId(undefined);
       setTenantTreeData([]);
       return [];
     }
-  }
+  };
 
   const getParentRoleTreeRequest = async (Id: any) => {
     const Response = await getAccountManageTenantDetailToListService({
-      tenantId: Id ? Id:tenantId,
-      tenantName: ''
+      tenantId: Id ? Id : tenantId,
+      tenantName: '',
     });
     if (Response.success && Response.data) {
       return Response.data;
     } else {
       return [];
     }
-  }
+  };
 
   const onChangeTenant = (tenantId: string) => {
     setTenantId(tenantId);
@@ -174,7 +173,7 @@ const Account: React.FC = () => {
       dataIndex: 'identity',
     },
     {
-      title: "Status",
+      title: 'Status',
       dataIndex: 'status',
       hideInForm: true,
       hideInSearch: true,
@@ -194,7 +193,7 @@ const Account: React.FC = () => {
         3: {
           text: '过期',
           status: 'EXPIRED',
-        }
+        },
       },
     },
     {
@@ -223,8 +222,8 @@ const Account: React.FC = () => {
               treeNodeFilterProp: 'title',
               fieldNames: {
                 label: 'tenantName',
-                value: 'id'
-              }
+                value: 'id',
+              },
             }}
           />
         );
@@ -235,37 +234,34 @@ const Account: React.FC = () => {
       key: 'showTime',
       dataIndex: 'createdDate',
       valueType: 'date',
-      // sorter: true,
       hideInSearch: true,
     },
     {
-      title: "Operating",
+      title: 'Operating',
       dataIndex: 'option',
       width: '220px',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="edit"
-          onClick={() => onEdit(record)}
-        >
+        <a key="edit" onClick={() => onEdit(record)}>
           Edit
         </a>,
-        currentAccountId !== record.id &&
-        <a
-          key="delete"
-          onClick={async () => {
-            await deleteRow(record?.id || '');
-          }}
-        >
-          Delete
-        </a>,
+        currentAccountId !== record.id && (
+          <a
+            key="delete"
+            onClick={async () => {
+              await deleteRow(record?.id || '');
+            }}
+          >
+            Delete
+          </a>
+        ),
       ],
     },
   ];
 
   useEffect(() => {
     getTenantTreeRequest();
-  }, [])
+  }, []);
 
   return (
     <PageContainer>
@@ -273,7 +269,7 @@ const Account: React.FC = () => {
         headerTitle={'List'}
         actionRef={actionRef}
         rowKey="id"
-        search={{labelWidth: 100}}
+        search={{ labelWidth: 100 }}
         options={false}
         toolBarRender={() => [
           <Button
@@ -284,7 +280,7 @@ const Account: React.FC = () => {
               setOpenModal(true);
             }}
           >
-            <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
+            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
         request={getList}
@@ -300,9 +296,9 @@ const Account: React.FC = () => {
         <FooterToolbar
           extra={
             <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen"/>{' '}
-              <a style={{fontWeight: 600}}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="Item"/>
+              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
+              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
+              <FormattedMessage id="pages.searchTable.item" defaultMessage="Item" />
             </div>
           }
         >
@@ -320,8 +316,7 @@ const Account: React.FC = () => {
           </Button>
         </FooterToolbar>
       )}
-      {
-        openModal &&
+      {openModal && (
         <ModalForm
           title={isEdit ? 'Edit' : 'New'}
           width="800px"
@@ -348,42 +343,42 @@ const Account: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Name is required",
-                }
+                  message: 'Name is required',
+                },
               ]}
               width="md"
-              label={"Name"}
-              name={"name"}
-              placeholder={"Name"}
+              label={'Name'}
+              name={'name'}
+              placeholder={'Name'}
             />
 
             <ProFormSelect
               name="type"
-              label={"Account Type"}
+              label={'Account Type'}
               width="md"
               rules={[
                 {
                   required: true,
-                  message: "Account Type is required",
+                  message: 'Account Type is required',
                 },
               ]}
               options={[
                 {
                   value: 0,
-                  label: 'Super'
+                  label: 'Super',
                 },
                 {
                   value: 1,
-                  label: 'Admin'
+                  label: 'Admin',
                 },
                 {
                   value: 2,
-                  label: 'User'
-                }
+                  label: 'User',
+                },
               ]}
               allowClear={false}
             />
-            <ProFormText name="id" hidden={true}/>
+            <ProFormText name="id" hidden={true} />
           </Space>
 
           <Space size={20}>
@@ -405,19 +400,19 @@ const Account: React.FC = () => {
                 treeNodeFilterProp: 'title',
                 fieldNames: {
                   label: 'tenantName',
-                  value: 'id'
-                }
+                  value: 'id',
+                },
               }}
               rules={[
                 {
                   required: true,
-                  message: "Tenant is required",
-                }
+                  message: 'Tenant is required',
+                },
               ]}
             />
 
             <ProFormSelect
-              label={"User"}
+              label={'User'}
               name="userId"
               placeholder="Please select"
               allowClear
@@ -435,36 +430,31 @@ const Account: React.FC = () => {
               fieldProps={{
                 fieldNames: {
                   label: 'username',
-                  value: 'id'
-                }
+                  value: 'id',
+                },
               }}
               rules={[
                 {
                   required: true,
-                  message: "User is required",
-                }
+                  message: 'User is required',
+                },
               ]}
             />
           </Space>
 
           <Space size={20}>
-            <ProFormText
-              width="md"
-              label={"Identity"}
-              name={"identity"}
-              placeholder={"Identity"}
-            />
+            <ProFormText width="md" label={'Identity'} name={'identity'} placeholder={'Identity'} />
 
             <ProFormSelect
               width="md"
               rules={[
                 {
                   required: true,
-                  message: "Status is required",
+                  message: 'Status is required',
                 },
               ]}
               name="status"
-              label={"Status"}
+              label={'Status'}
               options={[
                 {
                   label: '启用',
@@ -476,18 +466,17 @@ const Account: React.FC = () => {
                 },
                 {
                   label: '锁定',
-                  value:  2,
+                  value: 2,
                 },
                 {
                   label: '过期',
                   value: 3,
-                }
+                },
               ]}
             />
           </Space>
-
         </ModalForm>
-      }
+      )}
     </PageContainer>
   );
 };

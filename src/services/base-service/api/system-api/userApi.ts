@@ -32,11 +32,3 @@ export async function deleteUserManage(id: string) {
     method: 'DELETE'
   });
 }
-
-
-
-// export async function getUserInfo(id: string) {
-//   return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/user/get-by-id`, {
-//     method: 'GET'
-//   });
-// }

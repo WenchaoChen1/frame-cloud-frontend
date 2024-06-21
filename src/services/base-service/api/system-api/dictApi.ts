@@ -1,7 +1,6 @@
 import { request } from '@umijs/max';
 import {Key} from "react";
 
-// dict - list
 export async function getDictTree(tenantId: string) {
   return request<APISystem.DictListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/dict/get-all-dict-to-tree`, {
     method: 'GET',

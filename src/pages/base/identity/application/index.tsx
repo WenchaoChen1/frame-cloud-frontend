@@ -1,30 +1,28 @@
+import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
+import { getAuthorizationGrantTypesService } from '@/services/base-service/identity-service/applicationDictionaryService';
 import {
-  getApplicationListService,
-  updateApplicationManageService,
-  insertApplicationManageService,
   deleteApplicationService,
-  getApplicationManageDetailService
+  getApplicationListService,
+  getApplicationManageDetailService,
+  insertApplicationManageService,
+  updateApplicationManageService,
 } from '@/services/base-service/identity-service/applicationService';
+import { PlusOutlined } from '@ant-design/icons';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
-  getAuthorizationGrantTypesService,
-} from '@/services/base-service/identity-service/applicationDictionaryService';
-import type {ActionType, ProColumns } from '@ant-design/pro-components';
-import {
-  PageContainer,
-  ProTable,
   ModalForm,
-  ProFormText,
+  PageContainer,
   ProForm,
   ProFormSelect,
+  ProFormText,
+  ProTable,
 } from '@ant-design/pro-components';
-import {FormattedMessage} from '@umijs/max';
-import { formatMessage } from 'umi';
-import {Button, message, Space, Divider, InputNumber, Tooltip, Switch, DatePicker, Popconfirm } from 'antd';
-import React, {useRef, useState, useEffect} from 'react';
-import {PlusOutlined} from "@ant-design/icons";
-import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
-import styles from './index.less';
+import { FormattedMessage } from '@umijs/max';
+import { Button, DatePicker, Divider, InputNumber, message, Space, Switch, Tooltip } from 'antd';
 import moment from 'moment';
+import React, { useEffect, useRef, useState } from 'react';
+import { formatMessage } from 'umi';
+import styles from './index.less';
 
 const Application: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -35,7 +33,6 @@ const Application: React.FC = () => {
   const [idTokenData, setIdTokenData] = useState([]);
   const [authenticationMethod, setAuthenticationMethod] = useState([]);
   const [currentRow, setCurrentRow] = useState({});
-
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -56,17 +53,22 @@ const Application: React.FC = () => {
     {
       label: '秒',
       value: 'seconds',
-    }
-  ]
+    },
+  ];
 
   const getList = async (params: API.PageParams) => {
     const response = await getApplicationListService({
-        pageNumber: params.current || 1,
-        pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
-        applicationName: params?.applicationName,
-        clientAuthenticationMethods: params?.clientAuthenticationMethods?.map((param: any) => encodeURIComponent(param)).join(',') || [],
-        authorizationGrantTypes: params?.authorizationGrantTypes?.map((param: any) => encodeURIComponent(param)).join(',') || [],
-        status:params?.status
+      pageNumber: params.current || 1,
+      pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
+      applicationName: params?.applicationName,
+      clientAuthenticationMethods:
+        params?.clientAuthenticationMethods
+          ?.map((param: any) => encodeURIComponent(param))
+          .join(',') || [],
+      authorizationGrantTypes:
+        params?.authorizationGrantTypes?.map((param: any) => encodeURIComponent(param)).join(',') ||
+        [],
+      status: params?.status,
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -101,7 +103,7 @@ const Application: React.FC = () => {
       hours %= 24;
     }
 
-    let result = "";
+    let result = '';
 
     if (days > 0) {
       result += `${days} days`;
@@ -123,10 +125,22 @@ const Application: React.FC = () => {
   };
 
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
-    fields.accessTokenValidity = mergeAndFormatValidity(fields?.accessTokenValidity, fields?.dayType1);
-    fields.refreshTokenValidity = mergeAndFormatValidity(fields?.refreshTokenValidity, fields?.dayType2);
-    fields.authorizationCodeValidity = mergeAndFormatValidity(fields?.authorizationCodeValidity, fields?.dayType3);
-    fields.deviceCodeValidity = mergeAndFormatValidity(fields?.deviceCodeValidity, fields?.dayType4);
+    fields.accessTokenValidity = mergeAndFormatValidity(
+      fields?.accessTokenValidity,
+      fields?.dayType1,
+    );
+    fields.refreshTokenValidity = mergeAndFormatValidity(
+      fields?.refreshTokenValidity,
+      fields?.dayType2,
+    );
+    fields.authorizationCodeValidity = mergeAndFormatValidity(
+      fields?.authorizationCodeValidity,
+      fields?.dayType3,
+    );
+    fields.deviceCodeValidity = mergeAndFormatValidity(
+      fields?.deviceCodeValidity,
+      fields?.dayType4,
+    );
 
     if (fields.clientSecretExpiresAt) {
       fields.clientSecretExpiresAt = new Date(fields?.clientSecretExpiresAt).toISOString();
@@ -155,10 +169,22 @@ const Application: React.FC = () => {
 
   const handleAdd = async (fields: any) => {
     delete fields.applicationId;
-    fields.accessTokenValidity = mergeAndFormatValidity(fields?.accessTokenValidity, fields?.dayType1);
-    fields.refreshTokenValidity = mergeAndFormatValidity(fields?.refreshTokenValidity, fields?.dayType2);
-    fields.authorizationCodeValidity = mergeAndFormatValidity(fields?.authorizationCodeValidity, fields?.dayType3);
-    fields.deviceCodeValidity = mergeAndFormatValidity(fields?.deviceCodeValidity, fields?.dayType4);
+    fields.accessTokenValidity = mergeAndFormatValidity(
+      fields?.accessTokenValidity,
+      fields?.dayType1,
+    );
+    fields.refreshTokenValidity = mergeAndFormatValidity(
+      fields?.refreshTokenValidity,
+      fields?.dayType2,
+    );
+    fields.authorizationCodeValidity = mergeAndFormatValidity(
+      fields?.authorizationCodeValidity,
+      fields?.dayType3,
+    );
+    fields.deviceCodeValidity = mergeAndFormatValidity(
+      fields?.deviceCodeValidity,
+      fields?.dayType4,
+    );
 
     if (fields.clientSecretExpiresAt) {
       fields.clientSecretExpiresAt = new Date(fields?.clientSecretExpiresAt).toISOString();
@@ -180,8 +206,11 @@ const Application: React.FC = () => {
   };
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
-    {title: formatMessage({ id: 'application.list.applicationName' }), dataIndex: 'applicationName'},
-    {title: formatMessage({ id: 'application.list.abbreviation' }), dataIndex: 'abbreviation'},
+    {
+      title: formatMessage({ id: 'application.list.applicationName' }),
+      dataIndex: 'applicationName',
+    },
+    { title: formatMessage({ id: 'application.list.abbreviation' }), dataIndex: 'abbreviation' },
     {
       title: formatMessage({ id: 'application.list.authorizationGrantTypes' }),
       dataIndex: 'authorizationGrantTypes',
@@ -203,7 +232,7 @@ const Application: React.FC = () => {
               mode: 'multiple',
             }}
           />
-        )
+        );
       },
       render: (_, record) => {
         const grantTypes = record.authorizationGrantTypes?.split(',');
@@ -243,22 +272,42 @@ const Application: React.FC = () => {
         return <div>{images}</div>;
       },
     },
-    { title: formatMessage({ id: 'application.list.accessTokenValidity' }), search: false, dataIndex: 'accessTokenValidity', render: (text) => formatDuration(text) },
-    { title: formatMessage({ id: 'application.list.refreshTokenValidity' }), search: false, dataIndex: 'refreshTokenValidity', render: (text) => formatDuration(text) },
-    { title: formatMessage({ id: 'application.list.authorizationCodeValidity' }),search: false, dataIndex: 'authorizationCodeValidity', render: (text) => formatDuration(text) },
-    { title: formatMessage({ id: 'application.list.deviceCodeValidity' }), search: false, dataIndex: 'deviceCodeValidity', render: (text) => formatDuration(text) },
+    {
+      title: formatMessage({ id: 'application.list.accessTokenValidity' }),
+      search: false,
+      dataIndex: 'accessTokenValidity',
+      render: (text) => formatDuration(text),
+    },
+    {
+      title: formatMessage({ id: 'application.list.refreshTokenValidity' }),
+      search: false,
+      dataIndex: 'refreshTokenValidity',
+      render: (text) => formatDuration(text),
+    },
+    {
+      title: formatMessage({ id: 'application.list.authorizationCodeValidity' }),
+      search: false,
+      dataIndex: 'authorizationCodeValidity',
+      render: (text) => formatDuration(text),
+    },
+    {
+      title: formatMessage({ id: 'application.list.deviceCodeValidity' }),
+      search: false,
+      dataIndex: 'deviceCodeValidity',
+      render: (text) => formatDuration(text),
+    },
     {
       title: formatMessage({ id: 'application.list.status' }),
       dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
-        ENABLE: { text: '启用'},
-        FORBIDDEN: {text: '禁用'},
-        LOCKING: {text: '锁定'},
-        EXPIRED: {text: '过期'},
+        ENABLE: { text: '启用' },
+        FORBIDDEN: { text: '禁用' },
+        LOCKING: { text: '锁定' },
+        EXPIRED: { text: '过期' },
       },
       render: (value, record) => {
-        const {status} = record
+        const { status } = record;
         if (status === 0) {
           return (
             <Tooltip title={'启用'}>
@@ -290,7 +339,7 @@ const Application: React.FC = () => {
       title: formatMessage({ id: 'pages.searchTable.actions' }),
       dataIndex: 'actions',
       search: false,
-      render: (_, record) =>[
+      render: (_, record) => [
         <a
           onClick={() => {
             setOpenModal(true);
@@ -306,8 +355,8 @@ const Application: React.FC = () => {
           onClick={async () => await deleteUserRequest(record?.applicationId || '')}
         >
           Delete
-        </a>
-      ]
+        </a>,
+      ],
     },
   ];
 
@@ -326,7 +375,7 @@ const Application: React.FC = () => {
       message.error('Delete failed, please try again');
       return false;
     }
-  }
+  };
 
   const formatDuration = (duration: any) => {
     const momentDuration = moment.duration(duration);
@@ -334,7 +383,7 @@ const Application: React.FC = () => {
     const minutes = momentDuration.minutes();
     const seconds = momentDuration.seconds();
 
-    let formattedDuration = "";
+    let formattedDuration = '';
 
     if (hours >= 24) {
       const days = Math.floor(hours / 24);
@@ -362,15 +411,15 @@ const Application: React.FC = () => {
   const initAuthorizationGrantTypes = async () => {
     const response = await getAuthorizationGrantTypesService();
     if (response?.success === true) {
-      setIdTokenData(response?.data?.signatureJwsAlgorithm)
-      setApplicationTypeData(response?.data?.applicationType)
+      setIdTokenData(response?.data?.signatureJwsAlgorithm);
+      setApplicationTypeData(response?.data?.applicationType);
       setAuthorTypes(response?.data?.grantType);
       setAuthenticationMethod(response?.data?.authenticationMethod);
     }
   };
 
   useEffect(() => {
-    initAuthorizationGrantTypes()
+    initAuthorizationGrantTypes();
   }, []);
 
   return (
@@ -389,14 +438,12 @@ const Application: React.FC = () => {
               setOpenModal(true);
             }}
           >
-            <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
+            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
         request={getList}
         columns={columns}
-        search={
-          {labelWidth: 'auto',}
-        }
+        search={{ labelWidth: 'auto' }}
         pagination={{
           current: currentPage,
           pageSize: pageSize,
@@ -405,14 +452,13 @@ const Application: React.FC = () => {
           onChange: (currentPageNumber, pageSizeNumber) => {
             setPageSize(pageSizeNumber);
             setCurrentPage(currentPageNumber);
-          }
+          },
         }}
       />
 
-      {
-        openModal &&
+      {openModal && (
         <ModalForm
-          title={ isEdit ? 'Edit' :  'New'}
+          title={isEdit ? 'Edit' : 'New'}
           width="800px"
           open={openModal}
           onOpenChange={setOpenModal}
@@ -433,20 +479,44 @@ const Application: React.FC = () => {
           }}
           request={async () => {
             if (isEdit && currentRow) {
-              const responsePayMethodInfo = await getApplicationManageDetailService(currentRow.applicationId);
+              const responsePayMethodInfo = await getApplicationManageDetailService(
+                currentRow.applicationId,
+              );
               if (responsePayMethodInfo.success === true && responsePayMethodInfo.data) {
-                let list = {...responsePayMethodInfo.data}
-                list.clientSecretExpiresAt = list?.clientSecretExpiresAt?(moment(new Date(list?.clientSecretExpiresAt).toISOString())):null
-                list.dayType1 =  list?.accessTokenValidity?(parseAccessTokenValidity(list?.accessTokenValidity)?.split(' ')?.[1]):null,
-                list.dayType2 =  list?.authorizationCodeValidity?(parseAccessTokenValidity(list?.authorizationCodeValidity)?.split(' ')?.[1]):null,
-                list.dayType3 =  list?.deviceCodeValidity?(parseAccessTokenValidity(list?.deviceCodeValidity)?.split(' ')?.[1]):null,
-                list.dayType4 =  list?.refreshTokenValidity?(parseAccessTokenValidity(list?.refreshTokenValidity)?.split(' ')?.[1]):null,
-                list.accessTokenValidity = list?.accessTokenValidity?(parseAccessTokenValidity(list?.accessTokenValidity)?.split(' ')?.[0]):null
-                list.authorizationCodeValidity = list?.authorizationCodeValidity?(parseAccessTokenValidity(list?.authorizationCodeValidity)?.split(' ')?.[0]):null
-                list.deviceCodeValidity = list?.deviceCodeValidity?(parseAccessTokenValidity(list?.deviceCodeValidity)?.split(' ')?.[0]):null
-                list.refreshTokenValidity = list?.refreshTokenValidity?(parseAccessTokenValidity(list?.refreshTokenValidity)?.split(' ')?.[0]):null
-                list.authorizationGrantTypes = list?.authorizationGrantTypes?(list?.authorizationGrantTypes?.split(',')):[]
-                list.clientAuthenticationMethods = list?.clientAuthenticationMethods?(list?.clientAuthenticationMethods?.split(',')):[]
+                let list = { ...responsePayMethodInfo.data };
+                list.clientSecretExpiresAt = list?.clientSecretExpiresAt
+                  ? moment(new Date(list?.clientSecretExpiresAt).toISOString())
+                  : null;
+                (list.dayType1 = list?.accessTokenValidity
+                  ? parseAccessTokenValidity(list?.accessTokenValidity)?.split(' ')?.[1]
+                  : null),
+                  (list.dayType2 = list?.authorizationCodeValidity
+                    ? parseAccessTokenValidity(list?.authorizationCodeValidity)?.split(' ')?.[1]
+                    : null),
+                  (list.dayType3 = list?.deviceCodeValidity
+                    ? parseAccessTokenValidity(list?.deviceCodeValidity)?.split(' ')?.[1]
+                    : null),
+                  (list.dayType4 = list?.refreshTokenValidity
+                    ? parseAccessTokenValidity(list?.refreshTokenValidity)?.split(' ')?.[1]
+                    : null),
+                  (list.accessTokenValidity = list?.accessTokenValidity
+                    ? parseAccessTokenValidity(list?.accessTokenValidity)?.split(' ')?.[0]
+                    : null);
+                list.authorizationCodeValidity = list?.authorizationCodeValidity
+                  ? parseAccessTokenValidity(list?.authorizationCodeValidity)?.split(' ')?.[0]
+                  : null;
+                list.deviceCodeValidity = list?.deviceCodeValidity
+                  ? parseAccessTokenValidity(list?.deviceCodeValidity)?.split(' ')?.[0]
+                  : null;
+                list.refreshTokenValidity = list?.refreshTokenValidity
+                  ? parseAccessTokenValidity(list?.refreshTokenValidity)?.split(' ')?.[0]
+                  : null;
+                list.authorizationGrantTypes = list?.authorizationGrantTypes
+                  ? list?.authorizationGrantTypes?.split(',')
+                  : [];
+                list.clientAuthenticationMethods = list?.clientAuthenticationMethods
+                  ? list?.clientAuthenticationMethods?.split(',')
+                  : [];
 
                 return list;
               }
@@ -458,21 +528,21 @@ const Application: React.FC = () => {
             };
           }}
         >
-          <Space size={24} style={{ display: `${isEdit?'':'none'}` }}>
+          <Space size={24} style={{ display: `${isEdit ? '' : 'none'}` }}>
             <ProFormText
               label={'clientId'}
               width="md"
               name="clientId"
-              placeholder={"clientId"}
+              placeholder={'clientId'}
               disabled
               hidden={!isEdit}
             />
 
             <ProFormText
               name="clientSecret"
-              label={"clientSecret"}
+              label={'clientSecret'}
               width="md"
-              placeholder={"clientSecret"}
+              placeholder={'clientSecret'}
               disabled
               hidden={!isEdit}
             />
@@ -483,28 +553,23 @@ const Application: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "applicationName is required",
+                  message: 'applicationName is required',
                 },
               ]}
               label={formatMessage({ id: 'application.list.applicationName' })}
               width="md"
               name="applicationName"
-              placeholder={"applicationName"}
+              placeholder={'applicationName'}
             />
 
             <ProFormText
               name="abbreviation"
               label={formatMessage({ id: 'application.list.abbreviation' })}
               width="md"
-              placeholder={"abbreviation"}
+              placeholder={'abbreviation'}
             />
 
-            <ProFormText
-              label={"applicationId"}
-              width="md"
-              name="applicationId"
-              hidden={true}
-            />
+            <ProFormText label={'applicationId'} width="md" name="applicationId" hidden={true} />
           </Space>
 
           <Space size={24}>
@@ -512,13 +577,13 @@ const Application: React.FC = () => {
               label={formatMessage({ id: 'application.list.logo' })}
               width="md"
               name="logo"
-              placeholder={"logo"}
+              placeholder={'logo'}
             />
             <ProFormText
               label={formatMessage({ id: 'application.list.homepage' })}
               width="md"
               name="homepage"
-              placeholder={"homepage"}
+              placeholder={'homepage'}
             />
           </Space>
 
@@ -527,14 +592,14 @@ const Application: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "authorizationGrantTypes Type is required",
-                }
+                  message: 'authorizationGrantTypes Type is required',
+                },
               ]}
               mode="multiple"
               label={formatMessage({ id: 'application.list.authorizationGrantTypes' })}
               width="md"
               name="authorizationGrantTypes"
-              placeholder={"authorizationGrantTypes"}
+              placeholder={'authorizationGrantTypes'}
               request={async () => {
                 return authorTypes.map((item) => {
                   return {
@@ -549,14 +614,14 @@ const Application: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "clientAuthenticationMethods Type is required",
-                }
+                  message: 'clientAuthenticationMethods Type is required',
+                },
               ]}
               mode="multiple"
               label={formatMessage({ id: 'application.list.clientAuthenticationMethods' })}
               width="md"
               name="clientAuthenticationMethods"
-              placeholder={"clientAuthenticationMethods"}
+              placeholder={'clientAuthenticationMethods'}
               request={async () => {
                 return authenticationMethod.map((item) => {
                   return {
@@ -573,7 +638,7 @@ const Application: React.FC = () => {
               label={formatMessage({ id: 'application.list.applicationType' })}
               width="md"
               name="applicationType"
-              placeholder={"applicationType"}
+              placeholder={'applicationType'}
               request={async () => {
                 return applicationTypeData.map((item) => {
                   return {
@@ -583,10 +648,11 @@ const Application: React.FC = () => {
                 });
               }}
             />
-            <ProForm.Item label={formatMessage({ id: 'application.list.clientSecretExpiresAt' })} name="clientSecretExpiresAt">
-              <DatePicker
-                showTime
-              />
+            <ProForm.Item
+              label={formatMessage({ id: 'application.list.clientSecretExpiresAt' })}
+              name="clientSecretExpiresAt"
+            >
+              <DatePicker showTime />
             </ProForm.Item>
           </Space>
 
@@ -595,13 +661,13 @@ const Application: React.FC = () => {
               label={formatMessage({ id: 'application.list.redirectUris' })}
               width="md"
               name="redirectUris"
-              placeholder={"redirectUris"}
+              placeholder={'redirectUris'}
             />
             <ProFormText
               label={formatMessage({ id: 'application.list.postLogoutRedirectUris' })}
               width="md"
               name="postLogoutRedirectUris"
-              placeholder={"postLogoutRedirectUris"}
+              placeholder={'postLogoutRedirectUris'}
             />
           </Space>
 
@@ -612,26 +678,29 @@ const Application: React.FC = () => {
               label={formatMessage({ id: 'application.list.jwkSetUrl' })}
               width="md"
               name="jwkSetUrl"
-              placeholder={"jwkSetUrl"}
+              placeholder={'jwkSetUrl'}
             />
           </Space>
 
           <Space size={24} className={styles.flexGapStyle}>
             <div className={styles.switchStyle}>
               <ProForm.Item name="requireProofKey">
-                  <Switch />
+                <Switch />
               </ProForm.Item>
-              <div style={{ paddingTop: 8 }}>{formatMessage({ id: 'application.list.requireProofKey' })}</div>
+              <div style={{ paddingTop: 8 }}>
+                {formatMessage({ id: 'application.list.requireProofKey' })}
+              </div>
             </div>
 
             <div className={styles.switchStyle}>
-              <ProForm.Item name="requireAuthorizationConsent" >
-                  <Switch />
+              <ProForm.Item name="requireAuthorizationConsent">
+                <Switch />
               </ProForm.Item>
-              <div style={{ paddingTop: 8 }}>{formatMessage({ id: 'application.list.requireAuthorizationConsent' })}</div>
+              <div style={{ paddingTop: 8 }}>
+                {formatMessage({ id: 'application.list.requireAuthorizationConsent' })}
+              </div>
             </div>
           </Space>
-
 
           <Divider plain>{formatMessage({ id: 'application.list.label2' })}</Divider>
 
@@ -640,16 +709,14 @@ const Application: React.FC = () => {
               label={formatMessage({ id: 'application.list.accessTokenValidity' })}
               name="accessTokenValidity"
             >
-              <InputNumber
-                style={{ width: '328px' }}
-                min={0} defaultValue={0} />
+              <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
             </ProForm.Item>
 
             <ProFormSelect
               label=" "
               width="md"
               name="dayType1"
-              placeholder={"单位"}
+              placeholder={'单位'}
               options={dayType}
             />
           </Space>
@@ -659,16 +726,14 @@ const Application: React.FC = () => {
               label={formatMessage({ id: 'application.list.refreshTokenValidity' })}
               name="refreshTokenValidity"
             >
-              <InputNumber
-                style={{ width: '328px' }}
-                min={0} defaultValue={0} />
+              <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
             </ProForm.Item>
 
             <ProFormSelect
               label=" "
               width="md"
               name="dayType2"
-              placeholder={"单位"}
+              placeholder={'单位'}
               options={dayType}
             />
           </Space>
@@ -678,16 +743,14 @@ const Application: React.FC = () => {
               label={formatMessage({ id: 'application.list.authorizationCodeValidity' })}
               name="authorizationCodeValidity"
             >
-              <InputNumber
-                style={{ width: '328px' }}
-                min={0} defaultValue={0} />
+              <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
             </ProForm.Item>
 
             <ProFormSelect
               label=" "
               width="md"
               name="dayType3"
-              placeholder={"单位"}
+              placeholder={'单位'}
               options={dayType}
             />
           </Space>
@@ -697,16 +760,14 @@ const Application: React.FC = () => {
               label={formatMessage({ id: 'application.list.deviceCodeValidity' })}
               name="deviceCodeValidity"
             >
-              <InputNumber
-                style={{ width: '328px' }}
-                min={0} defaultValue={0} />
+              <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
             </ProForm.Item>
 
             <ProFormSelect
               label=" "
               width="md"
               name="dayType4"
-              placeholder={"单位"}
+              placeholder={'单位'}
               options={dayType}
             />
           </Space>
@@ -716,7 +777,7 @@ const Application: React.FC = () => {
               label={formatMessage({ id: 'application.list.idTokenSignatureAlgorithm' })}
               width="md"
               name="idTokenSignatureAlgorithm"
-              placeholder={"idTokenSignatureAlgorithm"}
+              placeholder={'idTokenSignatureAlgorithm'}
               request={async () => {
                 return idTokenData.map((item) => {
                   return {
@@ -728,10 +789,12 @@ const Application: React.FC = () => {
             />
 
             <div className={styles.DivStyle}>
-              <ProForm.Item label=' ' name="reuseRefreshTokens" >
-                  <Switch />
+              <ProForm.Item label=" " name="reuseRefreshTokens">
+                <Switch />
               </ProForm.Item>
-              <div style={{ paddingTop: '35px' }}>{formatMessage({ id: 'application.list.reuseRefreshTokens' })}</div>
+              <div style={{ paddingTop: '35px' }}>
+                {formatMessage({ id: 'application.list.reuseRefreshTokens' })}
+              </div>
             </div>
           </Space>
 
@@ -742,16 +805,11 @@ const Application: React.FC = () => {
               label={formatMessage({ id: 'application.list.description' })}
               width="md"
               name="description"
-              placeholder={"description"}
+              placeholder={'description'}
             />
 
-            <ProForm.Item
-              label={formatMessage({ id: 'application.list.ranking' })}
-              name="ranking"
-            >
-              <InputNumber
-                style={{ width: '328px' }}
-                min={0} defaultValue={0} />
+            <ProForm.Item label={formatMessage({ id: 'application.list.ranking' })} name="ranking">
+              <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
             </ProForm.Item>
           </Space>
 
@@ -760,7 +818,7 @@ const Application: React.FC = () => {
               label={formatMessage({ id: 'application.list.status' })}
               width="md"
               name="status"
-              placeholder={"status"}
+              placeholder={'status'}
               options={[
                 {
                   label: '启用',
@@ -777,20 +835,21 @@ const Application: React.FC = () => {
                 {
                   label: '过期',
                   value: 'EXPIRED',
-                }
+                },
               ]}
             />
 
             <div className={styles.DivStyle}>
-              <ProForm.Item label=' ' name="reserved" >
-                  <Switch />
+              <ProForm.Item label=" " name="reserved">
+                <Switch />
               </ProForm.Item>
-              <div style={{ paddingTop: '35px' }}>{formatMessage({ id: 'application.list.reserved' })}</div>
+              <div style={{ paddingTop: '35px' }}>
+                {formatMessage({ id: 'application.list.reserved' })}
+              </div>
             </div>
           </Space>
-
         </ModalForm>
-      }
+      )}
     </PageContainer>
   );
 };

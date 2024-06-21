@@ -1,34 +1,32 @@
-import styles from './index.less';
-import React, {useRef, useState} from 'react';
-import {Button, message, Tree} from 'antd';
-import {FormattedMessage} from '@umijs/max';
-import commonStyle from "@/pages/common/index.less";
-import type {ActionType, ProColumns} from '@ant-design/pro-components';
+import commonStyle from '@/pages/common/index.less';
+import { getRoleManageRoleDetailToListService } from '@/services/base-service/system-service/roleService';
+import {
+  batchDeleteTenantService,
+  deleteTenantManageService,
+  findAllMenuTreeByTenantService,
+  findSelectedMenuByTenantService,
+  getTenantManageDetailService,
+  getTenantManageTreeService,
+  insertTenantManageService,
+  onSaveMenuInTenantService,
+  updateTenantManageService,
+} from '@/services/base-service/system-service/tenantService';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   FooterToolbar,
   ModalForm,
   PageContainer,
+  ProFormInstance,
   ProFormSelect,
   ProFormText,
   ProFormTextArea,
-  ProTable,
   ProFormTreeSelect,
-  ProFormInstance
+  ProTable,
 } from '@ant-design/pro-components';
-import {
-  getTenantManageTreeService,
-  insertTenantManageService,
-  updateTenantManageService,
-  deleteTenantManageService,
-  getTenantManageDetailService,
-
-  batchDeleteTenantService,
-  findAllMenuTreeByTenantService,
-  findSelectedMenuByTenantService,
-  onSaveMenuInTenantService,
-} from '@/services/base-service/system-service/tenantService';
-import {getRoleManageRoleDetailToListService} from "@/services/base-service/system-service/roleService";
-
+import { FormattedMessage } from '@umijs/max';
+import { Button, message, Tree } from 'antd';
+import React, { useRef, useState } from 'react';
+import styles from './index.less';
 
 const Index: React.FC = () => {
   const formRef = useRef<ProFormInstance>();
@@ -40,21 +38,24 @@ const Index: React.FC = () => {
   const [menuModalVisible, setMenuModalVisible] = useState<boolean>(false);
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
-  const [checkedKeys, setCheckedKeys] = useState<{ checked: React.Key[], halfChecked: React.Key[] }>({
-    checked: [],
-    halfChecked: []
-  });
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
-  const [tenantId,setTenantId] = useState(null)
+  const [tenantId, setTenantId] = useState(null);
+  const [checkedKeys, setCheckedKeys] = useState<{
+    checked: React.Key[];
+    halfChecked: React.Key[];
+  }>({
+    checked: [],
+    halfChecked: [],
+  });
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
-    fields.parentId = currentRow?.parentId
+    fields.parentId = currentRow?.parentId;
 
     try {
-      await insertTenantManageService({...fields});
+      await insertTenantManageService({ ...fields });
       hide();
       message.success('Added successfully');
       return true;
@@ -92,13 +93,12 @@ const Index: React.FC = () => {
       message.error('Delete failed, please try again');
       return false;
     }
-  }
+  };
 
   const batchDeleteRow = async (selectedRows: APISystem.TenantItemDataType[]) => {
     const hide = message.loading('delete...');
     if (!selectedRows) return true;
 
-    console.log('selectedRows', selectedRows);
     try {
       await batchDeleteTenantService({
         id: selectedRows.map((row) => row.id),
@@ -116,9 +116,9 @@ const Index: React.FC = () => {
   const onOpenEditModal = (record: APISystem.TenantItemDataType) => {
     setIsEdit(false);
 
-    setCurrentRow({parentId: record?.id ? record.id : ''});
+    setCurrentRow({ parentId: record?.id ? record.id : '' });
     handleModalVisible(true);
-  }
+  };
 
   const onExpand = (expandedKeysValue: React.Key[]) => {
     setExpandedKeys(expandedKeysValue);
@@ -128,7 +128,7 @@ const Index: React.FC = () => {
   const onCheck = (checkedKeysValue: React.Key[], e: any) => {
     setCheckedKeys({
       checked: checkedKeysValue,
-      halfChecked: e.halfCheckedKeys
+      halfChecked: e.halfCheckedKeys,
     });
   };
 
@@ -148,12 +148,12 @@ const Index: React.FC = () => {
         const checkedKey: string[] = selectedMenuResponse.data?.checkedMenuId || [];
         const halfChecked: string[] = selectedMenuResponse.data?.halfCheckedMenuId || [];
 
-        setCheckedKeys({checked: checkedKey, halfChecked: halfChecked});
+        setCheckedKeys({ checked: checkedKey, halfChecked: halfChecked });
       }
     }
 
     setMenuModalVisible(true);
-  }
+  };
 
   const onSaveMenu = async (id: string) => {
     const menuDataBody = {
@@ -175,25 +175,25 @@ const Index: React.FC = () => {
 
   const getTenantManageInfoRequest = async () => {
     if (isEdit) {
-      const roleDetailResponse =  await getTenantManageDetailService(currentRow?.id || '');
-      const res = await getParentRoleTreeRequest({ tenantId, tenantName: ''})
+      const roleDetailResponse = await getTenantManageDetailService(currentRow?.id || '');
+      const res = await getParentRoleTreeRequest({ tenantId, tenantName: '' });
       if (roleDetailResponse.success === true && roleDetailResponse.data) {
-        if (res?.length < 1){
-          roleDetailResponse.data.parentId = '0'
+        if (res?.length < 1) {
+          roleDetailResponse.data.parentId = '0';
         }
         return roleDetailResponse.data;
       }
     }
 
     return {
-      parentId:'',
+      parentId: '',
       tenantName: '',
       type: '',
       status: '',
       tenantCode: 1,
       description: '',
     };
-  }
+  };
 
   const columns: ProColumns<APISystem.TenantItemDataType>[] = [
     {
@@ -201,7 +201,7 @@ const Index: React.FC = () => {
       dataIndex: 'tenantName',
     },
     {
-      title: "Type",
+      title: 'Type',
       dataIndex: 'type',
       valueEnum: {
         1: {
@@ -210,7 +210,7 @@ const Index: React.FC = () => {
         2: {
           text: 'Customer',
         },
-      }
+      },
     },
     {
       title: 'Status',
@@ -232,7 +232,7 @@ const Index: React.FC = () => {
         3: {
           text: '过期',
           status: 'EXPIRED',
-        }
+        },
       },
       renderFormItem: (_, { type, defaultRender, ...rest }) => {
         return (
@@ -243,7 +243,7 @@ const Index: React.FC = () => {
               mode: 'multiple',
             }}
           />
-        )
+        );
       },
     },
     {
@@ -278,7 +278,7 @@ const Index: React.FC = () => {
       },
     },
     {
-      title: "Operating",
+      title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
@@ -296,7 +296,7 @@ const Index: React.FC = () => {
           onClick={() => {
             setIsEdit(true);
             setCurrentRow(record);
-            setTenantId(record?.id)
+            setTenantId(record?.id);
             handleModalVisible(true);
           }}
         >
@@ -305,7 +305,7 @@ const Index: React.FC = () => {
         <a
           key="NewBtn"
           onClick={() => {
-            setTenantId(record?.id)
+            setTenantId(record?.id);
             onOpenEditModal(record);
           }}
         >
@@ -318,51 +318,47 @@ const Index: React.FC = () => {
             setSelectedRows([]);
             actionRef.current?.reloadAndRest?.();
           }}
-        >Delete</a>,
+        >
+          Delete
+        </a>,
       ],
     },
   ];
 
-  const clearParentId = () =>{
-    if (formRef.current){
-      formRef.current.setFieldValue('parentId',null)
-    }
-  }
-
   const getParentRoleTreeRequest = async (Id: any) => {
     const Response = await getRoleManageRoleDetailToListService({
       tenantId,
-      tenantName: ''
+      tenantName: '',
     });
     if (Response.success && Response.data) {
       return Response.data;
     } else {
       return [];
     }
-  }
+  };
 
-  const searchTable = async (params:any) =>{
+  const searchTable = async (params: any) => {
     params.status = params?.status?.map((item: any) => {
       if (item === '1') {
-        return item = 'FORBIDDEN'
+        return (item = 'FORBIDDEN');
       } else if (item === '2') {
-        return item = 'LOCKING'
+        return (item = 'LOCKING');
       } else if (item === '3') {
-        return item = 'EXPIRED'
+        return (item = 'EXPIRED');
       } else {
-        return item = 'ENABLE'
+        return (item = 'ENABLE');
       }
-    })
-    let data:any = []
-    const res = await getTenantManageTreeService(params)
-    if (res.success){
-      data = res?.data || []
+    });
+    let data: any = [];
+    const res = await getTenantManageTreeService(params);
+    if (res.success) {
+      data = res?.data || [];
     }
     return {
       data,
       success: true,
     };
-  }
+  };
 
   return (
     <PageContainer>
@@ -387,9 +383,9 @@ const Index: React.FC = () => {
         <FooterToolbar
           extra={
             <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen"/>{' '}
-              <a style={{fontWeight: 600}}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="项"/>
+              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
+              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
+              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
             </div>
           }
         >
@@ -408,8 +404,7 @@ const Index: React.FC = () => {
         </FooterToolbar>
       )}
 
-      {
-        modalVisible &&
+      {modalVisible && (
         <ModalForm
           title={isEdit ? 'Edit' : 'New'}
           width="400px"
@@ -424,7 +419,7 @@ const Index: React.FC = () => {
             description: currentRow?.description,
             tenantCode: currentRow?.tenantCode,
             type: currentRow?.type,
-            status: currentRow?.status
+            status: currentRow?.status,
           }}
           onFinish={async (record) => {
             let response = undefined;
@@ -443,48 +438,44 @@ const Index: React.FC = () => {
           }}
           className={commonStyle.pageContainer}
         >
-          <ProFormText name="id" hidden={true}/>
+          <ProFormText name="id" hidden={true} />
 
-          <ProFormText
-            label={"parentId"}
-            name="parentId"
-            hidden={true}
-          />
+          <ProFormText label={'parentId'} name="parentId" hidden={true} />
 
           <ProFormText
             rules={[
               {
                 required: true,
-                message: "Tenant name is required",
+                message: 'Tenant name is required',
               },
             ]}
-            label={"Tenant name"}
+            label={'Tenant name'}
             width="md"
             name="tenantName"
-            placeholder={"Tenant name"}
+            placeholder={'Tenant name'}
           />
           <ProFormText
             rules={[
               {
                 required: true,
-                message: "Code name is required",
+                message: 'Code name is required',
               },
             ]}
-            label={"Tenant Code"}
+            label={'Tenant Code'}
             width="md"
             name="tenantCode"
-            placeholder={"Tenant Code"}
+            placeholder={'Tenant Code'}
           />
           <ProFormSelect
             name="type"
-            label={"Type"}
+            label={'Type'}
             width="md"
             initialValue={1}
             allowClear={false}
             rules={[
               {
                 required: true,
-                message: "Type is required",
+                message: 'Type is required',
               },
             ]}
             options={[
@@ -495,46 +486,46 @@ const Index: React.FC = () => {
               {
                 value: 2,
                 label: 'Customer',
-              }
+              },
             ]}
           />
           <ProFormSelect
-              width="md"
-              rules={[
-                {
-                  required: true,
-                  message: "Status is required",
-                },
-              ]}
-              name="status"
-              label={"Status"}
-              options={[
-                {
-                  label: '启用',
-                  value: 0,
-                },
-                {
-                  label: '禁用',
-                  value: 1,
-                },
-                {
-                  label: '锁定',
-                  value:  2,
-                },
-                {
-                  label: '过期',
-                  value: 3,
-                }
-              ]}
-            />
+            width="md"
+            rules={[
+              {
+                required: true,
+                message: 'Status is required',
+              },
+            ]}
+            name="status"
+            label={'Status'}
+            options={[
+              {
+                label: '启用',
+                value: 0,
+              },
+              {
+                label: '禁用',
+                value: 1,
+              },
+              {
+                label: '锁定',
+                value: 2,
+              },
+              {
+                label: '过期',
+                value: 3,
+              },
+            ]}
+          />
           <ProFormTextArea
             name="description"
             width="md"
-            label={"Description"}
+            label={'Description'}
             placeholder={'Please enter description'}
           />
           <ProFormTreeSelect
-            label={"Parent Role"}
+            label={'Parent Role'}
             name="parentId"
             placeholder="Please select"
             allowClear={false}
@@ -550,15 +541,14 @@ const Index: React.FC = () => {
               treeNodeFilterProp: 'title',
               fieldNames: {
                 label: 'roleName',
-                value: 'id'
+                value: 'id',
               },
             }}
           />
         </ModalForm>
-      }
+      )}
 
-      {
-        menuModalVisible &&
+      {menuModalVisible && (
         <ModalForm
           title={'Menu'}
           width="400px"
@@ -568,15 +558,11 @@ const Index: React.FC = () => {
             await onSaveMenu(record?.id);
           }}
           initialValues={{
-            id: currentRow?.id
+            id: currentRow?.id,
           }}
           className={commonStyle.pageContainer}
         >
-          <ProFormText
-            label={"id"}
-            name="id"
-            hidden={true}
-          />
+          <ProFormText label={'id'} name="id" hidden={true} />
 
           <div className={styles.tenantMenuTree}>
             <Tree
@@ -589,13 +575,11 @@ const Index: React.FC = () => {
               onSelect={onSelect}
               selectedKeys={selectedKeys}
               treeData={allMenuTree}
-              fieldNames={{title: 'name', key: 'id'}}
+              fieldNames={{ title: 'name', key: 'id' }}
             />
           </div>
-
         </ModalForm>
-      }
-
+      )}
     </PageContainer>
   );
 };

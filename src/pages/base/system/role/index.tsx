@@ -1,6 +1,17 @@
-import {FormattedMessage} from '@umijs/max';
-import {Button, message, Space, Tree} from 'antd';
-import React, {useEffect, useRef, useState} from 'react';
+import {
+  deleteRoleManageService,
+  getAllByTenantMenuToTreeService,
+  getAllTenantByRoleIdService,
+  getRoleManageDetailService,
+  getRoleManageRoleDetailToListService,
+  getRoleManageTreeService,
+  insertRoleManageService,
+  insertRoleMenuService,
+  updateRoleManageService,
+} from '@/services/base-service/system-service/roleService';
+import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
+import { PlusOutlined } from '@ant-design/icons';
+import type { ActionType, ProColumns, ProFormInstance } from '@ant-design/pro-components';
 import {
   FooterToolbar,
   ModalForm,
@@ -12,26 +23,14 @@ import {
   ProFormTreeSelect,
   ProTable,
 } from '@ant-design/pro-components';
-import type {ActionType, ProColumns} from '@ant-design/pro-components';
-import {PlusOutlined} from '@ant-design/icons';
-import {
-  getRoleManageTreeService,
-  getRoleManageDetailService,
-  deleteRoleManageService,
-  insertRoleManageService,
-  updateRoleManageService,
-  getRoleManageRoleDetailToListService,
-  getAllByTenantMenuToTreeService,
-  insertRoleMenuService,
-  getAllTenantByRoleIdService,
-} from '@/services/base-service/system-service/roleService';
-import {getTenantManageTreeService} from '@/services/base-service/system-service/tenantService';
-import type { ProFormInstance } from '@ant-design/pro-components';
+import { FormattedMessage } from '@umijs/max';
+import { Button, message, Space, Tree } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Role: React.FC = () => {
+  const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
-  const [tenantId, setTenantId] = useState<string|undefined>(undefined);
-  const [parentTreeData, setParentTreeData] = useState([]);
+  const [tenantId, setTenantId] = useState<string | undefined>(undefined);
   const [roleNameText, setRoleNameText] = useState('');
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
   const [isEdit, setIsEdit] = useState(false);
@@ -39,28 +38,28 @@ const Role: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<APISystem.RoleItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.RoleItemDataType[]>([]);
   const [menuModalVisible, setMenuModalVisible] = useState<boolean>(false);
-  const [checkedKeys, setCheckedKeys] = useState<{ checked: React.Key[], halfChecked: React.Key[] }>({
-    checked: [],
-    halfChecked: []
-  });
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
-
-  const actionRef = useRef<ActionType>();
+  const [checkedKeys, setCheckedKeys] = useState<{
+    checked: React.Key[];
+    halfChecked: React.Key[];
+  }>({
+    checked: [],
+    halfChecked: [],
+  });
 
   const openEdit = async (record: APISystem.RoleItemDataType) => {
     setIsEdit(true);
-
     setCurrentRow(record);
     setOpenModal(true);
-  }
+  };
 
   const createRoleRequest = async (fields: APISystem.RoleItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
-    fields.parentId = currentRow?.parentId
+    fields.parentId = currentRow?.parentId;
 
     try {
       await insertRoleManageService({ ...fields });
@@ -82,7 +81,7 @@ const Role: React.FC = () => {
   const onCheck = (checkedKeysValue: React.Key[], e: any) => {
     setCheckedKeys({
       checked: checkedKeysValue,
-      halfChecked: e.halfCheckedKeys
+      halfChecked: e.halfCheckedKeys,
     });
   };
 
@@ -103,21 +102,17 @@ const Role: React.FC = () => {
 
   const openMenuModal = async (id?: any) => {
     const allMenuResponse = await getAllByTenantMenuToTreeService(tenantId);
-
     if (allMenuResponse.success === true) {
       setAllMenuTree(allMenuResponse?.data || []);
     }
-
     const selectedMenuResponse = await getAllTenantByRoleIdService(id);
     if (selectedMenuResponse.success === true) {
       if (selectedMenuResponse?.data) {
         const checkedKey: string[] = selectedMenuResponse.data?.checkedMenuId || [];
         const halfChecked: string[] = selectedMenuResponse.data?.halfCheckedMenuId || [];
-
-        setCheckedKeys({checked: checkedKey, halfChecked: halfChecked});
+        setCheckedKeys({ checked: checkedKey, halfChecked: halfChecked });
       }
     }
-
     setMenuModalVisible(true);
   };
 
@@ -137,12 +132,11 @@ const Role: React.FC = () => {
       message.error('Delete failed, please try again');
       return false;
     }
-  }
+  };
 
   const onChangeTenant = (tenantId: string) => {
     setTenantId(tenantId);
-    formRef.current.setFieldValue('parentId')
-    // getParentRoleTreeRequest(tenantId);
+    formRef.current.setFieldValue('parentId');
   };
 
   const columns: ProColumns<APISystem.RoleItemDataType>[] = [
@@ -156,7 +150,7 @@ const Role: React.FC = () => {
       dataIndex: 'sort',
     },
     {
-      title: "Status",
+      title: 'Status',
       dataIndex: 'status',
       hideInForm: true,
       hideInSearch: true,
@@ -176,11 +170,11 @@ const Role: React.FC = () => {
         3: {
           text: '过期',
           status: 'EXPIRED',
-        }
+        },
       },
     },
     {
-      title: "Operating",
+      title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
       width: '220px',
@@ -194,10 +188,7 @@ const Role: React.FC = () => {
         >
           Menu
         </a>,
-        <a
-          key="editBtn"
-          onClick={() => openEdit(record)}
-        >
+        <a key="editBtn" onClick={() => openEdit(record)}>
           Edit
         </a>,
         <a
@@ -205,8 +196,10 @@ const Role: React.FC = () => {
           onClick={async () => {
             await deleteRoleRequest(record?.id || '');
           }}
-        >Delete</a>
-      ]
+        >
+          Delete
+        </a>,
+      ],
     },
     {
       title: 'Tenant',
@@ -234,13 +227,13 @@ const Role: React.FC = () => {
               treeNodeFilterProp: 'title',
               fieldNames: {
                 label: 'tenantName',
-                value: 'id'
-              }
+                value: 'id',
+              },
             }}
           />
         );
       },
-    }
+    },
   ];
 
   const getList = async (params: APISystem.RoleTableSearchParams) => {
@@ -266,7 +259,7 @@ const Role: React.FC = () => {
 
   const getRoleInfoRequest = async () => {
     if (isEdit) {
-      const roleDetailResponse =  await getRoleManageDetailService(currentRow?.id || '');
+      const roleDetailResponse = await getRoleManageDetailService(currentRow?.id || '');
       if (roleDetailResponse.success === true && roleDetailResponse.data) {
         return roleDetailResponse.data;
       }
@@ -281,7 +274,7 @@ const Role: React.FC = () => {
       status: 1,
       description: '',
     };
-  }
+  };
 
   const getTenantTreeRequest = async () => {
     const tenantTreeResponse = await getTenantManageTreeService();
@@ -297,7 +290,7 @@ const Role: React.FC = () => {
       setTenantTreeData([]);
       return [];
     }
-  }
+  };
 
   const removeFields = (obj: any) => {
     delete obj.id;
@@ -335,25 +328,23 @@ const Role: React.FC = () => {
   const getParentRoleTreeRequest = async (Id: any) => {
     const Response = await getRoleManageRoleDetailToListService({
       tenantId,
-      tenantName: roleNameText || ''
+      tenantName: roleNameText || '',
     });
     if (Response.success && Response.data) {
-      const list = Response.data
-      setParentTreeData(list);
+      const list = Response.data;
       return list;
     } else {
       return [];
     }
-  }
+  };
 
   useEffect(() => {
     getTenantTreeRequest();
-  }, [])
+  }, []);
 
   return (
     <PageContainer>
-      {
-        tenantId &&
+      {tenantId && (
         <ProTable<APISystem.RoleItemDataType, APISystem.PageParams>
           rowKey="id"
           headerTitle={'List'}
@@ -365,7 +356,7 @@ const Role: React.FC = () => {
               key="primary"
               onClick={() => {
                 setIsEdit(false);
-                setCurrentRow({parentId: '0'});
+                setCurrentRow({ parentId: '0' });
                 setOpenModal(true);
               }}
             >
@@ -380,7 +371,7 @@ const Role: React.FC = () => {
             },
           }}
         />
-      }
+      )}
 
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
@@ -406,10 +397,9 @@ const Role: React.FC = () => {
           </Button>
         </FooterToolbar>
       )}
-      {
-        openModal &&
+      {openModal && (
         <ModalForm
-          title={ isEdit ? 'Edit' :  'New'}
+          title={isEdit ? 'Edit' : 'New'}
           open={openModal}
           formRef={formRef}
           onOpenChange={setOpenModal}
@@ -435,35 +425,35 @@ const Role: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Role Name is required",
-                }
+                  message: 'Role Name is required',
+                },
               ]}
               fieldProps={{
-                onChange: (changeValues) => setRoleNameText(changeValues?.target?.defaultValue)
+                onChange: (changeValues) => setRoleNameText(changeValues?.target?.defaultValue),
               }}
-              label={"Role Name"}
+              label={'Role Name'}
               name="roleName"
               width="md"
-              placeholder={"Role Name"}
+              placeholder={'Role Name'}
             />
 
             <ProFormText
               rules={[
                 {
                   required: true,
-                  message: "Code is required",
-                }
+                  message: 'Code is required',
+                },
               ]}
-              label={"Code"}
+              label={'Code'}
               name="code"
               width="md"
-              placeholder={"Code"}
+              placeholder={'Code'}
             />
           </Space>
 
           <Space size={20}>
             <ProFormTreeSelect
-              label={"Tenant"}
+              label={'Tenant'}
               name="tenantId"
               placeholder="Please select"
               allowClear={false}
@@ -480,20 +470,20 @@ const Role: React.FC = () => {
                 treeNodeFilterProp: 'title',
                 fieldNames: {
                   label: 'tenantName',
-                  value: 'id'
-                }
+                  value: 'id',
+                },
               }}
               rules={[
                 {
                   required: true,
-                  message: "Role is required"
-                }
+                  message: 'Role is required',
+                },
               ]}
             />
 
             <ProFormTreeSelect
               params={tenantId}
-              label={"Parent Role"}
+              label={'Parent Role'}
               name="parentId"
               placeholder="Please select"
               allowClear={false}
@@ -509,30 +499,25 @@ const Role: React.FC = () => {
                 treeNodeFilterProp: 'title',
                 fieldNames: {
                   label: 'roleName',
-                  value: 'id'
+                  value: 'id',
                 },
               }}
             />
           </Space>
 
           <Space size={20}>
-            <ProFormDigit
-              label={"Sort"}
-              name="sort"
-              width="md"
-              placeholder={"Sort"}
-            />
+            <ProFormDigit label={'Sort'} name="sort" width="md" placeholder={'Sort'} />
 
             <ProFormSelect
               width="md"
               rules={[
                 {
                   required: true,
-                  message: "Status is required",
+                  message: 'Status is required',
                 },
               ]}
               name="status"
-              label={"Status"}
+              label={'Status'}
               options={[
                 {
                   label: '启用',
@@ -544,24 +529,23 @@ const Role: React.FC = () => {
                 },
                 {
                   label: '锁定',
-                  value:  2,
+                  value: 2,
                 },
                 {
                   label: '过期',
                   value: 3,
-                }
+                },
               ]}
             />
           </Space>
 
           <Space size={20}>
-            <ProFormTextArea label={"Description"} name="description" width="md" />
+            <ProFormTextArea label={'Description'} name="description" width="md" />
           </Space>
         </ModalForm>
-      }
+      )}
 
-      {
-        menuModalVisible &&
+      {menuModalVisible && (
         <ModalForm
           title={'Menu'}
           width="400px"
@@ -571,14 +555,10 @@ const Role: React.FC = () => {
             await onSaveMenu(record?.id);
           }}
           initialValues={{
-            id: currentRow?.id
+            id: currentRow?.id,
           }}
         >
-          <ProFormText
-            label={"id"}
-            name="id"
-            hidden={true}
-          />
+          <ProFormText label={'id'} name="id" hidden={true} />
 
           <div>
             <Tree
@@ -591,12 +571,11 @@ const Role: React.FC = () => {
               onSelect={onSelect}
               selectedKeys={selectedKeys}
               treeData={allMenuTree}
-              fieldNames={{title: 'name', key: 'id'}}
+              fieldNames={{ title: 'name', key: 'id' }}
             />
           </div>
-
         </ModalForm>
-      }
+      )}
     </PageContainer>
   );
 };

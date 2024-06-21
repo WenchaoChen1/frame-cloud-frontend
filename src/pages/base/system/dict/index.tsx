@@ -1,15 +1,13 @@
-import React, {Key, useEffect, useState} from 'react';
-import {Button, Col, Modal, Row, Space, Tree, TreeSelect} from 'antd';
-import {
-  PageContainer,
-} from '@ant-design/pro-components';
-import {getTenantManageTreeService} from "@/services/base-service/system-service/tenantService";
-import {getDictTreeService} from "@/services/base-service/system-service/dict";
-import RightContainer from "@/pages/base/system/dict/components/rightContainer";
-import styles from "@/pages/base/system/dict/index.less";
+import RightContainer from '@/pages/base/system/dict/components/rightContainer';
+import styles from '@/pages/base/system/dict/index.less';
+import { getDictTreeService } from '@/services/base-service/system-service/dict';
+import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
+import { PageContainer } from '@ant-design/pro-components';
+import { Button, Col, Row, Space, Tree, TreeSelect } from 'antd';
+import React, { Key, useEffect, useState } from 'react';
 
 const Dict: React.FC = () => {
-  const [tenantId, setTenantId] = useState<string|undefined>(undefined);
+  const [tenantId, setTenantId] = useState<string | undefined>(undefined);
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
 
   const [dictionaryTreeData, setDictionaryTreeData] = useState<APISystem.DictItemDataType[]>([]);
@@ -34,9 +32,9 @@ const Dict: React.FC = () => {
       setTenantTreeData([]);
       return [];
     }
-  }
+  };
 
-  const getDictionaryTreeRequest = async (tenantId: string|undefined) => {
+  const getDictionaryTreeRequest = async (tenantId: string | undefined) => {
     if (!tenantId) {
       return;
     }
@@ -55,7 +53,7 @@ const Dict: React.FC = () => {
       setDictionaryTreeData([]);
       setSelectDictionaryId('');
     }
-  }
+  };
 
   const onChangeTenant = (tenantId: string) => {
     setTenantId(tenantId);
@@ -69,19 +67,19 @@ const Dict: React.FC = () => {
 
   const onAddBtn = async () => {
     setIsEdit(false);
-  }
+  };
 
   const refreshParent = () => {
     setIsRefresh(!isRefresh);
-  }
+  };
 
   useEffect(() => {
     getTenantTreeRequest();
-  }, [])
+  }, []);
 
   useEffect(() => {
-      getDictionaryTreeRequest(tenantId);
-  }, [tenantId, isRefresh])
+    getDictionaryTreeRequest(tenantId);
+  }, [tenantId, isRefresh]);
 
   return (
     <PageContainer className={styles.container}>
@@ -91,24 +89,25 @@ const Dict: React.FC = () => {
             treeData={tenantTreeData}
             value={tenantId}
             onChange={onChangeTenant}
-            style={{width: '100%'}}
-            dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+            style={{ width: '100%' }}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             placeholder="Please select tenant"
             treeDefaultExpandAll={true}
             allowClear={false}
             filterTreeNode={true}
             fieldNames={{
               value: 'id',
-              label: 'tenantName'
+              label: 'tenantName',
             }}
           />
 
           <Space size={10} className={styles.actionRow}>
-            <Button type="primary" onClick={onAddBtn}>Add</Button>
+            <Button type="primary" onClick={onAddBtn}>
+              Add
+            </Button>
           </Space>
 
-          {
-            dictionaryTreeData.length > 0 &&
+          {dictionaryTreeData.length > 0 && (
             <Tree
               treeData={dictionaryTreeData}
               onSelect={onSelectDictionary}
@@ -116,27 +115,24 @@ const Dict: React.FC = () => {
               autoExpandParent={autoExpandParent}
               blockNode
               defaultExpandAll={true}
-              // expandedKeys={expandedKeys}
-              fieldNames={{ title: 'name', key: 'id'}}
-              // className={styles.colLeftBox}
+              fieldNames={{ title: 'name', key: 'id' }}
               className={styles.dictTree}
             />
-          }
+          )}
         </Col>
 
         <Col className={styles.colRightBox} span={16}>
-          {
-            selectDictionaryId ?
-              <RightContainer
-                refreshParent={refreshParent}
-                isEdit={isEdit}
-                tenantId={tenantId}
-                dictionaryTreeData={dictionaryTreeData}
-                selectDictionaryId={selectDictionaryId}
-              />
-              :
-              <></>
-          }
+          {selectDictionaryId ? (
+            <RightContainer
+              refreshParent={refreshParent}
+              isEdit={isEdit}
+              tenantId={tenantId}
+              dictionaryTreeData={dictionaryTreeData}
+              selectDictionaryId={selectDictionaryId}
+            />
+          ) : (
+            <></>
+          )}
         </Col>
       </Row>
     </PageContainer>

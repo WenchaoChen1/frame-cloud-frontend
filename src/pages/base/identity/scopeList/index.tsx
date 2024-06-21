@@ -1,24 +1,19 @@
-import {
-  getScopeManagePageService,
-  getScopeManageDetailService,
-  insertScopeManageService,
-  updateScopeManageService,
-  deleteScopeManageService,
-  scopeManageAssignedPermissionService,
-} from '@/services/base-service/identity-service/scopeService';
-import type {ActionType, ProColumns} from '@ant-design/pro-components';
-import {
-  PageContainer,
-  ProTable,
-  ModalForm,
-  ProFormText,
-} from '@ant-design/pro-components';
-import {FormattedMessage} from '@umijs/max';
-import {Button, message, Popconfirm, Space} from 'antd';
-import React, {useRef, useState} from 'react';
-import {PlusOutlined} from "@ant-design/icons";
-import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
 import ScopePermissions from '@/components/ScopePermissions/scopePermissions';
+import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
+import {
+  deleteScopeManageService,
+  getScopeManageDetailService,
+  getScopeManagePageService,
+  insertScopeManageService,
+  scopeManageAssignedPermissionService,
+  updateScopeManageService,
+} from '@/services/base-service/identity-service/scopeService';
+import { PlusOutlined } from '@ant-design/icons';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import { ModalForm, PageContainer, ProFormText, ProTable } from '@ant-design/pro-components';
+import { FormattedMessage } from '@umijs/max';
+import { Button, message, Popconfirm, Space } from 'antd';
+import React, { useRef, useState } from 'react';
 import styles from './index.less';
 
 const Scope: React.FC = () => {
@@ -35,10 +30,10 @@ const Scope: React.FC = () => {
 
   const getList = async (params: API.PageParams) => {
     const response = await getScopeManagePageService({
-        pageNumber: params.current || 1,
-        pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
-        scopeName: params?.scopeName || '',
-        scopeCode: params?.scopeCode || '',
+      pageNumber: params.current || 1,
+      pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
+      scopeName: params?.scopeName || '',
+      scopeCode: params?.scopeCode || '',
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -47,9 +42,7 @@ const Scope: React.FC = () => {
       dataSource = response?.data?.content || [];
       total = response?.data?.totalElements || 0;
     }
-
     setTotal(total);
-
     return {
       data: dataSource,
       success: true,
@@ -62,7 +55,6 @@ const Scope: React.FC = () => {
     try {
       await updateScopeManageService(fields);
       hide();
-
       message.success('Update successfully');
       return true;
     } catch (error) {
@@ -81,7 +73,7 @@ const Scope: React.FC = () => {
     }
 
     return {
-      scopeName:'',
+      scopeName: '',
       scopeCode: '',
       scopeId: '',
     };
@@ -90,7 +82,6 @@ const Scope: React.FC = () => {
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
-
     try {
       await insertScopeManageService({ ...fields });
       hide();
@@ -107,7 +98,7 @@ const Scope: React.FC = () => {
     const parms = {
       scopeId: scopeId || '',
       permissions: selectedPermissions || '',
-    }
+    };
     try {
       await scopeManageAssignedPermissionService(parms);
       message.success('Added successfully');
@@ -135,17 +126,16 @@ const Scope: React.FC = () => {
       message.error('Delete failed, please try again');
       return false;
     }
-  }
-
+  };
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
-    {title: 'scopeName', dataIndex: 'scopeName', width: '45%'},
-    {title: 'scopeCode', dataIndex: 'scopeCode', width: '45%'},
+    { title: 'scopeName', dataIndex: 'scopeName', width: '45%' },
+    { title: 'scopeCode', dataIndex: 'scopeCode', width: '45%' },
     {
-      title: "Operating",
+      title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) =>[
+      render: (_, record) => [
         <a
           onClick={() => {
             setPermissOpenModal(true);
@@ -169,8 +159,8 @@ const Scope: React.FC = () => {
           onConfirm={async () => await deleteUserRequest(record?.scopeId || '')}
         >
           <a>Delete</a>
-        </Popconfirm>
-      ]
+        </Popconfirm>,
+      ],
     },
   ];
 
@@ -195,7 +185,7 @@ const Scope: React.FC = () => {
               setOpenModal(true);
             }}
           >
-            <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
+            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
         request={getList}
@@ -213,14 +203,13 @@ const Scope: React.FC = () => {
           onChange: (currentPageNumber, pageSizeNumber) => {
             setPageSize(pageSizeNumber);
             setCurrentPage(currentPageNumber);
-          }
+          },
         }}
       />
 
-      {
-        openModal &&
+      {openModal && (
         <ModalForm
-          title={ isEdit ? 'Edit' :  'New'}
+          title={isEdit ? 'Edit' : 'New'}
           width="800px"
           open={openModal}
           onOpenChange={setOpenModal}
@@ -251,40 +240,33 @@ const Scope: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "scopeName is required",
+                  message: 'scopeName is required',
                 },
               ]}
-              label={"scopeName"}
+              label={'scopeName'}
               width="md"
               name="scopeName"
-              placeholder={"scopeName"}
+              placeholder={'scopeName'}
             />
             <ProFormText
               name="scopeCode"
-              label={"scopeCode"}
+              label={'scopeCode'}
               width="md"
-              placeholder={"scopeCode"}
+              placeholder={'scopeCode'}
               rules={[
                 {
                   required: true,
-                  message: "scopeCode is required",
+                  message: 'scopeCode is required',
                 },
               ]}
             />
 
-            <ProFormText
-              label={"scopeId"}
-              width="md"
-              name="scopeId"
-              hidden={true}
-            />
+            <ProFormText label={'scopeId'} width="md" name="scopeId" hidden={true} />
           </Space>
-
         </ModalForm>
-      }
+      )}
 
-      {
-        PermissOpenModal &&
+      {PermissOpenModal && (
         <ModalForm
           title={'Permissions'}
           width="70%"
@@ -301,9 +283,13 @@ const Scope: React.FC = () => {
             }
           }}
         >
-          <ScopePermissions onSelectedPermissions={handleSelectedPermissions} selectedPermissions={selectedPermissions} scopeId={scopeId} />
+          <ScopePermissions
+            onSelectedPermissions={handleSelectedPermissions}
+            selectedPermissions={selectedPermissions}
+            scopeId={scopeId}
+          />
         </ModalForm>
-      }
+      )}
     </PageContainer>
   );
 };

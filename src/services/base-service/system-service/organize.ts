@@ -6,7 +6,6 @@ import {
 } from "@/services/base-service/api/system-api/organizeApi";
 import {Key} from "react";
 
-// list
 export async function getOrganizeTreeService(tenantId: string) {
   return await getOrganizeTree(tenantId);
 }

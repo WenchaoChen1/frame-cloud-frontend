@@ -1,7 +1,6 @@
 import { request } from '@umijs/max';
 import {Key} from "react";
 
-// Organize - list
 export async function getOrganizeTree(tenantId: string) {
   return request<APISystem.OrganizeListResponseDataType>('/api/gstdev-system/v1/depart/get-all-depart-to-tree', {
     method: 'GET',
@@ -35,7 +34,4 @@ export async function getOrganizeInfo(id: Key) {
     method: 'GET',
     params: {id: id}
   });
-
-
-
 }

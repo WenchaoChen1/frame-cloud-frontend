@@ -1,21 +1,18 @@
-import React, {Key, useEffect, useState} from 'react';
-import {Button, Col, Row, Space, Tree, TreeSelect} from 'antd';
-import {PageContainer} from '@ant-design/pro-components';
-import {getTenantManageTreeService} from "@/services/base-service/system-service/tenantService";
-import {getOrganizeTreeService} from '@/services/base-service/system-service/organize';
-import RightContainer from "@/pages/base/system/organize/components/rightContainer";
+import RightContainer from '@/pages/base/system/organize/components/rightContainer';
+import styles from '@/pages/base/system/organize/index.less';
 import commonStyle from '@/pages/common/index.less';
-import styles from "@/pages/base/system/organize/index.less";
+import { getOrganizeTreeService } from '@/services/base-service/system-service/organize';
+import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
+import { PageContainer } from '@ant-design/pro-components';
+import { Button, Col, Row, Space, Tree, TreeSelect } from 'antd';
+import React, { Key, useEffect, useState } from 'react';
 
 const Organize: React.FC = () => {
-  const [tenantId, setTenantId] = useState<string|undefined>(undefined);
+  const [tenantId, setTenantId] = useState<string | undefined>(undefined);
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
-
   const [organTreeData, setOrganTreeData] = useState<APISystem.OrganizeListItemDataType[]>([]);
   const [selectOrganizeId, setSelectOrganizeId] = useState<Key>('');
-
   const [isEdit, setIsEdit] = useState(true);
-  const [openModal, setOpenModal] = useState<boolean>(false);
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
 
   const getTenantTreeRequest = async () => {
@@ -32,7 +29,7 @@ const Organize: React.FC = () => {
       setTenantTreeData([]);
       return [];
     }
-  }
+  };
 
   const getOrganizeTreeRequest = async (tenantId: string) => {
     const organizeTreeResponse = await getOrganizeTreeService(tenantId);
@@ -47,7 +44,7 @@ const Organize: React.FC = () => {
       setOrganTreeData([]);
       setSelectOrganizeId('');
     }
-  }
+  };
 
   const onChangeTenant = (tenantId: string) => {
     setTenantId(tenantId);
@@ -55,31 +52,24 @@ const Organize: React.FC = () => {
   };
 
   const onSelectOrganize = (selectedKeysValue: React.Key[], info: any) => {
-    console.log('onSelect01', info.node.key, selectedKeysValue, info);
-
     setSelectOrganizeId(info.node.key);
     setIsEdit(true);
   };
 
   const onAddBtn = () => {
     setIsEdit(false);
-  }
-
-  const onCancelBtn = () => {
-    setIsEdit(true);
-  }
+  };
 
   useEffect(() => {
     getTenantTreeRequest();
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (tenantId) {
       getOrganizeTreeRequest(tenantId);
     }
-  }, [tenantId])
+  }, [tenantId]);
 
-  // @ts-ignore
   return (
     <PageContainer className={[commonStyle.pageContainer, styles.container].join(' ')} title={' '}>
       <Row className={styles.contentBox}>
@@ -88,24 +78,25 @@ const Organize: React.FC = () => {
             treeData={tenantTreeData}
             value={tenantId}
             onChange={onChangeTenant}
-            style={{width: '100%'}}
-            dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+            style={{ width: '100%' }}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             placeholder="Please select tenant"
             treeDefaultExpandAll={true}
             allowClear={false}
             filterTreeNode={true}
             fieldNames={{
               value: 'id',
-              label: 'tenantName'
+              label: 'tenantName',
             }}
           />
 
           <Space size={10} className={styles.actionRow}>
-            <Button type="primary" onClick={onAddBtn}>Add</Button>
+            <Button type="primary" onClick={onAddBtn}>
+              Add
+            </Button>
           </Space>
 
-          {
-            organTreeData.length > 0 &&
+          {organTreeData.length > 0 && (
             <Tree
               treeData={organTreeData}
               onSelect={onSelectOrganize}
@@ -113,38 +104,21 @@ const Organize: React.FC = () => {
               autoExpandParent={autoExpandParent}
               blockNode
               defaultExpandAll
-              // expandedKeys={expandedKeys}
-              // fieldNames={{ title: 'name', key: 'id'}}
             />
-          }
+          )}
         </Col>
 
         <Col className={styles.colRightBox} span={16}>
-          {
-            selectOrganizeId &&
+          {selectOrganizeId && (
             <RightContainer
               isEdit={isEdit}
               tenantId={tenantId}
               organTreeData={organTreeData}
               selectOrganizeId={selectOrganizeId}
             />
-          }
+          )}
         </Col>
       </Row>
-
-      {/*{*/}
-      {/*  openModal &&*/}
-      {/*  <Modal*/}
-      {/*    title={'Add'}*/}
-      {/*    width={780}*/}
-      {/*    open={openModal}*/}
-      {/*    onCancel={onCancelBtn}*/}
-      {/*    getContainer={false}*/}
-      {/*    footer={false}*/}
-      {/*  >*/}
-      {/*    <OrganizeFormContent/>*/}
-      {/*  </Modal>*/}
-      {/*}*/}
     </PageContainer>
   );
 };

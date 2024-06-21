@@ -1,3 +1,13 @@
+import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
+import {
+  deletePermissionManageService,
+  getPermissionManageDetailService,
+  getPermissionManagePageService,
+  getPermissionTypeService,
+  insertPermissionManageService,
+  updatePermissionManageService,
+} from '@/services/base-service/system-service/permissionService';
+import { PlusOutlined } from '@ant-design/icons';
 import {
   ActionType,
   ModalForm,
@@ -5,21 +15,11 @@ import {
   ProColumns,
   ProFormSelect,
   ProFormText,
-  ProTable
+  ProTable,
 } from '@ant-design/pro-components';
-import {FormattedMessage} from '@umijs/max';
-import {Button, message, Popconfirm, Space, Form } from 'antd';
-import React, {useRef, useState, useEffect} from 'react';
-import {PlusOutlined} from "@ant-design/icons";
-import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
-import {
-  deletePermissionManageService,
-  getPermissionManagePageService,
-  insertPermissionManageService,
-  updatePermissionManageService,
-  getPermissionManageDetailService,
-  getPermissionTypeService,
-} from "@/services/base-service/system-service/permissionService";
+import { FormattedMessage } from '@umijs/max';
+import { Button, message, Popconfirm, Space } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.less';
 
 const User: React.FC = () => {
@@ -28,32 +28,32 @@ const User: React.FC = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.PermissionItemDataType>();
   const [permissionTypeList, setPermissionTypeList] = useState([]);
-  const [selectedRowsState, setSelectedRows] = useState<APISystem.PermissionItemDataType[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const actionRef = useRef<ActionType>();
 
-  const getList = async (params: API.PageParams,) => {
+  const getList = async (params: API.PageParams) => {
     params.status = params?.status?.map((item: any) => {
-        if (item === '1') {
-          return item = 'FORBIDDEN'
-        } else if (item === '2') {
-          return item = 'LOCKING'
-        } else if (item === '3') {
-          return item = 'EXPIRED'
-        } else {
-          return item = 'ENABLE'
-        }
-    })
+      if (item === '1') {
+        return (item = 'FORBIDDEN');
+      } else if (item === '2') {
+        return (item = 'LOCKING');
+      } else if (item === '3') {
+        return (item = 'EXPIRED');
+      } else {
+        return (item = 'ENABLE');
+      }
+    });
     const response = await getPermissionManagePageService({
-        pageNumber: params?.current || 1,
-        pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-        permissionType: params?.permissionType?.map((param: any) => encodeURIComponent(param)).join(',') || [],
-        status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
-        permissionName: params?.permissionName || '',
-        permissionCode: params?.permissionCode || '',
+      pageNumber: params?.current || 1,
+      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
+      permissionType:
+        params?.permissionType?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+      status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+      permissionName: params?.permissionName || '',
+      permissionCode: params?.permissionCode || '',
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -80,26 +80,27 @@ const User: React.FC = () => {
   };
 
   useEffect(() => {
-    initPermissionTypeChange()
+    initPermissionTypeChange();
   }, []);
 
   const getPermissionInfoRequest = async () => {
     if (isEdit) {
-      const accountDetailResponse = await getPermissionManageDetailService(currentRow?.permissionId || '');
+      const accountDetailResponse = await getPermissionManageDetailService(
+        currentRow?.permissionId || '',
+      );
       if (accountDetailResponse.success === true && accountDetailResponse.data) {
         return accountDetailResponse.data;
       }
     }
 
     return {
-      permissionId:'',
+      permissionId: '',
       permissionCode: '',
       permissionType: '',
       permissionName: '',
       status: '',
     };
   };
-
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
@@ -116,7 +117,6 @@ const User: React.FC = () => {
       return false;
     }
   };
-
 
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('Update');
@@ -140,17 +140,14 @@ const User: React.FC = () => {
       await deletePermissionManageService(id);
       hide();
       message.success('Deleted successfully and will refresh soon');
-
-      setSelectedRows([]);
       actionRef.current?.reloadAndRest?.();
-
       return true;
     } catch (error) {
       hide();
       message.error('Delete failed, please try again');
       return false;
     }
-  }
+  };
 
   const columns: ProColumns<APISystem.PermissionItemDataType>[] = [
     {
@@ -183,7 +180,7 @@ const User: React.FC = () => {
               mode: 'multiple',
             }}
           />
-        )
+        );
       },
     },
     {
@@ -206,7 +203,7 @@ const User: React.FC = () => {
         3: {
           text: '过期',
           status: 'EXPIRED',
-        }
+        },
       },
       renderFormItem: (_, { type, defaultRender, ...rest }) => {
         return (
@@ -217,11 +214,11 @@ const User: React.FC = () => {
               mode: 'multiple',
             }}
           />
-        )
+        );
       },
     },
     {
-      title: "Operating",
+      title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
@@ -240,8 +237,8 @@ const User: React.FC = () => {
           onConfirm={async () => await onDeleteRequest(record?.permissionId || '')}
         >
           <a>Delete</a>
-        </Popconfirm>
-      ]
+        </Popconfirm>,
+      ],
     },
   ];
 
@@ -262,16 +259,11 @@ const User: React.FC = () => {
               setOpenModal(true);
             }}
           >
-            <PlusOutlined/> <FormattedMessage id="pages.searchTable.new" defaultMessage="New"/>
+            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
         request={getList}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
-        }}
         pagination={{
           current: currentPage,
           pageSize: pageSize,
@@ -280,14 +272,13 @@ const User: React.FC = () => {
           onChange: (currentPageNumber, pageSizeNumber) => {
             setPageSize(pageSizeNumber);
             setCurrentPage(currentPageNumber);
-          }
+          },
         }}
       />
 
-      {
-        openModal &&
+      {openModal && (
         <ModalForm
-          title={ isEdit ? 'Edit' :  'New'}
+          title={isEdit ? 'Edit' : 'New'}
           width="800px"
           open={openModal}
           onOpenChange={setOpenModal}
@@ -314,33 +305,28 @@ const User: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Permission name is required",
+                  message: 'Permission name is required',
                 },
               ]}
-              label={"Permission Name"}
+              label={'Permission Name'}
               width="md"
               name="permissionName"
-              placeholder={"Permission name"}
+              placeholder={'Permission name'}
             />
             <ProFormText
               name="permissionCode"
-              label={"Code"}
+              label={'Code'}
               width="md"
-              placeholder={"Code"}
+              placeholder={'Code'}
               rules={[
                 {
                   required: true,
-                  message: "Code is required",
+                  message: 'Code is required',
                 },
               ]}
             />
 
-            <ProFormText
-              label={"permissionId"}
-              width="md"
-              name="permissionId"
-              hidden={true}
-            />
+            <ProFormText label={'permissionId'} width="md" name="permissionId" hidden={true} />
           </Space>
 
           <Space size={20}>
@@ -348,13 +334,13 @@ const User: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Permission Type is required",
-                }
+                  message: 'Permission Type is required',
+                },
               ]}
-              label={"Permission Type"}
+              label={'Permission Type'}
               width="md"
               name="permissionType"
-              placeholder={"Permission Type"}
+              placeholder={'Permission Type'}
               options={permissionTypeList}
             />
             <ProFormSelect
@@ -362,11 +348,11 @@ const User: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: "Status is required",
+                  message: 'Status is required',
                 },
               ]}
               name="status"
-              label={"Status"}
+              label={'Status'}
               options={[
                 {
                   label: '启用',
@@ -378,18 +364,17 @@ const User: React.FC = () => {
                 },
                 {
                   label: '锁定',
-                  value:  2,
+                  value: 2,
                 },
                 {
                   label: '过期',
                   value: 3,
-                }
+                },
               ]}
             />
           </Space>
-
         </ModalForm>
-      }
+      )}
     </PageContainer>
   );
 };
