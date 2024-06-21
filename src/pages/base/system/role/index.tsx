@@ -26,8 +26,10 @@ import {
   getAllTenantByRoleIdService,
 } from '@/services/base-service/system-service/roleService';
 import {getTenantManageTreeService} from '@/services/base-service/system-service/tenantService';
+import type { ProFormInstance } from '@ant-design/pro-components';
 
 const Role: React.FC = () => {
+  const formRef = useRef<ProFormInstance>();
   const [tenantId, setTenantId] = useState<string|undefined>(undefined);
   const [parentTreeData, setParentTreeData] = useState([]);
   const [roleNameText, setRoleNameText] = useState('');
@@ -139,7 +141,8 @@ const Role: React.FC = () => {
 
   const onChangeTenant = (tenantId: string) => {
     setTenantId(tenantId);
-    getParentRoleTreeRequest(tenantId);
+    formRef.current.setFieldValue('parentId')
+    // getParentRoleTreeRequest(tenantId);
   };
 
   const columns: ProColumns<APISystem.RoleItemDataType>[] = [
@@ -324,19 +327,11 @@ const Role: React.FC = () => {
 
   const getParentRoleTreeRequest = async (Id: any) => {
     const Response = await getRoleManageRoleDetailToListService({
-      tenantId: Id ? Id:tenantId,
+      tenantId,
       tenantName: roleNameText || ''
     });
     if (Response.success && Response.data) {
-      const list = Response.data.map((node: any) => {
-        const { parentId, roleName, ...rest } = node;
-        return {
-          ...rest,
-          value: parentId,
-          label: roleName,
-        };
-      });
-
+      const list = Response.data
       setParentTreeData(list);
       return list;
     } else {
@@ -408,6 +403,7 @@ const Role: React.FC = () => {
         <ModalForm
           title={ isEdit ? 'Edit' :  'New'}
           open={openModal}
+          formRef={formRef}
           onOpenChange={setOpenModal}
           request={getRoleInfoRequest}
           onFinish={async (record: APISystem.RoleItemDataType) => {
@@ -488,6 +484,7 @@ const Role: React.FC = () => {
             />
 
             <ProFormTreeSelect
+              params={tenantId}
               label={"Parent Role"}
               name="parentId"
               placeholder="Please select"
@@ -503,8 +500,8 @@ const Role: React.FC = () => {
                 autoClearSearchValue: true,
                 treeNodeFilterProp: 'title',
                 fieldNames: {
-                  label: 'label',
-                  value: 'value'
+                  label: 'roleName',
+                  value: 'id'
                 },
               }}
               rules={[
