@@ -26,6 +26,7 @@ export async function getInitialState(): Promise<{
   fetchUserInfo?: () => Promise<APIIdentity.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
+    // TODO
     // try {
     //   const msg = await queryCurrentUser({
     //     skipErrorHandler: true,

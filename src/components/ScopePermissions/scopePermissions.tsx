@@ -1,13 +1,10 @@
-import {
-  ProFormSelect,
-  ProTable
-} from '@ant-design/pro-components';
-import React, { useState, useEffect} from 'react';
-import {DEFAULT_PAGE_SIZE} from "@/pages/common/constant";
+import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
 import {
   getPermissionManagePageService,
-  getPermissionTypeService
-} from "@/services/base-service/system-service/permissionService";
+  getPermissionTypeService,
+} from '@/services/base-service/system-service/permissionService';
+import { ProTable } from '@ant-design/pro-components';
+import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 
 type TypeProp = {
@@ -16,9 +13,11 @@ type TypeProp = {
   selectedPermissions: any;
 };
 
-
-const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, selectedPermissions }) => {
-
+const ScopePermissions: React.FC<TypeProp> = ({
+  onSelectedPermissions,
+  scopeId,
+  selectedPermissions,
+}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [permisListData, setPermisListData] = useState([]);
   const [total, setTotal] = useState<number>(0);
@@ -59,10 +58,10 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
     }
   };
   useEffect(() => {
-    initPermissionTypeChange()
+    initPermissionTypeChange();
   }, []);
 
-  const getList = async(params: API.PageParams) => {
+  const getList = async (params: API.PageParams) => {
     const response = await getPermissionManagePageService({
       pageNumber: params.current || 1,
       pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
@@ -86,7 +85,7 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
       success: true,
       total: total,
     };
-  }
+  };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: any) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -98,16 +97,6 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
     onChange: onSelectChange,
     preserveSelectedRowKeys: true,
   };
-
-  const initPermissList = async () => {
-      const permissionIds = selectedPermissions?.map(permission => permission.permissionId);
-      setSelectedRowKeys(permissionIds);
-  };
-
-  // useEffect(() => {
-  //   initPermissList();
-  // }, [scopeId])
-
 
   return (
     <div>
@@ -127,11 +116,11 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, scopeId, 
           current: page,
           pageSize: size,
           total: total,
-          size: "small",
+          size: 'small',
           onChange: (pageNum: number, sizeNum: any) => {
             setPage(pageNum);
             setSize(sizeNum);
-          }
+          },
         }}
       />
     </div>

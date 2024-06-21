@@ -1,9 +1,10 @@
-import {outLogin} from '@/services/ant-design-pro/api';
+// TODO
+// import {outLogin} from '@/services/ant-design-pro/api';
+// import {stringify} from 'querystring';
 import {LogoutOutlined, SettingOutlined, UserOutlined} from '@ant-design/icons';
 import {history, useModel} from '@umijs/max';
 import {Spin} from 'antd';
 import {createStyles} from 'antd-style';
-import {stringify} from 'querystring';
 import React, {useCallback} from 'react';
 import HeaderDropdown from '../HeaderDropdown';
 import {signOutService} from "@/services/base-service/identity-service/login";
@@ -42,21 +43,18 @@ const useStyles = createStyles(({token}) => {
 export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children}) => {
   const intl = useIntl();
 
-  /**
-   * 退出登录，并且将当前的 url 保存
-   */
-  const loginOut = async () => {
+  const loginOut = async () => { // 退出登录，并且将当前的 url 保存
     await signOutService({accessToken: getToken() ||''});
     logOut();
 
     const {search, pathname} = window.location;
     const urlParams = new URL(window.location.href).searchParams;
-    /** 此方法会跳转到 redirect 参数所在的位置 */
-    const redirect = urlParams.get('redirect');
+    const redirect = urlParams.get('redirect'); // 跳转到 redirect 参数所在的位置
     // Note: There may be security issues, please note
     if (window.location.pathname !== '/user/login' && !redirect) {
       history.replace({
         pathname: '/user/login',
+        // TODO
         // search: stringify({
         //   redirect: pathname + search,
         // }),
@@ -71,6 +69,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
     (event: any) => {
       const {key} = event;
       if (key === 'logout') {
+        // TODO
         // setInitialState((s) => ({...s, currentUser: undefined}));
         loginOut();
         return;
