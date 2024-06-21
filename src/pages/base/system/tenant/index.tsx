@@ -204,26 +204,37 @@ const Index: React.FC = () => {
       }
     },
     {
-      title: "Status",
+      title: 'Status',
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
         0: {
-          text: 'Disable',
-          status: 'Processing',
+          text: '启用',
+          status: 'ENABLE',
         },
         1: {
-          text: 'Enable',
-          status: 'Success',
+          text: '禁用',
+          status: 'FORBIDDEN',
         },
         2: {
-          text: 'Logoff',
-          status: 'Error',
+          text: '锁定',
+          status: 'LOCKING',
         },
         3: {
-          text: 'Arrearage',
-          status: 'Default',
+          text: '过期',
+          status: 'EXPIRED',
         }
+      },
+      renderFormItem: (_, { type, defaultRender, ...rest }) => {
+        return (
+          <ProFormSelect
+            mode="multiple"
+            {...rest}
+            fieldProps={{
+              mode: 'multiple',
+            }}
+          />
+        )
       },
     },
     {
@@ -238,7 +249,7 @@ const Index: React.FC = () => {
     {
       title: 'Created At',
       key: 'showTime',
-      dataIndex: 'createdAt',
+      dataIndex: 'createdDate',
       valueType: 'date',
       sorter: true,
       hideInSearch: true,
@@ -442,35 +453,34 @@ const Index: React.FC = () => {
             ]}
           />
           <ProFormSelect
-            rules={[
-              {
-                required: true,
-                message: "Status is required",
-              },
-            ]}
-            name="status"
-            width="md"
-            label={"Status"}
-            initialValue={1}
-            options={[
-              {
-                value: 0,
-                label: 'Disable',
-              },
-              {
-                value: 1,
-                label: 'Enable',
-              },
-              {
-                value: 2,
-                label: 'Logoff',
-              },
-              {
-                value: 3,
-                label: 'Arrearage',
-              }
-            ]}
-          />
+              width="md"
+              rules={[
+                {
+                  required: true,
+                  message: "Status is required",
+                },
+              ]}
+              name="status"
+              label={"Status"}
+              options={[
+                {
+                  label: '启用',
+                  value: 0,
+                },
+                {
+                  label: '禁用',
+                  value: 1,
+                },
+                {
+                  label: '锁定',
+                  value:  2,
+                },
+                {
+                  label: '过期',
+                  value: 3,
+                }
+              ]}
+            />
         </ModalForm>
       }
 
