@@ -97,7 +97,7 @@ const MenuList: React.FC = () => {
   const columns: ProColumns<APISystem.MenuListItemDataType>[] = [
     {
       title: 'Menu name',
-      dataIndex: 'name',
+      dataIndex: 'menuName',
     },
     {
       title: 'Code',
@@ -214,7 +214,7 @@ const MenuList: React.FC = () => {
     const response = await getMenuManageTreeService({
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-      name: params?.name,
+      menuName: params?.menuName,
       path: params?.path,
       status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
       type: params?.type || '',

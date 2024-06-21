@@ -111,6 +111,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
           labelWidth: 'auto',
         }}
         request={getList}
+        options={false}
         pagination={{
           current: page,
           pageSize: size,
