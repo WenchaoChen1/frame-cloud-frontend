@@ -23,9 +23,10 @@ import {
   ProFormTreeSelect,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage } from '@umijs/max';
+import {formatMessage, FormattedMessage} from '@umijs/max';
 import { Button, message, Space, Tree } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
+import dayjs from "dayjs";
 
 const Role: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -178,6 +179,21 @@ const Role: React.FC = () => {
       },
     },
     {
+      title: formatMessage({ id: 'application.list.createdDate' }),
+      key: 'showTime',
+      sorter: true,
+      hideInSearch: true,
+      dataIndex: 'createdDate',
+      render:(_,record)=> formatDate(record?.createdDate)
+    },
+    {
+      title: formatMessage({ id: 'application.list.updatedDate' }),
+      hideInSearch: true,
+      dataIndex: 'updatedDate',
+      sorter: true,
+      render:(_,record)=> formatDate(record?.updatedDate)
+    },
+    {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
@@ -239,6 +255,14 @@ const Role: React.FC = () => {
       },
     },
   ];
+
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
 
   const getList = async (params: APISystem.RoleTableSearchParams) => {
     if (!tenantId) {

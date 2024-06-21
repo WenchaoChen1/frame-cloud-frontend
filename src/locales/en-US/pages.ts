@@ -97,6 +97,8 @@ export default {
       'label1': 'Client Settings',
       'label2': 'Token Settings',
       'label3': 'Data Entry Settings',
+      'createdDate':'Created At',
+      'updatedDate':'UpdatedDate'
     }
   }
 };

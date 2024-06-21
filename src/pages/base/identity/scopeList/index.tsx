@@ -11,10 +11,11 @@ import {
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ModalForm, PageContainer, ProFormText, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage } from '@umijs/max';
+import { FormattedMessage,formatMessage } from '@umijs/max';
 import { Button, message, Popconfirm, Space } from 'antd';
 import React, { useRef, useState } from 'react';
 import styles from './index.less';
+import dayjs from "dayjs";
 
 const Scope: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -129,8 +130,10 @@ const Scope: React.FC = () => {
   };
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
-    { title: 'scopeName', dataIndex: 'scopeName', width: '45%' },
-    { title: 'scopeCode', dataIndex: 'scopeCode', width: '45%' },
+    { title: 'scopeName', dataIndex: 'scopeName'},
+    { title: 'scopeCode', dataIndex: 'scopeCode'},
+    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate)},
+    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate)},
     {
       title: 'Operating',
       dataIndex: 'option',
@@ -163,6 +166,14 @@ const Scope: React.FC = () => {
       ],
     },
   ];
+
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
 
   const handleSelectedPermissions = (permissions: any) => {
     setSelectedPermissions(permissions);

@@ -21,9 +21,10 @@ import {
   ProFormTreeSelect,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, useModel } from '@umijs/max';
+import {formatMessage, FormattedMessage, useModel} from '@umijs/max';
 import { Button, message, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
+import dayjs from "dayjs";
 
 const Account: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -229,13 +230,8 @@ const Account: React.FC = () => {
         );
       },
     },
-    {
-      title: 'Created At',
-      key: 'showTime',
-      dataIndex: 'createdDate',
-      valueType: 'date',
-      hideInSearch: true,
-    },
+    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
+    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
     {
       title: 'Operating',
       dataIndex: 'option',
@@ -258,6 +254,14 @@ const Account: React.FC = () => {
       ],
     },
   ];
+
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
 
   useEffect(() => {
     getTenantTreeRequest();

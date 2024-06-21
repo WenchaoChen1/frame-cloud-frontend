@@ -3,6 +3,8 @@ import { getComplianceManagePageService } from '@/services/base-service/identity
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import React, { useRef, useState } from 'react';
+import { formatMessage } from 'umi';
+import dayjs from "dayjs";
 import styles from './index.less';
 
 const Compliance: React.FC = () => {
@@ -48,8 +50,17 @@ const Compliance: React.FC = () => {
       },
     },
     { title: 'operation', dataIndex: 'operation', search: false },
-    { title: 'createTime', dataIndex: 'createdDate', search: false },
+    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate)},
+    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate)},
   ];
+
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
 
   return (
     <PageContainer>

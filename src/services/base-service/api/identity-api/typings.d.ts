@@ -132,5 +132,7 @@ declare namespace APIIdentity {
     deviceCodeIssuedAt?: string;
     deviceCodeExpiresAt?: string;
     deviceCodeMetadata?: string;
+    createdDate:string,
+    updatedDate:string
   };
 }

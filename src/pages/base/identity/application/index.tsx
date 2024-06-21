@@ -23,6 +23,7 @@ import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { formatMessage } from 'umi';
 import styles from './index.less';
+import dayjs from "dayjs";
 
 const Application: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -59,6 +60,7 @@ const Application: React.FC = () => {
   const getList = async (params: API.PageParams) => {
     const response = await getApplicationListService({
       pageNumber: params.current || 1,
+      abbreviation:params.abbreviation,
       pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
       applicationName: params?.applicationName,
       clientAuthenticationMethods:
@@ -335,6 +337,8 @@ const Application: React.FC = () => {
         }
       },
     },
+    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
+    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
     {
       title: formatMessage({ id: 'pages.searchTable.actions' }),
       dataIndex: 'actions',
@@ -359,6 +363,14 @@ const Application: React.FC = () => {
       ],
     },
   ];
+
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
 
   const deleteUserRequest = async (id: string) => {
     const hide = message.loading('delete...');

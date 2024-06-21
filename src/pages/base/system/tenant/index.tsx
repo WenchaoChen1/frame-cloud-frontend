@@ -23,7 +23,7 @@ import {
   ProFormTreeSelect,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage } from '@umijs/max';
+import { FormattedMessage,formatMessage } from '@umijs/max';
 import { Button, message, Tree } from 'antd';
 import React, { useRef, useState } from 'react';
 import styles from './index.less';
@@ -257,11 +257,17 @@ const Index: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: 'Created At',
-      // key: 'showTime',
-      dataIndex: 'createdDate',
-      // valueType: 'date',
+      title: formatMessage({ id: 'application.list.createdDate' }),
+      key: 'showTime',
+      sorter: true,
       hideInSearch: true,
+      dataIndex: 'createdDate'
+    },
+    {
+      title: formatMessage({ id: 'application.list.updatedDate' }),
+      hideInSearch: true,
+      dataIndex: 'updatedDate',
+      sorter: true,
     },
     {
       title: 'Operating',

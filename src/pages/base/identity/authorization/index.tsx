@@ -7,7 +7,9 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
+import {formatMessage} from '@umijs/max'
 import styles from './index.less';
+import dayjs from "dayjs";
 
 const Authorization: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -96,6 +98,8 @@ const Authorization: React.FC = () => {
       search: false,
       render: (text) => timeFormat(text),
     },
+    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
+    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
     {
       title: 'Operating',
       dataIndex: 'option',
@@ -110,6 +114,14 @@ const Authorization: React.FC = () => {
       ),
     },
   ];
+
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
 
   return (
     <PageContainer>

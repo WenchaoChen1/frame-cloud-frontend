@@ -18,6 +18,8 @@ import {
 } from '@ant-design/pro-components';
 import { message, Space } from 'antd';
 import React, { useRef, useState } from 'react';
+import {formatMessage} from "@umijs/max";
+import dayjs from "dayjs";
 
 const MenuList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -160,6 +162,8 @@ const MenuList: React.FC = () => {
         },
       },
     },
+    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
+    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
     {
       title: 'Operating',
       dataIndex: 'option',
@@ -197,6 +201,14 @@ const MenuList: React.FC = () => {
       ],
     },
   ];
+
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
 
   const getList = async (params: API.PageParams) => {
     params.status = params?.status?.map((item: any) => {
