@@ -58,7 +58,6 @@ const Compliance: React.FC = () => {
         actionRef={actionRef}
         className={styles.complianceListStyle}
         rowKey="scopeId"
-        options={false}
         request={getList}
         columns={columns}
         pagination={{

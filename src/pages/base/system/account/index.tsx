@@ -270,7 +270,6 @@ const Account: React.FC = () => {
         actionRef={actionRef}
         rowKey="id"
         search={{ labelWidth: 100 }}
-        options={false}
         toolBarRender={() => [
           <Button
             type="primary"

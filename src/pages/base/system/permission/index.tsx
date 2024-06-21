@@ -249,7 +249,6 @@ const User: React.FC = () => {
         actionRef={actionRef}
         className={styles.permission}
         rowKey="permissionId"
-        options={false}
         toolBarRender={() => [
           <Button
             type="primary"

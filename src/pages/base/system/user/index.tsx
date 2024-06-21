@@ -211,7 +211,6 @@ const User: React.FC = () => {
         actionRef={actionRef}
         rowKey="id"
         className={styles.userStyle}
-        options={false}
         toolBarRender={() => [
           <Button
             type="primary"

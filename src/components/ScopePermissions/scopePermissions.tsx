@@ -105,7 +105,6 @@ const ScopePermissions: React.FC<TypeProp> = ({
         columns={columns}
         rowKey={(e: any) => e?.permissionId}
         rowSelection={rowSelection}
-        options={false}
         search={{
           defaultCollapsed: true,
           span: 8,

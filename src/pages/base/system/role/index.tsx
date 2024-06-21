@@ -353,7 +353,6 @@ const Role: React.FC = () => {
           rowKey="id"
           headerTitle={'List'}
           actionRef={actionRef}
-          options={false}
           toolBarRender={() => [
             <Button
               type="primary"

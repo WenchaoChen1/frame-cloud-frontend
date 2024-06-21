@@ -257,25 +257,10 @@ const Index: React.FC = () => {
     },
     {
       title: 'Created At',
-      key: 'showTime',
+      // key: 'showTime',
       dataIndex: 'createdDate',
-      valueType: 'date',
-      sorter: true,
+      // valueType: 'date',
       hideInSearch: true,
-    },
-    {
-      title: 'Created At',
-      dataIndex: 'createdAt',
-      valueType: 'dateRange',
-      hideInTable: true,
-      search: {
-        transform: (value) => {
-          return {
-            startTime: value[0],
-            endTime: value[1],
-          };
-        },
-      },
     },
     {
       title: 'Operating',
@@ -350,6 +335,7 @@ const Index: React.FC = () => {
       }
     });
     let data: any = [];
+    params.status = params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [];
     const res = await getTenantManageTreeService(params);
     if (res.success) {
       data = res?.data || [];
@@ -370,7 +356,6 @@ const Index: React.FC = () => {
           labelWidth: 100,
         }}
         toolBarRender={() => []}
-        options={false}
         request={searchTable}
         columns={columns}
         rowSelection={{

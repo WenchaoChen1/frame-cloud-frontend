@@ -429,7 +429,6 @@ const Application: React.FC = () => {
         actionRef={actionRef}
         className={styles.ApplicationStyle}
         rowKey="applicationId"
-        options={false}
         toolBarRender={() => [
           <Button
             type="primary"

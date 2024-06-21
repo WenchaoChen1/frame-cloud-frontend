@@ -246,7 +246,6 @@ const MenuList: React.FC = () => {
         }}
         request={getList}
         columns={columns}
-        options={false}
         expandable={{ defaultExpandedRowKeys: defaultExpanded }}
         pagination={{
           current: currentPage,

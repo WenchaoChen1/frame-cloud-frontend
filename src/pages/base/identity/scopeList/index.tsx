@@ -175,7 +175,6 @@ const Scope: React.FC = () => {
         actionRef={actionRef}
         className={styles.scopeListStyle}
         rowKey="scopeId"
-        options={false}
         toolBarRender={() => [
           <Button
             type="primary"
