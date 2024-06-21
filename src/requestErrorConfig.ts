@@ -57,7 +57,7 @@ const authHeaderInterceptor = (config: RequestOptions) => {
 let isRefreshing = false;
 const responseInterceptorsForAuth = async (error: any) => {
 
-  if (error.response.status === 401 && !isRefreshing) {
+  if (error.response.status === 401 && !isRefreshing && getRefreshToken()) {
     const data: APIIdentity.Oauth2TokenParamsDataType = {
       grant_type: 'refresh_token',
       refresh_token: getRefreshToken(),
