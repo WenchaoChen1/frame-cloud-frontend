@@ -46,8 +46,6 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
    * 退出登录，并且将当前的 url 保存
    */
   const loginOut = async () => {
-    // await outLogin();
-
     await signOutService({accessToken: getToken() ||''});
     logOut();
 
@@ -59,9 +57,9 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
     if (window.location.pathname !== '/user/login' && !redirect) {
       history.replace({
         pathname: '/user/login',
-        search: stringify({
-          redirect: pathname + search,
-        }),
+        // search: stringify({
+        //   redirect: pathname + search,
+        // }),
       });
     }
   };

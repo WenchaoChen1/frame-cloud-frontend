@@ -130,9 +130,6 @@ const Login: React.FC = () => {
       const msg = await oauth2TokenService(values);
       console.log(msg)
 
-      // 登录
-      // const msg = await login({...values, type});
-      // if (msg.status === 'ok') {
       if (msg.access_token) {
         setToken(msg.access_token);
         setRefreshToken(msg.refresh_token);

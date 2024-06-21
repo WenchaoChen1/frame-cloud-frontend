@@ -44,6 +44,10 @@ export default [
     ],
   },
   {
+    path: '/',
+    redirect: '/system-management/menu-list',
+  },
+  {
     name: 'system-management',
     path: '/system-management',
     icon: 'table',
@@ -351,10 +355,6 @@ export default [
         component: './account/settings',
       },
     ],
-  },
-  {
-    path: '/',
-    redirect: '/system-management/menu-list',
   },
   {
     component: '404',
