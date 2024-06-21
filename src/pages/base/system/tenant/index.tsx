@@ -12,6 +12,8 @@ import {
   ProFormText,
   ProFormTextArea,
   ProTable,
+  ProFormTreeSelect,
+  ProFormInstance
 } from '@ant-design/pro-components';
 import {
   getTenantManageTreeService,
@@ -25,9 +27,11 @@ import {
   findSelectedMenuByTenantService,
   onSaveMenuInTenantService,
 } from '@/services/base-service/system-service/tenantService';
+import {getRoleManageRoleDetailToListService} from "@/services/base-service/system-service/roleService";
 
 
 const Index: React.FC = () => {
+  const formRef = useRef<ProFormInstance>();
   const actionRef = useRef<ActionType>();
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.TenantItemDataType>();
@@ -42,6 +46,7 @@ const Index: React.FC = () => {
   });
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
+  const [tenantId,setTenantId] = useState(null)
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
@@ -171,7 +176,11 @@ const Index: React.FC = () => {
   const getTenantManageInfoRequest = async () => {
     if (isEdit) {
       const roleDetailResponse =  await getTenantManageDetailService(currentRow?.id || '');
+      const res = await getParentRoleTreeRequest({ tenantId, tenantName: ''})
       if (roleDetailResponse.success === true && roleDetailResponse.data) {
+        if (res?.length < 1){
+          roleDetailResponse.data.parentId = '0'
+        }
         return roleDetailResponse.data;
       }
     }
@@ -287,7 +296,7 @@ const Index: React.FC = () => {
           onClick={() => {
             setIsEdit(true);
             setCurrentRow(record);
-            console.log('Edit record', record);
+            setTenantId(record?.id)
             handleModalVisible(true);
           }}
         >
@@ -296,6 +305,7 @@ const Index: React.FC = () => {
         <a
           key="NewBtn"
           onClick={() => {
+            setTenantId(record?.id)
             onOpenEditModal(record);
           }}
         >
@@ -313,6 +323,47 @@ const Index: React.FC = () => {
     },
   ];
 
+  const clearParentId = () =>{
+    if (formRef.current){
+      formRef.current.setFieldValue('parentId',null)
+    }
+  }
+
+  const getParentRoleTreeRequest = async (Id: any) => {
+    const Response = await getRoleManageRoleDetailToListService({
+      tenantId,
+      tenantName: ''
+    });
+    if (Response.success && Response.data) {
+      return Response.data;
+    } else {
+      return [];
+    }
+  }
+
+  const searchTable = async (params:any) =>{
+    params.status = params?.status?.map((item: any) => {
+      if (item === '1') {
+        return item = 'FORBIDDEN'
+      } else if (item === '2') {
+        return item = 'LOCKING'
+      } else if (item === '3') {
+        return item = 'EXPIRED'
+      } else {
+        return item = 'ENABLE'
+      }
+    })
+    let data:any = []
+    const res = await getTenantManageTreeService(params)
+    if (res.success){
+      data = res?.data || []
+    }
+    return {
+      data,
+      success: true,
+    };
+  }
+
   return (
     <PageContainer>
       <ProTable<APISystem.TenantItemDataType, APISystem.PageParams>
@@ -324,7 +375,7 @@ const Index: React.FC = () => {
         }}
         toolBarRender={() => []}
         options={false}
-        request={getTenantManageTreeService}
+        request={searchTable}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -362,6 +413,7 @@ const Index: React.FC = () => {
         <ModalForm
           title={isEdit ? 'Edit' : 'New'}
           width="400px"
+          formRef={formRef}
           open={modalVisible}
           onOpenChange={handleModalVisible}
           request={getTenantManageInfoRequest}
@@ -423,12 +475,6 @@ const Index: React.FC = () => {
             name="tenantCode"
             placeholder={"Tenant Code"}
           />
-          <ProFormTextArea
-            name="description"
-            width="md"
-            label={"Description"}
-            placeholder={'Please enter description'}
-          />
           <ProFormSelect
             name="type"
             label={"Type"}
@@ -481,6 +527,33 @@ const Index: React.FC = () => {
                 }
               ]}
             />
+          <ProFormTextArea
+            name="description"
+            width="md"
+            label={"Description"}
+            placeholder={'Please enter description'}
+          />
+          <ProFormTreeSelect
+            label={"Parent Role"}
+            name="parentId"
+            placeholder="Please select"
+            allowClear={false}
+            width="md"
+            secondary
+            request={getParentRoleTreeRequest}
+            fieldProps={{
+              showArrow: false,
+              filterTreeNode: true,
+              showSearch: true,
+              popupMatchSelectWidth: false,
+              autoClearSearchValue: true,
+              treeNodeFilterProp: 'title',
+              fieldNames: {
+                label: 'roleName',
+                value: 'id'
+              },
+            }}
+          />
         </ModalForm>
       }
 

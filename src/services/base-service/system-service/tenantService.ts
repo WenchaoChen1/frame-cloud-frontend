@@ -12,8 +12,8 @@ import {
   insertTenantMenu,
 } from '@/services/base-service/api/system-api/tenantApi';
 
-export async function getTenantManageTreeService() {
-  return await getTenantManageTree();
+export async function getTenantManageTreeService(params:any) {
+  return await getTenantManageTree(params);
 }
 
 export async function insertTenantManageService(data?: any) {
