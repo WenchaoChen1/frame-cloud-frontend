@@ -254,6 +254,7 @@ const Index: React.FC = () => {
       title: 'Description',
       dataIndex: 'description',
       valueType: 'textarea',
+      hideInSearch: true,
     },
     {
       title: 'Created At',
