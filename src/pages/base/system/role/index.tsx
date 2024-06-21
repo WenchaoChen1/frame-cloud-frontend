@@ -139,6 +139,10 @@ const Role: React.FC = () => {
     formRef.current.setFieldValue('parentId');
   };
 
+  const onChangeTenant2 = (tenantId: string) => {
+    setTenantId(tenantId);
+  };
+
   const columns: ProColumns<APISystem.RoleItemDataType>[] = [
     {
       title: 'Role Name',
@@ -217,7 +221,7 @@ const Role: React.FC = () => {
             secondary
             initialValue={tenantId}
             fieldProps={{
-              onChange: onChangeTenant,
+              onChange: onChangeTenant2,
               treeData: tenantTreeData,
               showArrow: false,
               filterTreeNode: true,
