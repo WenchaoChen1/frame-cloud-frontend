@@ -504,12 +504,6 @@ const Role: React.FC = () => {
                   value: 'id'
                 },
               }}
-              rules={[
-                {
-                  required: true,
-                  message: "Parent Role is required"
-                }
-              ]}
             />
           </Space>
 
