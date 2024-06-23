@@ -8,7 +8,7 @@ export async function getRoleManageTree(params: APISystem.RoleTableSearchParams)
 }
 
 export async function getRoleManageTenantMenuTree(tenantId: string) {
-  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-role-manage-tenant-menu-tree`, {
+  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/rTenantMenu/get-role-manage-tenant-menu-tree`, {
     method: 'GET',
     params: {
       tenantId: tenantId
