@@ -1,7 +1,7 @@
 import {
   deleteRoleManageService,
   getAllByTenantMenuToTreeService,
-  getAllTenantByRoleIdService,
+  getAllMenuIdByRoleIdService,
   getRoleManageDetailService,
   getRoleManageRoleDetailToListService,
   getRoleManageTreeService,
@@ -106,7 +106,7 @@ const Role: React.FC = () => {
     if (allMenuResponse.success === true) {
       setAllMenuTree(allMenuResponse?.data || []);
     }
-    const selectedMenuResponse = await getAllTenantByRoleIdService(id);
+    const selectedMenuResponse = await getAllMenuIdByRoleIdService(id);
     if (selectedMenuResponse.success === true) {
       if (selectedMenuResponse?.data) {
         const checkedKey: string[] = selectedMenuResponse.data?.checkedMenuId || [];
