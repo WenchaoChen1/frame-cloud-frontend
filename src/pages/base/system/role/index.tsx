@@ -1,6 +1,6 @@
 import {
   deleteRoleManageService,
-  getAllByTenantMenuToTreeService,
+  getRoleManageTenantMenuTreeService,
   getAllMenuIdByRoleIdService,
   getRoleManageDetailService,
   getRoleManageRoleDetailToListService,
@@ -102,7 +102,7 @@ const Role: React.FC = () => {
   };
 
   const openMenuModal = async (id?: any) => {
-    const allMenuResponse = await getAllByTenantMenuToTreeService(tenantId);
+    const allMenuResponse = await getRoleManageTenantMenuTreeService(tenantId);
     if (allMenuResponse.success === true) {
       setAllMenuTree(allMenuResponse?.data || []);
     }
