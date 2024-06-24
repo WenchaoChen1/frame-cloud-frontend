@@ -15,14 +15,17 @@ import {
   ProFormText,
   ProFormTextArea,
   ProTable,
+  ProFormTreeSelect, ProFormInstance
 } from '@ant-design/pro-components';
-import { message, Space } from 'antd';
+import { message, Space,Button,Row,Col } from 'antd';
 import React, { useRef, useState } from 'react';
 import {formatMessage} from "@umijs/max";
+import {PlusOutlined} from '@ant-design/icons'
 import dayjs from "dayjs";
 
 const MenuList: React.FC = () => {
   const actionRef = useRef<ActionType>();
+  const tableRef = useRef<ActionType>();
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -30,22 +33,27 @@ const MenuList: React.FC = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.MenuListItemDataType>();
   const [defaultExpanded, setDefaultExpanded] = useState([]);
+  const [menuData,setMenuData] = useState([])
+  const [showAll,setShowAll] = useState(false)
 
   const getMenuInfoRequest = async () => {
+    let parentId = '0'
     if (isEdit) {
       const accountDetailResponse = await getMenuManageDetailService(currentRow?.id || '');
       if (accountDetailResponse.success === true && accountDetailResponse.data) {
         return accountDetailResponse.data;
       }
     }
-
     return {
+      parentId,
       menuName: '',
       code: '',
       id: '',
       sort: '',
       type: '',
       status: '',
+      name:'',
+      path:''
     };
   };
 
@@ -211,6 +219,8 @@ const MenuList: React.FC = () => {
   }
 
   const getList = async (params: API.PageParams) => {
+    let menuLists = [{menuName:'root-Directory',id:'0'}]
+
     params.status = params?.status?.map((item: any) => {
       if (item === '1') {
         return (item = 'FORBIDDEN');
@@ -223,21 +233,23 @@ const MenuList: React.FC = () => {
       }
     });
 
-    const response = await getMenuManageTreeService({
+    const parameters = {
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
       menuName: params?.menuName,
       path: params?.path,
       status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
       type: params?.type || '',
-    });
+    }
+    const response = await getMenuManageTreeService(parameters);
 
     let dataSource: APISystem.UserItemDataType[] = [];
     let total = 0;
     if (response?.success === true) {
+      menuLists[0].children = [...response?.data]
       dataSource = response?.data || [];
     }
-
+    setMenuData(menuLists)
     setTotal(total);
 
     return {
@@ -247,6 +259,22 @@ const MenuList: React.FC = () => {
     };
   };
 
+  const openTreeData = async () =>{
+    const treeDataMap = menuData[0].children
+    let treeDataId = []
+    if (!showAll){
+      const renderData = (ele) =>{
+        ele.forEach(item=>{
+          treeDataId.push(item.id)
+          if (item?.children && item?.children?.length > 0){
+            renderData(item?.children)
+          }
+        })
+      }
+      renderData(treeDataMap)
+    }
+    setDefaultExpanded(treeDataId)
+  }
   return (
     <PageContainer>
       <ProTable<APISystem.MenuListItemDataType, APISystem.PageParams>
@@ -258,7 +286,11 @@ const MenuList: React.FC = () => {
         }}
         request={getList}
         columns={columns}
-        expandable={{ defaultExpandedRowKeys: defaultExpanded }}
+        expandable={{expandedRowKeys: defaultExpanded}}
+        onExpand={(b, r) => {
+          const newExp: any = b ? [...defaultExpanded, r.id] : defaultExpanded.filter(i => i !== r.id);
+          setDefaultExpanded(newExp);
+        }}
         pagination={{
           current: currentPage,
           pageSize: pageSize,
@@ -269,6 +301,32 @@ const MenuList: React.FC = () => {
             setCurrentPage(currentPageNumber);
           },
         }}
+        toolBarRender={() => [
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              setShowAll(!showAll)
+              openTreeData()
+            }}
+            type="primary"
+          >
+            全部{
+            showAll?'收起':'展开'
+          }
+          </Button>,
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              setIsEdit(false)
+              handleModalVisible(true)
+            }}
+            type="primary"
+          >
+            新建
+          </Button>
+        ]}
       />
 
       {modalVisible && (
@@ -313,167 +371,192 @@ const MenuList: React.FC = () => {
             description: currentRow?.description,
           }}
         >
-          <Space size={20}>
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'Menu name is required',
-                },
-              ]}
-              label={'Menu name'}
-              width="md"
-              name="menuName"
-              placeholder={'Menu name'}
-            />
-            <ProFormText
-              name="code"
-              label={'Code'}
-              width="md"
-              placeholder={'Code'}
-              rules={[
-                {
-                  required: true,
-                  message: 'Code is required',
-                },
-              ]}
-            />
-
-            <ProFormText label={'id'} width="md" name="id" hidden={true} />
-            <ProFormText label={'parentId'} width="md" name="parentId" hidden={true} />
-          </Space>
-
-          <Space size={20}>
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'Name is required',
-                },
-              ]}
-              label={'Name'}
-              width="md"
-              name="name"
-              placeholder={'Name'}
-            />
-            <ProFormText label={'Icon'} width="md" name="icon" placeholder={'Icon'} />
-          </Space>
-
-          <Space size={20}>
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'Path is required',
-                },
-              ]}
-              label={'Path'}
-              width="md"
-              name="path"
-              placeholder={'Path'}
-            />
-
-            <ProFormDigit
-              rules={[
-                {
-                  required: true,
-                  message: 'Sort is required',
-                },
-              ]}
-              label={'Sort'}
-              width="md"
-              name="sort"
-              placeholder={'Sort'}
-            />
-          </Space>
-
-          <Space size={20}>
-            <ProFormSelect
-              name="type"
-              width="md"
-              label={'Type'}
-              rules={[
-                {
-                  required: true,
-                  message: 'Type is required',
-                },
-              ]}
-              initialValue={0}
-              options={[
-                {
-                  value: 1,
-                  label: 'Button',
-                },
-                {
-                  value: 0,
-                  label: 'Menu',
-                },
-              ]}
-            />
-
-            <ProFormSelect
-              name="location"
-              label={'Location'}
-              width="md"
-              rules={[
-                {
-                  required: true,
-                  message: 'Location is required',
-                },
-              ]}
-              allowClear={false}
-              initialValue={'LEFT-MENU'}
-              options={[
-                {
-                  value: 'LEFT-MENU',
-                  label: 'Left Menu',
-                },
-                {
-                  value: 'OTHER',
-                  label: 'Other',
-                },
-              ]}
-            />
-          </Space>
-
-          <Space size={20} style={{ alignItems: 'baseline' }}>
-            <ProFormSelect
-              width="md"
-              rules={[
-                {
-                  required: true,
-                  message: 'Status is required',
-                },
-              ]}
-              name="status"
-              label={'Status'}
-              options={[
-                {
-                  label: '启用',
-                  value: 0,
-                },
-                {
-                  label: '禁用',
-                  value: 1,
-                },
-                {
-                  label: '锁定',
-                  value: 2,
-                },
-                {
-                  label: '过期',
-                  value: 3,
-                },
-              ]}
-            />
-
-            <ProFormTextArea
-              name="description"
-              width="md"
-              label={'Description'}
-              placeholder={'Please enter at least five characters'}
-            />
-          </Space>
+            <Row gutter={16}>
+              <Col span={24}>
+                <ProFormTreeSelect
+                  label={'previousMenu'}
+                  name="parentId"
+                  placeholder="Please select"
+                  allowClear
+                  secondary
+                  request={async () => {
+                    return menuData
+                  }}
+                  // tree-select args
+                  fieldProps={{
+                    suffixIcon: null,
+                    filterTreeNode: true,
+                    showSearch: true,
+                    popupMatchSelectWidth: false,
+                    autoClearSearchValue: true,
+                    multiple: false,
+                    treeNodeFilterProp: 'title',
+                    fieldNames: {
+                      label: 'menuName',
+                      value:'id'
+                    },
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Previous menu is required',
+                    },
+                  ]}
+                />
+              </Col>
+              <Col span={12}>
+                <ProFormText
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Menu name is required',
+                    },
+                  ]}
+                  label={'Menu name'}
+                  name="menuName"
+                  placeholder={'Menu name'}
+                />
+              </Col>
+              <Col span={12}>
+                <ProFormText
+                  name="code"
+                  label={'Code'}
+                  placeholder={'Code'}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Code is required',
+                    },
+                  ]}
+                />
+              </Col>
+              <Col span={12} hidden={true}><ProFormText label={'id'} name="id"/></Col>
+              <Col span={12} hidden={true}><ProFormText label={'parentId'} name="parentId"/></Col>
+              <Col span={12}>
+                <ProFormText
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Name is required',
+                    },
+                  ]}
+                  label={'Name'}
+                  name="name"
+                  placeholder={'Name'}
+                />
+              </Col>
+              <Col span={12}><ProFormText label={'Icon'} name="icon" placeholder={'Icon'} /></Col>
+              <Col span={12}>
+                <ProFormText
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Path is required',
+                    },
+                  ]}
+                  label={'Path'}
+                  name="path"
+                  placeholder={'Path'}
+                />
+              </Col>
+              <Col span={12}>
+                <ProFormDigit
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Sort is required',
+                    },
+                  ]}
+                  label={'Sort'}
+                  name="sort"
+                  placeholder={'Sort'}
+                />
+              </Col>
+              <Col span={12}>
+                <ProFormSelect
+                  name="type"
+                  label={'Type'}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Type is required',
+                    },
+                  ]}
+                  initialValue={0}
+                  options={[
+                    {
+                      value: 1,
+                      label: 'Button',
+                    },
+                    {
+                      value: 0,
+                      label: 'Menu',
+                    },
+                  ]}
+                />
+              </Col>
+              <Col span={12}>
+                <ProFormSelect
+                  name="location"
+                  label={'Location'}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Location is required',
+                    },
+                  ]}
+                  allowClear={false}
+                  initialValue={'LEFT-MENU'}
+                  options={[
+                    {
+                      value: 'LEFT-MENU',
+                      label: 'Left Menu',
+                    },
+                    {
+                      value: 'OTHER',
+                      label: 'Other',
+                    },
+                  ]}
+                />
+              </Col>
+              <Col span={12}>
+                <ProFormSelect
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Status is required',
+                    },
+                  ]}
+                  name="status"
+                  label={'Status'}
+                  options={[
+                    {
+                      label: '启用',
+                      value: 0,
+                    },
+                    {
+                      label: '禁用',
+                      value: 1,
+                    },
+                    {
+                      label: '锁定',
+                      value: 2,
+                    },
+                    {
+                      label: '过期',
+                      value: 3,
+                    },
+                  ]}
+                />
+              </Col>
+              <Col span={12}>
+                <ProFormTextArea
+                  name="description"
+                  label={'Description'}
+                  placeholder={'Please enter at least five characters'}
+                />
+              </Col>
+            </Row>
         </ModalForm>
       )}
     </PageContainer>
