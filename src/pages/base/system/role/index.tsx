@@ -102,7 +102,7 @@ const Role: React.FC = () => {
   };
 
   const openMenuModal = async (id?: any) => {
-    const allMenuResponse = await getRoleManageTenantMenuTreeService(tenantId);
+    const allMenuResponse = await getRoleManageTenantMenuTreeService(currentRow?.tenantId);
     if (allMenuResponse.success === true) {
       setAllMenuTree(allMenuResponse?.data || []);
     }
@@ -205,7 +205,7 @@ const Role: React.FC = () => {
           onClick={() => {
             setCurrentRow(record);
             openMenuModal(record?.id);
-            setTenantId(record?.tenantId);
+            // setTenantId(record?.tenantId);
           }}
         >
           Menu
@@ -590,22 +590,22 @@ const Role: React.FC = () => {
           <ProFormText label={'id'} name="id" hidden={true} />
 
           <div>
-            {/* <Tree
+            <Tree
               checkable
               onExpand={onExpand}
-              // expandedKeys={expandedKeys}
-              // autoExpandParent={autoExpandParent}
+              expandedKeys={expandedKeys}
+              autoExpandParent={autoExpandParent}
               onCheck={onCheck}
               checkedKeys={checkedKeys}
               onSelect={onSelect}
-              // defaultSelectedKey={selectedKeys}
+              defaultSelectedKey={selectedKeys}
               defaultCheckedKeys={selectedKeys}
-              // selectedKeys={selectedKeys}
+              selectedKeys={selectedKeys}
               treeData={allMenuTree}
               fieldNames={{ title: 'name', key: 'id' }}
-            /> */}
+            />
 
-              <Tree
+              {/* <Tree
                 checkable
                 onExpand={onExpand}
                 expandedKeys={expandedKeys}
@@ -615,7 +615,7 @@ const Role: React.FC = () => {
                 onSelect={onSelect}
                 selectedKeys={selectedKeys}
                 treeData={allMenuTree}
-              />
+              /> */}
           </div>
         </ModalForm>
       )}
