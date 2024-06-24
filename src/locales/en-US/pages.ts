@@ -100,5 +100,15 @@ export default {
       'createdDate':'Created At',
       'updatedDate':'UpdatedDate'
     }
+  },
+
+  'metadata':{
+    'list': {
+      'interfaceName':'Permission interface',
+      'default':'Default permission code',
+      'expression':'Specific expressions',
+      'state':'state',
+      'operate':'operate',
+    }
   }
 };

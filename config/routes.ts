@@ -81,11 +81,17 @@ export default [
         component: './base/system/account',
       },
       {
+        name: 'metadata.metadata-list',
+        icon: 'table',
+        path: '/system-management/metadata',
+        component: './base/system/metadata',
+      },
+      {
         name: 'permission.permission-list',
         icon: 'table',
         path: '/system-management/permission',
         component: './base/system/permission',
-      }
+      },
     ],
   },
   {

@@ -97,5 +97,15 @@ export default {
       'createdDate':'创建时间',
       'updatedDate':'修改时间'
     }
+  },
+
+  'metadata':{
+    'list': {
+      'interfaceName':'权限接口',
+      'default':'默认权限代码',
+      'expression':'特定表达式',
+      'state':'状态',
+      'operate':'操作',
+    }
   }
 };

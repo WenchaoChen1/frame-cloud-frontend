@@ -59,6 +59,7 @@ export default {
   'menu.system-management.user.user-list': '用户管理',
   'menu.system-management.account.account-list': '账户管理',
   'menu.system-management.permission.permission-list': '权限列表',
+  'menu.system-management.metadata.metadata-list': '元数据管理',
 
   'menu.identity-management': 'Auth管理',
   'menu.identity-management.authorization.list': '凭证管理',

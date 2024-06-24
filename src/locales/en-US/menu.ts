@@ -59,6 +59,7 @@ export default {
   'menu.system-management.user.user-list': 'User Manage',
   'menu.system-management.account.account-list': 'Account Manage',
   'menu.system-management.permission.permission-list': 'Permission Manage',
+  'menu.system-management.metadata.metadata-list': 'Metadata Management',
 
   'menu.identity-management': 'Authorization',
   'menu.identity-management.authorization.list': 'Credentials Management',
