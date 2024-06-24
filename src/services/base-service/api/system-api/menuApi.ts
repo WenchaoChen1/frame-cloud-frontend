@@ -32,3 +32,12 @@ export async function deleteMenuManage(id: string) {
     method: 'DELETE'
   });
 }
+
+export async function getTenantManageMenuTree(tenantId: string) {
+  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-tenant-manage-menu-tree`, {
+    method: 'GET',
+    params: {
+      tenantId: tenantId
+    }
+  });
+}

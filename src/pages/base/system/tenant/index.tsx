@@ -1,9 +1,7 @@
 import commonStyle from '@/pages/common/index.less';
-import { getRoleManageRoleDetailToListService } from '@/services/base-service/system-service/roleService';
 import {
   batchDeleteTenantService,
   deleteTenantManageService,
-  findAllMenuTreeByTenantService,
   findSelectedMenuByTenantService,
   getTenantManageDetailService,
   getTenantManageTreeService,
@@ -11,6 +9,8 @@ import {
   onSaveMenuInTenantService,
   updateTenantManageService,
 } from '@/services/base-service/system-service/tenantService';
+import { getRoleManageRoleDetailToListService } from '@/services/base-service/system-service/roleService';
+import { getTenantManageMenuTreeService } from '@/services/base-service/system-service/menuService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   FooterToolbar,
@@ -137,7 +137,7 @@ const Index: React.FC = () => {
   };
 
   const openMenuModal = async (id: string) => {
-    const allMenuResponse = await findAllMenuTreeByTenantService(id);
+    const allMenuResponse = await getTenantManageMenuTreeService(id);
     if (allMenuResponse.success === true) {
       setAllMenuTree(allMenuResponse?.data || []);
     }

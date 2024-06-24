@@ -103,15 +103,18 @@ const Role: React.FC = () => {
 
   const openMenuModal = async (id?: any) => {
     const allMenuResponse = await getRoleManageTenantMenuTreeService(tenantId);
+    console.log(allMenuResponse?.data, '哈哈哈哈')
     if (allMenuResponse.success === true) {
       setAllMenuTree(allMenuResponse?.data || []);
     }
     const selectedMenuResponse = await getAllMenuIdByRoleIdService(id);
+    console.log(selectedMenuResponse?.data, '选中的数据')
     if (selectedMenuResponse.success === true) {
       if (selectedMenuResponse?.data) {
-        const checkedKey: string[] = selectedMenuResponse.data?.checkedMenuId || [];
-        const halfChecked: string[] = selectedMenuResponse.data?.halfCheckedMenuId || [];
-        setCheckedKeys({ checked: checkedKey, halfChecked: halfChecked });
+        // const checkedKey: string[] = selectedMenuResponse.data || [];
+        // const halfChecked: string[] = ["b0b70f3e-1870-4d68-bcd2-a1f912ffc914"] || [];
+        // setCheckedKeys({ checked: checkedKey, halfChecked: halfChecked });
+        setSelectedKeys(selectedMenuResponse?.data);
       }
     }
     setMenuModalVisible(true);
@@ -588,18 +591,32 @@ const Role: React.FC = () => {
           <ProFormText label={'id'} name="id" hidden={true} />
 
           <div>
-            <Tree
+            {/* <Tree
               checkable
               onExpand={onExpand}
-              expandedKeys={expandedKeys}
-              autoExpandParent={autoExpandParent}
+              // expandedKeys={expandedKeys}
+              // autoExpandParent={autoExpandParent}
               onCheck={onCheck}
               checkedKeys={checkedKeys}
               onSelect={onSelect}
-              selectedKeys={selectedKeys}
+              // defaultSelectedKey={selectedKeys}
+              defaultCheckedKeys={selectedKeys}
+              // selectedKeys={selectedKeys}
               treeData={allMenuTree}
               fieldNames={{ title: 'name', key: 'id' }}
-            />
+            /> */}
+
+              <Tree
+                checkable
+                onExpand={onExpand}
+                expandedKeys={expandedKeys}
+                autoExpandParent={autoExpandParent}
+                onCheck={onCheck}
+                checkedKeys={checkedKeys}
+                onSelect={onSelect}
+                selectedKeys={selectedKeys}
+                treeData={allMenuTree}
+              />
           </div>
         </ModalForm>
       )}

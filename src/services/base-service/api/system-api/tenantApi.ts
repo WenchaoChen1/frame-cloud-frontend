@@ -27,27 +27,11 @@ export async function deleteTenantManage(id: string) {
   });
 }
 
-export async function getTenantManageMenuTree(tenantId: string) {
-  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/menu/get-tenant-manage-menu-tree`, {
-    method: 'GET',
-    params: {
-      tenantId: tenantId
-    }
-  });
-}
-
 export async function getTenantManageDetail(id: string) {
   return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/tenant/get-tenant-manage-detail/${id}`, {
     method: 'GET',
   });
 }
-
-
-
-
-
-
-
 
 export async function insertAndUpdateTenantManage(data?: any) {
   return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/insert-and-update-tenant-manage`, {
@@ -55,10 +39,6 @@ export async function insertAndUpdateTenantManage(data?: any) {
     data: data,
   });
 }
-
-
-
-
 
 export async function batchDeleteTenant(params: any) {
   return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/tenant`, {

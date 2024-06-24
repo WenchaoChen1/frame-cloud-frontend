@@ -4,9 +4,7 @@ import {
   updateTenantManage,
   deleteTenantManage,
   getTenantManageDetail,
-
   batchDeleteTenant,
-  getTenantManageMenuTree,
   getAllByTenantId,
   getChildrenByTenantId,
   insertTenantMenu,
@@ -40,9 +38,9 @@ export async function getChildrenByTenantIdService(tenantId: string) {
   return await getChildrenByTenantId(tenantId);
 }
 
-export async function findAllMenuTreeByTenantService(tenantId: string) {
-  return await getTenantManageMenuTree(tenantId);
-}
+// export async function findAllMenuTreeByTenantService(tenantId: string) {
+//   return await getTenantManageMenuTree(tenantId);
+// }
 
 export async function findSelectedMenuByTenantService(tenantId: string) {
   return await getAllByTenantId(tenantId);
