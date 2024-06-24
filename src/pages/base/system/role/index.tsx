@@ -40,16 +40,8 @@ const Role: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<APISystem.RoleItemDataType[]>([]);
   const [menuModalVisible, setMenuModalVisible] = useState<boolean>(false);
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
-  const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
-  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
-  const [checkedKeys, setCheckedKeys] = useState<{
-    checked: React.Key[];
-    halfChecked: React.Key[];
-  }>({
-    checked: [],
-    halfChecked: [],
-  });
+  const [checkedKeys, setCheckedKeys] = useState([]);
 
   const openEdit = async (record: APISystem.RoleItemDataType) => {
     setIsEdit(true);
@@ -74,18 +66,6 @@ const Role: React.FC = () => {
     }
   };
 
-  const onExpand = (expandedKeysValue: React.Key[]) => {
-    setExpandedKeys(expandedKeysValue);
-    setAutoExpandParent(false);
-  };
-
-  const onCheck = (checkedKeysValue: React.Key[], e: any) => {
-    setCheckedKeys({
-      checked: checkedKeysValue,
-      halfChecked: e.halfCheckedKeys,
-    });
-  };
-
   const updateRoleRequest = async (fields: APISystem.RoleItemDataType) => {
     const hide = message.loading('Update');
     try {
@@ -101,18 +81,16 @@ const Role: React.FC = () => {
     }
   };
 
-  const openMenuModal = async (id?: any) => {
-    const allMenuResponse = await getRoleManageTenantMenuTreeService(currentRow?.tenantId);
+  const openMenuModal = async (record?: any) => {
+    const allMenuResponse = await getRoleManageTenantMenuTreeService(record?.tenantId);
     if (allMenuResponse.success === true) {
       setAllMenuTree(allMenuResponse?.data || []);
-    }
-    const selectedMenuResponse = await getAllMenuIdByRoleIdService(id);
-    if (selectedMenuResponse.success === true) {
+
+      const selectedMenuResponse = await getAllMenuIdByRoleIdService(record?.id);
       if (selectedMenuResponse?.data) {
-        // const checkedKey: string[] = selectedMenuResponse.data || [];
-        // const halfChecked: string[] = ["b0b70f3e-1870-4d68-bcd2-a1f912ffc914"] || [];
-        // setCheckedKeys({ checked: checkedKey, halfChecked: halfChecked });
         setSelectedKeys(selectedMenuResponse?.data);
+      } else {
+        setSelectedKeys([]);
       }
     }
     setMenuModalVisible(true);
@@ -204,7 +182,7 @@ const Role: React.FC = () => {
           key="MenuBtn"
           onClick={() => {
             setCurrentRow(record);
-            openMenuModal(record?.id);
+            openMenuModal(record);
             // setTenantId(record?.tenantId);
           }}
         >
@@ -336,7 +314,7 @@ const Role: React.FC = () => {
   const onSaveMenu = async (id: string) => {
     const menuDataBody = {
       roleId: id,
-      menuIds: checkedKeys.checked.concat(checkedKeys.halfChecked),
+      menuIds: checkedKeys,
     };
 
     const saveMenuResponse = await insertRoleMenuService(menuDataBody);
@@ -351,8 +329,8 @@ const Role: React.FC = () => {
     }
   };
 
-  const onSelect = (selectedKeysValue: React.Key[], info: any) => {
-    setSelectedKeys(selectedKeysValue);
+  const onCheck = (checkedKeysValue: React.Key[], e: any) => {
+    setCheckedKeys(checkedKeysValue);
   };
 
   const getParentRoleTreeRequest = async (Id: any) => {
@@ -366,6 +344,10 @@ const Role: React.FC = () => {
     } else {
       return [];
     }
+  };
+
+  const onLoad = (loadedKeys: any)=> {
+    console.log(loadedKeys, '数据是啥')
   };
 
   useEffect(() => {
@@ -592,30 +574,14 @@ const Role: React.FC = () => {
           <div>
             <Tree
               checkable
-              onExpand={onExpand}
-              expandedKeys={expandedKeys}
-              autoExpandParent={autoExpandParent}
-              onCheck={onCheck}
-              checkedKeys={checkedKeys}
-              onSelect={onSelect}
-              defaultSelectedKey={selectedKeys}
+              defaultExpandedKeys={selectedKeys}
+              defaultSelectedKeys={selectedKeys}
               defaultCheckedKeys={selectedKeys}
-              selectedKeys={selectedKeys}
+              onCheck={onCheck}
               treeData={allMenuTree}
               fieldNames={{ title: 'name', key: 'id' }}
             />
 
-              {/* <Tree
-                checkable
-                onExpand={onExpand}
-                expandedKeys={expandedKeys}
-                autoExpandParent={autoExpandParent}
-                onCheck={onCheck}
-                checkedKeys={checkedKeys}
-                onSelect={onSelect}
-                selectedKeys={selectedKeys}
-                treeData={allMenuTree}
-              /> */}
           </div>
         </ModalForm>
       )}
