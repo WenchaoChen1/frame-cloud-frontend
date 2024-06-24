@@ -1,8 +1,11 @@
 import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
+import ScopePermissions from '@/components/ScopePermissions/scopePermissions';
 import {
   getAttributeManagePageService,
   getAttributeManageDetailService,
   updateAttributeManageService,
+  attributeManageAssignedPermissionService,
+  getAttributePermissionIdByAttributeIdService,
 } from '@/services/base-service/system-service/metadataService';
 import { getAuthorizationGrantTypesService } from '@/services/base-service/identity-service/applicationDictionaryService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -23,7 +26,10 @@ import styles from './index.less';
 const Metadata: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [permissionsModal, setPermissionsModal] = useState<boolean>(false);
+  const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);
+  const [attributeId, setAttributeId] = useState<boolean>('');
+  const [perLoading, setPerLoading] = useState<boolean>(false);
+  const [selectedPermissions, setSelectedPermissions] = useState<boolean>([]);
   const [isEdit, setIsEdit] = useState(false);
   const [permissionExpression, setPermissionExpression] = useState([]);
   const [currentRow, setCurrentRow] = useState({});
@@ -49,6 +55,14 @@ const Metadata: React.FC = () => {
       success: true,
       total: total,
     };
+  };
+
+  const initSelectChange = async (record: any) => {
+    const response = await getAttributePermissionIdByAttributeIdService(record?.attributeId);
+    if (response?.data) {
+      setPerLoading(false);
+      setSelectedPermissions(response?.data);
+    }
   };
 
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
@@ -135,6 +149,19 @@ const Metadata: React.FC = () => {
       render: (_, record) => [
         <a
           onClick={() => {
+            setPerLoading(true);
+            setPermissOpenModal(true);
+            initSelectChange(record);
+            // const permissionCodes = record?.permissions?.map(item => item.permissionCode);
+            // setSelectedPermissions(permissionCodes);
+            setAttributeId(record?.attributeId);
+          }}
+          style={{ marginRight: '10px' }}
+        >
+          Permissions
+        </a>,
+        <a
+          onClick={() => {
             setOpenModal(true);
             setIsEdit(true);
             setCurrentRow(record);
@@ -142,17 +169,28 @@ const Metadata: React.FC = () => {
         >
           Edit
         </a>,
-        <a
-        onClick={() => {
-          setPermissionsModal(true);
-          setCurrentRow(record);
-        }}
-      >
-        View Permissions
-      </a>,
       ],
     },
   ];
+
+  const editPermiss = async () => {
+    const parms = {
+      attributeId: attributeId || '',
+      permissionIds: selectedPermissions || '',
+    };
+    try {
+      await attributeManageAssignedPermissionService(parms);
+      message.success('Added successfully');
+      return true;
+    } catch (error) {
+      message.error('Adding failed, please try again!');
+      return false;
+    }
+  };
+
+  const handleSelectedPermissions = (permissions: any, newSelectedRowKeys: any) => {
+    setSelectedPermissions(newSelectedRowKeys);
+  };
 
   const initAuthorizationGrantTypes = async () => {
     const response = await getAuthorizationGrantTypesService();
@@ -310,6 +348,33 @@ const Metadata: React.FC = () => {
             />
             <ProFormText label={'attributeId'} width="md" name="attributeId" hidden={true} />
           </Space>
+        </ModalForm>
+      )}
+
+      {PermissOpenModal && (
+        <ModalForm
+          loading={perLoading}
+          title={'Permissions'}
+          width="70%"
+          open={PermissOpenModal}
+          onOpenChange={setPermissOpenModal}
+          onFinish={async (record) => {
+            let response = await editPermiss();
+
+            if (response) {
+              setPermissOpenModal(false);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+        >
+          <ScopePermissions
+            type={'metadata'}
+            onSelectedPermissions={handleSelectedPermissions}
+            selectedPermissions={selectedPermissions}
+            scopeId={attributeId}
+          />
         </ModalForm>
       )}
     </PageContainer>

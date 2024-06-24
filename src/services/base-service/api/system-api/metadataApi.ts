@@ -19,3 +19,16 @@ export async function updateAttributeManage(data: APISystem.PermissionItemDataTy
     data: data,
   });
 }
+
+export async function updateAttributeManageAssignedPermission(data: APISystem.PermissionItemDataType) {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/attribute/update-attribute-manage-assigned-permission`, {
+    method: 'POST',
+    data: data,
+  });
+}
+
+export async function getAttributePermissionIdByAttributeId(id: string) {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/attribute/get-attribute-permission-id-by-attribute-id/${id}`, {
+    method: 'GET',
+  });
+}
