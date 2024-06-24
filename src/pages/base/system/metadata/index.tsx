@@ -36,8 +36,8 @@ const Metadata: React.FC = () => {
 
   const getList = async (params: API.PageParams) => {
     const response = await getAttributeManagePageService({
-      pageNumber: pageSize || 1,
-      pageSize: currentPage || DEFAULT_PAGE_SIZE,
+      pageNumber: params.current || 1,
+      pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
       attributeCode: params?.attributeCode,
       status: params?.status,
       requestMethod: params?.requestMethod,
@@ -193,7 +193,7 @@ const Metadata: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable
+      <ProTable<APISystem.MetadataListItemDataType, APISystem.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
         className={styles.metadataStyle}

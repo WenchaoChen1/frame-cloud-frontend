@@ -53,6 +53,17 @@ declare namespace APISystem {
     success?: boolean;
     message?: string;
   };
+  type MetadataListItemDataType = {
+    attributeId?: string;
+    requestMethod?: string;
+    url?: string;
+    parentName?: string;
+    attributeCode?: string;
+    path?: string;
+    description?: string;
+    webExpression?: string;
+    status?: number;
+  };
   type MenuListItemDataType = {
     id?: string;
     parentId?: string;
