@@ -36,8 +36,11 @@ const Metadata: React.FC = () => {
 
   const getList = async (params: API.PageParams) => {
     const response = await getAttributeManagePageService({
-      pageNumber: params.current || 1,
-      pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
+      pageNumber: pageSize || 1,
+      pageSize: currentPage || DEFAULT_PAGE_SIZE,
+      attributeCode: params?.attributeCode,
+      status: params?.status,
+      requestMethod: params?.requestMethod,
     });
     let dataSource: APISystem.UserItemDataType[] = [];
     let total = 0;
@@ -190,7 +193,7 @@ const Metadata: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<APIIdentity.authorization, API.PageParams>
+      <ProTable
         headerTitle={'List'}
         actionRef={actionRef}
         className={styles.metadataStyle}
@@ -204,7 +207,6 @@ const Metadata: React.FC = () => {
           total: total,
           showSizeChanger: true,
           onChange: (currentPageNumber, pageSizeNumber) => {
-            console.log(currentPageNumber, '====', pageSizeNumber)
             setPageSize(pageSizeNumber);
             setCurrentPage(currentPageNumber);
           },
