@@ -1,24 +1,22 @@
 import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
-import ScopePermissions from '@/components/ScopePermissions/scopePermissions';
+import Permissions from './permissions/index';
 import {
   getAttributeManagePageService,
   getAttributeManageDetailService,
   updateAttributeManageService,
   attributeManageAssignedPermissionService,
-  getAttributePermissionIdByAttributeIdService,
 } from '@/services/base-service/system-service/metadataService';
 import { getAuthorizationGrantTypesService } from '@/services/base-service/identity-service/applicationDictionaryService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   ModalForm,
   PageContainer,
-  ProForm,
   ProFormSelect,
   ProFormText,
   ProTable,
   ProFormTextArea,
 } from '@ant-design/pro-components';
-import { message, Space, Tooltip, InputNumber } from 'antd';
+import { message, Space, Tooltip } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
 import { formatMessage } from 'umi';
 import styles from './index.less';
@@ -28,7 +26,6 @@ const Metadata: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);
   const [attributeId, setAttributeId] = useState<boolean>('');
-  const [perLoading, setPerLoading] = useState<boolean>(false);
   const [selectedPermissions, setSelectedPermissions] = useState<boolean>([]);
   const [isEdit, setIsEdit] = useState(false);
   const [permissionExpression, setPermissionExpression] = useState([]);
@@ -55,14 +52,6 @@ const Metadata: React.FC = () => {
       success: true,
       total: total,
     };
-  };
-
-  const initSelectChange = async (record: any) => {
-    const response = await getAttributePermissionIdByAttributeIdService(record?.attributeId);
-    if (response?.data) {
-      setPerLoading(false);
-      setSelectedPermissions(response?.data);
-    }
   };
 
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
@@ -149,11 +138,7 @@ const Metadata: React.FC = () => {
       render: (_, record) => [
         <a
           onClick={() => {
-            setPerLoading(true);
             setPermissOpenModal(true);
-            initSelectChange(record);
-            // const permissionCodes = record?.permissions?.map(item => item.permissionCode);
-            // setSelectedPermissions(permissionCodes);
             setAttributeId(record?.attributeId);
           }}
           style={{ marginRight: '10px' }}
@@ -188,7 +173,7 @@ const Metadata: React.FC = () => {
     }
   };
 
-  const handleSelectedPermissions = (permissions: any, newSelectedRowKeys: any) => {
+  const handleSelectedPermissions = (newSelectedRowKeys: any) => {
     setSelectedPermissions(newSelectedRowKeys);
   };
 
@@ -353,7 +338,6 @@ const Metadata: React.FC = () => {
 
       {PermissOpenModal && (
         <ModalForm
-          loading={perLoading}
           title={'Permissions'}
           width="70%"
           open={PermissOpenModal}
@@ -369,11 +353,11 @@ const Metadata: React.FC = () => {
             }
           }}
         >
-          <ScopePermissions
+          <Permissions
             type={'metadata'}
             onSelectedPermissions={handleSelectedPermissions}
             selectedPermissions={selectedPermissions}
-            scopeId={attributeId}
+            Id={attributeId}
           />
         </ModalForm>
       )}

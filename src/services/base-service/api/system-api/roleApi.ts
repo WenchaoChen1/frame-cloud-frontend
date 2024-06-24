@@ -16,8 +16,8 @@ export async function getRoleManageTenantMenuTree(tenantId: string) {
   });
 }
 
-export async function getAllMenuIdByRoleId(roleId: string) {
-  return request<APISystem.SelectedRelationMenuDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-all-menu-id-by-role-id/${roleId}`, {
+export async function getAllMenuIdByRoleId(tenantId: string) {
+  return request<APISystem.SelectedRelationMenuDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-all-menu-id-by-role-id/${tenantId}`, {
     method: 'GET'
   });
 }

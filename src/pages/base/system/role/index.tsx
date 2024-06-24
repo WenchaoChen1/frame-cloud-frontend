@@ -103,12 +103,10 @@ const Role: React.FC = () => {
 
   const openMenuModal = async (id?: any) => {
     const allMenuResponse = await getRoleManageTenantMenuTreeService(tenantId);
-    console.log(allMenuResponse?.data, '哈哈哈哈')
     if (allMenuResponse.success === true) {
       setAllMenuTree(allMenuResponse?.data || []);
     }
     const selectedMenuResponse = await getAllMenuIdByRoleIdService(id);
-    console.log(selectedMenuResponse?.data, '选中的数据')
     if (selectedMenuResponse.success === true) {
       if (selectedMenuResponse?.data) {
         // const checkedKey: string[] = selectedMenuResponse.data || [];
@@ -207,6 +205,7 @@ const Role: React.FC = () => {
           onClick={() => {
             setCurrentRow(record);
             openMenuModal(record?.id);
+            setTenantId(record?.tenantId);
           }}
         >
           Menu
