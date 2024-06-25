@@ -257,7 +257,7 @@ const User: React.FC = () => {
       <ProTable<APISystem.PermissionItemDataType, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
-        className={styles.permission}
+        // className={styles.permission}
         rowKey="permissionId"
         toolBarRender={() => [
           <Button

@@ -41,6 +41,8 @@ const Metadata: React.FC = () => {
       attributeCode: params?.attributeCode,
       status: params?.status,
       requestMethod: params?.requestMethod,
+      description: params?.description,
+      url: params?.url,
     });
     let dataSource: APISystem.UserItemDataType[] = [];
     let total = 0;
@@ -70,13 +72,9 @@ const Metadata: React.FC = () => {
   };
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
-    {
-      title: formatMessage({ id: 'metadata.list.interfaceName' }),
-      dataIndex: 'requestMethod',
-      render: (_, record) => [
-        <div>{record?.requestMethod}{record?.url} {record?.description}</div>
-      ],
-    },
+    { title: formatMessage({ id: 'metadata.list.interfaceName' }), dataIndex: 'requestMethod' },
+    { title: 'Url', dataIndex: 'url' },
+    { title: 'Description', dataIndex: 'description' },
     { title: formatMessage({ id: 'metadata.list.default' }), dataIndex: 'attributeCode' },
     {
       title: formatMessage({ id: 'metadata.list.expression' }),
