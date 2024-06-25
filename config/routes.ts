@@ -30,7 +30,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/system-management/menu-list',
+    redirect: '/Welcome',
   },
   {
     name: 'system-management',

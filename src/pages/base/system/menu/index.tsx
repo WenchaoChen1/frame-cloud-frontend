@@ -15,7 +15,7 @@ import {
   ProFormText,
   ProFormTextArea,
   ProTable,
-  ProFormTreeSelect, ProFormInstance
+  ProFormTreeSelect,
 } from '@ant-design/pro-components';
 import { message, Space,Button,Row,Col } from 'antd';
 import React, { useRef, useState } from 'react';
@@ -162,9 +162,12 @@ const MenuList: React.FC = () => {
       hideInForm: true,
       valueEnum: {
         0: {
-          text: 'Menu',
+          text: 'Catalogue',
         },
         1: {
+          text: 'Page',
+        },
+        2: {
           text: 'Button',
         },
       },
@@ -231,6 +234,16 @@ const MenuList: React.FC = () => {
         return (item = 'ENABLE');
       }
     });
+
+    if (params?.type) {
+      if (params?.type === '1') {
+        params.type = 'PAGE';
+      } else if (params?.type === '2') {
+        params.type = 'BUTTON';
+      } else {
+        params.type = 'CATALOGUE';
+      }
+    }
 
     const parameters = {
       pageNumber: params?.current || 1,
@@ -478,12 +491,16 @@ const MenuList: React.FC = () => {
                   initialValue={0}
                   options={[
                     {
-                      value: 1,
-                      label: 'Button',
+                      value: 0,
+                      label: 'Catelogue',
                     },
                     {
-                      value: 0,
-                      label: 'Menu',
+                      value: 1,
+                      label: 'Page',
+                    },
+                    {
+                      value: 2,
+                      label: 'Button',
                     },
                   ]}
                 />
@@ -499,14 +516,13 @@ const MenuList: React.FC = () => {
                     },
                   ]}
                   allowClear={false}
-                  initialValue={'LEFT-MENU'}
                   options={[
                     {
-                      value: 'LEFT-MENU',
+                      value: 0,
                       label: 'Left Menu',
                     },
                     {
-                      value: 'OTHER',
+                      value: 1,
                       label: 'Other',
                     },
                   ]}

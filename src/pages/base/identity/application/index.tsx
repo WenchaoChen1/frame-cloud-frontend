@@ -476,6 +476,7 @@ const Application: React.FC = () => {
         actionRef={actionRef}
         className={styles.ApplicationStyle}
         rowKey="applicationId"
+        scroll={{ x: 'max-content' }}
         toolBarRender={() => [
           <Button
             type="primary"
