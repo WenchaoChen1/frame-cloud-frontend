@@ -6,6 +6,9 @@ import {
   updateAttributeManageService,
   attributeManageAssignedPermissionService,
 } from '@/services/base-service/system-service/metadataService';
+import {
+  getPermissionTypeService,
+} from '@/services/base-service/system-service/comPermissionService';
 import { getAuthorizationGrantTypesService } from '@/services/base-service/identity-service/applicationDictionaryService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
@@ -16,10 +19,11 @@ import {
   ProTable,
   ProFormTextArea,
 } from '@ant-design/pro-components';
-import { message, Space, Tooltip } from 'antd';
+import { message, Space, Tooltip, TableColumnsType, Table } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
 import { formatMessage } from 'umi';
 import styles from './index.less';
+import dayjs from "dayjs";
 
 const Metadata: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -33,6 +37,7 @@ const Metadata: React.FC = () => {
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [permissionTypeList, setPermissionTypeList] = useState([]);
 
   const getList = async (params: API.PageParams) => {
     const response = await getAttributeManagePageService({
@@ -70,6 +75,76 @@ const Metadata: React.FC = () => {
       return false;
     }
   };
+
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
+
+  const nestedColumns: TableColumnsType<APISystem.MetadataListItemDataType> = [
+    {
+      title: 'permissionName',
+      dataIndex: 'permissionName',
+      key: 'permissionName',
+    },
+    {
+      title: 'permissionCode',
+      dataIndex: 'permissionCode',
+      key: 'permissionCode',
+    },
+    {
+      title: 'permissionType',
+      dataIndex: 'permissionType',
+      valueType: 'select',
+      key: 'permissionType',
+      valueEnum: permissionTypeList.reduce((result, type) => {
+        result[type] = {
+          text: type,
+          status: type,
+        };
+        return result;
+      }, {}),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      hideInForm: true,
+      valueEnum: {
+        0: {
+          text: '启用',
+          status: 'ENABLE',
+        },
+        1: {
+          text: '禁用',
+          status: 'FORBIDDEN',
+        },
+        2: {
+          text: '锁定',
+          status: 'LOCKING',
+        },
+        3: {
+          text: '过期',
+          status: 'EXPIRED',
+        },
+      },
+      renderFormItem: (_, { type, defaultRender, ...rest }) => {
+        return (
+          <ProFormSelect
+            mode="multiple"
+            {...rest}
+            fieldProps={{
+              mode: 'multiple',
+            }}
+          />
+        );
+      },
+    },
+    { title: 'createdDate', dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
+    { title: 'updatedDate', dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
+  ];
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
     { title: formatMessage({ id: 'metadata.list.interfaceName' }), dataIndex: 'requestMethod' },
@@ -185,7 +260,15 @@ const Metadata: React.FC = () => {
     }
   };
 
+  const initPermissionTypeChange = async () => {
+    const response = await getPermissionTypeService();
+    if (response?.success === true) {
+      setPermissionTypeList(response?.data);
+    }
+  };
+
   useEffect(() => {
+    initPermissionTypeChange();
     initAuthorizationGrantTypes();
   }, []);
 
@@ -208,6 +291,16 @@ const Metadata: React.FC = () => {
             setPageSize(pageSizeNumber);
             setCurrentPage(currentPageNumber);
           },
+        }}
+        expandable={{
+          expandedRowRender: (record) => (
+            <Table<APISystem.NestedDataType>
+              dataSource={record?.permissions}
+              columns={nestedColumns}
+              rowKey="nestedId"
+              pagination={false}
+            />
+          ),
         }}
       />
 

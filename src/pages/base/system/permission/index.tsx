@@ -20,7 +20,6 @@ import {
 import {formatMessage, FormattedMessage} from '@umijs/max';
 import { Button, message, Popconfirm, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import styles from './index.less';
 import dayjs from "dayjs";
 
 const User: React.FC = () => {
