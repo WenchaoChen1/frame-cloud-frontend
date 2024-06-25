@@ -35,9 +35,10 @@ const MenuList: React.FC = () => {
   const [defaultExpanded, setDefaultExpanded] = useState([]);
   const [menuData,setMenuData] = useState([])
   const [showAll,setShowAll] = useState(false)
+  const [tableAdd,setTableAdd] = useState<string | undefined>('0')
 
   const getMenuInfoRequest = async () => {
-    let parentId = '0'
+    let parentId = tableAdd
     if (isEdit) {
       const accountDetailResponse = await getMenuManageDetailService(currentRow?.id || '');
       if (accountDetailResponse.success === true && accountDetailResponse.data) {
@@ -193,6 +194,7 @@ const MenuList: React.FC = () => {
           onClick={() => {
             setIsEdit(false);
             setCurrentRow({ parentId: record?.id ? record.id : '' });
+            setTableAdd(record?.parentId)
             handleModalVisible(true);
           }}
         >
@@ -320,6 +322,7 @@ const MenuList: React.FC = () => {
             icon={<PlusOutlined />}
             onClick={() => {
               setIsEdit(false)
+              setTableAdd('0')
               handleModalVisible(true)
             }}
             type="primary"
