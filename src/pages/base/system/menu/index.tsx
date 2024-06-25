@@ -25,7 +25,6 @@ import dayjs from "dayjs";
 
 const MenuList: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const tableRef = useRef<ActionType>();
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -35,9 +34,9 @@ const MenuList: React.FC = () => {
   const [defaultExpanded, setDefaultExpanded] = useState([]);
   const [menuData,setMenuData] = useState([])
   const [showAll,setShowAll] = useState(false)
+  const [tableAdd,setTableAdd] = useState<string | undefined>('')
 
   const getMenuInfoRequest = async () => {
-    let parentId = '0'
     if (isEdit) {
       const accountDetailResponse = await getMenuManageDetailService(currentRow?.id || '');
       if (accountDetailResponse.success === true && accountDetailResponse.data) {
@@ -45,7 +44,7 @@ const MenuList: React.FC = () => {
       }
     }
     return {
-      parentId,
+      parentId:tableAdd,
       menuName: '',
       code: '',
       id: '',
@@ -193,6 +192,7 @@ const MenuList: React.FC = () => {
           onClick={() => {
             setIsEdit(false);
             setCurrentRow({ parentId: record?.id ? record.id : '' });
+            setTableAdd(record?.parentId)
             handleModalVisible(true);
           }}
         >
@@ -219,7 +219,6 @@ const MenuList: React.FC = () => {
   }
 
   const getList = async (params: API.PageParams) => {
-    let menuLists = [{menuName:'root-Directory',id:'0'}]
 
     params.status = params?.status?.map((item: any) => {
       if (item === '1') {
@@ -246,10 +245,9 @@ const MenuList: React.FC = () => {
     let dataSource: APISystem.UserItemDataType[] = [];
     let total = 0;
     if (response?.success === true) {
-      menuLists[0].children = [...response?.data]
       dataSource = response?.data || [];
     }
-    setMenuData(menuLists)
+    setMenuData(dataSource)
     setTotal(total);
 
     return {
@@ -260,7 +258,7 @@ const MenuList: React.FC = () => {
   };
 
   const openTreeData = async () =>{
-    const treeDataMap = menuData[0].children
+    const treeDataMap = menuData
     let treeDataId = []
     if (!showAll){
       const renderData = (ele) =>{
@@ -320,6 +318,7 @@ const MenuList: React.FC = () => {
             icon={<PlusOutlined />}
             onClick={() => {
               setIsEdit(false)
+              setTableAdd('')
               handleModalVisible(true)
             }}
             type="primary"
@@ -374,7 +373,7 @@ const MenuList: React.FC = () => {
             <Row gutter={16}>
               <Col span={24}>
                 <ProFormTreeSelect
-                  label={'previousMenu'}
+                  label={'Parent Menu'}
                   name="parentId"
                   placeholder="Please select"
                   allowClear
@@ -396,12 +395,6 @@ const MenuList: React.FC = () => {
                       value:'id'
                     },
                   }}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Previous menu is required',
-                    },
-                  ]}
                 />
               </Col>
               <Col span={12}>
