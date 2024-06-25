@@ -1,11 +1,11 @@
-import ScopePermissions from '@/components/ScopePermissions/scopePermissions';
+import Permissions from './permissions/index';
 import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
 import {
   deleteScopeManageService,
   getScopeManageDetailService,
   getScopeManagePageService,
   insertScopeManageService,
-  scopeManageAssignedPermissionService,
+  updateScopeManageAssignedPermissionService,
   updateScopeManageService,
 } from '@/services/base-service/identity-service/scopeService';
 import { PlusOutlined } from '@ant-design/icons';
@@ -101,7 +101,7 @@ const Scope: React.FC = () => {
       permissions: selectedPermissions || '',
     };
     try {
-      await scopeManageAssignedPermissionService(parms);
+      await updateScopeManageAssignedPermissionService(parms);
       message.success('Added successfully');
       return true;
     } catch (error) {
@@ -293,11 +293,11 @@ const Scope: React.FC = () => {
             }
           }}
         >
-          <ScopePermissions
+          <Permissions
             type={'scope'}
             onSelectedPermissions={handleSelectedPermissions}
             selectedPermissions={selectedPermissions}
-            scopeId={scopeId}
+            Id={scopeId}
           />
         </ModalForm>
       )}

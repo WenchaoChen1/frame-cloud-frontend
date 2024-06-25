@@ -3,20 +3,23 @@ import {
   getPermissionManagePageService,
   getPermissionTypeService,
 } from '@/services/base-service/system-service/comPermissionService';
+import {
+  getScopePermissionIdByScopeIdService,
+} from '@/services/base-service/identity-service/scopeService';
 import { ProTable } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 
 type TypeProp = {
   onSelectedPermissions: (permissions: React.Key[]) => void;
-  scopeId: any;
+  Id: any;
   selectedPermissions: any;
   type: any;
 };
 
 const ScopePermissions: React.FC<TypeProp> = ({
   onSelectedPermissions,
-  scopeId,
+  Id,
   selectedPermissions,
   type,
 }) => {
@@ -90,9 +93,8 @@ const ScopePermissions: React.FC<TypeProp> = ({
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: any) => {
-    console.log(newSelectedRowKeys, '*****', selectedRows)
     setSelectedRowKeys(newSelectedRowKeys);
-    onSelectedPermissions(selectedRows, newSelectedRowKeys);
+    onSelectedPermissions(newSelectedRowKeys);
   };
 
   const rowSelection = {
@@ -101,10 +103,16 @@ const ScopePermissions: React.FC<TypeProp> = ({
     preserveSelectedRowKeys: true,
   };
 
+  const initSelectChange = async () => {
+    const response = await getScopePermissionIdByScopeIdService(Id);
+    if (response?.data) {
+      setSelectedRowKeys(response?.data);
+    }
+  };
+
   useEffect(() => {
-    console.log(selectedPermissions, '+++++')
-    setSelectedRowKeys(selectedPermissions);
-  }, []);
+    initSelectChange()
+  }, [Id]);
 
   return (
     <div>

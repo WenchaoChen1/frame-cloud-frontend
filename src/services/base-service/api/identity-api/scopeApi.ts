@@ -33,10 +33,15 @@ export async function deleteScopeManage(id: string) {
   });
 }
 
-export async function scopeManageAssignedPermission(data: APISystem.PermissionItemDataType) {
-  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/scope/scope-manage-assigned-permission`, {
+export async function updateScopeManageAssignedPermission(data: APISystem.PermissionItemDataType) {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/scope/update-scope-manage-assigned-permission`, {
     method: 'POST',
     data: data,
   });
 }
 
+export async function getScopePermissionIdByScopeId(id?: APIIdentity.Pager) {
+  return request<any>(`${process.env.IDENTITY_SERVICE}/v1/authorize/scope/get-scope-permission-id-by-scope-id/${id}`, {
+    method: 'GET',
+  });
+}

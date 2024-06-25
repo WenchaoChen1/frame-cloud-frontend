@@ -4,7 +4,8 @@ import {
   updateScopeManage,
   insertScopeManage,
   deleteScopeManage,
-  scopeManageAssignedPermission,
+  updateScopeManageAssignedPermission,
+  getScopePermissionIdByScopeId,
 } from "@/services/base-service/api/identity-api/scopeApi";
 
 export async function getScopeManagePageService(params?: any) {
@@ -27,6 +28,10 @@ export async function deleteScopeManageService(id: string) {
   return await deleteScopeManage(id);
 }
 
-export async function scopeManageAssignedPermissionService(data?: any) {
-  return await scopeManageAssignedPermission(data);
+export async function updateScopeManageAssignedPermissionService(data?: any) {
+  return await updateScopeManageAssignedPermission(data);
+}
+
+export async function getScopePermissionIdByScopeIdService(data?: any) {
+  return await getScopePermissionIdByScopeId(data);
 }
