@@ -766,7 +766,7 @@ const Application: React.FC = () => {
               label={formatMessage({ id: 'application.list.accessTokenValidity' })}
               name="accessTokenValidity"
             >
-              <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
+              <InputNumber style={{ width: '328px' }} min={1} defaultValue={0} />
             </ProForm.Item>
 
             <ProFormSelect
@@ -795,7 +795,7 @@ const Application: React.FC = () => {
                 },
               ]}
             >
-              <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
+              <InputNumber style={{ width: '328px' }} min={1} defaultValue={0} />
             </ProForm.Item>
 
             <ProFormSelect
@@ -824,7 +824,7 @@ const Application: React.FC = () => {
                 },
               ]}
             >
-              <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
+              <InputNumber style={{ width: '328px' }} min={1} defaultValue={0} />
             </ProForm.Item>
 
             <ProFormSelect
@@ -853,7 +853,7 @@ const Application: React.FC = () => {
                 },
               ]}
             >
-              <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
+              <InputNumber style={{ width: '328px' }} min={1} defaultValue={0} />
             </ProForm.Item>
 
             <ProFormSelect
@@ -908,7 +908,7 @@ const Application: React.FC = () => {
             />
 
             <ProForm.Item label={formatMessage({ id: 'application.list.ranking' })} name="ranking">
-              <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
+              <InputNumber style={{ width: '328px' }} min={1} defaultValue={0} />
             </ProForm.Item>
           </Space>
 
