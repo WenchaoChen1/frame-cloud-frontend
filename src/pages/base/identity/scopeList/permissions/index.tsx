@@ -93,7 +93,6 @@ const ScopePermissions: React.FC<TypeProp> = ({
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: any) => {
-    console.log(selectedRows, '+++++')
     setSelectedRowKeys(newSelectedRowKeys);
     onSelectedPermissions(selectedRows);
   };
