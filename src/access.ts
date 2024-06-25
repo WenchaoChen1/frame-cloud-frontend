@@ -5,16 +5,17 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
   const { currentUser } = initialState ?? {};
   return {
     canAdmin: currentUser && currentUser.access === 'admin',
-    // welcomePermission: estimate(initialState,'welcomePermission'),
     systemManagement:estimate(initialState,'systemManagement'),
     identityManagement:estimate(initialState,'identityManagement'),
-    dashboardPermission:estimate(initialState,'dashboardPermission'),
-    formPermission:estimate(initialState,'formPermission'),
-    listPermission:estimate(initialState,'listPermission'),
-    profilePermission:estimate(initialState,'profilePermission'),
-    resultPermission:estimate(initialState,'resultPermission'),
     exceptionPermission:estimate(initialState,'exceptionPermission'),
-    accountPermission:estimate(initialState,'accountPermission'),
+    // TODO
+    // welcomePermission: estimate(initialState,'welcomePermission'),
+    // dashboardPermission:estimate(initialState,'dashboardPermission'),
+    // formPermission:estimate(initialState,'formPermission'),
+    // listPermission:estimate(initialState,'listPermission'),
+    // profilePermission:estimate(initialState,'profilePermission'),
+    // resultPermission:estimate(initialState,'resultPermission'),
+    // accountPermission:estimate(initialState,'accountPermission'),
   };
 }
 const estimate = (initialState:any,permissionName:string) =>{
