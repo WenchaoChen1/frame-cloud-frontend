@@ -67,8 +67,12 @@ const Compliance: React.FC = () => {
       <ProTable<APIIdentity.authorization, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
-        className={styles.complianceListStyle}
+        // className={styles.complianceListStyle}
         rowKey="scopeId"
+        search={{
+          labelWidth: 'auto',
+          defaultCollapsed:false,
+        }}
         request={getList}
         columns={columns}
         pagination={{

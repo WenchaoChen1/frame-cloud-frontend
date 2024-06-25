@@ -318,7 +318,10 @@ const User: React.FC = () => {
         headerTitle={'List'}
         actionRef={actionRef}
         rowKey="permissionId"
-        search={{ labelWidth: 'auto' }}
+        search={{
+          labelWidth: 'auto',
+          defaultCollapsed:false,
+        }}
         toolBarRender={() => [
           <Button
             type="primary"

@@ -222,7 +222,6 @@ const User: React.FC = () => {
         headerTitle={'List'}
         actionRef={actionRef}
         rowKey="id"
-        className={styles.userStyle}
         toolBarRender={() => [
           <Button
             type="primary"
@@ -237,6 +236,10 @@ const User: React.FC = () => {
         ]}
         request={getList}
         columns={columns}
+        search={{
+          labelWidth: 'auto',
+          defaultCollapsed:false,
+        }}
         rowSelection={{
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows);

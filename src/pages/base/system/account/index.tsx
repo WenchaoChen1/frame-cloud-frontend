@@ -273,7 +273,10 @@ const Account: React.FC = () => {
         headerTitle={'List'}
         actionRef={actionRef}
         rowKey="id"
-        search={{ labelWidth: 100 }}
+        search={{
+          labelWidth: 'auto',
+          defaultCollapsed:false,
+        }}
         toolBarRender={() => [
           <Button
             type="primary"

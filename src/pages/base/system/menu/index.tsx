@@ -292,7 +292,8 @@ const MenuList: React.FC = () => {
         actionRef={actionRef}
         rowKey="id"
         search={{
-          labelWidth: 100,
+          labelWidth: 'auto',
+          defaultCollapsed:false,
         }}
         request={getList}
         columns={columns}

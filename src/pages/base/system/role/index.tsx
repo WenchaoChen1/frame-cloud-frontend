@@ -377,6 +377,10 @@ const Role: React.FC = () => {
           ]}
           request={getList}
           columns={columns}
+          search={{
+            labelWidth: 'auto',
+            defaultCollapsed:false,
+          }}
           rowSelection={{
             onChange: (_, selectedRows) => {
               setSelectedRows(selectedRows);

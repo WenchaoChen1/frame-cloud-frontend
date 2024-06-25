@@ -126,6 +126,10 @@ const Authorization: React.FC = () => {
       <ProTable<APIIdentity.authorization, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
+        search={{
+          labelWidth: 'auto',
+          defaultCollapsed:false,
+        }}
         rowKey="id"
         className={styles.Authorization}
         options={false}

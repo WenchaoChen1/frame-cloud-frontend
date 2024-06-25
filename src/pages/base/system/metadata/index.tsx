@@ -257,7 +257,10 @@ const Metadata: React.FC = () => {
         rowKey="attributeId"
         request={getList}
         columns={columns}
-        search={{ labelWidth: 'auto' }}
+        search={{
+          labelWidth: 'auto',
+          defaultCollapsed:false,
+        }}
         pagination={{
           current: currentPage,
           pageSize: pageSize,

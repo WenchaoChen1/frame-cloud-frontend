@@ -368,7 +368,8 @@ const Index: React.FC = () => {
         actionRef={actionRef}
         rowKey="id"
         search={{
-          labelWidth: 100,
+          labelWidth: 'auto',
+          defaultCollapsed:false,
         }}
         toolBarRender={() => [
           <Button

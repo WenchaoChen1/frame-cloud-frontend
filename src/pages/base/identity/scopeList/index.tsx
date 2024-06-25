@@ -180,7 +180,10 @@ const Scope: React.FC = () => {
       <ProTable<APIIdentity.authorization, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
-        search={{ labelWidth: 'auto' }}
+        search={{
+          labelWidth: 'auto',
+          defaultCollapsed:false,
+        }}
         rowKey="scopeId"
         toolBarRender={() => [
           <Button
