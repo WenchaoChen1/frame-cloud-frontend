@@ -4,12 +4,20 @@ declare namespace APISystem {
   type GetAccountInfoBody = {
     currentAccountId?: string;
   }
-  type NestedDataType = {
+  type scorPermissionDataType = {
     permissionName?: string;
     permissionCode?: string;
     permissionType?: string;
-    status?: string;
+    status?: number;
     createdDate?: string;
+  };
+  type PerScopeDataType = {
+    requestMethod?: string;
+    url?: string;
+    description?: string;
+    attributeCode?: string;
+    webExpression?: string;
+    status?: number;
   };
   type UserResponseDataType = {
     data?: UserResponseListDataType;

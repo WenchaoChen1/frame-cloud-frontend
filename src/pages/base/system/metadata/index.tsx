@@ -108,40 +108,6 @@ const Metadata: React.FC = () => {
         return result;
       }, {}),
     },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      hideInForm: true,
-      valueEnum: {
-        0: {
-          text: '启用',
-          status: 'ENABLE',
-        },
-        1: {
-          text: '禁用',
-          status: 'FORBIDDEN',
-        },
-        2: {
-          text: '锁定',
-          status: 'LOCKING',
-        },
-        3: {
-          text: '过期',
-          status: 'EXPIRED',
-        },
-      },
-      renderFormItem: (_, { type, defaultRender, ...rest }) => {
-        return (
-          <ProFormSelect
-            mode="multiple"
-            {...rest}
-            fieldProps={{
-              mode: 'multiple',
-            }}
-          />
-        );
-      },
-    },
     { title: 'createdDate', dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
     { title: 'updatedDate', dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
   ];
@@ -294,10 +260,10 @@ const Metadata: React.FC = () => {
         }}
         expandable={{
           expandedRowRender: (record) => (
-            <Table<APISystem.NestedDataType>
+            <Table<APISystem.scorPermissionDataType>
               dataSource={record?.permissions}
               columns={nestedColumns}
-              rowKey="nestedId"
+              rowKey="attributeId"
               pagination={false}
             />
           ),

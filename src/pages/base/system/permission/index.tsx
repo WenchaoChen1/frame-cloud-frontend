@@ -18,7 +18,7 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import {formatMessage, FormattedMessage} from '@umijs/max';
-import { Button, message, Popconfirm, Space } from 'antd';
+import { Button, message, Table, Space, TableColumnsType, Tooltip } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
@@ -150,6 +150,69 @@ const User: React.FC = () => {
     }
   };
 
+  const nestedColumns: TableColumnsType<APISystem.MetadataListItemDataType> = [
+    { title: 'Permission interface', dataIndex: 'requestMethod' },
+    { title: 'Url', dataIndex: 'url' },
+    { title: 'Description', dataIndex: 'description' },
+    { title: 'Default permission code', dataIndex: 'attributeCode' },
+    {
+      title: formatMessage({ id: 'metadata.list.expression' }),
+      dataIndex: 'webExpression',
+      hideInSearch: true,
+    },
+    {
+      title: 'Specific expressions',
+      dataIndex: 'status',
+      valueType: 'select',
+      valueEnum: {
+        0: {
+          text: '启用',
+          status: 'ENABLE',
+        },
+        1: {
+          text: '禁用',
+          status: 'FORBIDDEN',
+        },
+        2: {
+          text: '锁定',
+          status: 'LOCKING',
+        },
+        3: {
+          text: '过期',
+          status: 'EXPIRED',
+        },
+      },
+      render: (value, record) => {
+        const { status } = record;
+        if (status === 0) {
+          return (
+            <Tooltip title={'启用'}>
+              <img src={require('@/images/status_0.png')} alt={value} />
+            </Tooltip>
+          );
+        } else if (status === 1) {
+          return (
+            <Tooltip title={'禁用'}>
+              <img src={require('@/images/status_1.png')} alt={value} />
+            </Tooltip>
+          );
+        } else if (status === 2) {
+          return (
+            <Tooltip title={'锁定'}>
+              <img src={require('@/images/status_2.png')} alt={value} />
+            </Tooltip>
+          );
+        } else if (status === 3) {
+          return (
+            <Tooltip title={'过期'}>
+              <img src={require('@/images/status_3.png')} alt={value} />
+            </Tooltip>
+          );
+        }
+      },
+    },
+  ];
+
   const columns: ProColumns<APISystem.PermissionItemDataType>[] = [
     {
       title: 'permissionName',
@@ -279,6 +342,15 @@ const User: React.FC = () => {
             setPageSize(pageSizeNumber);
             setCurrentPage(currentPageNumber);
           },
+        }}
+        expandable={{
+          expandedRowRender: (record) => (
+            <Table<APISystem.PerScopeDataType>
+              dataSource={record?.sysAttributes}
+              columns={nestedColumns}
+              rowKey="permissionId"
+            />
+          ),
         }}
       />
 
