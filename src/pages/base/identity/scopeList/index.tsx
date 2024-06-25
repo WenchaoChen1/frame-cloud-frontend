@@ -12,9 +12,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ModalForm, PageContainer, ProFormText, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage,formatMessage } from '@umijs/max';
-import { Button, message, Popconfirm, Space } from 'antd';
+import { Button, message, Space } from 'antd';
 import React, { useRef, useState } from 'react';
-import styles from './index.less';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
 
@@ -144,7 +143,6 @@ const Scope: React.FC = () => {
           onClick={() => {
             setPermissOpenModal(true);
             setScopeId(record?.scopeId);
-            setSelectedPermissions(record?.permissions);
           }}
         >
           Permissions
@@ -182,7 +180,7 @@ const Scope: React.FC = () => {
       <ProTable<APIIdentity.authorization, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
-        className={styles.scopeListStyle}
+        search={{ labelWidth: 'auto' }}
         rowKey="scopeId"
         toolBarRender={() => [
           <Button
@@ -293,7 +291,6 @@ const Scope: React.FC = () => {
         >
           <Permissions
             onSelectedPermissions={handleSelectedPermissions}
-            selectedPermissions={selectedPermissions}
             Id={scopeId}
           />
         </ModalForm>

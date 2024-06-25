@@ -2,29 +2,23 @@ import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
 import {
   getPermissionManagePageService,
   getPermissionTypeService,
-} from '@/services/base-service/system-service/comPermissionService';
+} from '@/services/base-service/system-service/permissionService';
 import {
   getAttributePermissionIdByAttributeIdService,
 } from '@/services/base-service/system-service/metadataService';
 import { ProTable } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
-import styles from './index.less';
 
 type TypeProp = {
   onSelectedPermissions: (permissions: React.Key[]) => void;
   Id: any;
-  selectedPermissions: any;
-  type: any;
 };
 
 const ScopePermissions: React.FC<TypeProp> = ({
   onSelectedPermissions,
   Id,
-  selectedPermissions,
-  type,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [permisListData, setPermisListData] = useState([]);
   const [total, setTotal] = useState<number>(0);
   const [size, setSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [page, setPage] = useState<number>(1);
@@ -83,7 +77,6 @@ const ScopePermissions: React.FC<TypeProp> = ({
     }
 
     setTotal(total);
-    setPermisListData(response?.data?.content);
 
     return {
       data: dataSource,
@@ -117,7 +110,6 @@ const ScopePermissions: React.FC<TypeProp> = ({
   return (
     <div>
       <ProTable
-        className={styles.permission}
         columns={columns}
         rowKey={(e: any) => e?.permissionId}
         rowSelection={rowSelection}

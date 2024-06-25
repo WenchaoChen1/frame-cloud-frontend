@@ -317,8 +317,8 @@ const User: React.FC = () => {
       <ProTable<APISystem.PermissionItemDataType, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
-        // className={styles.permission}
         rowKey="permissionId"
+        search={{ labelWidth: 'auto' }}
         toolBarRender={() => [
           <Button
             type="primary"

@@ -2,24 +2,21 @@ import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
 import {
   getPermissionManagePageService,
   getPermissionTypeService,
-} from '@/services/base-service/system-service/comPermissionService';
+} from '@/services/base-service/system-service/permissionService';
 import {
   getScopePermissionIdByScopeIdService,
 } from '@/services/base-service/identity-service/scopeService';
 import { ProTable } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
-import styles from './index.less';
 
 type TypeProp = {
   onSelectedPermissions: (permissions: React.Key[]) => void;
   Id: any;
-  selectedPermissions: any;
 };
 
 const ScopePermissions: React.FC<TypeProp> = ({
   onSelectedPermissions,
   Id,
-  selectedPermissions,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [permisListData, setPermisListData] = useState([]);
@@ -115,7 +112,6 @@ const ScopePermissions: React.FC<TypeProp> = ({
   return (
     <div>
       <ProTable
-        className={styles.permission}
         columns={columns}
         rowKey={(e: any) => e?.permissionId}
         rowSelection={rowSelection}

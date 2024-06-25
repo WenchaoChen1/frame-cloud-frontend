@@ -8,7 +8,7 @@ import {
 } from '@/services/base-service/system-service/metadataService';
 import {
   getPermissionTypeService,
-} from '@/services/base-service/system-service/comPermissionService';
+} from '@/services/base-service/system-service/permissionService';
 import { getAuthorizationGrantTypesService } from '@/services/base-service/identity-service/applicationDictionaryService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
@@ -40,6 +40,17 @@ const Metadata: React.FC = () => {
   const [permissionTypeList, setPermissionTypeList] = useState([]);
 
   const getList = async (params: API.PageParams) => {
+    if (params?.status) {
+      if (params?.status === '1') {
+        params.status = 'FORBIDDEN';
+      } else if (params?.status === '2') {
+        params.status = 'LOCKING';
+      } else if (params?.status === '3') {
+        params.status = 'EXPIRED';
+      } else {
+        params.status = 'ENABLE';
+      }
+    }
     const response = await getAttributeManagePageService({
       pageNumber: params.current || 1,
       pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
@@ -243,7 +254,6 @@ const Metadata: React.FC = () => {
       <ProTable<APISystem.MetadataListItemDataType, APISystem.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
-        className={styles.metadataStyle}
         rowKey="attributeId"
         request={getList}
         columns={columns}
@@ -264,7 +274,6 @@ const Metadata: React.FC = () => {
               dataSource={record?.permissions}
               columns={nestedColumns}
               rowKey="attributeId"
-              pagination={false}
             />
           ),
         }}
@@ -413,9 +422,7 @@ const Metadata: React.FC = () => {
           }}
         >
           <Permissions
-            type={'metadata'}
             onSelectedPermissions={handleSelectedPermissions}
-            selectedPermissions={selectedPermissions}
             Id={attributeId}
           />
         </ModalForm>
