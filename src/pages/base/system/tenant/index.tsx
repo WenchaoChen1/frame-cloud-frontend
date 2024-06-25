@@ -24,8 +24,9 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage,formatMessage } from '@umijs/max';
-import { Button, message, Tree } from 'antd';
+import { Button, message, Tree,Row,Col } from 'antd';
 import React, { useRef, useState } from 'react';
+import {PlusOutlined} from '@ant-design/icons'
 import styles from './index.less';
 
 const Index: React.FC = () => {
@@ -48,11 +49,14 @@ const Index: React.FC = () => {
     checked: [],
     halfChecked: [],
   });
+  const [defaultExpanded, setDefaultExpanded] = useState([]);
+  const [menuData,setMenuData] = useState([])
+  const [showAll,setShowAll] = useState(false)
+  const [tableAdd,setTableAdd] = useState<string | undefined>('')
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
-    fields.parentId = currentRow?.parentId;
 
     try {
       await insertTenantManageService({ ...fields });
@@ -178,15 +182,12 @@ const Index: React.FC = () => {
       const roleDetailResponse = await getTenantManageDetailService(currentRow?.id || '');
       const res = await getParentRoleTreeRequest({ tenantId, tenantName: '' });
       if (roleDetailResponse.success === true && roleDetailResponse.data) {
-        if (res?.length < 1) {
-          roleDetailResponse.data.parentId = '0';
-        }
         return roleDetailResponse.data;
       }
     }
 
     return {
-      parentId: '',
+      parentId: tableAdd,
       tenantName: '',
       type: '',
       status: '',
@@ -297,7 +298,9 @@ const Index: React.FC = () => {
         <a
           key="NewBtn"
           onClick={() => {
+            setIsEdit(false);
             setTenantId(record?.id);
+            setTableAdd(record?.id ? record.id : '')
             onOpenEditModal(record);
           }}
         >
@@ -347,11 +350,29 @@ const Index: React.FC = () => {
     if (res.success) {
       data = res?.data || [];
     }
+    setMenuData(data)
     return {
       data,
       success: true,
     };
   };
+
+  const openTreeData = async () =>{
+    const treeDataMap = menuData
+    let treeDataId = []
+    if (!showAll){
+      const renderData = (ele) =>{
+        ele.forEach(item=>{
+          treeDataId.push(item.id)
+          if (item?.children && item?.children?.length > 0){
+            renderData(item?.children)
+          }
+        })
+      }
+      renderData(treeDataMap)
+    }
+    setDefaultExpanded(treeDataId)
+  }
 
   return (
     <PageContainer>
@@ -362,13 +383,44 @@ const Index: React.FC = () => {
         search={{
           labelWidth: 100,
         }}
-        toolBarRender={() => []}
+        toolBarRender={() => [
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              setShowAll(!showAll)
+              openTreeData()
+            }}
+            type="primary"
+          >
+            全部{
+            showAll?'收起':'展开'
+          }
+          </Button>,
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              setIsEdit(false)
+              setTableAdd('')
+              handleModalVisible(true)
+            }}
+            type="primary"
+          >
+            新建
+          </Button>
+        ]}
         request={searchTable}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows);
           },
+        }}
+        expandable={{expandedRowKeys: defaultExpanded}}
+        onExpand={(b, r) => {
+          const newExp: any = b ? [...defaultExpanded, r.id] : defaultExpanded.filter(i => i !== r.id);
+          setDefaultExpanded(newExp);
         }}
       />
       {selectedRowsState?.length > 0 && (
@@ -399,7 +451,6 @@ const Index: React.FC = () => {
       {modalVisible && (
         <ModalForm
           title={isEdit ? 'Edit' : 'New'}
-          width="400px"
           formRef={formRef}
           open={modalVisible}
           onOpenChange={handleModalVisible}
@@ -430,113 +481,124 @@ const Index: React.FC = () => {
           }}
           className={commonStyle.pageContainer}
         >
-          <ProFormText name="id" hidden={true} />
-
-          <ProFormText label={'parentId'} name="parentId" hidden={true} />
-
-          <ProFormText
-            rules={[
-              {
-                required: true,
-                message: 'Tenant name is required',
-              },
-            ]}
-            label={'Tenant name'}
-            width="md"
-            name="tenantName"
-            placeholder={'Tenant name'}
-          />
-          <ProFormText
-            rules={[
-              {
-                required: true,
-                message: 'Code name is required',
-              },
-            ]}
-            label={'Tenant Code'}
-            width="md"
-            name="tenantCode"
-            placeholder={'Tenant Code'}
-          />
-          <ProFormSelect
-            name="type"
-            label={'Type'}
-            width="md"
-            initialValue={1}
-            allowClear={false}
-            rules={[
-              {
-                required: true,
-                message: 'Type is required',
-              },
-            ]}
-            options={[
-              {
-                value: 1,
-                label: 'Platform',
-              },
-              {
-                value: 2,
-                label: 'Customer',
-              },
-            ]}
-          />
-          <ProFormSelect
-            width="md"
-            rules={[
-              {
-                required: true,
-                message: 'Status is required',
-              },
-            ]}
-            name="status"
-            label={'Status'}
-            options={[
-              {
-                label: '启用',
-                value: 0,
-              },
-              {
-                label: '禁用',
-                value: 1,
-              },
-              {
-                label: '锁定',
-                value: 2,
-              },
-              {
-                label: '过期',
-                value: 3,
-              },
-            ]}
-          />
-          <ProFormTextArea
-            name="description"
-            width="md"
-            label={'Description'}
-            placeholder={'Please enter description'}
-          />
-          <ProFormTreeSelect
-            label={'Parent Role'}
-            name="parentId"
-            placeholder="Please select"
-            allowClear={false}
-            width="md"
-            secondary
-            request={getParentRoleTreeRequest}
-            fieldProps={{
-              showArrow: false,
-              filterTreeNode: true,
-              showSearch: true,
-              popupMatchSelectWidth: false,
-              autoClearSearchValue: true,
-              treeNodeFilterProp: 'title',
-              fieldNames: {
-                label: 'roleName',
-                value: 'id',
-              },
-            }}
-          />
+          <Row  gutter={16}>
+            <Col span={24}>
+              <ProFormTreeSelect
+                label={'Parent tenant'}
+                name="parentId"
+                placeholder="Please select"
+                allowClear={true}
+                secondary
+                request={async ()=>menuData}
+                fieldProps={{
+                  suffixIcon: null,
+                  filterTreeNode: true,
+                  showSearch: true,
+                  popupMatchSelectWidth: false,
+                  autoClearSearchValue: true,
+                  multiple: false,
+                  treeNodeFilterProp: 'title',
+                  fieldNames: {
+                    label: 'tenantName',
+                    value: 'id',
+                  },
+                }}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText name="id" hidden={true} />
+            </Col>
+            <Col span={12}>
+              <ProFormText label={'parentId'} name="parentId" hidden={true} />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'Tenant name is required',
+                  },
+                ]}
+                label={'Tenant name'}
+                name="tenantName"
+                placeholder={'Tenant name'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'Code name is required',
+                  },
+                ]}
+                label={'Tenant Code'}
+                name="tenantCode"
+                placeholder={'Tenant Code'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormSelect
+                name="type"
+                label={'Type'}
+                initialValue={1}
+                allowClear={false}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Type is required',
+                  },
+                ]}
+                options={[
+                  {
+                    value: 1,
+                    label: 'Platform',
+                  },
+                  {
+                    value: 2,
+                    label: 'Customer',
+                  },
+                ]}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormSelect
+                rules={[
+                  {
+                    required: true,
+                    message: 'Status is required',
+                  },
+                ]}
+                name="status"
+                label={'Status'}
+                options={[
+                  {
+                    label: '启用',
+                    value: 0,
+                  },
+                  {
+                    label: '禁用',
+                    value: 1,
+                  },
+                  {
+                    label: '锁定',
+                    value: 2,
+                  },
+                  {
+                    label: '过期',
+                    value: 3,
+                  },
+                ]}
+              />
+            </Col>
+            <Col span={24}>
+              <ProFormTextArea
+                name="description"
+                label={'Description'}
+                placeholder={'Please enter description'}
+              />
+            </Col>
+          </Row>
         </ModalForm>
       )}
 
