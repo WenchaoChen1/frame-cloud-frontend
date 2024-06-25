@@ -214,6 +214,7 @@ const Account: React.FC = () => {
             secondary
             initialValue={tenantId}
             fieldProps={{
+              treeDefaultExpandAll:true,
               onChange: onChangeTenant,
               treeData: tenantTreeData,
               showArrow: false,
@@ -394,6 +395,7 @@ const Account: React.FC = () => {
               disabled={isEdit ? true : false}
               request={getTenantTreeRequest}
               fieldProps={{
+                treeDefaultExpandAll:true,
                 suffixIcon: null,
                 filterTreeNode: true,
                 showSearch: true,

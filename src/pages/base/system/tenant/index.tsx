@@ -490,6 +490,7 @@ const Index: React.FC = () => {
                 secondary
                 request={async ()=>menuData}
                 fieldProps={{
+                  treeDefaultExpandAll:true,
                   suffixIcon: null,
                   filterTreeNode: true,
                   showSearch: true,
