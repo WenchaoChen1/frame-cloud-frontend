@@ -43,13 +43,7 @@ const Index: React.FC = () => {
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const [tenantId, setTenantId] = useState(null);
-  const [checkedKeys, setCheckedKeys] = useState<{
-    checked: React.Key[];
-    halfChecked: React.Key[];
-  }>({
-    checked: [],
-    halfChecked: [],
-  });
+  const [checkedKeys, setCheckedKeys] = useState([]);
   const [defaultExpanded, setDefaultExpanded] = useState([]);
   const [menuData,setMenuData] = useState([])
   const [showAll,setShowAll] = useState(false)
@@ -131,10 +125,7 @@ const Index: React.FC = () => {
   };
 
   const onCheck = (checkedKeysValue: React.Key[], e: any) => {
-    setCheckedKeys({
-      checked: checkedKeysValue,
-      halfChecked: e.halfCheckedKeys,
-    });
+    setCheckedKeys(checkedKeysValue);
   };
 
   const onSelect = (selectedKeysValue: React.Key[], info: any) => {
@@ -150,10 +141,7 @@ const Index: React.FC = () => {
     const selectedMenuResponse = await findSelectedMenuByTenantService(id);
     if (selectedMenuResponse.success === true) {
       if (selectedMenuResponse?.data) {
-        const checkedKey: string[] = selectedMenuResponse.data || [];
-        const halfChecked: string[] = selectedMenuResponse.data || [];
-
-        setCheckedKeys({ checked: checkedKey, halfChecked: halfChecked });
+        setCheckedKeys(selectedMenuResponse.data);
       }
     }
 
@@ -163,7 +151,7 @@ const Index: React.FC = () => {
   const onSaveMenu = async (id: string) => {
     const menuDataBody = {
       tenantId: id,
-      menuIds: checkedKeys.checked.concat(checkedKeys.halfChecked),
+      menuIds: checkedKeys
     };
 
     const saveMenuResponse = await onSaveMenuInTenantService(menuDataBody);
@@ -622,8 +610,7 @@ const Index: React.FC = () => {
             <Tree
               checkable
               onExpand={onExpand}
-              expandedKeys={expandedKeys}
-              autoExpandParent={autoExpandParent}
+              defaultExpandAll
               onCheck={onCheck}
               checkedKeys={checkedKeys}
               onSelect={onSelect}
