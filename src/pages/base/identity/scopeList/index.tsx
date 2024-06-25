@@ -16,6 +16,7 @@ import { Button, message, Popconfirm, Space } from 'antd';
 import React, { useRef, useState } from 'react';
 import styles from './index.less';
 import dayjs from "dayjs";
+import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const Scope: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -157,12 +158,9 @@ const Scope: React.FC = () => {
         >
           Edit
         </a>,
-        <Popconfirm
-          title="Sure to delete?"
-          onConfirm={async () => await deleteUserRequest(record?.scopeId || '')}
-        >
+        <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.scopeId || '')}>
           <a>Delete</a>
-        </Popconfirm>,
+        </PopconfirmPage>
       ],
     },
   ];

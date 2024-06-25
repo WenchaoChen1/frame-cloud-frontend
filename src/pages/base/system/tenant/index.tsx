@@ -24,9 +24,10 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage,formatMessage } from '@umijs/max';
-import { Button, message, Tree,Row,Col } from 'antd';
+import {Button, message, Tree, Row, Col} from 'antd';
 import React, { useRef, useState } from 'react';
 import {PlusOutlined} from '@ant-design/icons'
+import PopconfirmPage from '@/pages/base/components/popconfirm/index'
 import styles from './index.less';
 
 const Index: React.FC = () => {
@@ -306,16 +307,14 @@ const Index: React.FC = () => {
         >
           Add
         </a>,
-        <a
-          key="deleteRow"
-          onClick={async () => {
+        <PopconfirmPage
+          onConfirm={async () => {
             await deleteRow(record?.id || '');
             setSelectedRows([]);
             actionRef.current?.reloadAndRest?.();
-          }}
-        >
-          Delete
-        </a>,
+          }}>
+          <a key="deleteRow">Delete</a>
+        </PopconfirmPage>
       ],
     },
   ];

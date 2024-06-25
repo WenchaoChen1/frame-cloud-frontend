@@ -22,6 +22,7 @@ import { Button, message, Popconfirm, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.less';
 import dayjs from "dayjs";
+import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const User: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -235,12 +236,9 @@ const User: React.FC = () => {
         >
           Edit
         </a>,
-        <Popconfirm
-          title="Sure to delete?"
-          onConfirm={async () => await onDeleteRequest(record?.permissionId || '')}
-        >
+        <PopconfirmPage onConfirm={async () => await onDeleteRequest(record?.permissionId || '')}>
           <a>Delete</a>
-        </Popconfirm>,
+        </PopconfirmPage>
       ],
     },
   ];

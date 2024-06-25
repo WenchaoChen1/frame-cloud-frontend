@@ -22,6 +22,7 @@ import React, { useRef, useState } from 'react';
 import {formatMessage} from "@umijs/max";
 import {PlusOutlined} from '@ant-design/icons'
 import dayjs from "dayjs";
+import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const MenuList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -201,14 +202,12 @@ const MenuList: React.FC = () => {
         >
           Add
         </a>,
-        <a
-          key="deleteRow"
-          onClick={async () => {
+        <PopconfirmPage
+          onConfirm={async () => {
             await deleteRow(record?.id || '');
-          }}
-        >
-          Delete
-        </a>,
+          }}>
+          <a key="deleteRow">Delete</a>
+        </PopconfirmPage>
       ],
     },
   ];

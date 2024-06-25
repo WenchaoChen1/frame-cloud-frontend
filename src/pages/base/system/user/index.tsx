@@ -24,6 +24,7 @@ import { Button, message, Space } from 'antd';
 import React, { useRef, useState } from 'react';
 import styles from './index.less';
 import dayjs from "dayjs";
+import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const User: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -193,15 +194,14 @@ const User: React.FC = () => {
           Edit
         </a>,
 
+
         currentUserId !== record.id && (
-          <a
-            key="deleteUser"
-            onClick={async () => {
+          <PopconfirmPage
+            onConfirm={async () => {
               await deleteUserRequest(record?.id || '');
-            }}
-          >
-            Delete
-          </a>
+            }}>
+            <a key="deleteUser">Delete</a>
+          </PopconfirmPage>
         ),
       ],
     },

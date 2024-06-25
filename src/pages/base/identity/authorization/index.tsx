@@ -10,6 +10,7 @@ import React, { useRef, useState } from 'react';
 import {formatMessage} from '@umijs/max'
 import styles from './index.less';
 import dayjs from "dayjs";
+import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const Authorization: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -105,12 +106,9 @@ const Authorization: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
-        <Popconfirm
-          title="Sure to delete?"
-          onConfirm={async () => await deleteUserRequest(record?.id || '')}
-        >
+        <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.id || '')}>
           <a>Delete</a>
-        </Popconfirm>
+        </PopconfirmPage>
       ),
     },
   ];
