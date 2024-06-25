@@ -25,6 +25,7 @@ import {formatMessage, FormattedMessage, useModel} from '@umijs/max';
 import { Button, message, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
+import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const Account: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -242,14 +243,12 @@ const Account: React.FC = () => {
           Edit
         </a>,
         currentAccountId !== record.id && (
-          <a
-            key="delete"
-            onClick={async () => {
+          <PopconfirmPage
+            onConfirm={async () => {
               await deleteRow(record?.id || '');
-            }}
-          >
-            Delete
-          </a>
+            }}>
+            <a key="delete">Delete</a>
+          </PopconfirmPage>
         ),
       ],
     },

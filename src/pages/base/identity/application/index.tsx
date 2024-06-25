@@ -26,6 +26,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { formatMessage } from 'umi';
 import styles from './index.less';
 import dayjs from "dayjs";
+import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const Application: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -369,12 +370,9 @@ const Application: React.FC = () => {
         >
           Edit
         </a>,
-        <a
-          style={{ marginLeft: 15 }}
-          onClick={async () => await deleteUserRequest(record?.applicationId || '')}
-        >
-          Delete
-        </a>,
+        <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.applicationId || '')}>
+          <a style={{ marginLeft: 15 }}>Delete</a>
+        </PopconfirmPage>
       ],
     },
   ];

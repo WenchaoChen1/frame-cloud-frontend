@@ -24,9 +24,10 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import {formatMessage, FormattedMessage} from '@umijs/max';
-import { Button, message, Space, Tree } from 'antd';
+import {Button, message, Popconfirm, Space, Tree} from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
+import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const Role: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -191,14 +192,13 @@ const Role: React.FC = () => {
         <a key="editBtn" onClick={() => openEdit(record)}>
           Edit
         </a>,
-        <a
-          key="deleteBtn"
-          onClick={async () => {
+
+        <PopconfirmPage
+          onConfirm={async () => {
             await deleteRoleRequest(record?.id || '');
-          }}
-        >
-          Delete
-        </a>,
+          }}>
+          <a key="deleteRow">Delete</a>
+        </PopconfirmPage>
       ],
     },
     {
