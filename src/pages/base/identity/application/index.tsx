@@ -703,6 +703,12 @@ const Application: React.FC = () => {
 
           <Space size={24}>
             <ProFormText
+              rules={[
+                {
+                  required: true,
+                  message: 'redirectUris is required',
+                },
+              ]}
               label={formatMessage({ id: 'application.list.redirectUris' })}
               width="md"
               name="redirectUris"
@@ -751,6 +757,12 @@ const Application: React.FC = () => {
 
           <Space size={24}>
             <ProForm.Item
+              rules={[
+                {
+                  required: true,
+                  message: 'accessTokenValidity is required',
+                },
+              ]}
               label={formatMessage({ id: 'application.list.accessTokenValidity' })}
               name="accessTokenValidity"
             >
@@ -762,6 +774,12 @@ const Application: React.FC = () => {
               width="md"
               name="dayType1"
               placeholder={'单位'}
+              rules={[
+                {
+                  required: true,
+                  message: 'please select',
+                },
+              ]}
               options={dayType}
             />
           </Space>
@@ -770,6 +788,12 @@ const Application: React.FC = () => {
             <ProForm.Item
               label={formatMessage({ id: 'application.list.refreshTokenValidity' })}
               name="refreshTokenValidity"
+              rules={[
+                {
+                  required: true,
+                  message: 'refreshTokenValidity is required',
+                },
+              ]}
             >
               <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
             </ProForm.Item>
@@ -780,6 +804,12 @@ const Application: React.FC = () => {
               name="dayType2"
               placeholder={'单位'}
               options={dayType}
+              rules={[
+                {
+                  required: true,
+                  message: 'please select',
+                },
+              ]}
             />
           </Space>
 
@@ -787,6 +817,12 @@ const Application: React.FC = () => {
             <ProForm.Item
               label={formatMessage({ id: 'application.list.authorizationCodeValidity' })}
               name="authorizationCodeValidity"
+              rules={[
+                {
+                  required: true,
+                  message: 'authorizationCodeValidity is required',
+                },
+              ]}
             >
               <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
             </ProForm.Item>
@@ -797,6 +833,12 @@ const Application: React.FC = () => {
               name="dayType3"
               placeholder={'单位'}
               options={dayType}
+              rules={[
+                {
+                  required: true,
+                  message: 'please select',
+                },
+              ]}
             />
           </Space>
 
@@ -804,6 +846,12 @@ const Application: React.FC = () => {
             <ProForm.Item
               label={formatMessage({ id: 'application.list.deviceCodeValidity' })}
               name="deviceCodeValidity"
+              rules={[
+                {
+                  required: true,
+                  message: 'deviceCodeValidity is required',
+                },
+              ]}
             >
               <InputNumber style={{ width: '328px' }} min={0} defaultValue={0} />
             </ProForm.Item>
@@ -814,6 +862,12 @@ const Application: React.FC = () => {
               name="dayType4"
               placeholder={'单位'}
               options={dayType}
+              rules={[
+                {
+                  required: true,
+                  message: 'please select',
+                },
+              ]}
             />
           </Space>
 
