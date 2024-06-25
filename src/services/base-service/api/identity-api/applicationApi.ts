@@ -38,3 +38,16 @@ export async function getAuthorizationGrantTypes() {
     method: 'GET',
   });
 }
+
+export async function updateApplicationManageAssignedScope(data: APISystem.PermissionItemDataType) {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/application/update-application-manage-assigned-scope`, {
+    method: 'POST',
+    data: data,
+  });
+}
+
+export async function getApplicationScopeIdByApplicationId(id: string) {
+  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/application/get-application-scope-id-by-application-id/${id}`, {
+    method: 'GET',
+  });
+}

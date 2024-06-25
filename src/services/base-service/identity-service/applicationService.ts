@@ -4,6 +4,8 @@ import {
   updateApplicationManage,
   deleteApplicationManage,
   insertApplicationManage,
+  updateApplicationManageAssignedScope,
+  getApplicationScopeIdByApplicationId,
 } from "@/services/base-service/api/identity-api/applicationApi";
 
 export async function getApplicationListService(params?: any) {
@@ -24,4 +26,12 @@ export async function insertApplicationManageService(data?: any) {
 
 export async function deleteApplicationService(id: string) {
   return await deleteApplicationManage(id);
+}
+
+export async function updateApplicationManageAssignedScopeScopeService(data?: any) {
+  return await updateApplicationManageAssignedScope(data);
+}
+
+export async function getApplicationScopeIdByApplicationIdScopeService(data?: any) {
+  return await getApplicationScopeIdByApplicationId(data);
 }

@@ -294,7 +294,6 @@ const Scope: React.FC = () => {
           }}
         >
           <Permissions
-            type={'scope'}
             onSelectedPermissions={handleSelectedPermissions}
             selectedPermissions={selectedPermissions}
             Id={scopeId}

@@ -1,76 +1,50 @@
 import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
 import {
-  getPermissionManagePageService,
-  getPermissionTypeService,
-} from '@/services/base-service/system-service/comPermissionService';
-import {
-  getScopePermissionIdByScopeIdService,
+  getScopeManagePageService,
 } from '@/services/base-service/identity-service/scopeService';
+import {
+  getApplicationScopeIdByApplicationIdScopeService
+} from '@/services/base-service/identity-service/applicationService';
+import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
+import dayjs from "dayjs";
 
 type TypeProp = {
-  onSelectedPermissions: (permissions: React.Key[]) => void;
+  onSelectedScope: (permissions: React.Key[]) => void;
   Id: any;
-  selectedPermissions: any;
 };
 
-const ScopePermissions: React.FC<TypeProp> = ({
-  onSelectedPermissions,
+const ApplicationScope: React.FC<TypeProp> = ({
+  onSelectedScope,
   Id,
-  selectedPermissions,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [permisListData, setPermisListData] = useState([]);
   const [total, setTotal] = useState<number>(0);
   const [size, setSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [page, setPage] = useState<number>(1);
-  const [permissionTypeList, setPermissionTypeList] = useState([]);
 
-  const columns = [
-    {
-      title: 'permissionName',
-      dataIndex: 'permissionName',
-      key: 'permissionName',
-    },
-    {
-      title: 'permissionCode',
-      dataIndex: 'permissionCode',
-      key: 'permissionCode',
-    },
-    {
-      title: 'permissionType',
-      dataIndex: 'permissionType',
-      valueType: 'select',
-      key: 'permissionType',
-      valueEnum: permissionTypeList.reduce((result, type) => {
-        result[type] = {
-          text: type,
-          status: type,
-        };
-        return result;
-      }, {}),
-    },
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
+
+  const columns: ProColumns<APIIdentity.authorization>[] = [
+    { title: 'scopeName', dataIndex: 'scopeName'},
+    { title: 'scopeCode', dataIndex: 'scopeCode'},
+    { title: 'createdDate',hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate)},
   ];
 
-  const initPermissionTypeChange = async () => {
-    const response = await getPermissionTypeService();
-    if (response?.success === true) {
-      setPermissionTypeList(response?.data);
-    }
-  };
-  useEffect(() => {
-    initPermissionTypeChange();
-  }, []);
-
   const getList = async (params: API.PageParams) => {
-    const response = await getPermissionManagePageService({
+    const response = await getScopeManagePageService({
       pageNumber: params.current || 1,
       pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
-      permissionName: params?.permissionName || '',
-      permissionCode: params?.permissionCode || '',
-      permissionType: params?.permissionType || '',
+      scopeName: params?.scopeName || '',
+      scopeCode: params?.scopeCode || '',
     });
 
     let dataSource: APISystem.UserItemDataType[] = [];
@@ -79,10 +53,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
       dataSource = response?.data?.content || [];
       total = response?.data?.totalElements || 0;
     }
-
     setTotal(total);
-    setPermisListData(response?.data?.content);
-
     return {
       data: dataSource,
       success: true,
@@ -92,7 +63,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
 
   const onSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: any) => {
     setSelectedRowKeys(newSelectedRowKeys);
-    onSelectedPermissions(selectedRows);
+    onSelectedScope(newSelectedRowKeys);
   };
 
   const rowSelection = {
@@ -102,7 +73,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
   };
 
   const initSelectChange = async () => {
-    const response = await getScopePermissionIdByScopeIdService(Id);
+    const response = await getApplicationScopeIdByApplicationIdScopeService(Id);
     if (response?.data) {
       setSelectedRowKeys(response?.data);
     }
@@ -117,7 +88,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
       <ProTable
         className={styles.permission}
         columns={columns}
-        rowKey={(e: any) => e?.permissionId}
+        rowKey={(e: any) => e?.scopeId}
         rowSelection={rowSelection}
         search={{
           defaultCollapsed: true,
@@ -141,4 +112,4 @@ const ScopePermissions: React.FC<TypeProp> = ({
   );
 };
 
-export default ScopePermissions;
+export default ApplicationScope;

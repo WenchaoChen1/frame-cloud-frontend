@@ -1,3 +1,4 @@
+import Scope from './scope/index';
 import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
 import { getAuthorizationGrantTypesService } from '@/services/base-service/identity-service/applicationDictionaryService';
 import {
@@ -6,6 +7,7 @@ import {
   getApplicationManageDetailService,
   insertApplicationManageService,
   updateApplicationManageService,
+  updateApplicationManageAssignedScopeScopeService,
 } from '@/services/base-service/identity-service/applicationService';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -28,7 +30,10 @@ import dayjs from "dayjs";
 const Application: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [ScopeOpenModal, setScopeOpenModal] = useState<boolean>(false);
+  const [applicationId, setApplicationId] = useState('');
   const [isEdit, setIsEdit] = useState(false);
+  const [isEditScope, setIsEditScope] = useState(false);
   const [authorTypes, setAuthorTypes] = useState([]);
   const [applicationTypeData, setApplicationTypeData] = useState([]);
   const [idTokenData, setIdTokenData] = useState([]);
@@ -37,6 +42,7 @@ const Application: React.FC = () => {
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [selectScopesList, setSelectScopesList] = useState([]);
 
   const dayType = [
     {
@@ -346,16 +352,25 @@ const Application: React.FC = () => {
       render: (_, record) => [
         <a
           onClick={() => {
+            setScopeOpenModal(true);
+            setIsEditScope(true);
+            setApplicationId(record?.applicationId);
+          }}
+        >
+          Scope
+        </a>,
+        <a
+          style={{ marginLeft: 15 }}
+          onClick={() => {
             setOpenModal(true);
             setIsEdit(true);
             setCurrentRow(record);
-            // getApplicationDetail(record?.applicationId);
           }}
         >
           Edit
         </a>,
         <a
-          style={{ marginLeft: 20 }}
+          style={{ marginLeft: 15 }}
           onClick={async () => await deleteUserRequest(record?.applicationId || '')}
         >
           Delete
@@ -428,6 +443,26 @@ const Application: React.FC = () => {
       setAuthorTypes(response?.data?.grantType);
       setAuthenticationMethod(response?.data?.authenticationMethod);
     }
+  };
+
+
+  const editScopeList = async (record: any) => {
+    const parms = {
+      applicationId: applicationId || '',
+      scopeIds: selectScopesList || '',
+    };
+    try {
+      await updateApplicationManageAssignedScopeScopeService(parms);
+      message.success('Added successfully');
+      return true;
+    } catch (error) {
+      message.error('Adding failed, please try again!');
+      return false;
+    }
+  };
+
+  const handleSelectedScope = (scope: any) => {
+    setSelectScopesList(scope);
   };
 
   useEffect(() => {
@@ -859,6 +894,29 @@ const Application: React.FC = () => {
               </div>
             </div>
           </Space>
+        </ModalForm>
+      )}
+
+      {ScopeOpenModal && (
+        <ModalForm
+          title={'Scope'}
+          width="70%"
+          open={ScopeOpenModal}
+          onOpenChange={setScopeOpenModal}
+          onFinish={async (record) => {
+            let response = await editScopeList(record);
+            if (response) {
+              setScopeOpenModal(false);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+        >
+          <Scope
+            onSelectedScope={handleSelectedScope}
+            Id={applicationId}
+          />
         </ModalForm>
       )}
     </PageContainer>
