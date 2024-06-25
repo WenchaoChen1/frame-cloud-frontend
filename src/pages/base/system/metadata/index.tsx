@@ -125,9 +125,9 @@ const Metadata: React.FC = () => {
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
     { title: formatMessage({ id: 'metadata.list.interfaceName' }), dataIndex: 'requestMethod' },
-    { title: 'Url', dataIndex: 'url' },
-    { title: 'Description', dataIndex: 'description' },
-    { title: formatMessage({ id: 'metadata.list.default' }), dataIndex: 'attributeCode' },
+    { title: 'Url', dataIndex: 'url', ellipsis: true, },
+    { title: 'Description', dataIndex: 'description', ellipsis: true, },
+    { title: formatMessage({ id: 'metadata.list.default' }), dataIndex: 'attributeCode', ellipsis: true, },
     {
       title: formatMessage({ id: 'metadata.list.expression' }),
       dataIndex: 'webExpression',

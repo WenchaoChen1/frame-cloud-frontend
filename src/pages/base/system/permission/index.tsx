@@ -218,16 +218,19 @@ const User: React.FC = () => {
       title: 'permissionName',
       dataIndex: 'permissionName',
       hideInSearch: false,
+      ellipsis: true,
     },
     {
       title: 'permissionCode',
       dataIndex: 'permissionCode',
       hideInSearch: false,
+      ellipsis: true,
     },
     {
       title: 'permissionType',
       dataIndex: 'permissionType',
       hideInForm: true,
+      ellipsis: true,
       valueEnum: permissionTypeList.reduce((result, type) => {
         result[type] = {
           text: type,
