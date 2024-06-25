@@ -513,7 +513,6 @@ const MenuList: React.FC = () => {
                   },
                 ]}
                 allowClear={false}
-                initialValue={'LEFT-MENU'}
                 options={[
                   {
                     value: 0,

@@ -189,9 +189,9 @@ export const request: RequestConfig = {
 
 const changeRouteData = (data) =>{
   data.forEach(item=>{
-    item.routes = item.children
-    if (item.children && item.children.length > 0){
-      changeRouteData(item.children)
+    item.routes = item?.children
+    if (item?.children && item?.children.length > 0){
+      changeRouteData(item?.children)
     }
   })
   return data

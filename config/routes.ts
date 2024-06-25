@@ -1,6 +1,13 @@
 ﻿// umi 的路由配置文件
 export default [
   {
+    path: '/',
+    name: 'index',
+    redirect: '/Welcome',
+    component: './Welcome',
+    access: 'welcomePermission',
+  },
+  {
     path: '/user',
     layout: false,
     routes: [
@@ -27,12 +34,6 @@ export default [
         component: './user/register',
       },
     ],
-  },
-  {
-    path: '/',
-    name: 'index',
-    redirect: '/Welcome',
-    component: './Welcome',
   },
   {
     name: 'system-management',
