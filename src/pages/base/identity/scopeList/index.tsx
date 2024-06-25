@@ -275,7 +275,7 @@ const Scope: React.FC = () => {
       {PermissOpenModal && (
         <ModalForm
           title={'Permissions'}
-          width="70%"
+          width="80%"
           open={PermissOpenModal}
           onOpenChange={setPermissOpenModal}
           onFinish={async (record) => {
