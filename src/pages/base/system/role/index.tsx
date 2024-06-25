@@ -217,6 +217,7 @@ const Role: React.FC = () => {
             secondary
             initialValue={tenantId}
             fieldProps={{
+              treeDefaultExpandAll:true,
               onChange: onChangeTenant2,
               treeData: tenantTreeData,
               showArrow: false,
@@ -472,6 +473,7 @@ const Role: React.FC = () => {
               secondary
               request={getTenantTreeRequest}
               fieldProps={{
+                treeDefaultExpandAll:true,
                 onChange: onChangeTenant,
                 showArrow: false,
                 filterTreeNode: true,
@@ -502,6 +504,7 @@ const Role: React.FC = () => {
               secondary
               request={getParentRoleTreeRequest}
               fieldProps={{
+                treeDefaultExpandAll:true,
                 showArrow: false,
                 filterTreeNode: true,
                 showSearch: true,
@@ -577,6 +580,7 @@ const Role: React.FC = () => {
               defaultExpandedKeys={selectedKeys}
               defaultSelectedKeys={selectedKeys}
               defaultCheckedKeys={selectedKeys}
+              defaultExpandAll={true}
               onCheck={onCheck}
               treeData={allMenuTree}
               fieldNames={{ title: 'name', key: 'id' }}

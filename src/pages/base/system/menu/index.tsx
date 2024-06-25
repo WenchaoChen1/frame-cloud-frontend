@@ -393,6 +393,7 @@ const MenuList: React.FC = () => {
                 request={async () => menuData}
                 // tree-select args
                 fieldProps={{
+                  treeDefaultExpandAll:true,
                   suffixIcon: null,
                   filterTreeNode: true,
                   showSearch: true,
