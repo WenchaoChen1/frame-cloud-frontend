@@ -397,7 +397,7 @@ const Account: React.FC = () => {
               allowClear
               width={'md'}
               secondary
-              disabled={isEdit ? true : false}
+              disabled={isEdit}
               request={getTenantTreeRequest}
               fieldProps={{
                 treeDefaultExpandAll:true,
@@ -427,7 +427,7 @@ const Account: React.FC = () => {
               allowClear
               width={'md'}
               secondary
-              disabled={isEdit ? true : false}
+              disabled={isEdit}
               request={async () => {
                 const responseRole = await getUserManagePageService({});
                 if (responseRole.success === true && responseRole?.data?.content) {

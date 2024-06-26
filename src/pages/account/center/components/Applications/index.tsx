@@ -12,7 +12,7 @@ import type { ListItemDataType } from '../../data.d';
 import { queryFakeList } from '../../service';
 import useStyles from './index.style';
 export function formatWan(val: number) {
-  const v = val * 1;
+  const v = val;
   if (!v || Number.isNaN(v)) return '';
   let result: React.ReactNode = val;
   if (val > 10000) {
@@ -77,7 +77,7 @@ const Applications: React.FC = () => {
         <List.Item key={item.id}>
           <Card
             hoverable
-            bodyStyle={{
+            styles={{
               paddingBottom: 20,
             }}
             actions={[
@@ -116,8 +116,7 @@ const Applications: React.FC = () => {
             </div>
           </Card>
         </List.Item>
-      )}
-    />
+      )}></List>
   );
 };
 export default Applications;

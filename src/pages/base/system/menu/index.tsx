@@ -182,8 +182,8 @@ const MenuList: React.FC = () => {
         },
       },
     },
-    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
-    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
+    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate) },
+    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate) },
     {
       title: 'Operating',
       dataIndex: 'option',
@@ -211,12 +211,14 @@ const MenuList: React.FC = () => {
         >
           Add
         </a>,
-        <PopconfirmPage
-          onConfirm={async () => {
-            await deleteRow(record?.id || '');
-          }}>
-          <a key="deleteRow">Delete</a>
-        </PopconfirmPage>
+        <div key='Delete'>
+          <PopconfirmPage
+            onConfirm={async () => {
+              await deleteRow(record?.id || '');
+            }}>
+            <a key="deleteRow">Delete</a>
+          </PopconfirmPage>
+        </div>
       ],
     },
   ];
@@ -255,7 +257,7 @@ const MenuList: React.FC = () => {
     }
     const response = await getMenuManageTreeService(parameters);
 
-    let dataSource: APISystem.UserItemDataType[] = [];
+    let dataSource: any = [];
     let total = 0;
     if (response?.success === true) {
       dataSource = response?.data || [];
@@ -272,7 +274,8 @@ const MenuList: React.FC = () => {
 
   const openTreeData = async () =>{
     const treeDataMap = menuData
-    let treeDataId = []
+    let treeDataId: any[];
+    treeDataId = [];
     if (!showAll){
       const renderData = (ele: any) =>{
         ele.forEach((item: any) => {
@@ -349,12 +352,12 @@ const MenuList: React.FC = () => {
           open={modalVisible}
           request={getMenuInfoRequest}
           onOpenChange={handleModalVisible}
-          onFinish={async (record) => {
+          onFinish={async (record: any) => {
             let response = undefined;
             if (isEdit) {
-              response = await handleUpdate(record as APISystem.MenuListItemDataType);
+              response = await handleUpdate(record as APISystem.MenuListItemDataType)
             } else {
-              response = await handleAdd(record as APISystem.MenuListItemDataType);
+              response = await handleAdd(record as APISystem.MenuListItemDataType)
             }
             console.log('onFinish response', response);
 

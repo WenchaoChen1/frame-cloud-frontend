@@ -102,7 +102,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
   };
 
   useEffect(() => {
-    initSelectChange()
+    initSelectChange();
   }, [Id]);
 
   return (

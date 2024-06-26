@@ -192,13 +192,13 @@ const User: React.FC = () => {
       valueType: 'textarea',
       search: false,
     },
-    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
-    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
+    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate) },
+    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate) },
     {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [
+      render: (_, record:any) => [
         <a key="editUser" onClick={async () => await onEditUser(record)}>
           Edit
         </a>,

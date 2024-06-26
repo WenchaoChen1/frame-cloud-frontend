@@ -183,7 +183,7 @@ const User: React.FC = () => {
           status: 'EXPIRED',
         },
       },
-      render: (value, record) => {
+      render: (value: any, record: any) => {
         const { status } = record;
         if (status === 0) {
           return (
@@ -240,13 +240,14 @@ const User: React.FC = () => {
       dataIndex: 'permissionType',
       hideInForm: true,
       ellipsis: true,
-      valueEnum: permissionTypeList.reduce((result, type) => {
-        result[type] = {
-          text: type,
-          status: type,
-        };
-        return result;
-      }, {}),
+      valueEnum: permissionTypeList.reduce((result: any, type: any) => {
+          result[type] = {
+            text: type,
+            status: type,
+          };
+          return result;
+        },
+        {}),
       renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
@@ -310,9 +311,11 @@ const User: React.FC = () => {
         >
           Edit
         </a>,
-        <PopconfirmPage onConfirm={async () => await onDeleteRequest(record?.permissionId || '')}>
-          <a>Delete</a>
-        </PopconfirmPage>
+        <div key={'Delete'}>
+          <PopconfirmPage onConfirm={async () => await onDeleteRequest(record?.permissionId || '')}>
+            <a>Delete</a>
+          </PopconfirmPage>
+        </div>
       ],
     },
   ];
@@ -352,7 +355,7 @@ const User: React.FC = () => {
           },
         }}
         expandable={{
-          expandedRowRender: (record) => (
+          expandedRowRender: (record: any) => (
             <Table<APISystem.PerScopeDataType>
               dataSource={record?.sysAttributes}
               columns={nestedColumns}

@@ -362,7 +362,7 @@ const Metadata: React.FC = () => {
               name="webExpression"
               placeholder={'权限表达式'}
               request={async () => {
-                return permissionExpression?.map((item) => {
+                return permissionExpression?.map((item: any) => {
                   return {
                     label: item?.text,
                     value: item?.value,

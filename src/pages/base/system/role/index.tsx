@@ -174,14 +174,14 @@ const Role: React.FC = () => {
       sorter: true,
       hideInSearch: true,
       dataIndex: 'createdDate',
-      render:(_,record)=> formatDate(record?.createdDate)
+      render:(_,record: any)=> formatDate(record?.createdDate)
     },
     {
       title: intl.formatMessage({ id: 'application.list.updatedDate' }),
       hideInSearch: true,
       dataIndex: 'updatedDate',
       sorter: true,
-      render:(_,record)=> formatDate(record?.updatedDate)
+      render:(_,record: any)=> formatDate(record?.updatedDate)
     },
     {
       title: 'Operating',
@@ -194,7 +194,6 @@ const Role: React.FC = () => {
           onClick={() => {
             setCurrentRow(record);
             openMenuModal(record);
-            // setTenantId(record?.tenantId);
           }}
         >
           Menu
@@ -202,13 +201,14 @@ const Role: React.FC = () => {
         <a key="editBtn" onClick={() => openEdit(record)}>
           Edit
         </a>,
-
-        <PopconfirmPage
-          onConfirm={async () => {
-            await deleteRoleRequest(record?.id || '');
-          }}>
-          <a key="deleteRow">Delete</a>
-        </PopconfirmPage>
+        <div key={'Delete'}>
+          <PopconfirmPage
+            onConfirm={async () => {
+              await deleteRoleRequest(record?.id || '');
+            }}>
+            <a key="deleteRow">Delete</a>
+          </PopconfirmPage>
+        </div>
       ],
     },
     {
@@ -327,12 +327,11 @@ const Role: React.FC = () => {
 
   const getParentRoleTreeRequest = async () => {
     const Response = await getRoleManageRoleDetailToListService({
-      tenantId,
+      tenantId: tenantId,
       tenantName: roleNameText || '',
     });
     if (Response.success && Response.data) {
-      const list = Response.data;
-      return list;
+      return Response.data;
     } else {
       return [];
     }

@@ -270,7 +270,7 @@ const Index: React.FC = () => {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [
+      render: (_, record: any) => [
         <a
           key="MenuBtn"
           onClick={() => {
@@ -302,14 +302,16 @@ const Index: React.FC = () => {
         >
           Add
         </a>,
-        <PopconfirmPage
-          onConfirm={async () => {
-            await deleteRow(record?.id || '');
-            setSelectedRows([]);
-            actionRef.current?.reloadAndRest?.();
-          }}>
-          <a key="deleteRow">Delete</a>
-        </PopconfirmPage>
+        <div key='Delete'>
+          <PopconfirmPage
+            onConfirm={async () => {
+              await deleteRow(record?.id || '');
+              setSelectedRows([]);
+              actionRef.current?.reloadAndRest?.();
+            }}>
+            <a key="deleteRow">Delete</a>
+          </PopconfirmPage>
+        </div>
       ],
     },
   ];
@@ -317,13 +319,13 @@ const Index: React.FC = () => {
   const searchTable = async (params: any) => {
     params.status = params?.status?.map((item: any) => {
       if (item === '1') {
-        return 'FORBIDDEN';
+        return 'FORBIDDEN'
       } else if (item === '2') {
-        return 'LOCKING';
+        return 'LOCKING'
       } else if (item === '3') {
-        return 'EXPIRED';
+        return 'EXPIRED'
       } else {
-        return 'ENABLE';
+        return 'ENABLE'
       }
     });
     let data: any = [];
@@ -341,7 +343,8 @@ const Index: React.FC = () => {
 
   const openTreeData = async () =>{
     const treeDataMap = menuData
-    let treeDataId = []
+    let treeDataId: any[];
+    treeDataId = [];
     if (!showAll){
       const renderData = (ele: any) =>{
         ele.forEach((item: any)=>{
