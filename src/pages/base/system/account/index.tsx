@@ -162,9 +162,9 @@ const Account: React.FC = () => {
     }
   };
 
-  const onChangeTenant = (tenantId: string) => {
-    setTenantId(tenantId);
-    getParentRoleTreeRequest(tenantId);
+  const onChangeTenant = (getTenantId: string) => {
+    setTenantId(getTenantId);
+    getParentRoleTreeRequest(getTenantId);
   };
 
   const columns: ProColumns<APISystem.AccountItemDataType>[] = [

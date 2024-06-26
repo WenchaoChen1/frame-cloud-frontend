@@ -14,7 +14,6 @@ const Dict: React.FC = () => {
   const [selectDictionaryId, setSelectDictionaryId] = useState<Key>('');
 
   const [isEdit, setIsEdit] = useState(true);
-  const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
 
   const [isRefresh, setIsRefresh] = useState(false);
 
@@ -34,12 +33,12 @@ const Dict: React.FC = () => {
     }
   };
 
-  const getDictionaryTreeRequest = async (tenantId: string | undefined) => {
-    if (!tenantId) {
+  const getDictionaryTreeRequest = async (getTenantId: string | undefined) => {
+    if (!getTenantId) {
       return;
     }
 
-    const dictionaryTreeResponse = await getDictTreeService(tenantId);
+    const dictionaryTreeResponse = await getDictTreeService(getTenantId);
     if (dictionaryTreeResponse.success && dictionaryTreeResponse.data) {
       setDictionaryTreeData(dictionaryTreeResponse.data);
       if (dictionaryTreeResponse.data.length > 0) {
@@ -55,8 +54,8 @@ const Dict: React.FC = () => {
     }
   };
 
-  const onChangeTenant = (tenantId: string) => {
-    setTenantId(tenantId);
+  const onChangeTenant = (getTenantId: string) => {
+    setTenantId(getTenantId);
     setIsEdit(true);
   };
 
@@ -112,7 +111,7 @@ const Dict: React.FC = () => {
               treeData={dictionaryTreeData}
               onSelect={onSelectDictionary}
               defaultSelectedKeys={[selectDictionaryId]}
-              autoExpandParent={autoExpandParent}
+              autoExpandParent={true}
               blockNode
               defaultExpandAll={true}
               fieldNames={{ title: 'name', key: 'id' }}
