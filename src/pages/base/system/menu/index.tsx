@@ -17,14 +17,15 @@ import {
   ProTable,
   ProFormTreeSelect,
 } from '@ant-design/pro-components';
-import { message, Space,Button,Row,Col } from 'antd';
+import { message, Button, Row, Col } from 'antd';
 import React, { useRef, useState } from 'react';
-import {formatMessage} from "@umijs/max";
+import { useIntl } from "@@/exports";
 import {PlusOutlined} from '@ant-design/icons'
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const MenuList: React.FC = () => {
+  const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
@@ -173,8 +174,8 @@ const MenuList: React.FC = () => {
         },
       },
     },
-    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
-    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
+    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
+    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
     {
       title: 'Operating',
       dataIndex: 'option',

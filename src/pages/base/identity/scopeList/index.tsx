@@ -11,13 +11,15 @@ import {
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ModalForm, PageContainer, ProFormText, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage,formatMessage } from '@umijs/max';
+import { FormattedMessage } from '@umijs/max';
+import { useIntl } from "@@/exports";
 import { Button, message, Space } from 'antd';
 import React, { useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const Scope: React.FC = () => {
+  const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);
@@ -132,8 +134,8 @@ const Scope: React.FC = () => {
   const columns: ProColumns<APIIdentity.authorization>[] = [
     { title: 'scopeName', dataIndex: 'scopeName'},
     { title: 'scopeCode', dataIndex: 'scopeCode'},
-    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate)},
-    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate)},
+    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate)},
+    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate)},
     {
       title: 'Operating',
       dataIndex: 'option',

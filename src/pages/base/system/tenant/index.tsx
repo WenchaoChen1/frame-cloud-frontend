@@ -23,7 +23,8 @@ import {
   ProFormTreeSelect,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage,formatMessage } from '@umijs/max';
+import { FormattedMessage } from '@umijs/max';
+import { useIntl } from "@@/exports";
 import {Button, message, Tree, Row, Col} from 'antd';
 import React, { useRef, useState } from 'react';
 import {PlusOutlined} from '@ant-design/icons'
@@ -31,6 +32,7 @@ import PopconfirmPage from '@/pages/base/components/popconfirm/index'
 import styles from './index.less';
 
 const Index: React.FC = () => {
+  const intl = useIntl();
   const formRef = useRef<ProFormInstance>();
   const actionRef = useRef<ActionType>();
   const [isEdit, setIsEdit] = useState(false);
@@ -39,9 +41,7 @@ const Index: React.FC = () => {
   const [modalVisible, handleModalVisible] = useState<boolean>(false);
   const [menuModalVisible, setMenuModalVisible] = useState<boolean>(false);
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
-  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
-  const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const [tenantId, setTenantId] = useState(null);
   const [checkedKeys, setCheckedKeys] = useState([]);
   const [defaultExpanded, setDefaultExpanded] = useState([]);
@@ -117,11 +117,6 @@ const Index: React.FC = () => {
 
     setCurrentRow({ parentId: record?.id ? record.id : '' });
     handleModalVisible(true);
-  };
-
-  const onExpand = (expandedKeysValue: React.Key[]) => {
-    setExpandedKeys(expandedKeysValue);
-    setAutoExpandParent(false);
   };
 
   const onCheck = (checkedKeysValue: React.Key[], e: any) => {
@@ -247,14 +242,14 @@ const Index: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: formatMessage({ id: 'application.list.createdDate' }),
+      title: intl.formatMessage({ id: 'application.list.createdDate' }),
       key: 'showTime',
       sorter: true,
       hideInSearch: true,
       dataIndex: 'createdDate'
     },
     {
-      title: formatMessage({ id: 'application.list.updatedDate' }),
+      title: intl.formatMessage({ id: 'application.list.updatedDate' }),
       hideInSearch: true,
       dataIndex: 'updatedDate',
       sorter: true,
@@ -610,7 +605,6 @@ const Index: React.FC = () => {
           <div className={styles.tenantMenuTree}>
             <Tree
               checkable
-              onExpand={onExpand}
               defaultExpandAll
               onCheck={onCheck}
               checkedKeys={checkedKeys}

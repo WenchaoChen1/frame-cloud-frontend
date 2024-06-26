@@ -3,11 +3,11 @@ import { getComplianceManagePageService } from '@/services/base-service/identity
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import React, { useRef, useState } from 'react';
-import { formatMessage } from 'umi';
+import {useIntl} from "@@/exports";
 import dayjs from "dayjs";
-import styles from './index.less';
 
 const Compliance: React.FC = () => {
+  const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
@@ -50,8 +50,8 @@ const Compliance: React.FC = () => {
       },
     },
     { title: 'operation', dataIndex: 'operation', search: false },
-    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate)},
-    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate)},
+    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate)},
+    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate)},
   ];
 
   const formatDate = (time:string):string =>{
@@ -67,7 +67,6 @@ const Compliance: React.FC = () => {
       <ProTable<APIIdentity.authorization, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
-        // className={styles.complianceListStyle}
         rowKey="scopeId"
         search={{
           labelWidth: 'auto',

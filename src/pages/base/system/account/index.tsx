@@ -21,13 +21,15 @@ import {
   ProFormTreeSelect,
   ProTable,
 } from '@ant-design/pro-components';
-import {formatMessage, FormattedMessage, useModel} from '@umijs/max';
+import { FormattedMessage, useModel} from '@umijs/max';
+import { useIntl } from "@@/exports";
 import { Button, message, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const Account: React.FC = () => {
+  const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const { initialState } = useModel('@@initialState');
   const currentAccountId = initialState?.currentUser?.accountId;
@@ -232,8 +234,8 @@ const Account: React.FC = () => {
         );
       },
     },
-    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
-    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
+    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
+    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
     {
       title: 'Operating',
       dataIndex: 'option',

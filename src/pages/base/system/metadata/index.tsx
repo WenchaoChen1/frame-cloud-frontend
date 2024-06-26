@@ -21,11 +21,11 @@ import {
 } from '@ant-design/pro-components';
 import { message, Space, Tooltip, TableColumnsType, Table } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
-import { formatMessage } from 'umi';
-import styles from './index.less';
+import { useIntl } from "@@/exports";
 import dayjs from "dayjs";
 
 const Metadata: React.FC = () => {
+  const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);
@@ -124,17 +124,17 @@ const Metadata: React.FC = () => {
   ];
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
-    { title: formatMessage({ id: 'metadata.list.interfaceName' }), dataIndex: 'requestMethod' },
+    { title: intl.formatMessage({ id: 'metadata.list.interfaceName' }), dataIndex: 'requestMethod' },
     { title: 'Url', dataIndex: 'url', ellipsis: true, },
     { title: 'Description', dataIndex: 'description', ellipsis: true, },
-    { title: formatMessage({ id: 'metadata.list.default' }), dataIndex: 'attributeCode', ellipsis: true, },
+    { title: intl.formatMessage({ id: 'metadata.list.default' }), dataIndex: 'attributeCode', ellipsis: true, },
     {
-      title: formatMessage({ id: 'metadata.list.expression' }),
+      title: intl.formatMessage({ id: 'metadata.list.expression' }),
       dataIndex: 'webExpression',
       hideInSearch: true,
     },
     {
-      title: formatMessage({ id: 'application.list.status' }),
+      title: intl.formatMessage({ id: 'application.list.status' }),
       dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
@@ -185,7 +185,7 @@ const Metadata: React.FC = () => {
       },
     },
     {
-      title: formatMessage({ id: 'pages.searchTable.actions' }),
+      title: intl.formatMessage({ id: 'pages.searchTable.actions' }),
       dataIndex: 'actions',
       search: false,
       render: (_, record) => [
@@ -370,7 +370,7 @@ const Metadata: React.FC = () => {
             />
 
             <ProFormSelect
-              label={formatMessage({ id: 'application.list.status' })}
+              label={intl.formatMessage({ id: 'application.list.status' })}
               width="md"
               name="status"
               placeholder={'status'}

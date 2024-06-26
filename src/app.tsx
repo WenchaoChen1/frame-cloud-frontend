@@ -45,7 +45,7 @@ export async function getInitialState(): Promise<{
       // const dynamicRouteTree = handleRouteTree(accountInfoResponse?.data?.currentLoginAccountUserPermissions || []);
       // dynamicRouteTree.permission = handleAdminPermission(currentUser, dynamicRouteTree.permission);
       // currentUser = {...currentUser, ...dynamicRouteTree};
-      setLocalStorage(USER_ROUTER,JSON.stringify(currentUser.currentLoginAccountUserPermissions))
+      setLocalStorage(USER_ROUTER,JSON.stringify(currentUser?.currentLoginAccountUserPermissions))
       return currentUser;
     }
     return undefined;

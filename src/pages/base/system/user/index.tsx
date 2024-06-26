@@ -19,14 +19,15 @@ import {
   ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, useModel,formatMessage } from '@umijs/max';
+import { FormattedMessage, useModel } from '@umijs/max';
+import { useIntl } from "@@/exports";
 import { Button, message, Space } from 'antd';
 import React, { useRef, useState } from 'react';
-import styles from './index.less';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const User: React.FC = () => {
+  const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const { initialState } = useModel('@@initialState');
   const currentUserId = initialState?.currentUser?.userId;
@@ -183,8 +184,8 @@ const User: React.FC = () => {
       valueType: 'textarea',
       search: false,
     },
-    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
-    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
+    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
+    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
     {
       title: 'Operating',
       dataIndex: 'option',

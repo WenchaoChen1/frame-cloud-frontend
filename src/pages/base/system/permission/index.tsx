@@ -17,15 +17,17 @@ import {
   ProFormText,
   ProTable,
 } from '@ant-design/pro-components';
-import {formatMessage, FormattedMessage} from '@umijs/max';
+import { FormattedMessage} from '@umijs/max';
 import { Button, message, Table, Space, TableColumnsType, Tooltip } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
+import { useIntl } from "@@/exports";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const User: React.FC = () => {
+  const intl = useIntl();
+  const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
-
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.PermissionItemDataType>();
   const [permissionTypeList, setPermissionTypeList] = useState([]);
@@ -33,7 +35,6 @@ const User: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const actionRef = useRef<ActionType>();
 
   const getList = async (params: API.PageParams) => {
     params.status = params?.status?.map((item: any) => {
@@ -156,7 +157,7 @@ const User: React.FC = () => {
     { title: 'Description', dataIndex: 'description' },
     { title: 'Default permission code', dataIndex: 'attributeCode' },
     {
-      title: formatMessage({ id: 'metadata.list.expression' }),
+      title: intl.formatMessage({ id: 'metadata.list.expression' }),
       dataIndex: 'webExpression',
       hideInSearch: true,
     },
@@ -284,8 +285,8 @@ const User: React.FC = () => {
         );
       },
     },
-    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
-    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
+    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
+    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
     {
       title: 'Operating',
       dataIndex: 'option',

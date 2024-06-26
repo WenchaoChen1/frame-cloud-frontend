@@ -5,14 +5,14 @@ import {
 } from '@/services/base-service/identity-service/authorizationService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
-import { message, Popconfirm } from 'antd';
+import { message } from 'antd';
 import React, { useRef, useState } from 'react';
-import {formatMessage} from '@umijs/max'
-import styles from './index.less';
+import {useIntl} from "@@/exports";
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const Authorization: React.FC = () => {
+  const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
@@ -99,8 +99,8 @@ const Authorization: React.FC = () => {
       search: false,
       render: (text) => timeFormat(text),
     },
-    { title: formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
-    { title: formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
+    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
+    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
     {
       title: 'Operating',
       dataIndex: 'option',
@@ -131,7 +131,6 @@ const Authorization: React.FC = () => {
           defaultCollapsed:false,
         }}
         rowKey="id"
-        className={styles.Authorization}
         options={false}
         request={getList}
         columns={columns}

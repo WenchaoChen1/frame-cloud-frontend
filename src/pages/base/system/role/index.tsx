@@ -23,13 +23,15 @@ import {
   ProFormTreeSelect,
   ProTable,
 } from '@ant-design/pro-components';
-import {formatMessage, FormattedMessage} from '@umijs/max';
-import {Button, message, Popconfirm, Space, Tree} from 'antd';
+import { FormattedMessage} from '@umijs/max';
+import { useIntl } from "@@/exports";
+import {Button, message, Space, Tree} from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const Role: React.FC = () => {
+  const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
   const [tenantId, setTenantId] = useState<string | undefined>(undefined);
@@ -159,7 +161,7 @@ const Role: React.FC = () => {
       },
     },
     {
-      title: formatMessage({ id: 'application.list.createdDate' }),
+      title: intl.formatMessage({ id: 'application.list.createdDate' }),
       key: 'showTime',
       sorter: true,
       hideInSearch: true,
@@ -167,7 +169,7 @@ const Role: React.FC = () => {
       render:(_,record)=> formatDate(record?.createdDate)
     },
     {
-      title: formatMessage({ id: 'application.list.updatedDate' }),
+      title: intl.formatMessage({ id: 'application.list.updatedDate' }),
       hideInSearch: true,
       dataIndex: 'updatedDate',
       sorter: true,
