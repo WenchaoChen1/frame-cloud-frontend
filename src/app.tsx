@@ -6,14 +6,12 @@ import type { RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import {fixMenuItemIcon, setLocalStorage} from './utils/utils'
-import * as allIcons from '@ant-design/icons'
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
 import {getLocalStorage} from '@/utils/utils';
-import {SITE_TITLE, LOGIN_PATH, CURRENT_ACCOUNT_ID,USER_ROUTER} from "@/pages/common/constant";
+import { CURRENT_ACCOUNT_ID,USER_ROUTER } from "@/pages/common/constant";
 import {getLoginInfoService} from '@/services/base-service/system-service/userService';
 import React from "react";
 /**
@@ -64,6 +62,16 @@ export async function getInitialState(): Promise<{
     fetchUserInfo,
     settings: defaultSettings as Partial<LayoutSettings>,
   };
+}
+
+const changeRouteData = (data: any) =>{
+  data.forEach((item: any) =>{
+    item.routes = item?.children
+    if (item?.children && item?.children.length > 0){
+      changeRouteData(item?.children)
+    }
+  })
+  return data
 }
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
@@ -149,7 +157,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     ...initialState?.settings,
     menu: {
-      request: async (params, defaultMenuData) => {
+      request: async () => {
         // initialState.currentUser 中包含了所有用户信息
         return [
           ...userRouters
@@ -186,13 +194,3 @@ export const request: RequestConfig = {
   // requestInterceptors: [authHeaderInterceptor],
   // responseInterceptors:[]
 };
-
-const changeRouteData = (data) =>{
-  data.forEach(item=>{
-    item.routes = item?.children
-    if (item?.children && item?.children.length > 0){
-      changeRouteData(item?.children)
-    }
-  })
-  return data
-}
