@@ -29,8 +29,8 @@ const Metadata: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);
-  const [attributeId, setAttributeId] = useState<boolean>('');
-  const [selectedPermissions, setSelectedPermissions] = useState<boolean>([]);
+  const [attributeId, setAttributeId] = useState('');
+  const [selectedPermissions, setSelectedPermissions] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [permissionExpression, setPermissionExpression] = useState([]);
   const [currentRow, setCurrentRow] = useState({});
@@ -39,7 +39,7 @@ const Metadata: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [permissionTypeList, setPermissionTypeList] = useState([]);
 
-  const getList = async (params: API.PageParams) => {
+  const getList = async (params: any) => {
     if (params?.status) {
       if (params?.status === '1') {
         params.status = 'FORBIDDEN';
@@ -155,7 +155,7 @@ const Metadata: React.FC = () => {
           status: 'EXPIRED',
         },
       },
-      render: (value, record) => {
+      render: (value: any, record: any) => {
         const { status } = record;
         if (status === 0) {
           return (
@@ -190,6 +190,7 @@ const Metadata: React.FC = () => {
       search: false,
       render: (_, record) => [
         <a
+          key='attributeId'
           onClick={() => {
             setPermissOpenModal(true);
             setAttributeId(record?.attributeId);
@@ -199,6 +200,7 @@ const Metadata: React.FC = () => {
           Permissions
         </a>,
         <a
+          key='attributeId'
           onClick={() => {
             setOpenModal(true);
             setIsEdit(true);
@@ -272,7 +274,7 @@ const Metadata: React.FC = () => {
           },
         }}
         expandable={{
-          expandedRowRender: (record) => (
+          expandedRowRender: (record: any) => (
             <Table<APISystem.scorPermissionDataType>
               dataSource={record?.permissions}
               columns={nestedColumns}
@@ -304,7 +306,7 @@ const Metadata: React.FC = () => {
           request={async () => {
             if (isEdit && currentRow) {
               const responsePayMethodInfo = await getAttributeManageDetailService(
-                currentRow.attributeId,
+                currentRow?.attributeId,
               );
               if (responsePayMethodInfo.success === true && responsePayMethodInfo.data) {
                 return responsePayMethodInfo.data;
@@ -413,7 +415,7 @@ const Metadata: React.FC = () => {
           width="80%"
           open={PermissOpenModal}
           onOpenChange={setPermissOpenModal}
-          onFinish={async (record) => {
+          onFinish={async () => {
             let response = await editPermiss();
 
             if (response) {

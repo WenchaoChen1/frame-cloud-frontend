@@ -60,10 +60,10 @@ const ScopePermissions: React.FC<TypeProp> = ({
     initPermissionTypeChange();
   }, []);
 
-  const getList = async (params: API.PageParams) => {
+  const getList = async (params: any) => {
     const response = await getPermissionManagePageService({
-      pageNumber: params.current || 1,
-      pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
+      pageNumber: params?.current || 1,
+      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
       permissionName: params?.permissionName || '',
       permissionCode: params?.permissionCode || '',
       permissionType: params?.permissionType || '',
@@ -85,7 +85,8 @@ const ScopePermissions: React.FC<TypeProp> = ({
     };
   };
 
-  const onSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: any) => {
+  // newSelectedRowKeys: id \ selectedRows:rows
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
     onSelectedPermissions(newSelectedRowKeys);
   };

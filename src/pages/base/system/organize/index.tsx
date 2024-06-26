@@ -13,10 +13,9 @@ const Organize: React.FC = () => {
   const [organTreeData, setOrganTreeData] = useState<APISystem.OrganizeListItemDataType[]>([]);
   const [selectOrganizeId, setSelectOrganizeId] = useState<Key>('');
   const [isEdit, setIsEdit] = useState(true);
-  const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
 
   const getTenantTreeRequest = async () => {
-    const tenantTreeResponse = await getTenantManageTreeService();
+    const tenantTreeResponse = await getTenantManageTreeService({});
     if (tenantTreeResponse.success && tenantTreeResponse.data) {
       if (tenantTreeResponse.data?.length > 0) {
         setTenantId(tenantTreeResponse.data[0].id || undefined);
@@ -101,7 +100,6 @@ const Organize: React.FC = () => {
               treeData={organTreeData}
               onSelect={onSelectOrganize}
               defaultSelectedKeys={[selectOrganizeId]}
-              autoExpandParent={autoExpandParent}
               blockNode
               defaultExpandAll
             />

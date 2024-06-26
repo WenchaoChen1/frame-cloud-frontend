@@ -36,16 +36,16 @@ const User: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
 
-  const getList = async (params: API.PageParams) => {
+  const getList = async (params: any) => {
     params.status = params?.status?.map((item: any) => {
       if (item === '1') {
-        return (item = 'FORBIDDEN');
+        return 'FORBIDDEN';
       } else if (item === '2') {
-        return (item = 'LOCKING');
+        return 'LOCKING';
       } else if (item === '3') {
-        return (item = 'EXPIRED');
+        return 'EXPIRED';
       } else {
-        return (item = 'ENABLE');
+        return 'ENABLE';
       }
     });
     const response = await getPermissionManagePageService({
@@ -214,6 +214,14 @@ const User: React.FC = () => {
     },
   ];
 
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
+
   const columns: ProColumns<APISystem.PermissionItemDataType>[] = [
     {
       title: 'permissionName',
@@ -239,7 +247,7 @@ const User: React.FC = () => {
         };
         return result;
       }, {}),
-      renderFormItem: (_, { type, defaultRender, ...rest }) => {
+      renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
             mode="multiple"
@@ -273,7 +281,7 @@ const User: React.FC = () => {
           status: 'EXPIRED',
         },
       },
-      renderFormItem: (_, { type, defaultRender, ...rest }) => {
+      renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
             mode="multiple"
@@ -308,13 +316,6 @@ const User: React.FC = () => {
       ],
     },
   ];
-  const formatDate = (time:string):string =>{
-    let times = '_'
-    if (time){
-      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
-    }
-    return times
-  }
 
   return (
     <PageContainer>

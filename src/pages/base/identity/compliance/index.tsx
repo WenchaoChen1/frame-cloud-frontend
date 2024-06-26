@@ -13,10 +13,10 @@ const Compliance: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const getList = async (params: API.PageParams) => {
+  const getList = async (params: any) => {
     const response = await getComplianceManagePageService({
-      pageNumber: params.current || 1,
-      pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
+      pageNumber: params?.current || 1,
+      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
       principalName: params?.principalName || '',
       clientId: params?.clientId || '',
       osName: params?.osName || '',
@@ -36,6 +36,14 @@ const Compliance: React.FC = () => {
     };
   };
 
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
+
   const columns: ProColumns<APIIdentity.authorization>[] = [
     { title: 'principalName', dataIndex: 'principalName' },
     { title: 'clientId', dataIndex: 'clientId' },
@@ -53,14 +61,6 @@ const Compliance: React.FC = () => {
     { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate)},
     { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate)},
   ];
-
-  const formatDate = (time:string):string =>{
-    let times = '_'
-    if (time){
-      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
-    }
-    return times
-  }
 
   return (
     <PageContainer>

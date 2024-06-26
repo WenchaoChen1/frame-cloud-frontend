@@ -24,17 +24,17 @@ const Scope: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [currentRow, setCurrentRow] = useState<APISystem.MenuListItemDataType>();
+  const [currentRow, setCurrentRow] = useState({});
   const [scopeId, setScopeId] = useState('');
   const [selectedPermissions, setSelectedPermissions] = useState([]);
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const getList = async (params: API.PageParams) => {
+  const getList = async (params: any) => {
     const response = await getScopeManagePageService({
-      pageNumber: params.current || 1,
-      pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
+      pageNumber: params?.current || 1,
+      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
       scopeName: params?.scopeName || '',
       scopeCode: params?.scopeCode || '',
     });
@@ -68,7 +68,7 @@ const Scope: React.FC = () => {
   };
 
   const getScopeInfoRequest = async () => {
-    if (isEdit) {
+    if (isEdit && currentRow?.scopeId) {
       const accountDetailResponse = await getScopeManageDetailService(currentRow?.scopeId || '');
       if (accountDetailResponse.success === true && accountDetailResponse.data) {
         return accountDetailResponse.data;
@@ -131,6 +131,14 @@ const Scope: React.FC = () => {
     }
   };
 
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
+
   const columns: ProColumns<APIIdentity.authorization>[] = [
     { title: 'scopeName', dataIndex: 'scopeName'},
     { title: 'scopeCode', dataIndex: 'scopeCode'},
@@ -168,14 +176,6 @@ const Scope: React.FC = () => {
       ],
     },
   ];
-
-  const formatDate = (time:string):string =>{
-    let times = '_'
-    if (time){
-      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
-    }
-    return times
-  }
 
   const handleSelectedPermissions = (permissions: any) => {
     setSelectedPermissions(permissions);
@@ -244,11 +244,6 @@ const Scope: React.FC = () => {
               }
             }
           }}
-          initialValues={{
-            scopeId: currentRow?.scopeId,
-            scopeName: currentRow?.scopeName,
-            scopeCode: currentRow?.scopeCode,
-          }}
         >
           <Space size={20}>
             <ProFormText
@@ -287,7 +282,7 @@ const Scope: React.FC = () => {
           width="80%"
           open={PermissOpenModal}
           onOpenChange={setPermissOpenModal}
-          onFinish={async (record) => {
+          onFinish={async () => {
             let response = await editPermiss();
 
             if (response) {

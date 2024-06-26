@@ -71,6 +71,14 @@ const Authorization: React.FC = () => {
     return formattedTime;
   };
 
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
+
   const columns: ProColumns<APIIdentity.authorization>[] = [
     { title: 'Client ID', dataIndex: 'id' },
     { title: 'User Name', dataIndex: 'principalName' },
@@ -112,14 +120,6 @@ const Authorization: React.FC = () => {
       ),
     },
   ];
-
-  const formatDate = (time:string):string =>{
-    let times = '_'
-    if (time){
-      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
-    }
-    return times
-  }
 
   return (
     <PageContainer>
