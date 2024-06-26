@@ -142,6 +142,7 @@ const Scope: React.FC = () => {
       valueType: 'option',
       render: (_, record) => [
         <a
+          key={record?.scopeId}
           onClick={() => {
             setPermissOpenModal(true);
             setScopeId(record?.scopeId);
@@ -150,6 +151,7 @@ const Scope: React.FC = () => {
           Permissions
         </a>,
         <a
+          key={record?.scopeId}
           onClick={() => {
             setIsEdit(true);
             setCurrentRow(record);
@@ -158,9 +160,11 @@ const Scope: React.FC = () => {
         >
           Edit
         </a>,
-        <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.scopeId || '')}>
-          <a>Delete</a>
-        </PopconfirmPage>
+        <div key={record?.scopeId}>
+          <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.scopeId || '')}>
+            <a>Delete</a>
+          </PopconfirmPage>
+        </div>
       ],
     },
   ];

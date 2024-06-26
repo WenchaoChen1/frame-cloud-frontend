@@ -271,9 +271,11 @@ const Application: React.FC = () => {
           }
 
           return (
-            <Tooltip title={tooltipText}>
-              <img src={imageUrl} alt={type} style={{ paddingRight: '8px' }} />
-            </Tooltip>
+            <div key={record?.applicationId}>
+              <Tooltip title={tooltipText}>
+                <img src={imageUrl} alt={type} style={{ paddingRight: '8px' }} />
+              </Tooltip>
+            </div>
           );
         });
 
@@ -351,6 +353,7 @@ const Application: React.FC = () => {
       search: false,
       render: (_, record) => [
         <a
+          key={record?.applicationId}
           onClick={() => {
             setScopeOpenModal(true);
             setApplicationId(record?.applicationId);
@@ -359,6 +362,7 @@ const Application: React.FC = () => {
           Scope
         </a>,
         <a
+          key={record?.applicationId}
           style={{ marginLeft: 15 }}
           onClick={() => {
             setOpenModal(true);
@@ -368,9 +372,11 @@ const Application: React.FC = () => {
         >
           Edit
         </a>,
-        <ConfirmPage onConfirm={async () => await deleteUserRequest(record?.applicationId || '')}>
-          <a style={{ marginLeft: 15 }}>Delete</a>
-        </ConfirmPage>
+        <div key={record?.applicationId}>
+          <ConfirmPage onConfirm={async () => await deleteUserRequest(record?.applicationId || '')}>
+            <a style={{ marginLeft: 15 }}>Delete</a>
+          </ConfirmPage>
+        </div>
       ],
     },
   ];
@@ -461,6 +467,57 @@ const Application: React.FC = () => {
     setSelectScopesList(scope);
   };
 
+  const DataformRequest = async () => {
+    if (isEdit && currentRow) {
+      const responsePayMethodInfo = await getApplicationManageDetailService(
+        currentRow.applicationId,
+      );
+      if (responsePayMethodInfo.success === true && responsePayMethodInfo.data) {
+        let list = { ...responsePayMethodInfo.data };
+        list.clientSecretExpiresAt = list?.clientSecretExpiresAt
+          ? moment(new Date(list?.clientSecretExpiresAt).toISOString())
+          : null;
+        (list.dayType1 = list?.accessTokenValidity
+          ? parseAccessTokenValidity(list?.accessTokenValidity)?.split(' ')?.[1]
+          : null);
+          (list.dayType2 = list?.authorizationCodeValidity
+            ? parseAccessTokenValidity(list?.authorizationCodeValidity)?.split(' ')?.[1]
+            : null);
+          (list.dayType3 = list?.deviceCodeValidity
+            ? parseAccessTokenValidity(list?.deviceCodeValidity)?.split(' ')?.[1]
+            : null);
+          (list.dayType4 = list?.refreshTokenValidity
+            ? parseAccessTokenValidity(list?.refreshTokenValidity)?.split(' ')?.[1]
+            : null);
+          (list.accessTokenValidity = list?.accessTokenValidity
+            ? parseAccessTokenValidity(list?.accessTokenValidity)?.split(' ')?.[0]
+            : null);
+        list.authorizationCodeValidity = list?.authorizationCodeValidity
+          ? parseAccessTokenValidity(list?.authorizationCodeValidity)?.split(' ')?.[0]
+          : null;
+        list.deviceCodeValidity = list?.deviceCodeValidity
+          ? parseAccessTokenValidity(list?.deviceCodeValidity)?.split(' ')?.[0]
+          : null;
+        list.refreshTokenValidity = list?.refreshTokenValidity
+          ? parseAccessTokenValidity(list?.refreshTokenValidity)?.split(' ')?.[0]
+          : null;
+        list.authorizationGrantTypes = list?.authorizationGrantTypes
+          ? list?.authorizationGrantTypes?.split(',')
+          : [];
+        list.clientAuthenticationMethods = list?.clientAuthenticationMethods
+          ? list?.clientAuthenticationMethods?.split(',')
+          : [];
+
+        return list;
+      }
+    }
+    return {
+      id: '',
+      clientId: '',
+      secretCreated: '',
+    };
+  };
+
   useEffect(() => {
     initAuthorizationGrantTypes();
   }, []);
@@ -475,6 +532,7 @@ const Application: React.FC = () => {
         scroll={{ x: 'max-content' }}
         toolBarRender={() => [
           <Button
+            key="primary"
             type="primary"
             onClick={() => {
               setIsEdit(false);
@@ -509,10 +567,11 @@ const Application: React.FC = () => {
           open={openModal}
           onOpenChange={setOpenModal}
           onFinish={async (record) => {
+            let response = undefined
             if (isEdit) {
-              let response = await handleUpdate(record as APISystem.MenuListItemDataType);
+              response = await handleUpdate(record as APISystem.MenuListItemDataType);
             } else {
-              let response = await handleAdd(record as APISystem.MenuListItemDataType);
+              response = await handleAdd(record as APISystem.MenuListItemDataType);
             }
 
             if (response) {
@@ -522,56 +581,7 @@ const Application: React.FC = () => {
               }
             }
           }}
-          request={async () => {
-            if (isEdit && currentRow) {
-              const responsePayMethodInfo = await getApplicationManageDetailService(
-                currentRow.applicationId,
-              );
-              if (responsePayMethodInfo.success === true && responsePayMethodInfo.data) {
-                let list = { ...responsePayMethodInfo.data };
-                list.clientSecretExpiresAt = list?.clientSecretExpiresAt
-                  ? moment(new Date(list?.clientSecretExpiresAt).toISOString())
-                  : null;
-                (list.dayType1 = list?.accessTokenValidity
-                  ? parseAccessTokenValidity(list?.accessTokenValidity)?.split(' ')?.[1]
-                  : null);
-                  (list.dayType2 = list?.authorizationCodeValidity
-                    ? parseAccessTokenValidity(list?.authorizationCodeValidity)?.split(' ')?.[1]
-                    : null);
-                  (list.dayType3 = list?.deviceCodeValidity
-                    ? parseAccessTokenValidity(list?.deviceCodeValidity)?.split(' ')?.[1]
-                    : null);
-                  (list.dayType4 = list?.refreshTokenValidity
-                    ? parseAccessTokenValidity(list?.refreshTokenValidity)?.split(' ')?.[1]
-                    : null);
-                  (list.accessTokenValidity = list?.accessTokenValidity
-                    ? parseAccessTokenValidity(list?.accessTokenValidity)?.split(' ')?.[0]
-                    : null);
-                list.authorizationCodeValidity = list?.authorizationCodeValidity
-                  ? parseAccessTokenValidity(list?.authorizationCodeValidity)?.split(' ')?.[0]
-                  : null;
-                list.deviceCodeValidity = list?.deviceCodeValidity
-                  ? parseAccessTokenValidity(list?.deviceCodeValidity)?.split(' ')?.[0]
-                  : null;
-                list.refreshTokenValidity = list?.refreshTokenValidity
-                  ? parseAccessTokenValidity(list?.refreshTokenValidity)?.split(' ')?.[0]
-                  : null;
-                list.authorizationGrantTypes = list?.authorizationGrantTypes
-                  ? list?.authorizationGrantTypes?.split(',')
-                  : [];
-                list.clientAuthenticationMethods = list?.clientAuthenticationMethods
-                  ? list?.clientAuthenticationMethods?.split(',')
-                  : [];
-
-                return list;
-              }
-            }
-            return {
-              id: '',
-              clientId: '',
-              secretCreated: '',
-            };
-          }}
+          request={DataformRequest}
         >
           <Space size={24} style={{ display: `${isEdit ? '' : 'none'}` }}>
             <ProFormText

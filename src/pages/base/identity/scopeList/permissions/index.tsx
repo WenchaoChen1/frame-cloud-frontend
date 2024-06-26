@@ -19,7 +19,6 @@ const ScopePermissions: React.FC<TypeProp> = ({
   Id,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [permisListData, setPermisListData] = useState([]);
   const [total, setTotal] = useState<number>(0);
   const [size, setSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [page, setPage] = useState<number>(1);
@@ -76,10 +75,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
       dataSource = response?.data?.content || [];
       total = response?.data?.totalElements || 0;
     }
-
     setTotal(total);
-    setPermisListData(response?.data?.content);
-
     return {
       data: dataSource,
       success: true,
