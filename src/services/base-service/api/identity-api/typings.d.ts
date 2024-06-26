@@ -30,6 +30,7 @@ declare namespace APIIdentity {
   };
   type CurrentUser = {
     accountId?: string;
+    accountName?: string;
     accountType?: string;
     tenantId?: string;
     userId?: string;
