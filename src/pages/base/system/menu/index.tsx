@@ -225,13 +225,13 @@ const MenuList: React.FC = () => {
 
     params.status = params?.status?.map((item: any) => {
       if (item === '1') {
-        return (item = 'FORBIDDEN');
+        return 'FORBIDDEN';
       } else if (item === '2') {
-        return (item = 'LOCKING');
+        return 'LOCKING';
       } else if (item === '3') {
-        return (item = 'EXPIRED');
+        return 'EXPIRED';
       } else {
-        return (item = 'ENABLE');
+        return 'ENABLE';
       }
     });
 
