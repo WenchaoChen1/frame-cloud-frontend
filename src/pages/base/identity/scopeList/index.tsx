@@ -148,7 +148,7 @@ const Scope: React.FC = () => {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [
+      render: (_, record: any) => [
         <a
           key={record?.scopeId}
           onClick={() => {
@@ -159,7 +159,7 @@ const Scope: React.FC = () => {
           Permissions
         </a>,
         <a
-          key={record?.scopeId}
+          key='Edit'
           onClick={() => {
             setIsEdit(true);
             setCurrentRow(record);
@@ -168,7 +168,7 @@ const Scope: React.FC = () => {
         >
           Edit
         </a>,
-        <div key={record?.scopeId}>
+        <div key='Delete'>
           <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.scopeId || '')}>
             <a>Delete</a>
           </PopconfirmPage>

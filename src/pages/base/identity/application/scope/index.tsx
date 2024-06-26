@@ -39,7 +39,7 @@ const ApplicationScope: React.FC<TypeProp> = ({
     { title: 'createdDate',hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate)},
   ];
 
-  const getList = async (params: API.PageParams) => {
+  const getList = async (params: any) => {
     const response = await getScopeManagePageService({
       pageNumber: params.current || 1,
       pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
@@ -61,7 +61,7 @@ const ApplicationScope: React.FC<TypeProp> = ({
     };
   };
 
-  const onSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: any) => {
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
     onSelectedScope(newSelectedRowKeys);
   };

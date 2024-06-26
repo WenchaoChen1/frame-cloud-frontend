@@ -105,6 +105,14 @@ const MenuList: React.FC = () => {
     }
   };
 
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
+
   const columns: ProColumns<APISystem.MenuListItemDataType>[] = [
     {
       title: 'Menu name',
@@ -146,7 +154,7 @@ const MenuList: React.FC = () => {
           status: 'EXPIRED',
         },
       },
-      renderFormItem: (_, { type, defaultRender, ...rest }) => {
+      renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
             mode="multiple"
@@ -213,15 +221,7 @@ const MenuList: React.FC = () => {
     },
   ];
 
-  const formatDate = (time:string):string =>{
-    let times = '_'
-    if (time){
-      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
-    }
-    return times
-  }
-
-  const getList = async (params: API.PageParams) => {
+  const getList = async (params: any) => {
 
     params.status = params?.status?.map((item: any) => {
       if (item === '1') {
@@ -274,9 +274,9 @@ const MenuList: React.FC = () => {
     const treeDataMap = menuData
     let treeDataId = []
     if (!showAll){
-      const renderData = (ele) =>{
-        ele.forEach(item=>{
-          treeDataId.push(item.id)
+      const renderData = (ele: any) =>{
+        ele.forEach((item: any) => {
+          treeDataId?.push(item.id)
           if (item?.children && item?.children?.length > 0){
             renderData(item?.children)
           }

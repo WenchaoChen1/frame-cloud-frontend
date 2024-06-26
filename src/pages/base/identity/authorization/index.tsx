@@ -20,9 +20,9 @@ const Authorization: React.FC = () => {
 
   const getList = async (params: any) => {
     const response = await getAuthorizationManagePageService({
-      pageNumber: params.current || 1,
-      pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
-      id: params.id || '',
+      pageNumber: params?.current || 1,
+      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
+      id: params?.id || '',
       principalName: params.principalName || '',
       authorizationGrantType: params.authorizationGrantType || '',
     });

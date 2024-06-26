@@ -133,7 +133,12 @@ const Application: React.FC = () => {
     return result.trim();
   };
 
-  const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
+  const mergeAndFormatValidity = (validity: any, dayType: any) => {
+    const duration = moment.duration(validity, dayType);
+    return duration.toISOString();
+  };
+
+  const handleUpdate = async (fields: any) => {
     fields.accessTokenValidity = mergeAndFormatValidity(
       fields?.accessTokenValidity,
       fields?.dayType1,
@@ -168,11 +173,6 @@ const Application: React.FC = () => {
       message.error('Update failed, please try again!');
       return false;
     }
-  };
-
-  const mergeAndFormatValidity = (validity: any, dayType: any) => {
-    const duration = moment.duration(validity, dayType);
-    return duration.toISOString();
   };
 
   const handleAdd = async (fields: any) => {
@@ -213,6 +213,58 @@ const Application: React.FC = () => {
     }
   };
 
+  const formatDuration = (duration: any) => {
+    const momentDuration = moment.duration(duration);
+    const hours = momentDuration.hours();
+    const minutes = momentDuration.minutes();
+    const seconds = momentDuration.seconds();
+    let formattedDuration = '';
+    if (hours >= 24) {
+      const days = Math.floor(hours / 24);
+      formattedDuration += `${days}天 `;
+      const remainingHours = hours % 24;
+      if (remainingHours > 0) {
+        formattedDuration += `${remainingHours}小时 `;
+      }
+    } else if (hours > 0) {
+      formattedDuration += `${hours}小时 `;
+    }
+    if (minutes > 0) {
+      formattedDuration += `${minutes}分钟 `;
+    }
+    if (seconds > 0) {
+      const formattedSeconds = seconds > 0 ? seconds.toFixed(1) : seconds;
+      formattedDuration += `${formattedSeconds}秒`;
+    }
+
+    return formattedDuration.trim();
+  };
+
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
+
+  const deleteUserRequest = async (id: string) => {
+    const hide = message.loading('delete...');
+
+    try {
+      await deleteApplicationService(id);
+      hide();
+      message.success('Deleted successfully!');
+      actionRef.current?.reloadAndRest?.();
+
+      return true;
+    } catch (error) {
+      hide();
+      message.error('Delete failed, please try again');
+      return false;
+    }
+  };
+
   const columns: ProColumns<APIIdentity.authorization>[] = [
     {
       title: intl.formatMessage({ id: 'application.list.applicationName' }),
@@ -224,14 +276,14 @@ const Application: React.FC = () => {
       dataIndex: 'authorizationGrantTypes',
       hideInForm: true,
       width: '270px',
-      valueEnum: authorTypes.reduce((result, type) => {
+      valueEnum: authorTypes.reduce((result: any, type: any) => {
         result[type.value] = {
           text: type.text,
           status: type.value,
         };
         return result;
       }, {}),
-      renderFormItem: (_, { type, defaultRender, ...rest }) => {
+      renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
             mode="multiple"
@@ -242,8 +294,8 @@ const Application: React.FC = () => {
           />
         );
       },
-      render: (_, record) => {
-        const grantTypes = record.authorizationGrantTypes?.split(',');
+      render: (_, record: any) => {
+        const grantTypes = record?.authorizationGrantTypes?.split(',');
         const images = grantTypes.map((type: any) => {
           let imageUrl;
           let tooltipText;
@@ -316,7 +368,7 @@ const Application: React.FC = () => {
         LOCKING: { text: '锁定' },
         EXPIRED: { text: '过期' },
       },
-      render: (value, record) => {
+      render: (value: any, record: any) => {
         const { status } = record;
         if (status === 0) {
           return (
@@ -351,7 +403,7 @@ const Application: React.FC = () => {
       title: intl.formatMessage({ id: 'pages.searchTable.actions' }),
       dataIndex: 'actions',
       search: false,
-      render: (_, record) => [
+      render: (_, record: any) => [
         <a
           key={record?.applicationId}
           onClick={() => {
@@ -381,64 +433,8 @@ const Application: React.FC = () => {
     },
   ];
 
-  const formatDate = (time:string):string =>{
-    let times = '_'
-    if (time){
-      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
-    }
-    return times
-  }
-
-  const deleteUserRequest = async (id: string) => {
-    const hide = message.loading('delete...');
-
-    try {
-      await deleteApplicationService(id);
-      hide();
-      message.success('Deleted successfully!');
-      actionRef.current?.reloadAndRest?.();
-
-      return true;
-    } catch (error) {
-      hide();
-      message.error('Delete failed, please try again');
-      return false;
-    }
-  };
-
-  const formatDuration = (duration: any) => {
-    const momentDuration = moment.duration(duration);
-    const hours = momentDuration.hours();
-    const minutes = momentDuration.minutes();
-    const seconds = momentDuration.seconds();
-
-    let formattedDuration = '';
-
-    if (hours >= 24) {
-      const days = Math.floor(hours / 24);
-      formattedDuration += `${days}天 `;
-      const remainingHours = hours % 24;
-      if (remainingHours > 0) {
-        formattedDuration += `${remainingHours}小时 `;
-      }
-    } else if (hours > 0) {
-      formattedDuration += `${hours}小时 `;
-    }
-
-    if (minutes > 0) {
-      formattedDuration += `${minutes}分钟 `;
-    }
-
-    if (seconds > 0) {
-      const formattedSeconds = seconds > 0 ? seconds.toFixed(1) : seconds;
-      formattedDuration += `${formattedSeconds}秒`;
-    }
-
-    return formattedDuration.trim();
-  };
-
   const initAuthorizationGrantTypes = async () => {
-    const response = await getAuthorizationGrantTypesService();
+    const response: any = await getAuthorizationGrantTypesService();
     if (response?.success === true) {
       setIdTokenData(response?.data?.signatureJwsAlgorithm);
       setApplicationTypeData(response?.data?.applicationType);
@@ -470,10 +466,10 @@ const Application: React.FC = () => {
   const DataformRequest = async () => {
     if (isEdit && currentRow) {
       const responsePayMethodInfo = await getApplicationManageDetailService(
-        currentRow.applicationId,
+        currentRow?.applicationId,
       );
       if (responsePayMethodInfo.success === true && responsePayMethodInfo.data) {
-        let list = { ...responsePayMethodInfo.data };
+        let list: any = { ...responsePayMethodInfo.data };
         list.clientSecretExpiresAt = list?.clientSecretExpiresAt
           ? moment(new Date(list?.clientSecretExpiresAt).toISOString())
           : null;
@@ -656,7 +652,7 @@ const Application: React.FC = () => {
               name="authorizationGrantTypes"
               placeholder={'authorizationGrantTypes'}
               request={async () => {
-                return authorTypes.map((item) => {
+                return authorTypes.map((item: any) => {
                   return {
                     label: item?.text,
                     value: item?.value,
@@ -678,7 +674,7 @@ const Application: React.FC = () => {
               name="clientAuthenticationMethods"
               placeholder={'clientAuthenticationMethods'}
               request={async () => {
-                return authenticationMethod.map((item) => {
+                return authenticationMethod.map((item: any) => {
                   return {
                     label: item?.text,
                     value: item?.value,
@@ -695,7 +691,7 @@ const Application: React.FC = () => {
               name="applicationType"
               placeholder={'applicationType'}
               request={async () => {
-                return applicationTypeData.map((item) => {
+                return applicationTypeData.map((item: any) => {
                   return {
                     label: item?.text,
                     value: item?.value,
@@ -888,7 +884,7 @@ const Application: React.FC = () => {
               name="idTokenSignatureAlgorithm"
               placeholder={'idTokenSignatureAlgorithm'}
               request={async () => {
-                return idTokenData.map((item) => {
+                return idTokenData.map((item: any) => {
                   return {
                     label: item?.text,
                     value: item?.value,

@@ -18,7 +18,7 @@ const Dict: React.FC = () => {
   const [isRefresh, setIsRefresh] = useState(false);
 
   const getTenantTreeRequest = async () => {
-    const tenantTreeResponse = await getTenantManageTreeService();
+    const tenantTreeResponse = await getTenantManageTreeService({});
     if (tenantTreeResponse.success && tenantTreeResponse.data) {
       if (tenantTreeResponse.data?.length > 0) {
         setTenantId(tenantTreeResponse.data[0].id || undefined);

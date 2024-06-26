@@ -40,7 +40,7 @@ const Account: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<APISystem.AccountItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.AccountItemDataType[]>([]);
 
-  const getList = async (params: APISystem.PageParams) => {
+  const getList = async (params: any) => {
     const roleResponse = await getAccountManagePageService({
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
@@ -167,6 +167,14 @@ const Account: React.FC = () => {
     getParentRoleTreeRequest(getTenantId);
   };
 
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
+
   const columns: ProColumns<APISystem.AccountItemDataType>[] = [
     {
       title: 'Account',
@@ -256,14 +264,6 @@ const Account: React.FC = () => {
       ],
     },
   ];
-
-  const formatDate = (time:string):string =>{
-    let times = '_'
-    if (time){
-      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
-    }
-    return times
-  }
 
   useEffect(() => {
     getTenantTreeRequest();
