@@ -279,7 +279,7 @@ const Application: React.FC = () => {
           );
         });
 
-        return <div>{images}</div>;
+        return <div style={{ display: 'flex' }}>{images}</div>;
       },
     },
     {
