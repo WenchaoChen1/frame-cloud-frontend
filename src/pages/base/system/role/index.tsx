@@ -119,12 +119,20 @@ const Role: React.FC = () => {
 
   const onChangeTenant = (tenantId: string) => {
     setTenantId(tenantId);
-    formRef.current.setFieldValue('parentId');
+    formRef?.current?.setFieldValue('parentId');
   };
 
   const onChangeTenant2 = (tenantId: string) => {
     setTenantId(tenantId);
   };
+
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
 
   const columns: ProColumns<APISystem.RoleItemDataType>[] = [
     {
@@ -239,14 +247,6 @@ const Role: React.FC = () => {
     },
   ];
 
-  const formatDate = (time:string):string =>{
-    let times = '_'
-    if (time){
-      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
-    }
-    return times
-  }
-
   const getList = async (params: APISystem.RoleTableSearchParams) => {
     if (!tenantId) {
       return {
@@ -288,7 +288,7 @@ const Role: React.FC = () => {
   };
 
   const getTenantTreeRequest = async () => {
-    const tenantTreeResponse = await getTenantManageTreeService();
+    const tenantTreeResponse = await getTenantManageTreeService({});
     if (tenantTreeResponse.success && tenantTreeResponse.data) {
       if (tenantTreeResponse.data?.length > 0) {
         setTenantId(tenantTreeResponse.data[0].id || undefined);
@@ -300,17 +300,6 @@ const Role: React.FC = () => {
       setTenantId(undefined);
       setTenantTreeData([]);
       return [];
-    }
-  };
-
-  const removeFields = (obj: any) => {
-    delete obj.id;
-    delete obj.sort;
-
-    if (obj.children) {
-      obj.children.forEach((child: any) => {
-        removeFields(child);
-      });
     }
   };
 
@@ -332,11 +321,11 @@ const Role: React.FC = () => {
     }
   };
 
-  const onCheck = (checkedKeysValue: React.Key[], e: any) => {
+  const onCheck = (checkedKeysValue: any) => {
     setCheckedKeys(checkedKeysValue);
   };
 
-  const getParentRoleTreeRequest = async (Id: any) => {
+  const getParentRoleTreeRequest = async () => {
     const Response = await getRoleManageRoleDetailToListService({
       tenantId,
       tenantName: roleNameText || '',
@@ -347,10 +336,6 @@ const Role: React.FC = () => {
     } else {
       return [];
     }
-  };
-
-  const onLoad = (loadedKeys: any)=> {
-    console.log(loadedKeys, '数据是啥')
   };
 
   useEffect(() => {

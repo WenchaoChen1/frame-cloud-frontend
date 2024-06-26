@@ -110,6 +110,7 @@ const getNotices = (req: Request, res: Response) => {
   });
 };
 
-export default {
-  'GET /api/notices': getNotices,
-};
+//TODO
+// export default {
+//   'GET /api/notices': getNotices,
+// };

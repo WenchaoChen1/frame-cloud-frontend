@@ -119,11 +119,11 @@ const Index: React.FC = () => {
     handleModalVisible(true);
   };
 
-  const onCheck = (checkedKeysValue: React.Key[], e: any) => {
+  const onCheck = (checkedKeysValue: any) => {
     setCheckedKeys(checkedKeysValue);
   };
 
-  const onSelect = (selectedKeysValue: React.Key[], info: any) => {
+  const onSelect = (selectedKeysValue: any) => {
     setSelectedKeys(selectedKeysValue);
   };
 
@@ -161,10 +161,22 @@ const Index: React.FC = () => {
     }
   };
 
+  const getParentRoleTreeRequest = async () => {
+    const Response = await getRoleManageRoleDetailToListService({
+      tenantId: tenantId || '',
+      tenantName: '',
+    });
+    if (Response.success && Response.data) {
+      return Response.data;
+    } else {
+      return [];
+    }
+  };
+
   const getTenantManageInfoRequest = async () => {
     if (isEdit) {
       const roleDetailResponse = await getTenantManageDetailService(currentRow?.id || '');
-      const res = await getParentRoleTreeRequest({ tenantId, tenantName: '' });
+      await getParentRoleTreeRequest();
       if (roleDetailResponse.success === true && roleDetailResponse.data) {
         return roleDetailResponse.data;
       }
@@ -219,7 +231,7 @@ const Index: React.FC = () => {
           status: 'EXPIRED',
         },
       },
-      renderFormItem: (_, { type, defaultRender, ...rest }) => {
+      renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
             mode="multiple"
@@ -302,28 +314,16 @@ const Index: React.FC = () => {
     },
   ];
 
-  const getParentRoleTreeRequest = async (Id: any) => {
-    const Response = await getRoleManageRoleDetailToListService({
-      tenantId,
-      tenantName: '',
-    });
-    if (Response.success && Response.data) {
-      return Response.data;
-    } else {
-      return [];
-    }
-  };
-
   const searchTable = async (params: any) => {
     params.status = params?.status?.map((item: any) => {
       if (item === '1') {
-        return (item = 'FORBIDDEN');
+        return 'FORBIDDEN';
       } else if (item === '2') {
-        return (item = 'LOCKING');
+        return 'LOCKING';
       } else if (item === '3') {
-        return (item = 'EXPIRED');
+        return 'EXPIRED';
       } else {
-        return (item = 'ENABLE');
+        return 'ENABLE';
       }
     });
     let data: any = [];
@@ -343,8 +343,8 @@ const Index: React.FC = () => {
     const treeDataMap = menuData
     let treeDataId = []
     if (!showAll){
-      const renderData = (ele) =>{
-        ele.forEach(item=>{
+      const renderData = (ele: any) =>{
+        ele.forEach((item: any)=>{
           treeDataId.push(item.id)
           if (item?.children && item?.children?.length > 0){
             renderData(item?.children)

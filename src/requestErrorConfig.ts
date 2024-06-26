@@ -1,15 +1,14 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
-import { useLocation } from 'react-router-dom';
-import {getRefreshToken, getToken, logOut, removeToken, setRefreshToken, setToken} from '@/utils/utils';
+import {getRefreshToken, getToken, removeToken, setRefreshToken, setToken} from '@/utils/utils';
 import { history } from '@umijs/max';
 import {LOGIN_PATH} from "@/pages/common/constant";
+import {oauth2RefreshTokenService} from "@/services/base-service/identity-service/login";
+const axios = require('axios');
 // TODO
 // import {oauth2RefreshToken} from "@/services/base-service/api/identity-api/oauth2";
 // import React, { useState, useEffect} from 'react';
-import {oauth2RefreshTokenService} from "@/services/base-service/identity-service/login";
-const axios = require('axios');
 
 // 错误处理方案： 错误类型
 enum ErrorShowType {

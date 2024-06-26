@@ -36,16 +36,16 @@ const User: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<APISystem.UserItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.UserItemDataType[]>([]);
 
-  const getList = async (params: API.PageParams) => {
+  const getList = async (params: any) => {
     params.status = params?.status?.map((item: any) => {
       if (item === '1') {
-        return (item = 'FORBIDDEN');
+        return 'FORBIDDEN';
       } else if (item === '2') {
-        return (item = 'LOCKING');
+        return 'LOCKING';
       } else if (item === '3') {
-        return (item = 'EXPIRED');
+        return'EXPIRED';
       } else {
-        return (item = 'ENABLE');
+        return 'ENABLE';
       }
     });
 
@@ -128,6 +128,14 @@ const User: React.FC = () => {
     setCurrentRow(record);
   };
 
+  const formatDate = (time:string):string =>{
+    let times = '_'
+    if (time){
+      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return times
+  }
+
   const columns: ProColumns<APISystem.UserItemDataType>[] = [
     {
       title: 'User Name',
@@ -140,7 +148,7 @@ const User: React.FC = () => {
     {
       title: 'PhoneNumber',
       dataIndex: 'phoneNumber',
-      renderFormItem: (_, { type, defaultRender, ...rest }) => {
+      renderFormItem: () => {
         return <ProFormDigit width="md" name="phoneNumber" />;
       },
     },
@@ -166,7 +174,7 @@ const User: React.FC = () => {
           status: 'EXPIRED',
         },
       },
-      renderFormItem: (_, { type, defaultRender, ...rest }) => {
+      renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
             mode="multiple"
@@ -207,15 +215,6 @@ const User: React.FC = () => {
       ],
     },
   ];
-
-  const formatDate = (time:string):string =>{
-    let times = '_'
-    if (time){
-      times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
-    }
-    return times
-  }
-
 
   return (
     <PageContainer>
