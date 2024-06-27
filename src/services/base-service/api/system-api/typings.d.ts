@@ -166,6 +166,8 @@ declare namespace APISystem {
     permissionCode?: string;
     permissionType?: string;
     status?: number;
+    current?: number;
+    pageSize?: number;
   };
 
   type onSaveRelationMenuResponseDataType = {
