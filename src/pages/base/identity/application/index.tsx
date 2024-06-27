@@ -424,7 +424,7 @@ const Application: React.FC = () => {
         >
           Edit
         </a>,
-        <div key={record?.applicationId}>
+        <div key={record?.applicationId} style={{ display: 'inline-block' }}>
           <ConfirmPage onConfirm={async () => await deleteUserRequest(record?.applicationId || '')}>
             <a style={{ marginLeft: 15 }}>Delete</a>
           </ConfirmPage>

@@ -8,7 +8,6 @@ import {
 import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
-import styles from './index.less';
 import dayjs from "dayjs";
 
 type TypeProp = {
@@ -86,7 +85,6 @@ const ApplicationScope: React.FC<TypeProp> = ({
   return (
     <div>
       <ProTable
-        className={styles.permission}
         columns={columns}
         rowKey={(e: any) => e?.scopeId}
         rowSelection={rowSelection}

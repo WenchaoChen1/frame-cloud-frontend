@@ -1,3 +1,4 @@
+import Metadata from './Metadata/index'
 import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
 import {
   deleteMenuManageService,
@@ -5,6 +6,7 @@ import {
   getMenuManageTreeService,
   insertMenuManageService,
   updateMenuManageService,
+  updateMenuAssignedAttributeService,
 } from '@/services/base-service/system-service/menuService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
@@ -37,6 +39,9 @@ const MenuList: React.FC = () => {
   const [menuData,setMenuData] = useState([])
   const [showAll,setShowAll] = useState(false)
   const [tableAdd,setTableAdd] = useState<string | undefined>('')
+  const [ScopeOpenModal, setScopeOpenModal] = useState<boolean>(false);
+  const [menuId, setMenuId] = useState('');
+  const [selectMetadataList, setSelectMetadataList] = useState([]);
 
   const getMenuInfoRequest = async () => {
     if (isEdit) {
@@ -190,6 +195,15 @@ const MenuList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => [
         <a
+          key={record?.id}
+          onClick={() => {
+            setScopeOpenModal(true);
+            setMenuId(record?.id);
+          }}
+        >
+          Metadata
+        </a>,
+        <a
           key="EditBtn"
           onClick={() => {
             setIsEdit(true);
@@ -289,6 +303,26 @@ const MenuList: React.FC = () => {
     }
     setDefaultExpanded(treeDataId)
   }
+
+  const editMetadataList = async () => {
+    const params = {
+      menuId: menuId,
+      attributeIds: selectMetadataList,
+    };
+    try {
+      await updateMenuAssignedAttributeService(params);
+      message.success('Added successfully');
+      return true;
+    } catch (error) {
+      message.error('Adding failed, please try again!');
+      return false;
+    }
+  };
+
+  const handleSelectedMetadata = (scope: any) => {
+    setSelectMetadataList(scope);
+  };
+
   return (
     <PageContainer>
       <ProTable<APISystem.MenuListItemDataType, APISystem.PageParams>
@@ -569,6 +603,29 @@ const MenuList: React.FC = () => {
               />
             </Col>
           </Row>
+        </ModalForm>
+      )}
+
+      {ScopeOpenModal && (
+        <ModalForm
+          title={'Scope'}
+          width="70%"
+          open={ScopeOpenModal}
+          onOpenChange={setScopeOpenModal}
+          onFinish={async () => {
+            let response = await editMetadataList();
+            if (response) {
+              setScopeOpenModal(false);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+        >
+          <Metadata
+            onSelectedMetadata={handleSelectedMetadata}
+            Id={menuId}
+          />
         </ModalForm>
       )}
     </PageContainer>
