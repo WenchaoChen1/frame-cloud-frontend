@@ -107,14 +107,14 @@ const Organize: React.FC = () => {
         </Col>
 
         <Col className={styles.colRightBox} span={16}>
-          {selectOrganizeId && (
+          {selectOrganizeId &&
             <RightContainer
               isEdit={isEdit}
               tenantId={tenantId}
               organTreeData={organTreeData}
               selectOrganizeId={selectOrganizeId}
             />
-          )}
+          }
         </Col>
       </Row>
     </PageContainer>

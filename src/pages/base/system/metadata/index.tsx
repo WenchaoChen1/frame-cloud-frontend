@@ -119,8 +119,8 @@ const Metadata: React.FC = () => {
         return result;
       }, {}),
     },
-    { title: 'createdDate', dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate) },
-    { title: 'updatedDate', dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate) },
+    { title: 'createdDate', dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate) },
+    { title: 'updatedDate', dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate) },
   ];
 
   const columns: ProColumns<APIIdentity.authorization>[] = [

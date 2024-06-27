@@ -86,10 +86,11 @@ declare namespace APIIdentity {
     accessToken: string;
   };
 
+  // TODO
   // 分页Bo对象
-  type findByPage4Params = {
-    pager: Pager;
-  };
+  // type findByPage4Params = {
+  //   pager: Pager;
+  // };
 
   type Pager = {
     direction?: string; // 排序方向的值只能是大写 ASC 或者 DESC, 默认值：DESC
