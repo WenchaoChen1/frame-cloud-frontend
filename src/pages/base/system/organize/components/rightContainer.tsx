@@ -94,10 +94,10 @@ const RightContainer: React.FC<propsType> = (props) => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a key="EditBtn" onClick={() => {}}>
+        <a key="EditBtn">
           Edit
         </a>,
-        <a key="NewBtn" onClick={() => {}}>
+        <a key="NewBtn">
           Add
         </a>,
         <a

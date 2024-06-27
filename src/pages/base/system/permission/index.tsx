@@ -282,17 +282,7 @@ const User: React.FC = () => {
           status: 'EXPIRED',
         },
       },
-      renderFormItem: (_, { ...rest }) => {
-        return (
-          <ProFormSelect
-            mode="multiple"
-            {...rest}
-            fieldProps={{
-              mode: 'multiple',
-            }}
-          />
-        );
-      },
+      renderFormItem: (_, { ...rest }) => <ProFormSelect mode="multiple" {...rest} fieldProps={{mode: 'multiple'}}/>
     },
     { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate) },
     { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate) },
@@ -312,7 +302,7 @@ const User: React.FC = () => {
           Edit
         </a>,
         <div key={'Delete'}>
-          <PopconfirmPage onConfirm={async () => await onDeleteRequest(record?.permissionId || '')}>
+          <PopconfirmPage onConfirm={() => onDeleteRequest(record?.permissionId || '')}>
             <a>Delete</a>
           </PopconfirmPage>
         </div>
