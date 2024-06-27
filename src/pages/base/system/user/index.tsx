@@ -199,7 +199,7 @@ const User: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record:any) => [
-        <a key="editUser" onClick={async () => await onEditUser(record)}>
+        <a key="editUser" onClick={() => onEditUser(record)}>
           Edit
         </a>,
 

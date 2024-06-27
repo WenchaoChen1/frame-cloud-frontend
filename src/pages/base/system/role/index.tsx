@@ -409,9 +409,9 @@ const Role: React.FC = () => {
           onFinish={async (record: APISystem.RoleItemDataType) => {
             let response = undefined;
             if (isEdit) {
-              response = await updateRoleRequest(record as APISystem.RoleItemDataType);
+              response = await updateRoleRequest(record);
             } else {
-              response = await createRoleRequest(record as APISystem.RoleItemDataType);
+              response = await createRoleRequest(record);
             }
 
             if (response) {
