@@ -39,7 +39,7 @@ const Scope: React.FC = () => {
       scopeCode: params?.scopeCode || '',
     });
 
-    let dataSource: APISystem.UserItemDataType[] = [];
+    let dataSource: APIIdentity.scopeItemType[] = [];
     let total = 0;
     if (response?.success === true) {
       dataSource = response?.data?.content || [];
@@ -53,7 +53,7 @@ const Scope: React.FC = () => {
     };
   };
 
-  const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
+  const handleUpdate = async (fields: APIIdentity.scopeItemType) => {
     const hide = message.loading('Update');
     try {
       await updateScopeManageService(fields);
@@ -82,7 +82,7 @@ const Scope: React.FC = () => {
     };
   };
 
-  const handleAdd = async (fields: APISystem.TenantItemDataType) => {
+  const handleAdd = async (fields: APIIdentity.scopeItemType) => {
     const hide = message.loading('add');
     delete fields.id;
     try {
@@ -139,7 +139,7 @@ const Scope: React.FC = () => {
     return times
   }
 
-  const columns: ProColumns<APIIdentity.authorization>[] = [
+  const columns: ProColumns<APIIdentity.scopeItemType>[] = [
     { title: 'scopeName', dataIndex: 'scopeName'},
     { title: 'scopeCode', dataIndex: 'scopeCode'},
     { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate)},
@@ -183,7 +183,7 @@ const Scope: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<APIIdentity.authorization, API.PageParams>
+      <ProTable<APIIdentity.scopeItemType, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
         search={{
@@ -232,9 +232,9 @@ const Scope: React.FC = () => {
           onFinish={async (record) => {
             let response = undefined;
             if (isEdit) {
-              response = await handleUpdate(record as APISystem.MenuListItemDataType);
+              response = await handleUpdate(record as APIIdentity.scopeItemType);
             } else {
-              response = await handleAdd(record as APISystem.MenuListItemDataType);
+              response = await handleAdd(record as APIIdentity.scopeItemType);
             }
 
             if (response) {

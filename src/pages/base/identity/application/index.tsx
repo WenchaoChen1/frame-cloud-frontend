@@ -80,7 +80,7 @@ const Application: React.FC = () => {
       status: params?.status,
     });
 
-    let dataSource: APISystem.UserItemDataType[] = [];
+    let dataSource: APIIdentity.application[] = [];
     let total = 0;
 
     if (response?.success === true) {
@@ -265,7 +265,7 @@ const Application: React.FC = () => {
     }
   };
 
-  const columns: ProColumns<APIIdentity.authorization>[] = [
+  const columns: ProColumns<APIIdentity.application>[] = [
     {
       title: intl.formatMessage({ id: 'application.list.applicationName' }),
       dataIndex: 'applicationName',
@@ -520,7 +520,7 @@ const Application: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<APIIdentity.authorization, API.PageParams>
+      <ProTable<APIIdentity.application, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
         className={styles.ApplicationStyle}

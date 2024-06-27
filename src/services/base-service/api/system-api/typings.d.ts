@@ -46,9 +46,9 @@ declare namespace APISystem {
     status?: number,
     lastLoginTime?: string,
     description?: string;
-    createdAt?: string;
+    createdDate?: string;
     createdBy?: string;
-    updatedAt?: string;
+    updatedDate?: string;
     updatedBy?: string;
   };
 
@@ -98,9 +98,9 @@ declare namespace APISystem {
     url?: string;
     permission?: string;
     tenantEnable?: number;
-    createdAt?: string;
+    createdDate?: string;
     createdBy?: string;
-    updatedAt?: string;
+    updatedDate?: string;
     updatedBy?: string;
     children?: MenuListItemDataType[];
     checked?: number;
@@ -115,9 +115,9 @@ declare namespace APISystem {
     type?: number;
     parentId?: string;
     tenantCode?: string;
-    createdAt?: string;
+    createdDate?: string;
     createdBy?: string;
-    updatedAt?: string;
+    updatedDate?: string;
     updatedBy?: string;
     children?: TenantItemDataType[];
   };
@@ -148,9 +148,9 @@ declare namespace APISystem {
     tenantId?: string;
     role?: string;
     user?: UserItemDataType;
-    createdAt?: string;
+    createdDate?: string;
     createdBy?: string;
-    updatedAt?: string;
+    updatedDate?: string;
     updatedBy?: string;
   };
   type AccountListResponseDataType = {
@@ -198,9 +198,9 @@ declare namespace APISystem {
     url?: string;
     permission?: string;
     tenantEnable?: number;
-    createdAt?: string;
+    createdDate?: string;
     createdBy?: string;
-    updatedAt?: string;
+    updatedDate?: string;
     updatedBy?: string;
     children?: MenuListItemDataType[];
     checked?: number;
@@ -219,9 +219,9 @@ declare namespace APISystem {
     status?: number,
     sort?: number,
     description?: string;
-    createdAt?: string;
+    createdDate?: string;
     createdBy?: string;
-    updatedAt?: string;
+    updatedDate?: string;
     updatedBy?: string;
   };
 
@@ -278,9 +278,9 @@ declare namespace APISystem {
     url?: string;
     permission?: string;
     tenantEnable?: number;
-    createdAt?: string;
+    createdDate?: string;
     createdBy?: string;
-    updatedAt?: string;
+    updatedDate?: string;
     updatedBy?: string;
     children?: MenuListItemDataType[];
     checked?: number;
@@ -315,9 +315,9 @@ declare namespace APISystem {
     status?: number;
     sort?: number;
     description?: string;
-    createdAt?: string;
+    createdDate?: string;
     createdBy?: string;
-    updatedAt?: string;
+    updatedDate?: string;
     updatedBy?: string;
     children?: OrganizeListItemDataType[];
   };
@@ -346,9 +346,9 @@ declare namespace APISystem {
     status?: number,
     sort?: number,
     description?: string;
-    createdAt?: string;
+    createdDate?: string;
     createdBy?: string;
-    updatedAt?: string;
+    updatedDate?: string;
     updatedBy?: string;
     children?: DictItemDataType[];
   };

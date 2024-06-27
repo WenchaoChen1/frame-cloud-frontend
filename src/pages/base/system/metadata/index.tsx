@@ -123,7 +123,7 @@ const Metadata: React.FC = () => {
     { title: 'updatedDate', dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate) },
   ];
 
-  const columns: ProColumns<APIIdentity.authorization>[] = [
+  const columns: ProColumns<APISystem.MetadataListItemDataType>[] = [
     { title: intl.formatMessage({ id: 'metadata.list.interfaceName' }), dataIndex: 'requestMethod' },
     { title: 'Url', dataIndex: 'url', ellipsis: true, },
     { title: 'Description', dataIndex: 'description', ellipsis: true, },

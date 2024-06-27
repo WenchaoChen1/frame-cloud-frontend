@@ -137,4 +137,53 @@ declare namespace APIIdentity {
     createdDate:string,
     updatedDate:string
   };
+
+  type application = {
+    updatedDate?: string;
+    applicationName?: string;
+    abbreviation?: string;
+    authorizationGrantTypes?: string[];
+    accessTokenValidity?: string;
+    refreshTokenValidity?: string;
+    authorizationCodeValidity?: string;
+    deviceCodeValidity?: string;
+    status?: string;
+    createdDate?: string;
+    updatedDate?: string;
+    clientId?: string;
+    clientSecret?: string;
+    logo?: string;
+    homepage?: string;
+    clientAuthenticationMethods?: string;
+    applicationType?: string;
+    clientSecretExpiresAt?: string;
+    redirectUris?: string;
+    jwkSetUrl?: string;
+    requireProofKey?: boolean;
+    requireAuthorizationConsent?: boolean;
+    idTokenSignatureAlgorithm?: string;
+    reuseRefreshTokens?: boolean;
+    description?: string;
+    ranking?: number;
+    reserved?: boolean;
+  };
+
+  type scopeItemType = {
+    scopeName?: string;
+    scopeCode?: string;
+    createdDate?: string;
+    updatedDate?: string;
+    scopeId?: string;
+  };
+
+  type complianceItemType = {
+    principalName?: string;
+    clientId?: string;
+    ip?: string;
+    osName?: string;
+    android?: string;
+    operation?: string;
+    createdDate?: string;
+    updatedDate?: string;
+  };
 }

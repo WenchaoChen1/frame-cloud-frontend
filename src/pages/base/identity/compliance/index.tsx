@@ -22,7 +22,7 @@ const Compliance: React.FC = () => {
       osName: params?.osName || '',
     });
 
-    let dataSource: APISystem.UserItemDataType[] = [];
+    let dataSource: APIIdentity.complianceItemType[] = [];
     let total = 0;
     if (response?.success === true) {
       dataSource = response?.data?.content || [];
@@ -44,7 +44,7 @@ const Compliance: React.FC = () => {
     return times
   }
 
-  const columns: ProColumns<APIIdentity.authorization>[] = [
+  const columns: ProColumns<APIIdentity.complianceItemType>[] = [
     { title: 'principalName', dataIndex: 'principalName' },
     { title: 'clientId', dataIndex: 'clientId' },
     { title: 'ip', dataIndex: 'ip', search: false },
@@ -64,7 +64,7 @@ const Compliance: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<APIIdentity.authorization, API.PageParams>
+      <ProTable<APIIdentity.complianceItemType, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
         rowKey="scopeId"

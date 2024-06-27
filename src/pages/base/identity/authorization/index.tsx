@@ -27,7 +27,7 @@ const Authorization: React.FC = () => {
       authorizationGrantType: params.authorizationGrantType || '',
     });
 
-    let dataSource: APISystem.UserItemDataType[] = [];
+    let dataSource: APIIdentity.authorization[] = [];
     let total = 0;
     if (response?.success === true) {
       dataSource = response?.data?.content || [];
