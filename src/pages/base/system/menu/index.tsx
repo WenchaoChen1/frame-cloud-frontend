@@ -277,12 +277,12 @@ const MenuList: React.FC = () => {
       dataSource = response?.data || [];
     }
     setMenuData(dataSource)
-    setTotal(total);
+    setTotal(dataTotal);
 
     return {
       data: dataSource,
       success: true,
-      total: total,
+      total: dataTotal,
     };
   };
 

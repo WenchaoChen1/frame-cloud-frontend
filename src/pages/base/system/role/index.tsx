@@ -117,13 +117,13 @@ const Role: React.FC = () => {
     }
   };
 
-  const onChangeTenant = (tenantId: string) => {
-    setTenantId(tenantId);
+  const onChangeTenant = (getTenantId: string) => {
+    setTenantId(getTenantId);
     formRef?.current?.setFieldValue('parentId');
   };
 
-  const onChangeTenant2 = (tenantId: string) => {
-    setTenantId(tenantId);
+  const onChangeTenant2 = (getTenantId: string) => {
+    setTenantId(getTenantId);
   };
 
   const formatDate = (time:string):string =>{

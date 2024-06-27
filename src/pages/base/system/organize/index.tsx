@@ -30,8 +30,8 @@ const Organize: React.FC = () => {
     }
   };
 
-  const getOrganizeTreeRequest = async (tenantId: string) => {
-    const organizeTreeResponse = await getOrganizeTreeService(tenantId);
+  const getOrganizeTreeRequest = async (getTenantId: string) => {
+    const organizeTreeResponse = await getOrganizeTreeService(getTenantId);
     if (organizeTreeResponse.success && organizeTreeResponse.data) {
       setOrganTreeData(organizeTreeResponse.data);
       if (organizeTreeResponse.data.length > 0) {
@@ -45,8 +45,8 @@ const Organize: React.FC = () => {
     }
   };
 
-  const onChangeTenant = (tenantId: string) => {
-    setTenantId(tenantId);
+  const onChangeTenant = (getTenantId: string) => {
+    setTenantId(getTenantId);
     setIsEdit(true);
   };
 

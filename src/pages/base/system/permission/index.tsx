@@ -59,18 +59,18 @@ const User: React.FC = () => {
     });
 
     let dataSource: APISystem.PermissionItemDataType[] = [];
-    let total = 0;
+    let dataTotal = 0;
     if (response?.success === true) {
       dataSource = response?.data?.content || [];
-      total = response?.data?.totalElements || 0;
+      dataTotal = response?.data?.totalElements || 0;
     }
 
-    setTotal(total);
+    setTotal(dataTotal);
 
     return {
       data: dataSource,
       success: true,
-      total: total,
+      total: dataTotal,
     };
   };
 
