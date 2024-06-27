@@ -40,8 +40,8 @@ const MenuList: React.FC = () => {
   const [showAll,setShowAll] = useState(false)
   const [tableAdd,setTableAdd] = useState<string | undefined>('')
   const [ScopeOpenModal, setScopeOpenModal] = useState<boolean>(false);
-  const [menuId, setMenuId] = useState('');
-  const [selectMetadataList, setSelectMetadataList] = useState([]);
+  const [menuId, setMenuId] = useState<any>('');
+  const [selectMetadataList, setSelectMetadataList] = useState<any>([]);
 
   const getMenuInfoRequest = async () => {
     if (isEdit) {
@@ -193,7 +193,7 @@ const MenuList: React.FC = () => {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [
+      render: (_, record: any) => [
         <a
           key={record?.id}
           onClick={() => {

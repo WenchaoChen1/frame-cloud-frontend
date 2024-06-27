@@ -185,5 +185,7 @@ declare namespace APIIdentity {
     operation?: string;
     createdDate?: string;
     updatedDate?: string;
+    current?: number;
+    pageSize?: number;
   };
 }

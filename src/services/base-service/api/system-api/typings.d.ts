@@ -43,13 +43,15 @@ declare namespace APISystem {
     email?: string,
     gender?: number,
     avatar?: string;
-    status?: number,
+    status?: any,
     lastLoginTime?: string,
     description?: string;
     createdDate?: string;
     createdBy?: string;
     updatedDate?: string;
     updatedBy?: string;
+    current?: number;
+    pageSize?: number;
   };
 
   type moveMenuDataType = {
@@ -77,7 +79,9 @@ declare namespace APISystem {
     path?: string;
     description?: string;
     webExpression?: string;
-    status?: number;
+    status?: any;
+    current?: number;
+    pageSize?: number;
   };
   type MenuListItemDataType = {
     id?: string;
@@ -89,8 +93,8 @@ declare namespace APISystem {
     location?: number;
     description?: string;
     sort?: number;
-    status?: number;
-    type?: number;
+    status?: any;
+    type?: any;
     hidden?: number;
     usageType?: number;
     platformUse?: number;
@@ -106,6 +110,9 @@ declare namespace APISystem {
     checked?: number;
     checkedMenuId?: string[];
     halfCheckedMenuId?: string[];
+    current?: number;
+    pageSize?: number;
+    menuName?: string[];
   };
   type TenantItemDataType = {
     id?: string;
@@ -152,6 +159,9 @@ declare namespace APISystem {
     createdBy?: string;
     updatedDate?: string;
     updatedBy?: string;
+    current?: number;
+    pageSize?: number;
+    tenantId?: string;
   };
   type AccountListResponseDataType = {
     data?: AccountItemDataType[];
@@ -165,7 +175,7 @@ declare namespace APISystem {
     permissionName?: string;
     permissionCode?: string;
     permissionType?: string;
-    status?: number;
+    status?: any;
     current?: number;
     pageSize?: number;
   };

@@ -63,7 +63,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
   const getList = async (params: APISystem.PermissionItemDataType) => {
     const response = await getPermissionManagePageService({
       pageNumber: params?.current || 1,
-      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
+      pageSize: params?.pageSize,
       permissionName: params?.permissionName || '',
       permissionCode: params?.permissionCode || '',
       permissionType: params?.permissionType || '',
