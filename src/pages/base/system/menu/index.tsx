@@ -272,17 +272,17 @@ const MenuList: React.FC = () => {
     const response = await getMenuManageTreeService(parameters);
 
     let dataSource: any = [];
-    let total = 0;
+    let dataTotal = 0;
     if (response?.success === true) {
       dataSource = response?.data || [];
     }
     setMenuData(dataSource)
-    setTotal(total);
+    setTotal(dataTotal);
 
     return {
       data: dataSource,
       success: true,
-      total: total,
+      total: dataTotal,
     };
   };
 
