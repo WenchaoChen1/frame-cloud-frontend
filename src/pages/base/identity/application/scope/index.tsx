@@ -32,10 +32,10 @@ const ApplicationScope: React.FC<TypeProp> = ({
     return times
   }
 
-  const columns: ProColumns<APIIdentity.authorization>[] = [
+  const columns: ProColumns<APIIdentity.scopeItemType>[] = [
     { title: 'scopeName', dataIndex: 'scopeName'},
     { title: 'scopeCode', dataIndex: 'scopeCode'},
-    { title: 'createdDate',hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate)},
+    { title: 'createdDate',hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate)},
   ];
 
   const getList = async (params: any) => {
@@ -46,7 +46,7 @@ const ApplicationScope: React.FC<TypeProp> = ({
       scopeCode: params?.scopeCode || '',
     });
 
-    let dataSource: APISystem.UserItemDataType[] = [];
+    let dataSource: APIIdentity.scopeItemType[] = [];
     let total = 0;
     if (response?.success === true) {
       dataSource = response?.data?.content || [];
@@ -84,7 +84,7 @@ const ApplicationScope: React.FC<TypeProp> = ({
 
   return (
     <div>
-      <ProTable
+      <ProTable<APIIdentity.scopeItemType, API.PageParams>
         columns={columns}
         rowKey={(e: any) => e?.scopeId}
         rowSelection={rowSelection}

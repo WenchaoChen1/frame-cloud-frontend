@@ -1,33 +1,84 @@
 import React from "react";
 import {history} from "@umijs/max";
-import {RuleObject, StoreValue} from "rc-field-form/lib/interface";
 import {ACCESS_TOKEN, CURRENT_ACCOUNT_ID, LOGIN_PATH, REFRESH_TOKEN} from "@/pages/common/constant";
 import {MenuDataItem} from "@ant-design/pro-components";
 import * as allIcons from '@ant-design/icons'
 
-export function getCookie(name: string) {
-  let arr;
-  const reg1 = new RegExp(`(^| )${name}=([^;]*)(;|$)`);
-  if (document.cookie.match(reg1)) {
-    arr = document.cookie.match(reg1);
-    if (arr) {
-      return unescape(arr[2]);
-    }
-  }
-  return null;
-}
+// TODO
+// import {RuleObject, StoreValue} from "rc-field-form/lib/interface";
 
-export function setCookie(name: string, value: string, expire: number) {
-  const exp = new Date();
-  exp.setTime(exp.getTime() + expire);
-  document.cookie = `${name}=${escape(value)};expires=${exp.toUTCString()}`;
-}
+// export function getCookie(name: string) {
+//   let arr;
+//   const reg1 = new RegExp(`(^| )${name}=([^;]*)(;|$)`);
+//   if (document.cookie.match(reg1)) {
+//     arr = document.cookie.match(reg1);
+//     if (arr) {
+//       return unescape(arr[2]);
+//     }
+//   }
+//   return null;
+// }
+//
+// export function setCookie(name: string, value: string, expire: number) {
+//   const exp = new Date();
+//   exp.setTime(exp.getTime() + expire);
+//   document.cookie = `${name}=${escape(value)};expires=${exp.toUTCString()}`;
+// }
+//
+// export function delCookie(key: string) {
+//   const exp = new Date();
+//   exp.setTime(-1);
+//   document.cookie = `${key}=''};expires=${exp.toUTCString()}`;
+// }
+//
+// export const setQueryParams = (params: any): string => {
+//   return '?' + new URLSearchParams(Object.entries(params)).toString();
+// }
+//
+// // get router params
+// export const getQueryParams = (url = window.location.toString()): object => {
+//   const queryString = new URL(url).searchParams.entries();
+//   const queryParams: {[key: string]: any} = {};
+//   for (const [key, value] of queryString) {
+//     queryParams[key] = value;
+//   }
+//   return queryParams;
+// }
+//
+// export const numberToFloat = (val: string): string => {
+//   const value: number = Math.round(parseFloat(val) * 100) / 100;
+//   const s = value.toString().split(".");
+//   if (s.length === 1) {
+//     return value.toString() + ".00";
+//   }
+//
+//   if (s.length > 1) {
+//     if (s[1].length < 2) {
+//       return value.toString() + "0";
+//     }
+//   }
+//
+//   return value.toString();
+// }
+//
+// export const requiredRules = [
+//   {
+//     required: true,
+//     message: "This field is required",
+//   },
+//   {
+//     validator: trimValidator
+//   }
+// ]
+//
+// const trimValidator = (_: RuleObject, value: StoreValue) => {
+//   if (value?.length > 0 && value.trim().length === 0) {
+//     return Promise.reject('This field cannot be all spaces');
+//   } else {
+//     return Promise.resolve();
+//   }
+// }
 
-export function delCookie(key: string) {
-  const exp = new Date();
-  exp.setTime(-1);
-  document.cookie = `${key}=''};expires=${exp.toUTCString()}`;
-}
 
 export function getLocalStorage(key: string) {
   return localStorage.getItem(key);
@@ -70,54 +121,6 @@ export function logOut() {
   removeToken();
 }
 
-export const setQueryParams = (params: any): string => {
-  return '?' + new URLSearchParams(Object.entries(params)).toString();
-}
-
-// get router params
-export const getQueryParams = (url = window.location.toString()): object => {
-  const queryString = new URL(url).searchParams.entries();
-  const queryParams: {[key: string]: any} = {};
-  for (const [key, value] of queryString) {
-    queryParams[key] = value;
-  }
-  return queryParams;
-}
-
-export const numberToFloat = (val: string): string => {
-  const value: number = Math.round(parseFloat(val) * 100) / 100;
-  const s = value.toString().split(".");
-  if (s.length === 1) {
-    return value.toString() + ".00";
-  }
-
-  if (s.length > 1) {
-    if (s[1].length < 2) {
-      return value.toString() + "0";
-    }
-  }
-
-  return value.toString();
-}
-
-const trimValidator = (_: RuleObject, value: StoreValue) => {
-  if (value?.length > 0 && value.trim().length === 0) {
-    return Promise.reject('This field cannot be all spaces');
-  } else {
-    return Promise.resolve();
-  }
-}
-
-export const requiredRules = [
-  {
-    required: true,
-    message: "This field is required",
-  },
-  {
-    validator: trimValidator
-  }
-]
-
 export const fixMenuItemIcon = (menus:MenuDataItem[]):MenuDataItem[]=>{
   menus.forEach((item)=>{
     const {icon,children} = item;
@@ -125,7 +128,9 @@ export const fixMenuItemIcon = (menus:MenuDataItem[]):MenuDataItem[]=>{
       const fixIconName = icon?.slice(0,1)?.toLocaleUpperCase() + icon?.slice(1)
       item.icon = React.createElement(allIcons[fixIconName] || allIcons[icon])
     }
-    children && children.length > 0 ? (item.children = fixMenuItemIcon(children)) : null
+    if (children && children.length > 0) {
+      item.children = fixMenuItemIcon(children)
+    }
   })
   return menus
 }

@@ -21,7 +21,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
   const [size, setSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [page, setPage] = useState<number>(1);
 
-  const columns: ProColumns<APIIdentity.authorization>[] = [
+  const columns: ProColumns<APIIdentity.scopeItemType>[] = [
     { title: intl.formatMessage({ id: 'metadata.list.interfaceName' }), dataIndex: 'requestMethod' },
     { title: 'Url', dataIndex: 'url', ellipsis: true, },
     { title: 'Description', dataIndex: 'description', ellipsis: true, },
@@ -107,7 +107,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
       status: params?.status,
     });
 
-    let dataSource: APISystem.UserItemDataType[] = [];
+    let dataSource: APIIdentity.scopeItemType[] = [];
     let total = 0;
     if (response?.success === true) {
       dataSource = response?.data?.content || [];

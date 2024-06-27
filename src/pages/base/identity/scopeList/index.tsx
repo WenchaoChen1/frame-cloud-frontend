@@ -84,7 +84,7 @@ const Scope: React.FC = () => {
 
   const handleAdd = async (fields: APIIdentity.scopeItemType) => {
     const hide = message.loading('add');
-    delete fields.id;
+    delete fields?.id;
     try {
       await insertScopeManageService({ ...fields });
       hide();
@@ -142,8 +142,8 @@ const Scope: React.FC = () => {
   const columns: ProColumns<APIIdentity.scopeItemType>[] = [
     { title: 'scopeName', dataIndex: 'scopeName'},
     { title: 'scopeCode', dataIndex: 'scopeCode'},
-    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record)=> formatDate(record?.createdDate)},
-    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record)=> formatDate(record?.updatedDate)},
+    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate)},
+    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate)},
     {
       title: 'Operating',
       dataIndex: 'option',
