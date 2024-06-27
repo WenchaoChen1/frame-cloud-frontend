@@ -1,14 +1,9 @@
-import {getRefreshToken} from "@/utils/utils";
-
 export const HEADERS_AUTHORIZATION: string = 'Basic cGFzc3dvcmQtY2xpZW50OjEyMzQ1Ng==';
-
 export const SITE_TITLE: string = 'Title';
-
 export const LOGIN_PATH: string = '/login';
 export const SELECT_ACCOUNT_PATH: string = '/login/selectAccount';
 export const REDIRECT_PATH: string = '/welcome';
 export const USER_INFO_PATH: string = '/login/userInfo';
-
 export const DATE_FORMAT: string = "M/D/YY";
 export const IS_ADMIN_TYPE: string[] = ['0', '1'];
 export const START_DATE_SUFFIX: string = ' 00:00:00';
