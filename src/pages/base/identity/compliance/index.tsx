@@ -13,7 +13,7 @@ const Compliance: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const getList = async (params: any) => {
+  const getList = async (params: APIIdentity.complianceItemType) => {
     const response = await getComplianceManagePageService({
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,

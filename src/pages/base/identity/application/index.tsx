@@ -64,7 +64,7 @@ const Application: React.FC = () => {
     },
   ];
 
-  const getList = async (params: any) => {
+  const getList = async (params: APIIdentity.application) => {
     const response = await getApplicationListService({
       pageNumber: params.current || 1,
       abbreviation:params.abbreviation,

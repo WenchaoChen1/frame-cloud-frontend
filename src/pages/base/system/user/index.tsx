@@ -36,7 +36,7 @@ const User: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<APISystem.UserItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.UserItemDataType[]>([]);
 
-  const getList = async (params: any) => {
+  const getList = async (params: APISystem.UserItemDataType) => {
     params.status = params?.status?.map((item: any) => {
       if (item === '1') {
         return 'FORBIDDEN';

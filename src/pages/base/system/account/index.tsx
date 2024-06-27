@@ -40,7 +40,7 @@ const Account: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<APISystem.AccountItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.AccountItemDataType[]>([]);
 
-  const getList = async (params: any) => {
+  const getList = async (params: APISystem.AccountItemDataType) => {
     const roleResponse = await getAccountManagePageService({
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,

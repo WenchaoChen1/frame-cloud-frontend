@@ -39,7 +39,7 @@ const Metadata: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [permissionTypeList, setPermissionTypeList] = useState([]);
 
-  const getList = async (params: any) => {
+  const getList = async (params: APISystem.MetadataListItemDataType) => {
     if (params?.status) {
       if (params?.status === '1') {
         params.status = 'FORBIDDEN';
@@ -60,7 +60,7 @@ const Metadata: React.FC = () => {
       description: params?.description,
       url: params?.url,
     });
-    let dataSource: APISystem.UserItemDataType[] = [];
+    let dataSource: APISystem.MetadataListItemDataType[] = [];
     let total = 0;
     if (response?.success === true) {
       dataSource = response?.data?.content || [];
@@ -75,7 +75,7 @@ const Metadata: React.FC = () => {
     };
   };
 
-  const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
+  const handleUpdate = async (fields: APISystem.MetadataListItemDataType) => {
     try {
       await updateAttributeManageService({ ...fields });
 

@@ -237,7 +237,7 @@ const MenuList: React.FC = () => {
     },
   ];
 
-  const getList = async (params: any) => {
+  const getList = async (params: APISystem.MenuListItemDataType) => {
 
     params.status = params?.status?.map((item: any) => {
       if (item === '1') {
@@ -271,7 +271,7 @@ const MenuList: React.FC = () => {
     }
     const response = await getMenuManageTreeService(parameters);
 
-    let dataSource: any = [];
+    let dataSource: APISystem.MenuListItemDataType[] = [];
     let total = 0;
     if (response?.success === true) {
       dataSource = response?.data || [];

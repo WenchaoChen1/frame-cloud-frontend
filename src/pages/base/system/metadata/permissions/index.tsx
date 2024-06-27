@@ -60,7 +60,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
     initPermissionTypeChange();
   }, []);
 
-  const getList = async (params: any) => {
+  const getList = async (params: APISystem.PermissionItemDataType) => {
     const response = await getPermissionManagePageService({
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
@@ -69,7 +69,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
       permissionType: params?.permissionType || '',
     });
 
-    let dataSource: APISystem.UserItemDataType[] = [];
+    let dataSource: APISystem.PermissionItemDataType[] = [];
     let total = 0;
     if (response?.success === true) {
       dataSource = response?.data?.content || [];

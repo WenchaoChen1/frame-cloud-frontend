@@ -36,7 +36,7 @@ const User: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
 
-  const getList = async (params: any) => {
+  const getList = async (params: APISystem.PermissionItemDataType) => {
     params.status = params?.status?.map((item: any) => {
       if (item === '1') {
         return 'FORBIDDEN';
@@ -58,7 +58,7 @@ const User: React.FC = () => {
       permissionCode: params?.permissionCode || '',
     });
 
-    let dataSource: APISystem.UserItemDataType[] = [];
+    let dataSource: APISystem.PermissionItemDataType[] = [];
     let total = 0;
     if (response?.success === true) {
       dataSource = response?.data?.content || [];
@@ -104,7 +104,7 @@ const User: React.FC = () => {
     };
   };
 
-  const handleAdd = async (fields: APISystem.TenantItemDataType) => {
+  const handleAdd = async (fields: APISystem.PermissionItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
 
@@ -120,7 +120,7 @@ const User: React.FC = () => {
     }
   };
 
-  const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
+  const handleUpdate = async (fields: APISystem.PermissionItemDataType) => {
     const hide = message.loading('Update');
     try {
       await updatePermissionManageService(fields);

@@ -38,7 +38,7 @@ const ApplicationScope: React.FC<TypeProp> = ({
     { title: 'createdDate',hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate)},
   ];
 
-  const getList = async (params: any) => {
+  const getList = async (params: APIIdentity.scopeItemType) => {
     const response = await getScopeManagePageService({
       pageNumber: params.current || 1,
       pageSize: params.pageSize || DEFAULT_PAGE_SIZE,

@@ -21,7 +21,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
   const [size, setSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [page, setPage] = useState<number>(1);
 
-  const columns: ProColumns<APIIdentity.scopeItemType>[] = [
+  const columns: ProColumns<APISystem.MetadataListItemDataType>[] = [
     { title: intl.formatMessage({ id: 'metadata.list.interfaceName' }), dataIndex: 'requestMethod' },
     { title: 'Url', dataIndex: 'url', ellipsis: true, },
     { title: 'Description', dataIndex: 'description', ellipsis: true, },
@@ -84,7 +84,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
     },
   ];
 
-  const getList = async (params: any) => {
+  const getList = async (params: APISystem.MetadataListItemDataType) => {
     if (params?.status) {
       if (params?.status === '1') {
         params.status = 'FORBIDDEN';
@@ -107,7 +107,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
       status: params?.status,
     });
 
-    let dataSource: APIIdentity.scopeItemType[] = [];
+    let dataSource: APISystem.MetadataListItemDataType[] = [];
     let total = 0;
     if (response?.success === true) {
       dataSource = response?.data?.content || [];
