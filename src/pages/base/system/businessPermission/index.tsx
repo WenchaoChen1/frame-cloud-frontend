@@ -407,7 +407,7 @@ const BusinessPermission: React.FC = () => {
             }
           }}
         >
-          <ProFormText name="id" hidden={true} />
+          <ProFormText name="businessPermissionId" hidden={true} />
 
           <Space size={20}>
             <ProFormText
