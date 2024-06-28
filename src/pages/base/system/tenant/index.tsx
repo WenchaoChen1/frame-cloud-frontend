@@ -187,7 +187,7 @@ const Index: React.FC = () => {
       tenantName: '',
       type: '',
       status: '',
-      tenantCode: 1,
+      tenantCode: '',
       description: '',
     };
   };
