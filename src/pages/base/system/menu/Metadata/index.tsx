@@ -150,9 +150,13 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
         rowKey={(e: any) => e?.attributeId}
         rowSelection={rowSelection}
         search={{
-          defaultCollapsed: true,
-          span: 5,
+          span: 8,
+          layout: 'vertical',
           labelWidth: 'auto',
+          defaultCollapsed:false,
+        }}
+        scroll={{
+          y: 300,
         }}
         request={getList}
         options={false}
