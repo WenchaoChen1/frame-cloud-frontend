@@ -92,7 +92,7 @@ const Welcome: React.FC = () => {
         style={{
           borderRadius: 8,
         }}
-        bodyStyle={{
+        styles={{
           backgroundImage:
             initialState?.settings?.navTheme === 'realDark'
               ? 'background-image: linear-gradient(75deg, #1A1B1F 0%, #191C1F 100%)'

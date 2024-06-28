@@ -4,11 +4,10 @@ import {
   deleteBusinessPermissionManage,
   insertBusinessPermissionManage,
   updateBusinessPermissionManage,
-
   getRoleManageRoleDetailToList,
-  getRoleManageTenantMenuTree,
-  insertRoleMenu,
-  getAllMenuIdByRoleId,
+  getBusinessPermissionManageTenantMenuTree,
+  getAllTenantMenuIdByBusinessPermissionId,
+  updateBusinessPermissionAssignedTenantMenu,
 } from "@/services/base-service/api/system-api/businessApi";
 
 export async function getBusinessPermissionManageTreeService(params: APISystem.RoleTableSearchParams) {
@@ -35,18 +34,14 @@ export async function updateBusinessPermissionManageService(data?: any) {
   return await updateBusinessPermissionManage(data);
 }
 
-export async function getRoleManageTenantMenuTreeService(tenantId?: any) {
-  return await getRoleManageTenantMenuTree(tenantId);
+export async function getBusinessPermissionManageTenantMenuTreeService(id?: any) {
+  return await getBusinessPermissionManageTenantMenuTree(id);
 }
 
-export async function getRoleManageDetailService(id: string) {
-  return await getRoleManageDetail(id);
+export async function getAllTenantMenuIdByBusinessPermissionIdService(id?: any) {
+  return await getAllTenantMenuIdByBusinessPermissionId(id);
 }
 
-export async function insertRoleMenuService(data?: any) {
-  return await insertRoleMenu(data);
-}
-
-export async function getAllMenuIdByRoleIdService(data?: any) {
-  return await getAllMenuIdByRoleId(data);
+export async function updateBusinessPermissionAssignedTenantMenuService(id?: any) {
+  return await updateBusinessPermissionAssignedTenantMenu(id);
 }

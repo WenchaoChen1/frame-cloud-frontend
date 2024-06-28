@@ -40,25 +40,21 @@ export async function updateBusinessPermissionManage(data?: any) {
   });
 }
 
-
-export async function getRoleManageTenantMenuTree(tenantId: string) {
-  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/rTenantMenu/get-role-manage-tenant-menu-tree`, {
-    method: 'GET',
-    params: {
-      tenantId: tenantId
-    }
-  });
-}
-
-export async function getAllMenuIdByRoleId(tenantId: string) {
-  return request<APISystem.SelectedRelationMenuDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-all-menu-id-by-role-id/${tenantId}`, {
+export async function getBusinessPermissionManageTenantMenuTree(id: string) {
+  return request<APISystem.RoleDetailResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/business-permission/get-business-permission-manage-tenant-menu-tree/${id}`, {
     method: 'GET'
   });
 }
 
-export async function insertRoleMenu(data: APISystem.onSaveMenuInTenantDataType) {
-  return request<APISystem.onSaveRelationMenuResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/insert-role-menu`, {
+export async function getAllTenantMenuIdByBusinessPermissionId(businessPermissionId: string) {
+  return request<APISystem.RoleDetailResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/business-permission/get-all-tenant-menu-id-by-business-permission-id/${businessPermissionId}`, {
+    method: 'GET'
+  });
+}
+
+export async function updateBusinessPermissionAssignedTenantMenu(data?: any) {
+  return request<APISystem.RoleResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/business-permission/update-business-permission-assigned-tenant-menu`, {
     method: 'POST',
-    data: data
+    data: data,
   });
 }

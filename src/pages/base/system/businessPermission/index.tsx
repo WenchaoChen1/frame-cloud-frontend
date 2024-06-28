@@ -1,13 +1,11 @@
-import {
-  getBusinessPermissionManageTreeService,
-  getBusinessPermissionManageDetailService,
-  deleteBusinessPermissionManageService,
-  insertBusinessPermissionManageService,
-  updateBusinessPermissionManageService,
-  getRoleManageRoleDetailToListService
-} from '@/services/base-service/system-service/businessService';
-import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
+import dayjs from "dayjs";
+import { useIntl } from "@@/exports";
+import { FormattedMessage} from '@umijs/max';
+import {Button, message, Space, Tree } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import React, { useEffect, useRef, useState } from 'react';
+import PopconfirmPage from "@/pages/base/components/popconfirm";
+import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
 import type { ActionType, ProColumns, ProFormInstance } from '@ant-design/pro-components';
 import {
   FooterToolbar,
@@ -20,12 +18,17 @@ import {
   ProFormTreeSelect,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage} from '@umijs/max';
-import { useIntl } from "@@/exports";
-import {Button, message, Space, Tree} from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
-import dayjs from "dayjs";
-import PopconfirmPage from "@/pages/base/components/popconfirm";
+import {
+  getBusinessPermissionManageTreeService,
+  getBusinessPermissionManageDetailService,
+  deleteBusinessPermissionManageService,
+  insertBusinessPermissionManageService,
+  updateBusinessPermissionManageService,
+  getRoleManageRoleDetailToListService,
+  getBusinessPermissionManageTenantMenuTreeService,
+  getAllTenantMenuIdByBusinessPermissionIdService,
+  updateBusinessPermissionAssignedTenantMenuService,
+} from '@/services/base-service/system-service/businessService';
 
 const BusinessPermission: React.FC = () => {
   const intl = useIntl();
@@ -37,6 +40,10 @@ const BusinessPermission: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<APISystem.RoleItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.RoleItemDataType[]>([]);
+  const [MenuOpenModal, setMenuOpenModal] = useState<boolean>(false);
+  const [selectMenuDataList, setSelectMenuDataList] = useState<any>([]);
+  const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
+  const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
 
   const openEdit = async (record: APISystem.RoleItemDataType) => {
     setIsEdit(true);
@@ -107,6 +114,10 @@ const BusinessPermission: React.FC = () => {
     return times
   }
 
+  const onChangeTenant2 = (getTenantId: string) => {
+    setTenantId(getTenantId);
+  };
+
   const columns: ProColumns<APISystem.RoleItemDataType>[] = [
     { title: 'Name', dataIndex: 'name' },
     { title: 'description', hideInSearch: true, dataIndex: 'description', width: '600px' },
@@ -156,15 +167,15 @@ const BusinessPermission: React.FC = () => {
       valueType: 'option',
       width: '220px',
       render: (_, record) => [
-        // <a
-        //   key="MenuBtn"
-        //   onClick={() => {
-        //     setCurrentRow(record);
-        //     openMenuModal(record);
-        //   }}
-        // >
-        //   Menu
-        // </a>,
+        <a
+          key="MenuBtn"
+          onClick={() => {
+            setCurrentRow(record);
+            openMenuModal(record);
+          }}
+        >
+          Menu
+        </a>,
         <a key="editBtn" onClick={() => openEdit(record)}>
           Edit
         </a>,
@@ -177,10 +188,45 @@ const BusinessPermission: React.FC = () => {
           </PopconfirmPage>
         </div>
       ],
-    }
+    },
+    {
+      title: 'Tenant',
+      key: 'tenantId',
+      hideInTable: true,
+      hidden: true,
+      dataIndex: 'direction',
+      renderFormItem: () => {
+        return (
+          <ProFormTreeSelect
+            name="tenantId"
+            placeholder="Please select"
+            allowClear={false}
+            width={'lg'}
+            secondary
+            initialValue={tenantId}
+            fieldProps={{
+              treeDefaultExpandAll:true,
+              onChange: onChangeTenant2,
+              treeData: tenantTreeData,
+              showArrow: false,
+              filterTreeNode: true,
+              showSearch: true,
+              popupMatchSelectWidth: false,
+              autoClearSearchValue: true,
+              treeNodeFilterProp: 'title',
+              fieldNames: {
+                label: 'tenantName',
+                value: 'id',
+              },
+            }}
+          />
+        );
+      },
+    },
   ];
 
   const getList = async (params: APISystem.BusinessTableSearchParams) => {
+    params.tenantId = tenantId;
     const roleResponse = await getBusinessPermissionManageTreeService(params);
     let dataSource: APISystem.RoleItemDataType[] = [];
     if (roleResponse?.success === true) {
@@ -219,9 +265,11 @@ const BusinessPermission: React.FC = () => {
         setTenantId(tenantTreeResponse.data[0].id || undefined);
       }
 
+      setTenantTreeData(tenantTreeResponse.data);
       return tenantTreeResponse.data;
     } else {
       setTenantId(undefined);
+      setTenantTreeData([]);
       return [];
     }
   };
@@ -235,6 +283,44 @@ const BusinessPermission: React.FC = () => {
       return Response.data;
     } else {
       return [];
+    }
+  };
+
+  const onCheck = (checkedKeysValue: any) => {
+    console.log(checkedKeysValue, '+++++++')
+    setSelectMenuDataList(checkedKeysValue);
+  };
+
+  const openMenuModal = async (record?: any) => {
+    const allMenuResponse = await getBusinessPermissionManageTenantMenuTreeService(record?.tenantId);
+    if (allMenuResponse.success === true) {
+      setAllMenuTree(allMenuResponse?.data || []);
+
+      const selectedMenuResponse = await getAllTenantMenuIdByBusinessPermissionIdService(record?.id);
+      if (selectedMenuResponse?.data) {
+        setSelectMenuDataList(selectedMenuResponse?.data);
+      } else {
+        setSelectMenuDataList([]);
+      }
+    }
+    setMenuOpenModal(true);
+  };
+
+  const onSaveMenu = async (id: string) => {
+    const menuDataBody = {
+      businessPermissionId: id,
+      tenantMenuIds: selectMenuDataList,
+    };
+
+    const saveMenuResponse = await updateBusinessPermissionAssignedTenantMenuService(menuDataBody);
+    if (saveMenuResponse?.success === true) {
+      message.success('Save success');
+      setMenuOpenModal(false);
+      if (actionRef.current) {
+        actionRef.current.reload();
+      }
+    } else {
+      message.error('Save menu failed, please try again');
     }
   };
 
@@ -447,6 +533,37 @@ const BusinessPermission: React.FC = () => {
           <Space size={20}>
             <ProFormTextArea label={'Description'} name="description" width="md" />
           </Space>
+        </ModalForm>
+      )}
+
+      {MenuOpenModal && (
+        <ModalForm
+          title={'Menu'}
+          width="400px"
+          open={MenuOpenModal}
+          onOpenChange={setMenuOpenModal}
+          onFinish={async (record) => {
+            await onSaveMenu(record?.id);
+          }}
+          initialValues={{
+            id: currentRow?.id,
+          }}
+        >
+          <ProFormText label={'id'} name="id" hidden={true} />
+
+          <div>
+            <Tree
+              checkable
+              defaultExpandedKeys={selectMenuDataList}
+              defaultSelectedKeys={selectMenuDataList}
+              defaultCheckedKeys={selectMenuDataList}
+              defaultExpandAll={true}
+              onCheck={onCheck}
+              treeData={allMenuTree}
+              fieldNames={{ title: 'name', key: 'menuId' }}
+            />
+
+          </div>
         </ModalForm>
       )}
 
