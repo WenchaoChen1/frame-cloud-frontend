@@ -28,16 +28,19 @@ const ScopePermissions: React.FC<TypeProp> = ({
     {
       title: 'permissionName',
       dataIndex: 'permissionName',
+      ellipsis: true,
       key: 'permissionName',
     },
     {
       title: 'permissionCode',
       dataIndex: 'permissionCode',
+      ellipsis: true,
       key: 'permissionCode',
     },
     {
       title: 'permissionType',
       dataIndex: 'permissionType',
+      ellipsis: true,
       valueType: 'select',
       key: 'permissionType',
       valueEnum: permissionTypeList.reduce((result, type) => {

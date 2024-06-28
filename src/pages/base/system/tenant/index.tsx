@@ -607,6 +607,7 @@ const Index: React.FC = () => {
 
           <div className={styles.tenantMenuTree}>
             <Tree
+              height={400}
               checkable
               defaultExpandAll
               onCheck={onCheck}
