@@ -93,6 +93,9 @@ const ApplicationScope: React.FC<TypeProp> = ({
           span: 8,
           labelWidth: 'auto',
         }}
+        scroll={{
+          y: 300,
+        }}
         request={getList}
         options={false}
         pagination={{
