@@ -270,6 +270,13 @@ declare namespace APISystem {
     tenantId?: string;
   };
 
+  type BusinessTableSearchParams = {
+    current?: number;
+    pageSize?: number;
+    // status?: string;
+    // roleName?: string;
+    // tenantId?: string;
+  };
 
   type MenuListItemDataType = {
     id?: string;

@@ -97,6 +97,12 @@ export default [
         path: '/system-management/permission',
         component: './base/system/permission',
       },
+      {
+        name: 'businessPermission.businessPermission-list',
+        icon: 'table',
+        path: '/system-management/businessPermission',
+        component: './base/system/businessPermission',
+      },
     ],
   },
   {

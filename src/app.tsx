@@ -36,7 +36,6 @@ export async function getInitialState(): Promise<{
     const currentAccountId = getLocalStorage(CURRENT_ACCOUNT_ID);
     const accountInfoResponse = await getLoginInfoService({currentAccountId: currentAccountId || ''});
     let currentUser = accountInfoResponse.data;
-    console.log(currentUser)
 
     if (currentUser) {
       // clean default redirect page
