@@ -124,6 +124,9 @@ const ScopePermissions: React.FC<TypeProp> = ({
         }}
         request={getList}
         options={false}
+        scroll={{
+          y: 300,
+        }}
         pagination={{
           current: page,
           pageSize: size,

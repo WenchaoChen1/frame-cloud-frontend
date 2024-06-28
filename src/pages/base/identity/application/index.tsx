@@ -20,7 +20,7 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage } from '@umijs/max';
-import { Button, DatePicker, Divider, InputNumber, message, Space, Switch, Tooltip } from 'antd';
+import { Button, DatePicker, Divider, InputNumber, message, Space, Switch, Tooltip,Row,Col } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import {useIntl} from "@@/exports";
@@ -559,8 +559,14 @@ const Application: React.FC = () => {
       {openModal && (
         <ModalForm
           title={isEdit ? 'Edit' : 'New'}
-          width="800px"
+          width="70%"
           open={openModal}
+          modalProps={{
+            bodyStyle: {
+              height: '500px',
+              overflowY: 'scroll',
+            },
+          }}
           onOpenChange={setOpenModal}
           onFinish={async (record) => {
             let response = undefined
@@ -579,380 +585,351 @@ const Application: React.FC = () => {
           }}
           request={DataformRequest}
         >
-          <Space size={24} style={{ display: `${isEdit ? '' : 'none'}` }}>
-            <ProFormText
-              label={'clientId'}
-              width="md"
-              name="clientId"
-              placeholder={'clientId'}
-              disabled
-              hidden={!isEdit}
-            />
+        <Row gutter={32} style={{width:'99%'}}>
+                <Col style={{ display: `${isEdit ? '' : 'none'}` }} span={8}>
+                  <ProFormText
+                    label={'clientId'}
+                    name="clientId"
+                    placeholder={'clientId'}
+                    disabled
+                    hidden={!isEdit}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProFormText
+                    name="clientSecret"
+                    label={'clientSecret'}
+                    placeholder={'clientSecret'}
+                    disabled
+                    hidden={!isEdit}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProFormText
+                    rules={[
+                      {
+                        required: true,
+                        message: 'applicationName is required',
+                      },
+                    ]}
+                    label={intl.formatMessage({ id: 'application.list.applicationName' })}
+                    name="applicationName"
+                    placeholder={'applicationName'}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProFormText
+                    name="abbreviation"
+                    label={intl.formatMessage({ id: 'application.list.abbreviation' })}
+                    placeholder={'abbreviation'}
+                  />
+                </Col>
+                <Col span={8} hidden={true}>
+                  <ProFormText label={'applicationId'} width="md" name="applicationId"  />
+                </Col>
+                <Col span={8}>
+                  <ProFormText
+                    label={intl.formatMessage({ id: 'application.list.logo' })}
+                    name="logo"
+                    placeholder={'logo'}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProFormText
+                    label={intl.formatMessage({ id: 'application.list.homepage' })}
+                    name="homepage"
+                    placeholder={'homepage'}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProFormSelect
+                    rules={[
+                      {
+                        required: true,
+                        message: 'authorizationGrantTypes Type is required',
+                      },
+                    ]}
+                    mode="multiple"
+                    label={intl.formatMessage({ id: 'application.list.authorizationGrantTypes' })}
+                    name="authorizationGrantTypes"
+                    placeholder={'authorizationGrantTypes'}
+                    request={async () => {
+                      return authorTypes.map((item: any) => {
+                        return {
+                          label: item?.text,
+                          value: item?.value,
+                        };
+                      });
+                    }}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProFormSelect
+                    rules={[
+                      {
+                        required: true,
+                        message: 'clientAuthenticationMethods Type is required',
+                      },
+                    ]}
+                    mode="multiple"
+                    label={intl.formatMessage({ id: 'application.list.clientAuthenticationMethods' })}
+                    name="clientAuthenticationMethods"
+                    placeholder={'clientAuthenticationMethods'}
+                    request={async () => {
+                      return authenticationMethod.map((item: any) => {
+                        return {
+                          label: item?.text,
+                          value: item?.value,
+                        };
+                      });
+                    }}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProFormSelect
+                    label={intl.formatMessage({ id: 'application.list.applicationType' })}
+                    name="applicationType"
+                    placeholder={'applicationType'}
+                    request={async () => {
+                      return applicationTypeData.map((item: any) => {
+                        return {
+                          label: item?.text,
+                          value: item?.value,
+                        };
+                      });
+                    }}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProForm.Item
+                    label={intl.formatMessage({ id: 'application.list.clientSecretExpiresAt' })}
+                    name="clientSecretExpiresAt"
+                  >
+                    <DatePicker showTime style={{ width: '100%' }} />
+                  </ProForm.Item>
+                </Col>
+                <Col span={8}>
+                  <ProFormText
+                    rules={[
+                      {
+                        required: true,
+                        message: 'redirectUris is required',
+                      },
+                    ]}
+                    label={intl.formatMessage({ id: 'application.list.redirectUris' })}
+                    name="redirectUris"
+                    placeholder={'redirectUris'}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProFormText
+                    label={intl.formatMessage({ id: 'application.list.postLogoutRedirectUris' })}
+                    name="postLogoutRedirectUris"
+                    placeholder={'postLogoutRedirectUris'}
+                  />
+                </Col>
+                <Divider plain>{intl.formatMessage({ id: 'application.list.label1' })}</Divider>
+                <Col span={8}>
+                  <ProFormText
+                    label={intl.formatMessage({ id: 'application.list.jwkSetUrl' })}
+                    name="jwkSetUrl"
+                    placeholder={'jwkSetUrl'}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProForm.Item name="requireProofKey" label={intl.formatMessage({ id: 'application.list.requireProofKey' })}>
+                    <Switch />
+                  </ProForm.Item>
+                </Col>
+                <Col span={8}>
+                  <div className={styles.switchStyle}>
+                    <ProForm.Item name="requireAuthorizationConsent" label={intl.formatMessage({ id: 'application.list.requireAuthorizationConsent' })}>
+                      <Switch />
+                    </ProForm.Item>
+                  </div>
+                </Col>
+                <Divider plain>{intl.formatMessage({ id: 'application.list.label2' })}</Divider>
+                <Col span={8}>
+                  <ProForm.Item
+                    rules={[
+                      {
+                        required: true,
+                        message: 'accessTokenValidity is required',
+                      },
+                    ]}
+                    label={intl.formatMessage({ id: 'application.list.accessTokenValidity' })}
+                    name="accessTokenValidity"
+                  >
+                    <InputNumber style={{ width: '100%' }} min={1} defaultValue={0} />
+                  </ProForm.Item>
+                </Col>
+                <Col span={8}>
+                  <ProFormSelect
+                    label="单位"
+                    name="dayType1"
+                    placeholder={'单位'}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'please select',
+                      },
+                    ]}
+                    options={dayType}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProForm.Item
+                    label={intl.formatMessage({ id: 'application.list.refreshTokenValidity' })}
+                    name="refreshTokenValidity"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'refreshTokenValidity is required',
+                      },
+                    ]}
+                  >
+                    <InputNumber style={{ width: '100%' }} min={1} defaultValue={0} />
+                  </ProForm.Item>
+                </Col>
+                <Col span={8}>
+                  <ProFormSelect
+                    label=" "
+                    name="dayType2"
+                    placeholder={'单位'}
+                    options={dayType}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'please select',
+                      },
+                    ]}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProForm.Item
+                    label={intl.formatMessage({ id: 'application.list.authorizationCodeValidity' })}
+                    name="authorizationCodeValidity"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'authorizationCodeValidity is required',
+                      },
+                    ]}
+                  >
+                    <InputNumber style={{ width: '100%' }} min={1} defaultValue={0} />
+                  </ProForm.Item>
+                </Col>
+                <Col span={8}>
+                  <ProFormSelect
+                    label=" "
+                    name="dayType3"
+                    placeholder={'单位'}
+                    options={dayType}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'please select',
+                      },
+                    ]}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProForm.Item
+                    label={intl.formatMessage({ id: 'application.list.deviceCodeValidity' })}
+                    name="deviceCodeValidity"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'deviceCodeValidity is required',
+                      },
+                    ]}
+                  >
+                    <InputNumber style={{ width: '100%' }} min={1} defaultValue={0} />
+                  </ProForm.Item>
+                </Col>
+                <Col span={8}>
+                  <ProFormSelect
+                    label=" "
+                    name="dayType4"
+                    placeholder={'单位'}
+                    options={dayType}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'please select',
+                      },
+                    ]}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProFormSelect
+                    label={intl.formatMessage({ id: 'application.list.idTokenSignatureAlgorithm' })}
+                    name="idTokenSignatureAlgorithm"
+                    placeholder={'idTokenSignatureAlgorithm'}
+                    request={async () => {
+                      return idTokenData.map((item: any) => {
+                        return {
+                          label: item?.text,
+                          value: item?.value,
+                        };
+                      });
+                    }}
+                  />
+                </Col>
+                <Col span={8}>
+                  <div className={styles.DivStyle}>
+                    <ProForm.Item label={intl.formatMessage({ id: 'application.list.reuseRefreshTokens' })} name="reuseRefreshTokens">
+                      <Switch />
+                    </ProForm.Item>
+                  </div>
+                </Col>
+                <Divider plain>{intl.formatMessage({ id: 'application.list.label3' })}</Divider>
+                <Col span={8}>
+                  <ProFormText
+                    label={intl.formatMessage({ id: 'application.list.description' })}
+                    name="description"
+                    placeholder={'description'}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProForm.Item label={intl.formatMessage({ id: 'application.list.ranking' })} name="ranking">
+                    <InputNumber style={{ width: '100%' }} min={1} defaultValue={0}/>
+                  </ProForm.Item>
+                </Col>
+                <Col span={8}>
+                  <ProFormSelect
+                    label={intl.formatMessage({ id: 'application.list.status' })}
+                    name="status"
+                    placeholder={'status'}
+                    options={[
+                      {
+                        label: '启用',
+                        value: 'ENABLE',
+                      },
+                      {
+                        label: '禁用',
+                        value: 'FORBIDDEN',
+                      },
+                      {
+                        label: '锁定',
+                        value: 'LOCKING',
+                      },
+                      {
+                        label: '过期',
+                        value: 'EXPIRED',
+                      },
+                    ]}
+                  />
+                </Col>
+                <Col span={8}>
+                  <div className={styles.DivStyle}>
+                    <ProForm.Item label={intl.formatMessage({ id: 'application.list.reserved' })} name="reserved">
+                      <Switch />
+                    </ProForm.Item>
+                  </div>
+                </Col>
+              </Row>
 
-            <ProFormText
-              name="clientSecret"
-              label={'clientSecret'}
-              width="md"
-              placeholder={'clientSecret'}
-              disabled
-              hidden={!isEdit}
-            />
-          </Space>
-
-          <Space size={24}>
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'applicationName is required',
-                },
-              ]}
-              label={intl.formatMessage({ id: 'application.list.applicationName' })}
-              width="md"
-              name="applicationName"
-              placeholder={'applicationName'}
-            />
-
-            <ProFormText
-              name="abbreviation"
-              label={intl.formatMessage({ id: 'application.list.abbreviation' })}
-              width="md"
-              placeholder={'abbreviation'}
-            />
-
-            <ProFormText label={'applicationId'} width="md" name="applicationId" hidden={true} />
-          </Space>
-
-          <Space size={24}>
-            <ProFormText
-              label={intl.formatMessage({ id: 'application.list.logo' })}
-              width="md"
-              name="logo"
-              placeholder={'logo'}
-            />
-            <ProFormText
-              label={intl.formatMessage({ id: 'application.list.homepage' })}
-              width="md"
-              name="homepage"
-              placeholder={'homepage'}
-            />
-          </Space>
-
-          <Space size={24}>
-            <ProFormSelect
-              rules={[
-                {
-                  required: true,
-                  message: 'authorizationGrantTypes Type is required',
-                },
-              ]}
-              mode="multiple"
-              label={intl.formatMessage({ id: 'application.list.authorizationGrantTypes' })}
-              width="md"
-              name="authorizationGrantTypes"
-              placeholder={'authorizationGrantTypes'}
-              request={async () => {
-                return authorTypes.map((item: any) => {
-                  return {
-                    label: item?.text,
-                    value: item?.value,
-                  };
-                });
-              }}
-            />
-
-            <ProFormSelect
-              rules={[
-                {
-                  required: true,
-                  message: 'clientAuthenticationMethods Type is required',
-                },
-              ]}
-              mode="multiple"
-              label={intl.formatMessage({ id: 'application.list.clientAuthenticationMethods' })}
-              width="md"
-              name="clientAuthenticationMethods"
-              placeholder={'clientAuthenticationMethods'}
-              request={async () => {
-                return authenticationMethod.map((item: any) => {
-                  return {
-                    label: item?.text,
-                    value: item?.value,
-                  };
-                });
-              }}
-            />
-          </Space>
-
-          <Space size={24}>
-            <ProFormSelect
-              label={intl.formatMessage({ id: 'application.list.applicationType' })}
-              width="md"
-              name="applicationType"
-              placeholder={'applicationType'}
-              request={async () => {
-                return applicationTypeData.map((item: any) => {
-                  return {
-                    label: item?.text,
-                    value: item?.value,
-                  };
-                });
-              }}
-            />
-            <ProForm.Item
-              label={intl.formatMessage({ id: 'application.list.clientSecretExpiresAt' })}
-              name="clientSecretExpiresAt"
-            >
-              <DatePicker showTime />
-            </ProForm.Item>
-          </Space>
-
-          <Space size={24}>
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'redirectUris is required',
-                },
-              ]}
-              label={intl.formatMessage({ id: 'application.list.redirectUris' })}
-              width="md"
-              name="redirectUris"
-              placeholder={'redirectUris'}
-            />
-            <ProFormText
-              label={intl.formatMessage({ id: 'application.list.postLogoutRedirectUris' })}
-              width="md"
-              name="postLogoutRedirectUris"
-              placeholder={'postLogoutRedirectUris'}
-            />
-          </Space>
-
-          <Divider plain>{intl.formatMessage({ id: 'application.list.label1' })}</Divider>
-
-          <Space size={24}>
-            <ProFormText
-              label={intl.formatMessage({ id: 'application.list.jwkSetUrl' })}
-              width="md"
-              name="jwkSetUrl"
-              placeholder={'jwkSetUrl'}
-            />
-          </Space>
-
-          <Space size={24} className={styles.flexGapStyle}>
-            <div className={styles.switchStyle}>
-              <ProForm.Item name="requireProofKey">
-                <Switch />
-              </ProForm.Item>
-              <div style={{ paddingTop: 8 }}>
-                {intl.formatMessage({ id: 'application.list.requireProofKey' })}
-              </div>
-            </div>
-
-            <div className={styles.switchStyle}>
-              <ProForm.Item name="requireAuthorizationConsent">
-                <Switch />
-              </ProForm.Item>
-              <div style={{ paddingTop: 8 }}>
-                {intl.formatMessage({ id: 'application.list.requireAuthorizationConsent' })}
-              </div>
-            </div>
-          </Space>
-
-          <Divider plain>{intl.formatMessage({ id: 'application.list.label2' })}</Divider>
-
-          <Space size={24}>
-            <ProForm.Item
-              rules={[
-                {
-                  required: true,
-                  message: 'accessTokenValidity is required',
-                },
-              ]}
-              label={intl.formatMessage({ id: 'application.list.accessTokenValidity' })}
-              name="accessTokenValidity"
-            >
-              <InputNumber style={{ width: '328px' }} min={1} defaultValue={0} />
-            </ProForm.Item>
-
-            <ProFormSelect
-              label=" "
-              width="md"
-              name="dayType1"
-              placeholder={'单位'}
-              rules={[
-                {
-                  required: true,
-                  message: 'please select',
-                },
-              ]}
-              options={dayType}
-            />
-          </Space>
-
-          <Space size={24}>
-            <ProForm.Item
-              label={intl.formatMessage({ id: 'application.list.refreshTokenValidity' })}
-              name="refreshTokenValidity"
-              rules={[
-                {
-                  required: true,
-                  message: 'refreshTokenValidity is required',
-                },
-              ]}
-            >
-              <InputNumber style={{ width: '328px' }} min={1} defaultValue={0} />
-            </ProForm.Item>
-
-            <ProFormSelect
-              label=" "
-              width="md"
-              name="dayType2"
-              placeholder={'单位'}
-              options={dayType}
-              rules={[
-                {
-                  required: true,
-                  message: 'please select',
-                },
-              ]}
-            />
-          </Space>
-
-          <Space size={24}>
-            <ProForm.Item
-              label={intl.formatMessage({ id: 'application.list.authorizationCodeValidity' })}
-              name="authorizationCodeValidity"
-              rules={[
-                {
-                  required: true,
-                  message: 'authorizationCodeValidity is required',
-                },
-              ]}
-            >
-              <InputNumber style={{ width: '328px' }} min={1} defaultValue={0} />
-            </ProForm.Item>
-
-            <ProFormSelect
-              label=" "
-              width="md"
-              name="dayType3"
-              placeholder={'单位'}
-              options={dayType}
-              rules={[
-                {
-                  required: true,
-                  message: 'please select',
-                },
-              ]}
-            />
-          </Space>
-
-          <Space size={24}>
-            <ProForm.Item
-              label={intl.formatMessage({ id: 'application.list.deviceCodeValidity' })}
-              name="deviceCodeValidity"
-              rules={[
-                {
-                  required: true,
-                  message: 'deviceCodeValidity is required',
-                },
-              ]}
-            >
-              <InputNumber style={{ width: '328px' }} min={1} defaultValue={0} />
-            </ProForm.Item>
-
-            <ProFormSelect
-              label=" "
-              width="md"
-              name="dayType4"
-              placeholder={'单位'}
-              options={dayType}
-              rules={[
-                {
-                  required: true,
-                  message: 'please select',
-                },
-              ]}
-            />
-          </Space>
-
-          <Space size={24}>
-            <ProFormSelect
-              label={intl.formatMessage({ id: 'application.list.idTokenSignatureAlgorithm' })}
-              width="md"
-              name="idTokenSignatureAlgorithm"
-              placeholder={'idTokenSignatureAlgorithm'}
-              request={async () => {
-                return idTokenData.map((item: any) => {
-                  return {
-                    label: item?.text,
-                    value: item?.value,
-                  };
-                });
-              }}
-            />
-
-            <div className={styles.DivStyle}>
-              <ProForm.Item label=" " name="reuseRefreshTokens">
-                <Switch />
-              </ProForm.Item>
-              <div style={{ paddingTop: '35px' }}>
-                {intl.formatMessage({ id: 'application.list.reuseRefreshTokens' })}
-              </div>
-            </div>
-          </Space>
-
-          <Divider plain>{intl.formatMessage({ id: 'application.list.label3' })}</Divider>
-
-          <Space size={24}>
-            <ProFormText
-              label={intl.formatMessage({ id: 'application.list.description' })}
-              width="md"
-              name="description"
-              placeholder={'description'}
-            />
-
-            <ProForm.Item label={intl.formatMessage({ id: 'application.list.ranking' })} name="ranking">
-              <InputNumber style={{ width: '328px' }} min={1} defaultValue={0} />
-            </ProForm.Item>
-          </Space>
-
-          <Space size={24}>
-            <ProFormSelect
-              label={intl.formatMessage({ id: 'application.list.status' })}
-              width="md"
-              name="status"
-              placeholder={'status'}
-              options={[
-                {
-                  label: '启用',
-                  value: 'ENABLE',
-                },
-                {
-                  label: '禁用',
-                  value: 'FORBIDDEN',
-                },
-                {
-                  label: '锁定',
-                  value: 'LOCKING',
-                },
-                {
-                  label: '过期',
-                  value: 'EXPIRED',
-                },
-              ]}
-            />
-
-            <div className={styles.DivStyle}>
-              <ProForm.Item label=" " name="reserved">
-                <Switch />
-              </ProForm.Item>
-              <div style={{ paddingTop: '35px' }}>
-                {intl.formatMessage({ id: 'application.list.reserved' })}
-              </div>
-            </div>
-          </Space>
         </ModalForm>
       )}
 

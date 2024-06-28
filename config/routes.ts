@@ -3,6 +3,7 @@ export default [
   {
     path: '/Welcome',
     name: 'index',
+    access: 'welcomePermission',
     component: './Welcome',
   },
   {

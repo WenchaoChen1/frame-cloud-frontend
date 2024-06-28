@@ -592,7 +592,7 @@ const Index: React.FC = () => {
       {menuModalVisible && (
         <ModalForm
           title={'Menu'}
-          width="400px"
+          width="500px"
           open={menuModalVisible}
           onOpenChange={setMenuModalVisible}
           onFinish={async (record) => {
@@ -607,7 +607,7 @@ const Index: React.FC = () => {
 
           <div className={styles.tenantMenuTree}>
             <Tree
-              height={400}
+              height={500}
               checkable
               defaultExpandAll
               onCheck={onCheck}

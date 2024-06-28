@@ -552,7 +552,7 @@ const Role: React.FC = () => {
       {menuModalVisible && (
         <ModalForm
           title={'Menu'}
-          width="400px"
+          width="500px"
           open={menuModalVisible}
           onOpenChange={setMenuModalVisible}
           onFinish={async (record) => {
@@ -566,6 +566,7 @@ const Role: React.FC = () => {
 
           <div>
             <Tree
+              height={500}
               checkable
               defaultExpandedKeys={selectedKeys}
               defaultSelectedKeys={selectedKeys}
