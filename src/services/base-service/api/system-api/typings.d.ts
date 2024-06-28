@@ -146,7 +146,7 @@ declare namespace APISystem {
     message?: string;
   };
   type AccountItemDataType = {
-    id?: string;
+    accountId?: string;
     identity?: string;
     name?: string;
     type?: string;
