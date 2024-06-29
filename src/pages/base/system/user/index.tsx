@@ -74,7 +74,7 @@ const User: React.FC = () => {
 
   const createUserRequest = async (fields: APISystem.UserItemDataType) => {
     const hide = message.loading('add');
-    delete fields.id;
+    delete fields.userId;
 
     try {
       await insertUserManageService({ ...fields });
@@ -204,10 +204,10 @@ const User: React.FC = () => {
         </a>,
 
 
-        currentUserId !== record.id && (
+        currentUserId !== record.userId && (
           <PopconfirmPage
             onConfirm={async () => {
-              await deleteUserRequest(record?.id || '');
+              await deleteUserRequest(record?.userId || '');
             }}>
             <a key="deleteUser">Delete</a>
           </PopconfirmPage>
@@ -278,13 +278,13 @@ const User: React.FC = () => {
           onOpenChange={setOpenModal}
           request={async () => {
             if (isEdit) {
-              const userDetailResponse = await getUserManageDetailService(currentRow?.id || '');
+              const userDetailResponse = await getUserManageDetailService(currentRow?.userId || '');
               if (userDetailResponse.success === true && userDetailResponse.data) {
                 return userDetailResponse.data;
               }
             }
             return {
-              id: '',
+              userId: '',
               username: '',
               phoneNumber: '',
               email: '',
@@ -306,7 +306,7 @@ const User: React.FC = () => {
           }}
         >
           <Space size={20}>
-            <ProFormText name="id" hidden={true} />
+            <ProFormText name="userId" hidden={true} />
           </Space>
           <Space size={20}>
             <ProFormText

@@ -37,7 +37,7 @@ declare namespace APISystem {
     message?: string;
   };
   type UserItemDataType = {
-    id?: string;
+    userId?: string;
     username?: string;
     phoneNumber?: string;
     email?: string,

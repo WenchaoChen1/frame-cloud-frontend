@@ -386,7 +386,7 @@ const Account: React.FC = () => {
               ]}
               allowClear={false}
             />
-            <ProFormText name="id" hidden={true} />
+            <ProFormText name="accountId" hidden={true} />
           </Space>
 
           <Space size={20}>
@@ -439,7 +439,7 @@ const Account: React.FC = () => {
               fieldProps={{
                 fieldNames: {
                   label: 'username',
-                  value: 'id',
+                  value: 'userId',
                 },
               }}
               rules={[
