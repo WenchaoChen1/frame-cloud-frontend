@@ -54,7 +54,7 @@ const Role: React.FC = () => {
 
   const createRoleRequest = async (fields: APISystem.RoleItemDataType) => {
     const hide = message.loading('add');
-    delete fields.id;
+    delete fields.roleId;
     fields.parentId = currentRow?.parentId;
 
     try {
@@ -204,7 +204,7 @@ const Role: React.FC = () => {
         <div key={'Delete'}>
           <PopconfirmPage
             onConfirm={async () => {
-              await deleteRoleRequest(record?.id || '');
+              await deleteRoleRequest(record?.roleId || '');
             }}>
             <a key="deleteRow">Delete</a>
           </PopconfirmPage>
@@ -270,14 +270,14 @@ const Role: React.FC = () => {
 
   const getRoleInfoRequest = async () => {
     if (isEdit) {
-      const roleDetailResponse = await getRoleManageDetailService(currentRow?.id || '');
+      const roleDetailResponse = await getRoleManageDetailService(currentRow?.roleId || '');
       if (roleDetailResponse.success === true && roleDetailResponse.data) {
         return roleDetailResponse.data;
       }
     }
 
     return {
-      id: '',
+      roleId: '',
       roleName: '',
       parentId: '',
       code: '',
@@ -420,7 +420,7 @@ const Role: React.FC = () => {
             }
           }}
         >
-          <ProFormText name="id" hidden={true} />
+          <ProFormText name="roleId" hidden={true} />
 
           <Row gutter={16}>
             <Col span={12}>
@@ -556,7 +556,7 @@ const Role: React.FC = () => {
             await onSaveMenu(record?.id);
           }}
           initialValues={{
-            id: currentRow?.id,
+            id: currentRow?.roleId,
           }}
         >
           <ProFormText label={'id'} name="id" hidden={true} />

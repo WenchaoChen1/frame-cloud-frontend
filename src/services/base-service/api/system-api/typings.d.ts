@@ -224,7 +224,7 @@ declare namespace APISystem {
     menuIds: React.Key[];
   }
   type RoleItemDataType = {
-    id?: string;
+    roleId?: string;
     roleName?: string;
     parentId?: string;
     code?: string;
