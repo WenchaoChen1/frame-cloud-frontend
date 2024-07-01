@@ -37,7 +37,7 @@ declare namespace APISystem {
     message?: string;
   };
   type UserItemDataType = {
-    id?: string;
+    userId?: string;
     username?: string;
     phoneNumber?: string;
     email?: string,
@@ -146,7 +146,7 @@ declare namespace APISystem {
     message?: string;
   };
   type AccountItemDataType = {
-    id?: string;
+    accountId?: string;
     identity?: string;
     name?: string;
     type?: string;
@@ -224,7 +224,7 @@ declare namespace APISystem {
     menuIds: React.Key[];
   }
   type RoleItemDataType = {
-    id?: string;
+    roleId?: string;
     roleName?: string;
     parentId?: string;
     code?: string;

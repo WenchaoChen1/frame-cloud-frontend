@@ -25,7 +25,7 @@ import {
 } from '@ant-design/pro-components';
 import { FormattedMessage} from '@umijs/max';
 import { useIntl } from "@@/exports";
-import {Button, message, Space, Tree} from 'antd';
+import {Button, message, Space, Tree,Row,Col} from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
@@ -54,7 +54,7 @@ const Role: React.FC = () => {
 
   const createRoleRequest = async (fields: APISystem.RoleItemDataType) => {
     const hide = message.loading('add');
-    delete fields.id;
+    delete fields.roleId;
     fields.parentId = currentRow?.parentId;
 
     try {
@@ -204,7 +204,7 @@ const Role: React.FC = () => {
         <div key={'Delete'}>
           <PopconfirmPage
             onConfirm={async () => {
-              await deleteRoleRequest(record?.id || '');
+              await deleteRoleRequest(record?.roleId || '');
             }}>
             <a key="deleteRow">Delete</a>
           </PopconfirmPage>
@@ -270,14 +270,14 @@ const Role: React.FC = () => {
 
   const getRoleInfoRequest = async () => {
     if (isEdit) {
-      const roleDetailResponse = await getRoleManageDetailService(currentRow?.id || '');
+      const roleDetailResponse = await getRoleManageDetailService(currentRow?.roleId || '');
       if (roleDetailResponse.success === true && roleDetailResponse.data) {
         return roleDetailResponse.data;
       }
     }
 
     return {
-      id: '',
+      roleId: '',
       roleName: '',
       parentId: '',
       code: '',
@@ -420,132 +420,129 @@ const Role: React.FC = () => {
             }
           }}
         >
-          <ProFormText name="id" hidden={true} />
+          <ProFormText name="roleId" hidden={true} />
 
-          <Space size={20}>
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'Role Name is required',
-                },
-              ]}
-              fieldProps={{
-                onChange: (changeValues) => setRoleNameText(changeValues?.target?.defaultValue),
-              }}
-              label={'Role Name'}
-              name="roleName"
-              width="md"
-              placeholder={'Role Name'}
-            />
-
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'Code is required',
-                },
-              ]}
-              label={'Code'}
-              name="code"
-              width="md"
-              placeholder={'Code'}
-            />
-          </Space>
-
-          <Space size={20}>
-            <ProFormTreeSelect
-              label={'Tenant'}
-              name="tenantId"
-              placeholder="Please select"
-              allowClear={false}
-              width="md"
-              secondary
-              request={getTenantTreeRequest}
-              fieldProps={{
-                treeDefaultExpandAll:true,
-                onChange: onChangeTenant,
-                showArrow: false,
-                filterTreeNode: true,
-                showSearch: true,
-                popupMatchSelectWidth: false,
-                autoClearSearchValue: true,
-                treeNodeFilterProp: 'title',
-                fieldNames: {
-                  label: 'tenantName',
-                  value: 'id',
-                },
-              }}
-              rules={[
-                {
-                  required: true,
-                  message: 'Role is required',
-                },
-              ]}
-            />
-
-            <ProFormTreeSelect
-              params={tenantId}
-              label={'Parent Role'}
-              name="parentId"
-              placeholder="Please select"
-              allowClear={false}
-              width="md"
-              secondary
-              request={getParentRoleTreeRequest}
-              fieldProps={{
-                treeDefaultExpandAll:true,
-                showArrow: false,
-                filterTreeNode: true,
-                showSearch: true,
-                popupMatchSelectWidth: false,
-                autoClearSearchValue: true,
-                treeNodeFilterProp: 'title',
-                fieldNames: {
-                  label: 'roleName',
-                  value: 'id',
-                },
-              }}
-            />
-          </Space>
-
-          <Space size={20}>
-            <ProFormDigit label={'Sort'} name="sort" width="md" placeholder={'Sort'} />
-
-            <ProFormSelect
-              width="md"
-              rules={[
-                {
-                  required: true,
-                  message: 'Status is required',
-                },
-              ]}
-              name="status"
-              label={'Status'}
-              options={[
-                {
-                  label: '启用',
-                  value: 0,
-                },
-                {
-                  label: '禁用',
-                  value: 1,
-                },
-                {
-                  label: '锁定',
-                  value: 2,
-                },
-                {
-                  label: '过期',
-                  value: 3,
-                },
-              ]}
-            />
-          </Space>
-
-          <Space size={20}>
-            <ProFormTextArea label={'Description'} name="description" width="md" />
-          </Space>
+          <Row gutter={16}>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'Role Name is required',
+                  },
+                ]}
+                fieldProps={{
+                  onChange: (changeValues) => setRoleNameText(changeValues?.target?.defaultValue),
+                }}
+                label={'Role Name'}
+                name="roleName"
+                placeholder={'Role Name'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'Code is required',
+                  },
+                ]}
+                label={'Code'}
+                name="code"
+                placeholder={'Code'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormTreeSelect
+                label={'Tenant'}
+                name="tenantId"
+                placeholder="Please select"
+                allowClear={false}
+                secondary
+                request={getTenantTreeRequest}
+                fieldProps={{
+                  treeDefaultExpandAll:true,
+                  onChange: onChangeTenant,
+                  showArrow: false,
+                  filterTreeNode: true,
+                  showSearch: true,
+                  popupMatchSelectWidth: false,
+                  autoClearSearchValue: true,
+                  treeNodeFilterProp: 'title',
+                  fieldNames: {
+                    label: 'tenantName',
+                    value: 'id',
+                  },
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Role is required',
+                  },
+                ]}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormTreeSelect
+                params={tenantId}
+                label={'Parent Role'}
+                name="parentId"
+                placeholder="Please select"
+                allowClear={false}
+                secondary
+                request={getParentRoleTreeRequest}
+                fieldProps={{
+                  treeDefaultExpandAll:true,
+                  showArrow: false,
+                  filterTreeNode: true,
+                  showSearch: true,
+                  popupMatchSelectWidth: false,
+                  autoClearSearchValue: true,
+                  treeNodeFilterProp: 'title',
+                  fieldNames: {
+                    label: 'roleName',
+                    value: 'id',
+                  },
+                }}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormDigit label={'Sort'} name="sort" placeholder={'Sort'} style={{width:'100%'}} />
+            </Col>
+            <Col span={12}>
+              <ProFormSelect
+                rules={[
+                  {
+                    required: true,
+                    message: 'Status is required',
+                  },
+                ]}
+                name="status"
+                label={'Status'}
+                options={[
+                  {
+                    label: '启用',
+                    value: 0,
+                  },
+                  {
+                    label: '禁用',
+                    value: 1,
+                  },
+                  {
+                    label: '锁定',
+                    value: 2,
+                  },
+                  {
+                    label: '过期',
+                    value: 3,
+                  },
+                ]}
+              />
+            </Col>
+            <Col span={24}>
+              <ProFormTextArea label={'Description'} name="description"/>
+            </Col>
+          </Row>
         </ModalForm>
       )}
 
@@ -559,7 +556,7 @@ const Role: React.FC = () => {
             await onSaveMenu(record?.id);
           }}
           initialValues={{
-            id: currentRow?.id,
+            id: currentRow?.roleId,
           }}
         >
           <ProFormText label={'id'} name="id" hidden={true} />

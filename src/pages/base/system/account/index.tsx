@@ -65,14 +65,14 @@ const Account: React.FC = () => {
 
   const getAccountInfoRequest = async () => {
     if (isEdit) {
-      const accountDetailResponse = await getAccountManageDetailService(currentRow?.id || '');
+      const accountDetailResponse = await getAccountManageDetailService(currentRow?.accountId || '');
       if (accountDetailResponse.success === true && accountDetailResponse.data) {
         return accountDetailResponse.data;
       }
     }
 
     return {
-      id: '',
+      accountId: '',
       name: '',
       tenantId: '',
       userId: '',
@@ -81,7 +81,7 @@ const Account: React.FC = () => {
 
   const createAccountRequest = async (fields: APISystem.AccountItemDataType) => {
     const hide = message.loading('add');
-    delete fields.id;
+    delete fields.accountId;
 
     try {
       await insertAccountManageService({ ...fields });
@@ -253,10 +253,10 @@ const Account: React.FC = () => {
         <a key="edit" onClick={() => onEdit(record)}>
           Edit
         </a>,
-        currentAccountId !== record.id && (
+        currentAccountId !== record.accountId && (
           <PopconfirmPage
             onConfirm={async () => {
-              await deleteRow(record?.id || '');
+              await deleteRow(record?.accountId || '');
             }}>
             <a key="delete">Delete</a>
           </PopconfirmPage>
@@ -386,7 +386,7 @@ const Account: React.FC = () => {
               ]}
               allowClear={false}
             />
-            <ProFormText name="id" hidden={true} />
+            <ProFormText name="accountId" hidden={true} />
           </Space>
 
           <Space size={20}>
@@ -439,7 +439,7 @@ const Account: React.FC = () => {
               fieldProps={{
                 fieldNames: {
                   label: 'username',
-                  value: 'id',
+                  value: 'userId',
                 },
               }}
               rules={[

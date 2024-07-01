@@ -47,6 +47,9 @@ importers:
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
+      moment:
+        specifier: ^2.30.1
+        version: 2.30.1
       numeral:
         specifier: ^2.0.6
         version: 2.0.6
