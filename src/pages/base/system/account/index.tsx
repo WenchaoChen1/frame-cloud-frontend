@@ -27,9 +27,15 @@ import { Button, message, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
+import RolePage from './components/role'
+import TenantPage from './components/tenant'
+import BinessPage from './components/biness'
 
 const Account: React.FC = () => {
   const intl = useIntl();
+  const [roleModal,setRoleModal] = useState(false)
+  const [tenantModal,setTenantModal] = useState(false)
+  const [binessModal,setBinessModal] = useState(false)
   const actionRef = useRef<ActionType>();
   const { initialState } = useModel('@@initialState');
   const currentAccountId = initialState?.currentUser?.accountId;
@@ -133,6 +139,18 @@ const Account: React.FC = () => {
     setIsEdit(true);
     setOpenModal(true);
   };
+  const onRole = (record: APISystem.AccountItemDataType) =>{
+    setCurrentRow(record);
+    setRoleModal(true)
+  }
+  const onEditTenant = (record: APISystem.AccountItemDataType) =>{
+    setCurrentRow(record);
+    setTenantModal(true)
+  }
+  const onBiness = (record: APISystem.AccountItemDataType) =>{
+    setCurrentRow(record);
+    setBinessModal(true)
+  }
 
   const getTenantTreeRequest = async () => {
     const tenantTreeResponse = await getTenantManageTreeService({});
@@ -173,6 +191,19 @@ const Account: React.FC = () => {
       times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
     }
     return times
+  }
+
+  const closeRole = () =>{
+    setCurrentRow({})
+    setRoleModal(false)
+  }
+  const closeTenant = () =>{
+    setCurrentRow({})
+    setTenantModal(false)
+  }
+  const closeBiness = () =>{
+    setCurrentRow({})
+    setBinessModal(false)
   }
 
   const columns: ProColumns<APISystem.AccountItemDataType>[] = [
@@ -250,6 +281,15 @@ const Account: React.FC = () => {
       width: '220px',
       valueType: 'option',
       render: (_, record) => [
+        <a key="edit" onClick={() => onRole(record)}>
+          Role
+        </a>,
+        <a key="edit" onClick={() => onEditTenant(record)}>
+          Tenant
+        </a>,
+        <a key="edit" onClick={() => onBiness(record)}>
+          Biness
+        </a>,
         <a key="edit" onClick={() => onEdit(record)}>
           Edit
         </a>,
@@ -486,6 +526,13 @@ const Account: React.FC = () => {
           </Space>
         </ModalForm>
       )}
+
+      {/*role modal*/}
+      <RolePage currentRow={currentRow} roleModal={roleModal} tenantId={tenantId} closeRole={closeRole} actionRef={actionRef}></RolePage>
+      {/*tenant modal*/}
+      <TenantPage currentRow={currentRow} tenantModal={tenantModal} tenantId={tenantId} closeRole={closeTenant} actionRef={actionRef}></TenantPage>
+      {/*tenant modal*/}
+      <BinessPage currentRow={currentRow} binessModal={binessModal} tenantId={tenantId} closeRole={closeBiness} actionRef={actionRef}></BinessPage>
     </PageContainer>
   );
 };

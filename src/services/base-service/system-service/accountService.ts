@@ -5,6 +5,15 @@ import {
   getAccountManageDetail,
   getAccountManagePage,
   getAccountManageTenantDetailToList,
+  getAccountManageRoleTree,
+  getAllRoleIdByAccountId,
+  updateAccountAssignedRole,
+  getAccountManageTenantMenuTree,
+  getAllTenantMenuIdByAccountId,
+  updateAccountAssignedTenantMenu,
+  getAccountManageBusinessPermissionTree,
+  getAllBusinessPermissionIdByAccountId,
+  updateAccountAssignedBusinessPermission
 } from '@/services/base-service/api/system-api/accountApi';
 
 export async function insertAccountManageService(data?: any) {
@@ -29,4 +38,31 @@ export async function getAccountManagePageService(params: API.PageParams) {
 
 export async function getAccountManageTenantDetailToListService(params: API.PageParams) {
   return await getAccountManageTenantDetailToList(params);
+}
+export async function getAccountManageRoleTreeService(params: string) {
+  return await getAccountManageRoleTree(params);
+}
+export async function getAllRoleIdByAccountIdService(accountId:string) {
+  return await getAllRoleIdByAccountId(accountId);
+}
+export async function updateAccountAssignedRoleService(accountId:string) {
+  return await updateAccountAssignedRole(accountId);
+}
+export async function getAccountManageTenantMenuTreeService(id: string) {
+  return await getAccountManageTenantMenuTree(id);
+}
+export async function getAllTenantMenuIdByAccountIdService(id: string) {
+  return await getAllTenantMenuIdByAccountId(id);
+}
+export async function updateAccountAssignedTenantMenuService(data: APISystem.onSaveMenuInTenantDataType) {
+  return await updateAccountAssignedTenantMenu(data);
+}
+export async function getAccountManageBusinessPermissionTreeService(id: string) {
+  return await getAccountManageBusinessPermissionTree(id);
+}
+export async function getAllBusinessPermissionIdByAccountIdService(id: string) {
+  return await getAllBusinessPermissionIdByAccountId(id);
+}
+export async function updateAccountAssignedBusinessPermissionService(data: APISystem.onSaveMenuInTenantDataType) {
+  return await updateAccountAssignedBusinessPermission(data);
 }
