@@ -287,7 +287,6 @@ const BusinessPermission: React.FC = () => {
   };
 
   const onCheck = (checkedKeysValue: any) => {
-    console.log(checkedKeysValue, '+++++++')
     setSelectMenuDataList(checkedKeysValue);
   };
 
@@ -560,7 +559,7 @@ const BusinessPermission: React.FC = () => {
               defaultExpandAll={true}
               onCheck={onCheck}
               treeData={allMenuTree}
-              fieldNames={{ title: 'name', key: 'menuId' }}
+              fieldNames={{ title: 'name', key: 'tenantMenuId' }}
             />
 
           </div>

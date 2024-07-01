@@ -59,3 +59,22 @@ export async function updateRoleManage(data?: any) {
     data: data,
   });
 }
+
+export async function updateRoleAssignedBusinessPermission(data?: any) {
+  return request<APISystem.RoleResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/update-role-assigned-business-permission`, {
+    method: 'POST',
+    data: data,
+  });
+}
+
+export async function getRoleManageBusinessPermissionTree(tenantId: string) {
+  return request<APISystem.RoleDetailResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-role-manage-business-permission-tree/${tenantId}`, {
+    method: 'GET'
+  });
+}
+
+export async function getAllBusinessPermissionIdByRoleId(roleId: string) {
+  return request<APISystem.RoleDetailResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-all-business-permission-id-by-role-id/${roleId}`, {
+    method: 'GET'
+  });
+}

@@ -8,7 +8,11 @@ import {
   insertRoleManageService,
   updateRoleAssignedTenantMenuService,
   updateRoleManageService,
+  updateRoleAssignedBusinessPermissionService,
+  getRoleManageBusinessPermissionTreeService,
+  getAllBusinessPermissionIdByRoleIdService,
 } from '@/services/base-service/system-service/roleService';
+import BusinessPermission from './businessPermission/index';
 import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProFormInstance } from '@ant-design/pro-components';
@@ -45,6 +49,9 @@ const Role: React.FC = () => {
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
   const [checkedKeys, setCheckedKeys] = useState([]);
+  const [OpenbusinessModal, setOpenbusinessModal] = useState(false);
+  const [selectedBusinesPermissions, setSelectedBusinesPermissions] = useState([]);
+  const [roleId, setRoleId] = useState('');
 
   const openEdit = async (record: APISystem.RoleItemDataType) => {
     setIsEdit(true);
@@ -190,6 +197,15 @@ const Role: React.FC = () => {
       width: '220px',
       render: (_, record) => [
         <a
+          key="BusinessBtn"
+          onClick={() => {
+            setOpenbusinessModal(true);
+            setRoleId(record?.roleId);
+          }}
+        >
+          businessPermission
+        </a>,
+        <a
           key="MenuBtn"
           onClick={() => {
             setCurrentRow(record);
@@ -230,7 +246,6 @@ const Role: React.FC = () => {
               treeDefaultExpandAll:true,
               onChange: onChangeTenant2,
               treeData: tenantTreeData,
-              showArrow: false,
               filterTreeNode: true,
               showSearch: true,
               popupMatchSelectWidth: false,
@@ -306,7 +321,7 @@ const Role: React.FC = () => {
   const onSaveMenu = async (id: string) => {
     const menuDataBody = {
       roleId: id,
-      menuIds: checkedKeys,
+      tenantMenuIds: checkedKeys,
     };
 
     const saveMenuResponse = await updateRoleAssignedTenantMenuService(menuDataBody);
@@ -321,8 +336,27 @@ const Role: React.FC = () => {
     }
   };
 
+  const editBusiness = async (record: any) => {
+    const parms = {
+      roleId: roleId || '',
+      businessPermissionIds: selectedBusinesPermissions || '',
+    };
+    try {
+      await updateRoleAssignedBusinessPermissionService(parms);
+      message.success('Added successfully');
+      return true;
+    } catch (error) {
+      message.error('Adding failed, please try again!');
+      return false;
+    }
+  };
+
   const onCheck = (checkedKeysValue: any) => {
     setCheckedKeys(checkedKeysValue);
+  };
+
+  const handleSelectedBusinessPermissions = (newSelectedRowKeys: any) => {
+    setSelectedBusinesPermissions(newSelectedRowKeys);
   };
 
   const getParentRoleTreeRequest = async () => {
@@ -463,7 +497,6 @@ const Role: React.FC = () => {
                 fieldProps={{
                   treeDefaultExpandAll:true,
                   onChange: onChangeTenant,
-                  showArrow: false,
                   filterTreeNode: true,
                   showSearch: true,
                   popupMatchSelectWidth: false,
@@ -493,7 +526,6 @@ const Role: React.FC = () => {
                 request={getParentRoleTreeRequest}
                 fieldProps={{
                   treeDefaultExpandAll:true,
-                  showArrow: false,
                   filterTreeNode: true,
                   showSearch: true,
                   popupMatchSelectWidth: false,
@@ -571,12 +603,38 @@ const Role: React.FC = () => {
               defaultExpandAll={true}
               onCheck={onCheck}
               treeData={allMenuTree}
-              fieldNames={{ title: 'name', key: 'id' }}
+              fieldNames={{ title: 'name', key: 'tenantMenuId' }}
             />
 
           </div>
         </ModalForm>
       )}
+
+      {OpenbusinessModal && (
+        <ModalForm
+          title={'Permissions'}
+          width="80%"
+          open={OpenbusinessModal}
+          onOpenChange={setOpenbusinessModal}
+          onFinish={async (record) => {
+            let response = await editBusiness(record);
+
+            if (response) {
+              setOpenbusinessModal(false);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+        >
+          <BusinessPermission
+            onSelectedPermissions={handleSelectedBusinessPermissions}
+            Id={roleId}
+            tenantId={tenantId}
+          />
+        </ModalForm>
+      )}
+
     </PageContainer>
   );
 };

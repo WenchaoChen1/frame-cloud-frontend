@@ -8,6 +8,9 @@ import {
   getRoleManageTenantMenuTree,
   updateRoleAssignedTenantMenu,
   getAllTenantMenuIdByRoleId,
+  updateRoleAssignedBusinessPermission,
+  getRoleManageBusinessPermissionTree,
+  getAllBusinessPermissionIdByRoleId,
 } from "@/services/base-service/api/system-api/roleApi";
 
 export async function getRoleManageTreeService(params: APISystem.RoleTableSearchParams) {
@@ -44,4 +47,16 @@ export async function updateRoleAssignedTenantMenuService(data?: any) {
 
 export async function getAllTenantMenuIdByRoleIdService(data?: any) {
   return await getAllTenantMenuIdByRoleId(data);
+}
+
+export async function updateRoleAssignedBusinessPermissionService(data?: any) {
+  return await updateRoleAssignedBusinessPermission(data);
+}
+
+export async function getRoleManageBusinessPermissionTreeService(tenantId?: any) {
+  return await getRoleManageBusinessPermissionTree(tenantId);
+}
+
+export async function getAllBusinessPermissionIdByRoleIdService(roleId?: any) {
+  return await getAllBusinessPermissionIdByRoleId(roleId);
 }
