@@ -1,12 +1,12 @@
 import {
   deleteRoleManageService,
   getRoleManageTenantMenuTreeService,
-  getAllMenuIdByRoleIdService,
+  getAllTenantMenuIdByRoleIdService,
   getRoleManageDetailService,
   getRoleManageRoleDetailToListService,
   getRoleManageTreeService,
   insertRoleManageService,
-  insertRoleMenuService,
+  updateRoleAssignedTenantMenuService,
   updateRoleManageService,
 } from '@/services/base-service/system-service/roleService';
 import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
@@ -89,7 +89,7 @@ const Role: React.FC = () => {
     if (allMenuResponse.success === true) {
       setAllMenuTree(allMenuResponse?.data || []);
 
-      const selectedMenuResponse = await getAllMenuIdByRoleIdService(record?.id);
+      const selectedMenuResponse = await getAllTenantMenuIdByRoleIdService(record?.id);
       if (selectedMenuResponse?.data) {
         setSelectedKeys(selectedMenuResponse?.data);
       } else {
@@ -309,7 +309,7 @@ const Role: React.FC = () => {
       menuIds: checkedKeys,
     };
 
-    const saveMenuResponse = await insertRoleMenuService(menuDataBody);
+    const saveMenuResponse = await updateRoleAssignedTenantMenuService(menuDataBody);
     if (saveMenuResponse?.success === true) {
       message.success('Save success');
       setMenuModalVisible(false);

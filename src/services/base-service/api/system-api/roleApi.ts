@@ -8,22 +8,19 @@ export async function getRoleManageTree(params: APISystem.RoleTableSearchParams)
 }
 
 export async function getRoleManageTenantMenuTree(tenantId: string) {
-  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/rTenantMenu/get-role-manage-tenant-menu-tree`, {
-    method: 'GET',
-    params: {
-      tenantId: tenantId
-    }
-  });
-}
-
-export async function getAllMenuIdByRoleId(tenantId: string) {
-  return request<APISystem.SelectedRelationMenuDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-all-menu-id-by-role-id/${tenantId}`, {
+  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-role-manage-tenant-menu-tree/${tenantId}`, {
     method: 'GET'
   });
 }
 
-export async function insertRoleMenu(data: APISystem.onSaveMenuInTenantDataType) {
-  return request<APISystem.onSaveRelationMenuResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/insert-role-menu`, {
+export async function getAllTenantMenuIdByRoleId(roleId: string) {
+  return request<APISystem.SelectedRelationMenuDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-all-tenant-menu-id-by-role-id/${roleId}`, {
+    method: 'GET'
+  });
+}
+
+export async function updateRoleAssignedTenantMenu(data: APISystem.onSaveMenuInTenantDataType) {
+  return request<APISystem.onSaveRelationMenuResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/update-role-assigned-tenant-menu`, {
     method: 'POST',
     data: data
   });
