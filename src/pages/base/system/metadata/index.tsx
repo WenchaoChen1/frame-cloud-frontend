@@ -19,7 +19,7 @@ import {
   ProTable,
   ProFormTextArea,
 } from '@ant-design/pro-components';
-import { message, Space, Tooltip, TableColumnsType, Table } from 'antd';
+import { message, Space, Tooltip, TableColumnsType, Table,Row,Col } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
 import { useIntl } from "@@/exports";
 import dayjs from "dayjs";
@@ -319,93 +319,88 @@ const Metadata: React.FC = () => {
             };
           }}
         >
-          <Space size={24}>
-            <ProFormText
-              label={'服务 Id'}
-              width="md"
-              name="serviceId"
-              placeholder={'clientId'}
-              disabled
-            />
-
-            <ProFormText
-              name="requestMethod"
-              label={'Request Method'}
-              width="md"
-              placeholder={'Request Method'}
-              disabled
-            />
-          </Space>
-
-          <Space size={24}>
-            <ProFormText
-              label={'URL'}
-              width="md"
-              name="url"
-              placeholder={'URL'}
-              disabled
-            />
-
-            <ProFormText
-              name="attributeCode"
-              label={'默认权限代码'}
-              width="md"
-              placeholder={'默认权限代码'}
-              disabled
-            />
-          </Space>
-
-          <Space size={24}>
-            <ProFormSelect
-              label={'权限表达式'}
-              width="md"
-              name="webExpression"
-              placeholder={'权限表达式'}
-              request={async () => {
-                return permissionExpression?.map((item: any) => {
-                  return {
-                    label: item?.text,
-                    value: item?.value,
-                  };
-                });
-              }}
-            />
-
-            <ProFormSelect
-              label={intl.formatMessage({ id: 'application.list.status' })}
-              width="md"
-              name="status"
-              placeholder={'status'}
-              options={[
-                {
-                  label: '启用',
-                  value: 0,
-                },
-                {
-                  label: '禁用',
-                  value: 1,
-                },
-                {
-                  label: '锁定',
-                  value: 2,
-                },
-                {
-                  label: '过期',
-                  value: 3,
-                },
-              ]}
-            />
-          </Space>
-
-          <Space size={24}>
-            <ProFormTextArea
-              name="description"
-              width="md"
-              label={'Description'}
-              placeholder={'Please enter description'}
-            />
-            <ProFormText label={'attributeId'} width="md" name="attributeId" hidden={true} />
-          </Space>
+          <Row gutter={16}>
+            <Col span={12}>
+              <ProFormText
+                label={'服务 Id'}
+                name="serviceId"
+                placeholder={'clientId'}
+                disabled
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                name="requestMethod"
+                label={'Request Method'}
+                placeholder={'Request Method'}
+                disabled
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                label={'URL'}
+                name="url"
+                placeholder={'URL'}
+                disabled
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                name="attributeCode"
+                label={'默认权限代码'}
+                placeholder={'默认权限代码'}
+                disabled
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormSelect
+                label={'权限表达式'}
+                name="webExpression"
+                placeholder={'权限表达式'}
+                request={async () => {
+                  return permissionExpression?.map((item: any) => {
+                    return {
+                      label: item?.text,
+                      value: item?.value,
+                    };
+                  });
+                }}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormSelect
+                label={intl.formatMessage({ id: 'application.list.status' })}
+                name="status"
+                placeholder={'status'}
+                options={[
+                  {
+                    label: '启用',
+                    value: 0,
+                  },
+                  {
+                    label: '禁用',
+                    value: 1,
+                  },
+                  {
+                    label: '锁定',
+                    value: 2,
+                  },
+                  {
+                    label: '过期',
+                    value: 3,
+                  },
+                ]}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormTextArea
+                name="description"
+                label={'Description'}
+                placeholder={'Please enter description'}
+              />
+            </Col>
+            <Col span={12} hidden={true}><ProFormText label={'attributeId'} width="md" name="attributeId"/></Col>
+          </Row>
         </ModalForm>
       )}
 

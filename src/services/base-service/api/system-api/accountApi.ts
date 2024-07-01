@@ -39,3 +39,52 @@ export async function getAccountManageTenantDetailToList(params: APISystem.PageP
     params: params
   });
 }
+
+export async function getAccountManageRoleTree(tenantId: APISystem.PageParams) {
+  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/get-account-manage-role-tree/${tenantId}`, {
+    method: 'GET',
+  });
+}
+export async function getAllRoleIdByAccountId(accountId: string) {
+  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/get-all-role-id-by-account-id/${accountId}`, {
+    method: 'GET',
+  });
+}
+export async function updateAccountAssignedRole(data?: any) {
+  return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/update-account-assigned-role`, {
+    method: 'POST',
+    data: data,
+  });
+}
+export async function getAccountManageTenantMenuTree(tenantId: string) {
+  return request<APISystem.onSaveRelationMenuResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/get-account-manage-tenant-menu-tree/${tenantId}`, {
+    method: 'GET',
+  });
+}
+export async function getAllTenantMenuIdByAccountId(accountId: string) {
+  return request<APISystem.onSaveRelationMenuResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/get-all-tenant-menu-id-by-account-id/${accountId}`, {
+    method: 'GET',
+  });
+}
+export async function updateAccountAssignedTenantMenu(data: APISystem.onSaveMenuInTenantDataType) {
+  return request<APISystem.onSaveRelationMenuResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/update-account-assigned-tenant-menu`, {
+    method: 'post',
+    data
+  });
+}
+export async function getAccountManageBusinessPermissionTree(tenantId: string) {
+  return request<APISystem.onSaveRelationMenuResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/get-account-manage-business-permission-tree/${tenantId}`, {
+    method: 'GET',
+  });
+}
+export async function getAllBusinessPermissionIdByAccountId(accountId: string) {
+  return request<APISystem.onSaveRelationMenuResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/get-all-business-permission-id-by-account-id/${accountId}`, {
+    method: 'GET',
+  });
+}
+export async function updateAccountAssignedBusinessPermission(data: APISystem.onSaveMenuInTenantDataType) {
+  return request<APISystem.onSaveRelationMenuResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/update-account-assigned-business-permission`, {
+    method: 'post',
+    data
+  });
+}

@@ -23,13 +23,19 @@ import {
 } from '@ant-design/pro-components';
 import { FormattedMessage, useModel} from '@umijs/max';
 import { useIntl } from "@@/exports";
-import { Button, message, Space } from 'antd';
+import { Button, message, Space,Row,Col } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
+import RolePage from './components/role'
+import TenantPage from './components/tenant'
+import BinessPage from './components/biness'
 
 const Account: React.FC = () => {
   const intl = useIntl();
+  const [roleModal,setRoleModal] = useState(false)
+  const [tenantModal,setTenantModal] = useState(false)
+  const [binessModal,setBinessModal] = useState(false)
   const actionRef = useRef<ActionType>();
   const { initialState } = useModel('@@initialState');
   const currentAccountId = initialState?.currentUser?.accountId;
@@ -133,6 +139,18 @@ const Account: React.FC = () => {
     setIsEdit(true);
     setOpenModal(true);
   };
+  const onRole = (record: APISystem.AccountItemDataType) =>{
+    setCurrentRow(record);
+    setRoleModal(true)
+  }
+  const onEditTenant = (record: APISystem.AccountItemDataType) =>{
+    setCurrentRow(record);
+    setTenantModal(true)
+  }
+  const onBiness = (record: APISystem.AccountItemDataType) =>{
+    setCurrentRow(record);
+    setBinessModal(true)
+  }
 
   const getTenantTreeRequest = async () => {
     const tenantTreeResponse = await getTenantManageTreeService({});
@@ -173,6 +191,19 @@ const Account: React.FC = () => {
       times = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
     }
     return times
+  }
+
+  const closeRole = () =>{
+    setCurrentRow({})
+    setRoleModal(false)
+  }
+  const closeTenant = () =>{
+    setCurrentRow({})
+    setTenantModal(false)
+  }
+  const closeBiness = () =>{
+    setCurrentRow({})
+    setBinessModal(false)
   }
 
   const columns: ProColumns<APISystem.AccountItemDataType>[] = [
@@ -250,6 +281,15 @@ const Account: React.FC = () => {
       width: '220px',
       valueType: 'option',
       render: (_, record) => [
+        <a key="edit" onClick={() => onRole(record)}>
+          Role
+        </a>,
+        <a key="edit" onClick={() => onEditTenant(record)}>
+          Tenant
+        </a>,
+        <a key="edit" onClick={() => onBiness(record)}>
+          Biness
+        </a>,
         <a key="edit" onClick={() => onEdit(record)}>
           Edit
         </a>,
@@ -346,146 +386,151 @@ const Account: React.FC = () => {
             }
           }}
         >
-          <Space size={20}>
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'Name is required',
-                },
-              ]}
-              width="md"
-              label={'Name'}
-              name={'name'}
-              placeholder={'Name'}
-            />
-
-            <ProFormSelect
-              name="type"
-              label={'Account Type'}
-              width="md"
-              rules={[
-                {
-                  required: true,
-                  message: 'Account Type is required',
-                },
-              ]}
-              options={[
-                {
-                  value: 0,
-                  label: 'Super',
-                },
-                {
-                  value: 1,
-                  label: 'Admin',
-                },
-                {
-                  value: 2,
-                  label: 'User',
-                },
-              ]}
-              allowClear={false}
-            />
-            <ProFormText name="accountId" hidden={true} />
-          </Space>
-
-          <Space size={20}>
-            <ProFormTreeSelect
-              label="Tenant name"
-              name="tenantId"
-              placeholder="Please select"
-              allowClear
-              width={'md'}
-              secondary
-              disabled={isEdit}
-              request={getTenantTreeRequest}
-              fieldProps={{
-                treeDefaultExpandAll:true,
-                suffixIcon: null,
-                filterTreeNode: true,
-                showSearch: true,
-                popupMatchSelectWidth: false,
-                autoClearSearchValue: true,
-                treeNodeFilterProp: 'title',
-                fieldNames: {
-                  label: 'tenantName',
-                  value: 'id',
-                },
-              }}
-              rules={[
-                {
-                  required: true,
-                  message: 'Tenant is required',
-                },
-              ]}
-            />
-
-            <ProFormSelect
-              label={'User'}
-              name="userId"
-              placeholder="Please select"
-              allowClear
-              width={'md'}
-              secondary
-              disabled={isEdit}
-              request={async () => {
-                const responseRole = await getUserManagePageService({});
-                if (responseRole.success === true && responseRole?.data?.content) {
-                  return responseRole?.data?.content;
-                } else {
-                  return [];
-                }
-              }}
-              fieldProps={{
-                fieldNames: {
-                  label: 'username',
-                  value: 'userId',
-                },
-              }}
-              rules={[
-                {
-                  required: true,
-                  message: 'User is required',
-                },
-              ]}
-            />
-          </Space>
-
-          <Space size={20}>
-            <ProFormText width="md" label={'Identity'} name={'identity'} placeholder={'Identity'} />
-
-            <ProFormSelect
-              width="md"
-              rules={[
-                {
-                  required: true,
-                  message: 'Status is required',
-                },
-              ]}
-              name="status"
-              label={'Status'}
-              options={[
-                {
-                  label: '启用',
-                  value: 0,
-                },
-                {
-                  label: '禁用',
-                  value: 1,
-                },
-                {
-                  label: '锁定',
-                  value: 2,
-                },
-                {
-                  label: '过期',
-                  value: 3,
-                },
-              ]}
-            />
-          </Space>
+          <Row gutter={16}>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'Name is required',
+                  },
+                ]}
+                label={'Name'}
+                name={'name'}
+                placeholder={'Name'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormSelect
+                name="type"
+                label={'Account Type'}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Account Type is required',
+                  },
+                ]}
+                options={[
+                  {
+                    value: 0,
+                    label: 'Super',
+                  },
+                  {
+                    value: 1,
+                    label: 'Admin',
+                  },
+                  {
+                    value: 2,
+                    label: 'User',
+                  },
+                ]}
+                allowClear={false}
+              />
+            </Col>
+            <Col span={12} hidden={true}><ProFormText name="accountId" /></Col>
+            <Col span={12}>
+              <ProFormTreeSelect
+                label="Tenant name"
+                name="tenantId"
+                placeholder="Please select"
+                allowClear
+                secondary
+                disabled={isEdit}
+                request={getTenantTreeRequest}
+                fieldProps={{
+                  treeDefaultExpandAll:true,
+                  suffixIcon: null,
+                  filterTreeNode: true,
+                  showSearch: true,
+                  popupMatchSelectWidth: false,
+                  autoClearSearchValue: true,
+                  treeNodeFilterProp: 'title',
+                  fieldNames: {
+                    label: 'tenantName',
+                    value: 'id',
+                  },
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Tenant is required',
+                  },
+                ]}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormSelect
+                label={'User'}
+                name="userId"
+                placeholder="Please select"
+                allowClear
+                secondary
+                disabled={isEdit}
+                request={async () => {
+                  const responseRole = await getUserManagePageService({});
+                  if (responseRole.success === true && responseRole?.data?.content) {
+                    return responseRole?.data?.content;
+                  } else {
+                    return [];
+                  }
+                }}
+                fieldProps={{
+                  fieldNames: {
+                    label: 'username',
+                    value: 'userId',
+                  },
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'User is required',
+                  },
+                ]}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText label={'Identity'} name={'identity'} placeholder={'Identity'} />
+            </Col>
+            <Col span={12}>
+              <ProFormSelect
+                rules={[
+                  {
+                    required: true,
+                    message: 'Status is required',
+                  },
+                ]}
+                name="status"
+                label={'Status'}
+                options={[
+                  {
+                    label: '启用',
+                    value: 0,
+                  },
+                  {
+                    label: '禁用',
+                    value: 1,
+                  },
+                  {
+                    label: '锁定',
+                    value: 2,
+                  },
+                  {
+                    label: '过期',
+                    value: 3,
+                  },
+                ]}
+              />
+            </Col>
+          </Row>
         </ModalForm>
       )}
+
+      {/*role modal*/}
+      <RolePage currentRow={currentRow} roleModal={roleModal} tenantId={tenantId} closeRole={closeRole} actionRef={actionRef}></RolePage>
+      {/*tenant modal*/}
+      <TenantPage currentRow={currentRow} tenantModal={tenantModal} tenantId={tenantId} closeRole={closeTenant} actionRef={actionRef}></TenantPage>
+      {/*tenant modal*/}
+      <BinessPage currentRow={currentRow} binessModal={binessModal} tenantId={tenantId} closeRole={closeBiness} actionRef={actionRef}></BinessPage>
     </PageContainer>
   );
 };

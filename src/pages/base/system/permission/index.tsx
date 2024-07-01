@@ -18,7 +18,7 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage} from '@umijs/max';
-import { Button, message, Table, Space, TableColumnsType, Tooltip } from 'antd';
+import { Button, message, Table, Space, TableColumnsType, Tooltip,Row,Col } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import { useIntl } from "@@/exports";
@@ -379,79 +379,81 @@ const User: React.FC = () => {
           }}
           request={getPermissionInfoRequest}
         >
-          <Space size={20}>
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'Permission name is required',
-                },
-              ]}
-              label={'Permission Name'}
-              width="md"
-              name="permissionName"
-              placeholder={'Permission name'}
-            />
-            <ProFormText
-              name="permissionCode"
-              label={'Code'}
-              width="md"
-              placeholder={'Code'}
-              rules={[
-                {
-                  required: true,
-                  message: 'Code is required',
-                },
-              ]}
-            />
-
-            <ProFormText label={'permissionId'} width="md" name="permissionId" hidden={true} />
-          </Space>
-
-          <Space size={20}>
-            <ProFormSelect
-              rules={[
-                {
-                  required: true,
-                  message: 'Permission Type is required',
-                },
-              ]}
-              label={'Permission Type'}
-              width="md"
-              name="permissionType"
-              placeholder={'Permission Type'}
-              options={permissionTypeList}
-            />
-            <ProFormSelect
-              width="md"
-              rules={[
-                {
-                  required: true,
-                  message: 'Status is required',
-                },
-              ]}
-              name="status"
-              label={'Status'}
-              options={[
-                {
-                  label: '启用',
-                  value: 0,
-                },
-                {
-                  label: '禁用',
-                  value: 1,
-                },
-                {
-                  label: '锁定',
-                  value: 2,
-                },
-                {
-                  label: '过期',
-                  value: 3,
-                },
-              ]}
-            />
-          </Space>
+          <Row gutter={16}>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'Permission name is required',
+                  },
+                ]}
+                label={'Permission Name'}
+                name="permissionName"
+                placeholder={'Permission name'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                name="permissionCode"
+                label={'Code'}
+                placeholder={'Code'}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Code is required',
+                  },
+                ]}
+              />
+            </Col>
+            <Col span={12} hidden={true} >
+              <ProFormText label={'permissionId'} width="md" name="permissionId"/>
+            </Col>
+            <Col span={12}>
+              <ProFormSelect
+                rules={[
+                  {
+                    required: true,
+                    message: 'Permission Type is required',
+                  },
+                ]}
+                label={'Permission Type'}
+                name="permissionType"
+                placeholder={'Permission Type'}
+                options={permissionTypeList}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormSelect
+                rules={[
+                  {
+                    required: true,
+                    message: 'Status is required',
+                  },
+                ]}
+                name="status"
+                label={'Status'}
+                options={[
+                  {
+                    label: '启用',
+                    value: 0,
+                  },
+                  {
+                    label: '禁用',
+                    value: 1,
+                  },
+                  {
+                    label: '锁定',
+                    value: 2,
+                  },
+                  {
+                    label: '过期',
+                    value: 3,
+                  },
+                ]}
+              />
+            </Col>
+          </Row>
         </ModalForm>
       )}
     </PageContainer>

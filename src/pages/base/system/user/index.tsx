@@ -21,7 +21,7 @@ import {
 } from '@ant-design/pro-components';
 import { FormattedMessage, useModel } from '@umijs/max';
 import { useIntl } from "@@/exports";
-import { Button, message, Space } from 'antd';
+import { Button, message, Space,Row,Col } from 'antd';
 import React, { useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
@@ -308,163 +308,158 @@ const User: React.FC = () => {
           <Space size={20}>
             <ProFormText name="userId" hidden={true} />
           </Space>
-          <Space size={20}>
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'User Name is required',
-                },
-              ]}
-              label={'User Name'}
-              width="md"
-              name="username"
-              placeholder={'User Name'}
-            />
-
-            <ProFormDigit
-              rules={[
-                {
-                  required: true,
-                  message: 'Phone Number is required',
-                },
-              ]}
-              width="md"
-              name="phoneNumber"
-              label="PhoneNumber"
-            />
-          </Space>
-
-          <Space size={20}>
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'First Name is required',
-                },
-              ]}
-              label={'First Name'}
-              width="md"
-              name="firstName"
-              placeholder={'First Name'}
-            />
-
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'Last Name is required',
-                },
-              ]}
-              label={'Last Name'}
-              width="md"
-              name="lastName"
-              placeholder={'Last Name'}
-            />
-          </Space>
-
-          <Space size={20}>
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'Email is required',
-                },
-              ]}
-              label={'Email'}
-              width="md"
-              name="email"
-              placeholder={'Email'}
-            />
-
-            <ProFormText
-              label={'Avatar'}
-              width="md"
-              name="avatar"
-              rules={[
-                {
-                  required: true,
-                  message: 'Avatar is required',
-                },
-              ]}
-              placeholder={'Avatar'}
-            />
-          </Space>
-
-          <Space size={20}>
-            <ProFormText
-              label={'Nickname'}
-              width="md"
-              rules={[
-                {
-                  required: true,
-                  message: 'Nickname is required',
-                },
-              ]}
-              name="nickname"
-              placeholder={'Nickname'}
-            />
-
-            <ProFormSelect
-              width="md"
-              rules={[
-                {
-                  required: true,
-                  message: 'Status is required',
-                },
-              ]}
-              name="status"
-              label={'Status'}
-              options={[
-                {
-                  label: '启用',
-                  value: 0,
-                },
-                {
-                  label: '禁用',
-                  value: 1,
-                },
-                {
-                  label: '锁定',
-                  value: 2,
-                },
-                {
-                  label: '过期',
-                  value: 3,
-                },
-              ]}
-            />
-          </Space>
-
-          <Space size={20}>
-            <ProFormTextArea
-              name="description"
-              width="md"
-              label={'Description'}
-              placeholder={'Please enter description'}
-            />
-            <ProFormRadio.Group
-              rules={[
-                {
-                  required: true,
-                  message: 'Gender is required',
-                },
-              ]}
-              initialValue={1}
-              name="gender"
-              label={'Gender'}
-              options={[
-                {
-                  value: 0,
-                  label: 'male',
-                },
-                {
-                  value: 1,
-                  label: 'female',
-                },
-              ]}
-            />
-          </Space>
+          <Row gutter={16}>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'User Name is required',
+                  },
+                ]}
+                label={'User Name'}
+                name="username"
+                placeholder={'User Name'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormDigit
+                rules={[
+                  {
+                    required: true,
+                    message: 'Phone Number is required',
+                  },
+                ]}
+                name="phoneNumber"
+                label="PhoneNumber"
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'First Name is required',
+                  },
+                ]}
+                label={'First Name'}
+                name="firstName"
+                placeholder={'First Name'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'Last Name is required',
+                  },
+                ]}
+                label={'Last Name'}
+                name="lastName"
+                placeholder={'Last Name'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'Email is required',
+                  },
+                ]}
+                label={'Email'}
+                name="email"
+                placeholder={'Email'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                label={'Avatar'}
+                name="avatar"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Avatar is required',
+                  },
+                ]}
+                placeholder={'Avatar'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                label={'Nickname'}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Nickname is required',
+                  },
+                ]}
+                name="nickname"
+                placeholder={'Nickname'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormSelect
+                rules={[
+                  {
+                    required: true,
+                    message: 'Status is required',
+                  },
+                ]}
+                name="status"
+                label={'Status'}
+                options={[
+                  {
+                    label: '启用',
+                    value: 0,
+                  },
+                  {
+                    label: '禁用',
+                    value: 1,
+                  },
+                  {
+                    label: '锁定',
+                    value: 2,
+                  },
+                  {
+                    label: '过期',
+                    value: 3,
+                  },
+                ]}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormTextArea
+                name="description"
+                label={'Description'}
+                placeholder={'Please enter description'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormRadio.Group
+                rules={[
+                  {
+                    required: true,
+                    message: 'Gender is required',
+                  },
+                ]}
+                initialValue={1}
+                name="gender"
+                label={'Gender'}
+                options={[
+                  {
+                    value: 0,
+                    label: 'male',
+                  },
+                  {
+                    value: 1,
+                    label: 'female',
+                  },
+                ]}
+              />
+            </Col>
+          </Row>
         </ModalForm>
       )}
     </PageContainer>
