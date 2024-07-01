@@ -128,7 +128,6 @@ const Role: React.FC = () => {
   // };
 
   const onChangeTenant = (getTenantId: string) => {
-    console.log('变化了吗')
     setTenantId(getTenantId);
     formRef?.current?.setFieldValue('parentId');
   };
@@ -296,7 +295,7 @@ const Role: React.FC = () => {
       roleName: '',
       parentId: '',
       code: '',
-      sort: 1,
+      sort: '',
       status: 1,
       description: '',
     };
@@ -603,7 +602,7 @@ const Role: React.FC = () => {
               defaultExpandAll={true}
               onCheck={onCheck}
               treeData={allMenuTree}
-              fieldNames={{ title: 'name', key: 'tenantMenuId' }}
+              fieldNames={{ title: 'menuName', key: 'tenantMenuId' }}
             />
 
           </div>

@@ -252,7 +252,7 @@ const BusinessPermission: React.FC = () => {
       roleName: '',
       parentId: '',
       code: '',
-      sort: 1,
+      sort: '',
       status: 1,
       description: '',
     };
@@ -551,7 +551,7 @@ const BusinessPermission: React.FC = () => {
               defaultExpandAll={true}
               onCheck={onCheck}
               treeData={allMenuTree}
-              fieldNames={{ title: 'name', key: 'tenantMenuId' }}
+              fieldNames={{ title: 'menuName', key: 'tenantMenuId' }}
             />
 
           </div>
