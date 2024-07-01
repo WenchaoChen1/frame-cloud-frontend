@@ -126,7 +126,12 @@ export const fixMenuItemIcon = (menus:MenuDataItem[]):MenuDataItem[]=>{
     const {icon,children} = item;
     if (typeof icon === 'string'){
       const fixIconName = icon?.slice(0,1)?.toLocaleUpperCase() + icon?.slice(1)
-      item.icon = React.createElement(allIcons[fixIconName] || allIcons[icon])
+      const IconComponent = allIcons[fixIconName] || allIcons[icon]
+      if (IconComponent) {
+        item.icon = React.createElement(IconComponent)
+      } else {
+        item.icon = null // 或其他处理逻辑
+      }
     }
     if (children && children.length > 0) {
       item.children = fixMenuItemIcon(children)
