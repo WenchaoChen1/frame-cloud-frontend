@@ -208,7 +208,6 @@ const BusinessPermission: React.FC = () => {
               treeDefaultExpandAll:true,
               onChange: onChangeTenant2,
               treeData: tenantTreeData,
-              showArrow: false,
               filterTreeNode: true,
               showSearch: true,
               popupMatchSelectWidth: false,
@@ -448,7 +447,6 @@ const BusinessPermission: React.FC = () => {
                 fieldProps={{
                   treeDefaultExpandAll:true,
                   onChange: onChangeTenant,
-                  showArrow: false,
                   filterTreeNode: true,
                   showSearch: true,
                   popupMatchSelectWidth: false,
@@ -478,7 +476,6 @@ const BusinessPermission: React.FC = () => {
                 request={getParentRoleTreeRequest}
                 fieldProps={{
                   treeDefaultExpandAll:true,
-                  showArrow: false,
                   filterTreeNode: true,
                   showSearch: true,
                   popupMatchSelectWidth: false,
@@ -535,9 +532,6 @@ const BusinessPermission: React.FC = () => {
           onOpenChange={setMenuOpenModal}
           onFinish={async (record) => {
             await onSaveMenu(record?.id);
-          }}
-          initialValues={{
-            id: currentRow?.id,
           }}
         >
           <ProFormText label={'id'} name="id" hidden={true} />

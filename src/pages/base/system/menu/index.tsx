@@ -402,24 +402,6 @@ const MenuList: React.FC = () => {
               }
             }
           }}
-          // initialValues={{
-          //   id: currentRow?.id,
-          //   name: currentRow?.name,
-          //   parentId: currentRow?.parentId,
-          //   code: currentRow?.code,
-          //   path: currentRow?.path,
-          //   location: currentRow?.location,
-          //   permission: currentRow?.permission,
-          //   sort: currentRow?.sort,
-          //   status: currentRow?.status,
-          //   hidden: currentRow?.hidden,
-          //   usageType: currentRow?.usageType,
-          //   platformUse: currentRow?.platformUse,
-          //   tenantEnable: currentRow?.tenantEnable,
-          //   type: currentRow && currentRow.type,
-          //   url: currentRow?.url,
-          //   description: currentRow?.description,
-          // }}
         >
           <Row gutter={16}>
             <Col span={24}>

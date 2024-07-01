@@ -240,7 +240,7 @@ const Role: React.FC = () => {
             allowClear={false}
             width={'lg'}
             secondary
-            initialValue={tenantId}
+            // initialValue={tenantId}
             fieldProps={{
               treeDefaultExpandAll:true,
               onChange: onChangeTenant,
@@ -252,7 +252,7 @@ const Role: React.FC = () => {
               treeNodeFilterProp: 'title',
               fieldNames: {
                 label: 'tenantName',
-                value: 'id',
+                value: 'tenantId',
               },
             }}
           />
