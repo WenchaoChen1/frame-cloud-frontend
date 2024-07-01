@@ -9,8 +9,6 @@ import {
   updateRoleAssignedTenantMenuService,
   updateRoleManageService,
   updateRoleAssignedBusinessPermissionService,
-  getRoleManageBusinessPermissionTreeService,
-  getAllBusinessPermissionIdByRoleIdService,
 } from '@/services/base-service/system-service/roleService';
 import BusinessPermission from './businessPermission/index';
 import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
@@ -29,7 +27,7 @@ import {
 } from '@ant-design/pro-components';
 import { FormattedMessage} from '@umijs/max';
 import { useIntl } from "@@/exports";
-import {Button, message, Space, Tree,Row,Col} from 'antd';
+import {Button, message, Tree, Row, Col} from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
@@ -124,13 +122,15 @@ const Role: React.FC = () => {
     }
   };
 
+  // const onChangeTenant = (getTenantId: string) => {
+  //   setTenantId2(getTenantId);
+  //   formRef?.current?.setFieldValue('parentId');
+  // };
+
   const onChangeTenant = (getTenantId: string) => {
+    console.log('变化了吗')
     setTenantId(getTenantId);
     formRef?.current?.setFieldValue('parentId');
-  };
-
-  const onChangeTenant2 = (getTenantId: string) => {
-    setTenantId(getTenantId);
   };
 
   const formatDate = (time:string):string =>{
@@ -229,7 +229,7 @@ const Role: React.FC = () => {
     },
     {
       title: 'Tenant',
-      key: 'tenant',
+      key: 'tenantId',
       hideInTable: true,
       hidden: true,
       dataIndex: 'direction',
@@ -244,7 +244,7 @@ const Role: React.FC = () => {
             initialValue={tenantId}
             fieldProps={{
               treeDefaultExpandAll:true,
-              onChange: onChangeTenant2,
+              onChange: onChangeTenant,
               treeData: tenantTreeData,
               filterTreeNode: true,
               showSearch: true,
