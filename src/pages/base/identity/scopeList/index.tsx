@@ -13,7 +13,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ModalForm, PageContainer, ProFormText, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage } from '@umijs/max';
 import { useIntl } from "@@/exports";
-import { Button, message, Space } from 'antd';
+import { Button, message, Space,Row,Col } from 'antd';
 import React, { useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
@@ -245,34 +245,35 @@ const Scope: React.FC = () => {
             }
           }}
         >
-          <Space size={20}>
-            <ProFormText
-              rules={[
-                {
-                  required: true,
-                  message: 'scopeName is required',
-                },
-              ]}
-              label={'scopeName'}
-              width="md"
-              name="scopeName"
-              placeholder={'scopeName'}
-            />
-            <ProFormText
-              name="scopeCode"
-              label={'scopeCode'}
-              width="md"
-              placeholder={'scopeCode'}
-              rules={[
-                {
-                  required: true,
-                  message: 'scopeCode is required',
-                },
-              ]}
-            />
-
-            <ProFormText label={'scopeId'} width="md" name="scopeId" hidden={true} />
-          </Space>
+          <Row gutter={16}>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'scopeName is required',
+                  },
+                ]}
+                label={'scopeName'}
+                name="scopeName"
+                placeholder={'scopeName'}
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                name="scopeCode"
+                label={'scopeCode'}
+                placeholder={'scopeCode'}
+                rules={[
+                  {
+                    required: true,
+                    message: 'scopeCode is required',
+                  },
+                ]}
+              />
+            </Col>
+            <Col span={12} hidden={true}><ProFormText label={'scopeId'} name="scopeId"  /></Col>
+          </Row>
         </ModalForm>
       )}
 
