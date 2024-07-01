@@ -25,5 +25,5 @@ const estimate = (initialState:any,permissionName:string) =>{
     const {currentLoginAccountUserPermissions:userRouters} = initialState?.currentUser
     flag = userRouters?.some((item: any )=>item.code === permissionName);
   }
-  return true
+  return flag
 }
