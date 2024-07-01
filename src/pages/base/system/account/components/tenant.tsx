@@ -97,7 +97,7 @@ function Tenant({currentRow,tenantId,closeRole,actionRef,tenantModal}:Interface)
             onSelect={onSelect}
             selectedKeys={selectedKeys}
             treeData={allMenuTree}
-            fieldNames={{ title: 'menuName', key: 'menuId' }}
+            fieldNames={{ title: 'menuName', key: 'tenantMenuId' }}
           />
         </div>
       </ModalForm>
