@@ -37,6 +37,7 @@ const Role: React.FC = () => {
   const refTableForm = useRef<ProFormInstance>();
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
+  const [buttonTentantId,setButtonTentantId] = useState('')
   const [tenantId, setTenantId] = useState<string | undefined>(undefined);
   const [roleNameText, setRoleNameText] = useState('');
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
@@ -205,6 +206,7 @@ const Role: React.FC = () => {
           onClick={() => {
             setOpenbusinessModal(true);
             setRoleId(record?.roleId);
+            setButtonTentantId(record?.tenantId)
           }}
         >
           businessPermission
@@ -623,7 +625,7 @@ const Role: React.FC = () => {
           <BusinessPermission
             onSelectedPermissions={handleSelectedBusinessPermissions}
             Id={roleId}
-            tenantId={tenantId}
+            tenantId={buttonTentantId}
           />
         </ModalForm>
       )}
