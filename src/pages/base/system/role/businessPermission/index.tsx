@@ -109,11 +109,7 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, Id, tenan
         columns={columns}
         rowKey={(e: any) => e?.businessPermissionId}
         rowSelection={rowSelection}
-        search={{
-          span: 8,
-          labelWidth: 'auto',
-          defaultCollapsed:false,
-        }}
+        search={false}
         request={getList}
         options={false}
         scroll={{
