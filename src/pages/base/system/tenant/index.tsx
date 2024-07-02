@@ -9,6 +9,7 @@ import {
   onSaveMenuInTenantService,
   updateTenantManageService,
 } from '@/services/base-service/system-service/tenantService';
+import { enumsService } from '@/services/base-service/system-service/commService';
 import { getRoleManageRoleDetailToListService } from '@/services/base-service/system-service/roleService';
 import { getTenantManageMenuTreeService } from '@/services/base-service/system-service/menuService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -26,7 +27,7 @@ import {
 import { FormattedMessage } from '@umijs/max';
 import { useIntl } from "@@/exports";
 import {Button, message, Tree, Row, Col} from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {PlusOutlined} from '@ant-design/icons'
 import PopconfirmPage from '@/pages/base/components/popconfirm/index'
 import styles from './index.less';
@@ -47,6 +48,7 @@ const Index: React.FC = () => {
   const [defaultExpanded, setDefaultExpanded] = useState([]);
   const [menuData,setMenuData] = useState([])
   const [showAll,setShowAll] = useState(false)
+  const [permissionTypeList, setPermissionTypeList] = useState([]);
   const [tableAdd,setTableAdd] = useState<string | undefined>('')
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
@@ -359,6 +361,19 @@ const Index: React.FC = () => {
     setDefaultExpanded(treeDataId)
   }
 
+  const initPermissionTypeChange = async () => {
+    const response = await enumsService();
+    console.log(response, '777777')
+    if (response?.success === true) {
+      setPermissionTypeList(response?.data?.sysTenantPermissionType
+      );
+    }
+  };
+
+  useEffect(() => {
+    initPermissionTypeChange();
+  }, []);
+
   return (
     <PageContainer>
       <ProTable<APISystem.TenantItemDataType, APISystem.PageParams>
@@ -468,7 +483,7 @@ const Index: React.FC = () => {
           className={commonStyle.pageContainer}
         >
           <Row  gutter={16}>
-            <Col span={24}>
+            <Col span={12}>
               <ProFormTreeSelect
                 label={'Parent tenant'}
                 name="parentId"
@@ -489,6 +504,29 @@ const Index: React.FC = () => {
                     label: 'tenantName',
                     value: 'id',
                   },
+                }}
+              />
+            </Col>
+            
+            <Col span={12}>
+              <ProFormSelect
+                rules={[
+                  {
+                    required: true,
+                    message: 'TenantPermission Type is required',
+                  },
+                ]}
+                mode="multiple"
+                label={'TenantPermission Type'}
+                name="TenantPermissionType"
+                placeholder={'TenantPermission Type'}
+                request={async () => {
+                  return permissionTypeList.map((item: any) => {
+                    return {
+                      label: item?.name,
+                      value: item?.value,
+                    };
+                  });
                 }}
               />
             </Col>
