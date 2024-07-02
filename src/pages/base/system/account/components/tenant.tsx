@@ -34,7 +34,7 @@ function Tenant({currentRow,tenantId,closeRole,actionRef,tenantModal}:Interface)
   }
   useEffect( ()=>{
     if (tenantModal){
-      getTree(tenantId)
+      getTree(currentRow?.tenantId)
     }else{
       clearDatas()
     }

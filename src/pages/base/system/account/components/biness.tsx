@@ -35,7 +35,7 @@ function Biness({currentRow,tenantId,closeRole,actionRef,binessModal}:Interface)
 
   useEffect( ()=>{
     if (binessModal){
-      getTree(tenantId)
+      getTree(currentRow?.tenantId)
     }else{
       clearDatas()
     }
