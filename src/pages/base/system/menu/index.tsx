@@ -124,6 +124,11 @@ const MenuList: React.FC = () => {
       dataIndex: 'menuName',
     },
     {
+      title: 'Name',
+      dataIndex: 'name',
+      hideInSearch: true,
+    },
+    {
       title: 'Code',
       dataIndex: 'code',
       hideInSearch: true,
@@ -208,7 +213,6 @@ const MenuList: React.FC = () => {
           onClick={() => {
             setIsEdit(true);
             setCurrentRow(record);
-            console.log('Edit record', record);
             handleModalVisible(true);
           }}
         >
