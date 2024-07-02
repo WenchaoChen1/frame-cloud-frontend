@@ -230,14 +230,13 @@ const Role: React.FC = () => {
       title: 'Tenant',
       key: 'tenantId',
       hideInTable: true,
-      hidden: true,
       dataIndex: 'direction',
       renderFormItem: () => {
         return (
           <ProFormTreeSelect
             name="tenant"
             placeholder="Please select"
-            allowClear={false}
+            allowClear={true}
             width={'lg'}
             secondary
             // initialValue={tenantId}
@@ -252,7 +251,7 @@ const Role: React.FC = () => {
               treeNodeFilterProp: 'title',
               fieldNames: {
                 label: 'tenantName',
-                value: 'tenantId',
+                value:'id'
               },
             }}
           />
@@ -262,13 +261,6 @@ const Role: React.FC = () => {
   ];
 
   const getList = async (params: APISystem.RoleTableSearchParams) => {
-    if (!tenantId) {
-      return {
-        data: [],
-        success: true,
-      };
-    }
-
     params.tenantId = tenantId;
     const roleResponse = await getRoleManageTreeService(params);
     let dataSource: APISystem.RoleItemDataType[] = [];
@@ -304,14 +296,9 @@ const Role: React.FC = () => {
   const getTenantTreeRequest = async () => {
     const tenantTreeResponse = await getTenantManageTreeService({});
     if (tenantTreeResponse.success && tenantTreeResponse.data) {
-      if (tenantTreeResponse.data?.length > 0) {
-        setTenantId(tenantTreeResponse.data[0].id || undefined);
-      }
-
       setTenantTreeData(tenantTreeResponse.data);
       return tenantTreeResponse.data;
     } else {
-      setTenantId(undefined);
       setTenantTreeData([]);
       return [];
     }
@@ -376,7 +363,6 @@ const Role: React.FC = () => {
 
   return (
     <PageContainer>
-      {tenantId && (
         <ProTable<APISystem.RoleItemDataType, APISystem.PageParams>
           rowKey="id"
           headerTitle={'List'}
@@ -396,6 +382,9 @@ const Role: React.FC = () => {
           ]}
           request={getList}
           columns={columns}
+          onReset={()=>{
+            setTenantId('')
+          }}
           search={{
             labelWidth: 'auto',
             defaultCollapsed:false,
@@ -406,7 +395,6 @@ const Role: React.FC = () => {
             },
           }}
         />
-      )}
 
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
@@ -495,7 +483,7 @@ const Role: React.FC = () => {
                 request={getTenantTreeRequest}
                 fieldProps={{
                   treeDefaultExpandAll:true,
-                  onChange: onChangeTenant,
+                  // onChange: onChangeTenant,
                   filterTreeNode: true,
                   showSearch: true,
                   popupMatchSelectWidth: false,
