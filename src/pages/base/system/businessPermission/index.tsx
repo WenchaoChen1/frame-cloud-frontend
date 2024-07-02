@@ -34,7 +34,7 @@ const BusinessPermission: React.FC = () => {
   const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
-  const [searchTenantId,setSearchTenantId] = useState('')
+  const refTableForm = useRef<ProFormInstance>();
   const [tenantId, setTenantId] = useState<string | undefined>(undefined);
   const [roleNameText, setRoleNameText] = useState('');
   const [isEdit, setIsEdit] = useState(false);
@@ -60,6 +60,11 @@ const BusinessPermission: React.FC = () => {
     try {
       await insertBusinessPermissionManageService({ ...fields });
       hide();
+      if (refTableForm?.current){
+        refTableForm?.current.setFieldsValue({
+          tenantId: fields?.tenantId
+        })
+      }
       message.success('Added successfully');
       return true;
     } catch (error) {
@@ -115,9 +120,6 @@ const BusinessPermission: React.FC = () => {
     return times
   }
 
-  const onChangeTenant2 = (getTenantId: string) => {
-    setSearchTenantId(getTenantId)
-  };
 
   const columns: ProColumns<APISystem.RoleItemDataType>[] = [
     { title: 'Name', dataIndex: 'name' },
@@ -194,8 +196,7 @@ const BusinessPermission: React.FC = () => {
       title: 'Tenant',
       key: 'tenantId',
       hideInTable: true,
-      hidden: true,
-      dataIndex: 'direction',
+      dataIndex: 'tenantId',
       renderFormItem: () => {
         return (
           <ProFormTreeSelect
@@ -207,7 +208,6 @@ const BusinessPermission: React.FC = () => {
             // initialValue={tenantId}
             fieldProps={{
               treeDefaultExpandAll:true,
-              onChange: onChangeTenant2,
               treeData: tenantTreeData,
               filterTreeNode: true,
               showSearch: true,
@@ -226,7 +226,6 @@ const BusinessPermission: React.FC = () => {
   ];
 
   const getList = async (params: APISystem.BusinessTableSearchParams) => {
-    params.tenantId = searchTenantId;
     const roleResponse = await getBusinessPermissionManageTreeService(params);
     let dataSource: APISystem.RoleItemDataType[] = [];
     if (roleResponse?.success === true) {
@@ -326,6 +325,7 @@ const BusinessPermission: React.FC = () => {
     <PageContainer>
         <ProTable<APISystem.RoleItemDataType, APISystem.PageParams>
           rowKey="id"
+          formRef={refTableForm}
           headerTitle={'List'}
           actionRef={actionRef}
           toolBarRender={() => [
@@ -342,9 +342,6 @@ const BusinessPermission: React.FC = () => {
             </Button>,
           ]}
           request={getList}
-          onReset={()=>{
-            setSearchTenantId('')
-          }}
           columns={columns}
           search={{
             labelWidth: 'auto',
@@ -398,7 +395,12 @@ const BusinessPermission: React.FC = () => {
 
             if (response) {
               setOpenModal(false);
-              actionRef.current?.reloadAndRest?.();
+              // Because the newly added tenantId must be placed in the query condition box after the new saving,
+              // the assigned tenantId can only be obtained by re-searching
+              if (refTableForm.current){
+                refTableForm.current.submit()
+              }
+              // actionRef.current?.reloadAndRest?.();
             }
           }}
         >
