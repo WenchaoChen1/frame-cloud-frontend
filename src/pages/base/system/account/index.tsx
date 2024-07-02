@@ -155,14 +155,9 @@ const Account: React.FC = () => {
   const getTenantTreeRequest = async () => {
     const tenantTreeResponse = await getTenantManageTreeService({});
     if (tenantTreeResponse.success && tenantTreeResponse.data) {
-      if (tenantTreeResponse.data?.length > 0) {
-        setTenantId(tenantTreeResponse.data[0].id || undefined);
-      }
-
       setTenantTreeData(tenantTreeResponse?.data);
       return tenantTreeResponse.data;
     } else {
-      setTenantId(undefined);
       setTenantTreeData([]);
       return [];
     }
@@ -182,7 +177,7 @@ const Account: React.FC = () => {
 
   const onChangeTenant = (getTenantId: string) => {
     setTenantId(getTenantId);
-    getParentRoleTreeRequest(getTenantId);
+    // getParentRoleTreeRequest(getTenantId);
   };
 
   const formatDate = (time:string):string =>{
@@ -250,10 +245,10 @@ const Account: React.FC = () => {
           <ProFormTreeSelect
             name="tenant"
             placeholder="Please select"
-            allowClear={false}
+            allowClear={true}
             width={'lg'}
             secondary
-            initialValue={tenantId}
+            // initialValue={tenantId}
             fieldProps={{
               treeDefaultExpandAll:true,
               onChange: onChangeTenant,
@@ -318,6 +313,9 @@ const Account: React.FC = () => {
         search={{
           labelWidth: 'auto',
           defaultCollapsed:false,
+        }}
+        onReset={()=>{
+          setTenantId('')
         }}
         toolBarRender={() => [
           <Button

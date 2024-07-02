@@ -34,6 +34,7 @@ const BusinessPermission: React.FC = () => {
   const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
+  const [searchTenantId,setSearchTenantId] = useState('')
   const [tenantId, setTenantId] = useState<string | undefined>(undefined);
   const [roleNameText, setRoleNameText] = useState('');
   const [isEdit, setIsEdit] = useState(false);
@@ -115,7 +116,7 @@ const BusinessPermission: React.FC = () => {
   }
 
   const onChangeTenant2 = (getTenantId: string) => {
-    setTenantId(getTenantId);
+    setSearchTenantId(getTenantId)
   };
 
   const columns: ProColumns<APISystem.RoleItemDataType>[] = [
@@ -200,10 +201,10 @@ const BusinessPermission: React.FC = () => {
           <ProFormTreeSelect
             name="tenantId"
             placeholder="Please select"
-            allowClear={false}
+            allowClear={true}
             width={'lg'}
             secondary
-            initialValue={tenantId}
+            // initialValue={tenantId}
             fieldProps={{
               treeDefaultExpandAll:true,
               onChange: onChangeTenant2,
@@ -225,7 +226,7 @@ const BusinessPermission: React.FC = () => {
   ];
 
   const getList = async (params: APISystem.BusinessTableSearchParams) => {
-    params.tenantId = tenantId;
+    params.tenantId = searchTenantId;
     const roleResponse = await getBusinessPermissionManageTreeService(params);
     let dataSource: APISystem.RoleItemDataType[] = [];
     if (roleResponse?.success === true) {
@@ -260,14 +261,9 @@ const BusinessPermission: React.FC = () => {
   const getTenantTreeRequest = async () => {
     const tenantTreeResponse = await getTenantManageTreeService({});
     if (tenantTreeResponse.success && tenantTreeResponse.data) {
-      if (tenantTreeResponse.data?.length > 0) {
-        setTenantId(tenantTreeResponse.data[0].id || undefined);
-      }
-
       setTenantTreeData(tenantTreeResponse.data);
       return tenantTreeResponse.data;
     } else {
-      setTenantId(undefined);
       setTenantTreeData([]);
       return [];
     }
@@ -328,7 +324,6 @@ const BusinessPermission: React.FC = () => {
 
   return (
     <PageContainer>
-      {tenantId && (
         <ProTable<APISystem.RoleItemDataType, APISystem.PageParams>
           rowKey="id"
           headerTitle={'List'}
@@ -347,6 +342,9 @@ const BusinessPermission: React.FC = () => {
             </Button>,
           ]}
           request={getList}
+          onReset={()=>{
+            setSearchTenantId('')
+          }}
           columns={columns}
           search={{
             labelWidth: 'auto',
@@ -358,7 +356,6 @@ const BusinessPermission: React.FC = () => {
             },
           }}
         />
-      )}
 
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
