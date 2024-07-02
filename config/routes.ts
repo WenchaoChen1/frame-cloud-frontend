@@ -139,6 +139,30 @@ export default [
     ],
   },
   {
+    name: 'account',
+    icon: 'user',
+    path: '/account',
+    // access: 'accountPermission',
+    routes: [
+      {
+        path: '/account',
+        redirect: '/account/center',
+      },
+      {
+        name: 'center',
+        icon: 'smile',
+        path: '/account/center',
+        component: './account/center',
+      },
+      {
+        name: 'settings',
+        icon: 'smile',
+        path: '/account/settings',
+        component: './account/settings',
+      },
+    ],
+  },
+  {
     component: '404',
     path: '/*',
   },
