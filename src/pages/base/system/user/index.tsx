@@ -183,10 +183,11 @@ const User: React.FC = () => {
 
         currentUserId !== record.userId && (
           <PopconfirmPage
+            key="deleteUser"
             onConfirm={async () => {
               await deleteUserRequest(record?.userId || '');
             }}>
-            <a key="deleteUser">Delete</a>
+            <a>Delete</a>
           </PopconfirmPage>
         ),
       ],

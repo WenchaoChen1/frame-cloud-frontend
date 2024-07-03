@@ -323,7 +323,7 @@ const Application: React.FC = () => {
           }
 
           return (
-            <div key={record?.applicationId}>
+            <div key={type}>
               <Tooltip title={tooltipText}>
                 <img src={imageUrl} alt={type} style={{ paddingRight: '8px' }} />
               </Tooltip>
@@ -405,7 +405,7 @@ const Application: React.FC = () => {
       search: false,
       render: (_, record: any) => [
         <a
-          key={record?.applicationId}
+          key={'Scope'}
           onClick={() => {
             setScopeOpenModal(true);
             setApplicationId(record?.applicationId);
@@ -414,7 +414,7 @@ const Application: React.FC = () => {
           Scope
         </a>,
         <a
-          key={record?.applicationId}
+          key={'Edit'}
           style={{ marginLeft: 15 }}
           onClick={() => {
             setOpenModal(true);
@@ -424,7 +424,7 @@ const Application: React.FC = () => {
         >
           Edit
         </a>,
-        <div key={record?.applicationId} style={{ display: 'inline-block' }}>
+        <div key={'Delete'} style={{ display: 'inline-block' }}>
           <ConfirmPage onConfirm={async () => await deleteUserRequest(record?.applicationId || '')}>
             <a style={{ marginLeft: 15 }}>Delete</a>
           </ConfirmPage>

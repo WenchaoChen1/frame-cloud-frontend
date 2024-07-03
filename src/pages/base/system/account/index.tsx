@@ -237,7 +237,6 @@ const Account: React.FC = () => {
               treeDefaultExpandAll:true,
               onChange: onChangeTenant,
               treeData: tenantTreeData,
-              showArrow: false,
               filterTreeNode: true,
               showSearch: true,
               popupMatchSelectWidth: false,
@@ -260,13 +259,13 @@ const Account: React.FC = () => {
       width: '220px',
       valueType: 'option',
       render: (_, record) => [
-        <a key="edit" onClick={() => onRole(record)}>
+        <a key="Role" onClick={() => onRole(record)}>
           Role
         </a>,
-        <a key="edit" onClick={() => onEditTenant(record)}>
+        <a key="Tenant" onClick={() => onEditTenant(record)}>
           Tenant
         </a>,
-        <a key="edit" onClick={() => onBiness(record)}>
+        <a key="Biness" onClick={() => onBiness(record)}>
           Biness
         </a>,
         <a key="edit" onClick={() => onEdit(record)}>
