@@ -447,6 +447,7 @@ const BusinessPermission: React.FC = () => {
                 allowClear={false}
                 secondary
                 request={getTenantTreeRequest}
+                disabled={isEdit}
                 fieldProps={{
                   treeDefaultExpandAll:true,
                   onChange: onChangeTenant,
