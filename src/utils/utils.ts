@@ -139,3 +139,16 @@ export const fixMenuItemIcon = (menus:MenuDataItem[]):MenuDataItem[]=>{
   })
   return menus
 }
+
+// 全局处理 status 类型 value 转 name 的值（0、1、2、3）
+export const statusConversionType = async (arr:any, data: any) => {
+  return arr?.map((value: any) => {
+    const item = data.find((item: any) => item.value === Number(value));
+    return item ? item.key : undefined;
+  });
+}
+
+export const menuConversionType = async (value:any, data: any) => {
+  const item = data.find((item: any) => item.value === Number(value));
+  return item ? item.key : undefined;
+}

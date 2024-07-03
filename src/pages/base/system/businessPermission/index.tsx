@@ -5,6 +5,7 @@ import {Button, message, Space, Tree,Row,Col } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import PopconfirmPage from "@/pages/base/components/popconfirm";
+import { enumsService } from '@/services/base-service/system-service/commService';
 import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
 import type { ActionType, ProColumns, ProFormInstance } from '@ant-design/pro-components';
 import {
@@ -45,6 +46,8 @@ const BusinessPermission: React.FC = () => {
   const [selectMenuDataList, setSelectMenuDataList] = useState<any>([]);
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
+  const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+
 
   const openEdit = async (record: APISystem.RoleItemDataType) => {
     setIsEdit(true);
@@ -128,24 +131,14 @@ const BusinessPermission: React.FC = () => {
       dataIndex: 'status',
       hideInForm: true,
       hideInSearch: true,
-      valueEnum: {
-        0: {
-          text: '启用',
-          status: 'ENABLE',
-        },
-        1: {
-          text: '禁用',
-          status: 'FORBIDDEN',
-        },
-        2: {
-          text: '锁定',
-          status: 'LOCKING',
-        },
-        3: {
-          text: '过期',
-          status: 'EXPIRED',
-        },
-      },
+      valueType: 'select',
+      valueEnum: dataItemStatus?.reduce((result: any, type: any) => {
+        result[type?.value] = {
+          text: type?.name,
+          status: type?.value,
+        };
+        return result;
+      }, {}),
     },
     {
       title: intl.formatMessage({ id: 'application.list.createdDate' }),
@@ -322,6 +315,17 @@ const BusinessPermission: React.FC = () => {
     getTenantTreeRequest();
   }, []);
 
+  const initType = async () => {
+    const response = await enumsService();
+    if (response?.success === true) {
+      setDataItemStatus(response?.data?.sysDataItemStatus);
+    }
+  };
+
+  useEffect(() => {
+    initType();
+  }, []);
+
   return (
     <PageContainer>
         <ProTable<APISystem.RoleItemDataType, APISystem.PageParams>
@@ -496,24 +500,14 @@ const BusinessPermission: React.FC = () => {
                 ]}
                 name="status"
                 label={'Status'}
-                options={[
-                  {
-                    label: '启用',
-                    value: 0,
-                  },
-                  {
-                    label: '禁用',
-                    value: 1,
-                  },
-                  {
-                    label: '锁定',
-                    value: 2,
-                  },
-                  {
-                    label: '过期',
-                    value: 3,
-                  },
-                ]}
+                request={async () => {
+                  return dataItemStatus?.map((item: any) => {
+                    return {
+                      label: item?.name,
+                      value: item?.value,
+                    };
+                  });
+                }}
               />
             </Col>
             <Col span={12}><ProFormTextArea label={'Description'} name="description" /></Col>

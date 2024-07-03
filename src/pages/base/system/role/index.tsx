@@ -11,6 +11,7 @@ import {
   updateRoleAssignedBusinessPermissionService,
 } from '@/services/base-service/system-service/roleService';
 import BusinessPermission from './businessPermission/index';
+import { enumsService } from '@/services/base-service/system-service/commService';
 import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProFormInstance } from '@ant-design/pro-components';
@@ -50,6 +51,7 @@ const Role: React.FC = () => {
   const [OpenbusinessModal, setOpenbusinessModal] = useState(false);
   const [selectedBusinesPermissions, setSelectedBusinesPermissions] = useState([]);
   const [roleId, setRoleId] = useState('');
+  const [dataItemStatus, setDataItemStatus] = useState<any>([]);
 
   const openEdit = async (record: APISystem.RoleItemDataType) => {
     setIsEdit(true);
@@ -155,24 +157,15 @@ const Role: React.FC = () => {
       dataIndex: 'status',
       hideInForm: true,
       hideInSearch: true,
-      valueEnum: {
-        0: {
-          text: '启用',
-          status: 'ENABLE',
-        },
-        1: {
-          text: '禁用',
-          status: 'FORBIDDEN',
-        },
-        2: {
-          text: '锁定',
-          status: 'LOCKING',
-        },
-        3: {
-          text: '过期',
-          status: 'EXPIRED',
-        },
-      },
+      valueType: 'select',
+      valueEnum: dataItemStatus?.reduce((result: any, type: any) => {
+        result[type?.value] = {
+          text: type?.name,
+          status: type?.value,
+        };
+        return result;
+      }, {}),
+      renderFormItem: (_, { ...rest }) => <ProFormSelect mode="multiple" {...rest} fieldProps={{mode: 'multiple'}}/>
     },
     {
       title: intl.formatMessage({ id: 'application.list.createdDate' }),
@@ -288,7 +281,7 @@ const Role: React.FC = () => {
       parentId: '',
       code: '',
       sort: '',
-      status: 1,
+      status: null,
       description: '',
     };
   };
@@ -359,6 +352,17 @@ const Role: React.FC = () => {
 
   useEffect(() => {
     getTenantTreeRequest();
+  }, []);
+
+  const initType = async () => {
+    const response = await enumsService();
+    if (response?.success === true) {
+      setDataItemStatus(response?.data?.sysDataItemStatus);
+    }
+  };
+
+  useEffect(() => {
+    initType();
   }, []);
 
   return (
@@ -538,24 +542,14 @@ const Role: React.FC = () => {
                 ]}
                 name="status"
                 label={'Status'}
-                options={[
-                  {
-                    label: '启用',
-                    value: 0,
-                  },
-                  {
-                    label: '禁用',
-                    value: 1,
-                  },
-                  {
-                    label: '锁定',
-                    value: 2,
-                  },
-                  {
-                    label: '过期',
-                    value: 3,
-                  },
-                ]}
+                request={async () => {
+                  return dataItemStatus?.map((item: any) => {
+                    return {
+                      label: item?.name,
+                      value: item?.value,
+                    };
+                  });
+                }}
               />
             </Col>
             <Col span={24}>

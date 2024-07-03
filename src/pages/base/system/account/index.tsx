@@ -7,6 +7,7 @@ import {
   insertAccountManageService,
   updateAccountManageService,
 } from '@/services/base-service/system-service/accountService';
+import { enumsService } from '@/services/base-service/system-service/commService';
 import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
 import { getUserManagePageService } from '@/services/base-service/system-service/userService';
 import { PlusOutlined } from '@ant-design/icons';
@@ -45,6 +46,8 @@ const Account: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<APISystem.AccountItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.AccountItemDataType[]>([]);
+  const [accountType, setAccountType] = useState<any>([]);
+  const [dataItemStatus, setDataItemStatus] = useState<any>([]);
 
   const getList = async (params: APISystem.AccountItemDataType) => {
     const roleResponse = await getAccountManagePageService({
@@ -215,24 +218,14 @@ const Account: React.FC = () => {
       dataIndex: 'status',
       hideInForm: true,
       hideInSearch: true,
-      valueEnum: {
-        0: {
-          text: '启用',
-          status: 'ENABLE',
-        },
-        1: {
-          text: '禁用',
-          status: 'FORBIDDEN',
-        },
-        2: {
-          text: '锁定',
-          status: 'LOCKING',
-        },
-        3: {
-          text: '过期',
-          status: 'EXPIRED',
-        },
-      },
+      valueType: 'select',
+      valueEnum: dataItemStatus?.reduce((result: any, type: any) => {
+        result[type?.value] = {
+          text: type?.name,
+          status: type?.value,
+        };
+        return result;
+      }, {}),
     },
     {
       title: 'Tenant',
@@ -302,6 +295,18 @@ const Account: React.FC = () => {
 
   useEffect(() => {
     getTenantTreeRequest();
+  }, []);
+
+  const initType = async () => {
+    const response = await enumsService();
+    if (response?.success === true) {
+      setAccountType(response?.data?.sysAccountType);
+      setDataItemStatus(response?.data?.sysDataItemStatus);
+    }
+  };
+
+  useEffect(() => {
+    initType();
   }, []);
 
   return (
@@ -408,20 +413,14 @@ const Account: React.FC = () => {
                     message: 'Account Type is required',
                   },
                 ]}
-                options={[
-                  {
-                    value: 0,
-                    label: 'Super',
-                  },
-                  {
-                    value: 1,
-                    label: 'Admin',
-                  },
-                  {
-                    value: 2,
-                    label: 'User',
-                  },
-                ]}
+                request={async () => {
+                  return accountType?.map((item: any) => {
+                    return {
+                      label: item?.name,
+                      value: item?.value,
+                    };
+                  });
+                }}
                 allowClear={false}
               />
             </Col>
@@ -499,24 +498,14 @@ const Account: React.FC = () => {
                 ]}
                 name="status"
                 label={'Status'}
-                options={[
-                  {
-                    label: '启用',
-                    value: 0,
-                  },
-                  {
-                    label: '禁用',
-                    value: 1,
-                  },
-                  {
-                    label: '锁定',
-                    value: 2,
-                  },
-                  {
-                    label: '过期',
-                    value: 3,
-                  },
-                ]}
+                request={async () => {
+                  return dataItemStatus?.map((item: any) => {
+                    return {
+                      label: item?.name,
+                      value: item?.value,
+                    };
+                  });
+                }}
               />
             </Col>
           </Row>

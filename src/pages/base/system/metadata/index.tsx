@@ -9,6 +9,7 @@ import {
 import {
   getPermissionTypeService,
 } from '@/services/base-service/system-service/permissionService';
+import { enumsService } from '@/services/base-service/system-service/commService';
 import { getAuthorizationGrantTypesService } from '@/services/base-service/identity-service/applicationDictionaryService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
@@ -21,6 +22,7 @@ import {
 } from '@ant-design/pro-components';
 import { message, Space, Tooltip, TableColumnsType, Table,Row,Col } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
+import { statusConversionType } from '@/utils/utils';
 import { useIntl } from "@@/exports";
 import dayjs from "dayjs";
 
@@ -38,18 +40,12 @@ const Metadata: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [permissionTypeList, setPermissionTypeList] = useState([]);
+  const [dataItemStatus, setDataItemStatus] = useState<any>([]);
 
   const getList = async (params: APISystem.MetadataListItemDataType) => {
-    if (params?.status) {
-      if (params?.status === '1') {
-        params.status = 'FORBIDDEN';
-      } else if (params?.status === '2') {
-        params.status = 'LOCKING';
-      } else if (params?.status === '3') {
-        params.status = 'EXPIRED';
-      } else {
-        params.status = 'ENABLE';
-      }
+    if (params?.status?.length > 0) {
+      const list = await statusConversionType(params.status, dataItemStatus)
+      params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
     }
     const response = await getAttributeManagePageService({
       pageNumber: params.current || 1,
@@ -137,23 +133,23 @@ const Metadata: React.FC = () => {
       title: intl.formatMessage({ id: 'application.list.status' }),
       dataIndex: 'status',
       valueType: 'select',
-      valueEnum: {
-        0: {
-          text: '启用',
-          status: 'ENABLE',
-        },
-        1: {
-          text: '禁用',
-          status: 'FORBIDDEN',
-        },
-        2: {
-          text: '锁定',
-          status: 'LOCKING',
-        },
-        3: {
-          text: '过期',
-          status: 'EXPIRED',
-        },
+      valueEnum: dataItemStatus?.reduce((result: any, type: any) => {
+        result[type?.value] = {
+          text: type?.name,
+          status: type?.value,
+        };
+        return result;
+      }, {}),
+      renderFormItem: (_, { ...rest }) => {
+        return (
+          <ProFormSelect
+            mode="multiple"
+            {...rest}
+            fieldProps={{
+              mode: 'multiple',
+            }}
+          />
+        );
       },
       render: (value: any, record: any) => {
         const { status } = record;
@@ -190,7 +186,7 @@ const Metadata: React.FC = () => {
       search: false,
       render: (_, record) => [
         <a
-          key='attributeId'
+          key='Permissions'
           onClick={() => {
             setPermissOpenModal(true);
             setAttributeId(record?.attributeId);
@@ -200,7 +196,7 @@ const Metadata: React.FC = () => {
           Permissions
         </a>,
         <a
-          key='attributeId'
+          key='edit'
           onClick={() => {
             setOpenModal(true);
             setIsEdit(true);
@@ -249,6 +245,17 @@ const Metadata: React.FC = () => {
   useEffect(() => {
     initPermissionTypeChange();
     initAuthorizationGrantTypes();
+  }, []);
+
+  const initType = async () => {
+    const response = await enumsService();
+    if (response?.success === true) {
+      setDataItemStatus(response?.data?.sysDataItemStatus);
+    }
+  };
+
+  useEffect(() => {
+    initType();
   }, []);
 
   return (
@@ -372,24 +379,14 @@ const Metadata: React.FC = () => {
                 label={intl.formatMessage({ id: 'application.list.status' })}
                 name="status"
                 placeholder={'status'}
-                options={[
-                  {
-                    label: '启用',
-                    value: 0,
-                  },
-                  {
-                    label: '禁用',
-                    value: 1,
-                  },
-                  {
-                    label: '锁定',
-                    value: 2,
-                  },
-                  {
-                    label: '过期',
-                    value: 3,
-                  },
-                ]}
+                request={async () => {
+                  return dataItemStatus?.map((item: any) => {
+                    return {
+                      label: item?.name,
+                      value: item?.value,
+                    };
+                  });
+                }}
               />
             </Col>
             <Col span={12}>

@@ -18,7 +18,9 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage} from '@umijs/max';
-import { Button, message, Table, Space, TableColumnsType, Tooltip,Row,Col } from 'antd';
+import { statusConversionType } from '@/utils/utils';
+import { enumsService } from '@/services/base-service/system-service/commService';
+import { Button, message, Table, TableColumnsType, Tooltip,Row,Col } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import { useIntl } from "@@/exports";
@@ -34,26 +36,20 @@ const User: React.FC = () => {
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [dataItemStatus, setDataItemStatus] = useState<any>([]);
 
 
   const getList = async (params: APISystem.PermissionItemDataType) => {
-    params.status = params?.status?.map((item: any) => {
-      if (item === '1') {
-        return 'FORBIDDEN';
-      } else if (item === '2') {
-        return 'LOCKING';
-      } else if (item === '3') {
-        return 'EXPIRED';
-      } else {
-        return 'ENABLE';
-      }
-    });
+    if (params?.status?.length > 0) {
+      const list = await statusConversionType(params.status, dataItemStatus)
+      params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
+    }
     const response = await getPermissionManagePageService({
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
       permissionType:
         params?.permissionType?.map((param: any) => encodeURIComponent(param)).join(',') || [],
-      status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+      status: params?.status,
       permissionName: params?.permissionName || '',
       permissionCode: params?.permissionCode || '',
     });
@@ -264,24 +260,14 @@ const User: React.FC = () => {
       title: 'Status',
       dataIndex: 'status',
       hideInForm: true,
-      valueEnum: {
-        0: {
-          text: '启用',
-          status: 'ENABLE',
-        },
-        1: {
-          text: '禁用',
-          status: 'FORBIDDEN',
-        },
-        2: {
-          text: '锁定',
-          status: 'LOCKING',
-        },
-        3: {
-          text: '过期',
-          status: 'EXPIRED',
-        },
-      },
+      valueType: 'select',
+      valueEnum: dataItemStatus?.reduce((result: any, type: any) => {
+        result[type?.value] = {
+          text: type?.name,
+          status: type?.value,
+        };
+        return result;
+      }, {}),
       renderFormItem: (_, { ...rest }) => <ProFormSelect mode="multiple" {...rest} fieldProps={{mode: 'multiple'}}/>
     },
     { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate) },
@@ -309,6 +295,17 @@ const User: React.FC = () => {
       ],
     },
   ];
+
+  const initType = async () => {
+    const response = await enumsService();
+    if (response?.success === true) {
+      setDataItemStatus(response?.data?.sysDataItemStatus);
+    }
+  };
+
+  useEffect(() => {
+    initType();
+  }, []);
 
   return (
     <PageContainer>
@@ -433,24 +430,14 @@ const User: React.FC = () => {
                 ]}
                 name="status"
                 label={'Status'}
-                options={[
-                  {
-                    label: '启用',
-                    value: 0,
-                  },
-                  {
-                    label: '禁用',
-                    value: 1,
-                  },
-                  {
-                    label: '锁定',
-                    value: 2,
-                  },
-                  {
-                    label: '过期',
-                    value: 3,
-                  },
-                ]}
+                request={async () => {
+                  return dataItemStatus?.map((item: any) => {
+                    return {
+                      label: item?.name,
+                      value: item?.value,
+                    };
+                  });
+                }}
               />
             </Col>
           </Row>

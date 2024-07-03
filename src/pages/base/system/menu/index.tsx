@@ -8,6 +8,8 @@ import {
   updateMenuManageService,
   updateMenuAssignedAttributeService,
 } from '@/services/base-service/system-service/menuService';
+import { statusConversionType, menuConversionType } from '@/utils/utils';
+import { enumsService } from '@/services/base-service/system-service/commService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   ModalForm,
@@ -20,7 +22,7 @@ import {
   ProFormTreeSelect,
 } from '@ant-design/pro-components';
 import { message, Button, Row, Col } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useIntl } from "@@/exports";
 import {PlusOutlined} from '@ant-design/icons'
 import dayjs from "dayjs";
@@ -42,6 +44,9 @@ const MenuList: React.FC = () => {
   const [ScopeOpenModal, setScopeOpenModal] = useState<boolean>(false);
   const [menuId, setMenuId] = useState<any>('');
   const [selectMetadataList, setSelectMetadataList] = useState<any>([]);
+  const [menuType, setMenuType] = useState<any>([]);
+  const [menuLocation, setMenuLocation] = useState<any>([]);
+  const [dataItemStatus, setDataItemStatus] = useState<any>([]);
 
   const getMenuInfoRequest = async () => {
     if (isEdit) {
@@ -146,24 +151,14 @@ const MenuList: React.FC = () => {
       title: 'Status',
       dataIndex: 'status',
       hideInForm: true,
-      valueEnum: {
-        0: {
-          text: '启用',
-          status: 'ENABLE',
-        },
-        1: {
-          text: '禁用',
-          status: 'FORBIDDEN',
-        },
-        2: {
-          text: '锁定',
-          status: 'LOCKING',
-        },
-        3: {
-          text: '过期',
-          status: 'EXPIRED',
-        },
-      },
+      valueType: 'select',
+      valueEnum: dataItemStatus?.reduce((result: any, type: any) => {
+        result[type?.value] = {
+          text: type?.name,
+          status: type?.value,
+        };
+        return result;
+      }, {}),
       renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
@@ -179,6 +174,7 @@ const MenuList: React.FC = () => {
     {
       title: 'Type',
       dataIndex: 'type',
+      valueType: 'select',
       hideInForm: true,
       valueEnum: {
         0: {
@@ -242,27 +238,13 @@ const MenuList: React.FC = () => {
   ];
 
   const getList = async (params: APISystem.MenuListItemDataType) => {
-
-    params.status = params?.status?.map((item: any) => {
-      if (item === '1') {
-        return 'FORBIDDEN';
-      } else if (item === '2') {
-        return 'LOCKING';
-      } else if (item === '3') {
-        return 'EXPIRED';
-      } else {
-        return 'ENABLE';
-      }
-    });
+    if (params?.status?.length > 0) {
+      const list = await statusConversionType(params.status, dataItemStatus)
+      params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
+    }
 
     if (params?.type) {
-      if (params?.type === '1') {
-        params.type = 'PAGE';
-      } else if (params?.type === '2') {
-        params.type = 'BUTTON';
-      } else {
-        params.type = 'CATALOGUE';
-      }
+      params.type = await menuConversionType(params?.type, menuType)
     }
 
     const parameters = {
@@ -270,7 +252,7 @@ const MenuList: React.FC = () => {
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
       menuName: params?.menuName,
       path: params?.path,
-      status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+      status: params?.status,
       type: params?.type || '',
     }
     const response = await getMenuManageTreeService(parameters);
@@ -326,6 +308,19 @@ const MenuList: React.FC = () => {
   const handleSelectedMetadata = (scope: any) => {
     setSelectMetadataList(scope);
   };
+
+  const initType = async () => {
+    const response = await enumsService();
+    if (response?.success === true) {
+      setMenuType(response?.data?.sysMenuType);
+      setMenuLocation(response?.data?.sysMenuLocation);
+      setDataItemStatus(response?.data?.sysDataItemStatus);
+    }
+  };
+
+  useEffect(() => {
+    initType();
+  }, []);
 
   return (
     <PageContainer>
@@ -511,21 +506,14 @@ const MenuList: React.FC = () => {
                     message: 'Type is required',
                   },
                 ]}
-                initialValue={0}
-                options={[
-                  {
-                    value: 0,
-                    label: 'Catelogue',
-                  },
-                  {
-                    value: 1,
-                    label: 'Page',
-                  },
-                  {
-                    value: 2,
-                    label: 'Button',
-                  },
-                ]}
+                request={async () => {
+                  return menuType?.map((item: any) => {
+                    return {
+                      label: item?.name,
+                      value: item?.value,
+                    };
+                  });
+                }}
               />
             </Col>
             <Col span={12}>
@@ -539,16 +527,14 @@ const MenuList: React.FC = () => {
                   },
                 ]}
                 allowClear={false}
-                options={[
-                  {
-                    value: 0,
-                    label: 'Left Menu',
-                  },
-                  {
-                    value: 1,
-                    label: 'Other',
-                  },
-                ]}
+                request={async () => {
+                  return menuLocation?.map((item: any) => {
+                    return {
+                      label: item?.name,
+                      value: item?.value,
+                    };
+                  });
+                }}
               />
             </Col>
             <Col span={12}>
@@ -561,24 +547,14 @@ const MenuList: React.FC = () => {
                 ]}
                 name="status"
                 label={'Status'}
-                options={[
-                  {
-                    label: '启用',
-                    value: 0,
-                  },
-                  {
-                    label: '禁用',
-                    value: 1,
-                  },
-                  {
-                    label: '锁定',
-                    value: 2,
-                  },
-                  {
-                    label: '过期',
-                    value: 3,
-                  },
-                ]}
+                request={async () => {
+                  return dataItemStatus?.map((item: any) => {
+                    return {
+                      label: item?.name,
+                      value: item?.value,
+                    };
+                  });
+                }}
               />
             </Col>
             <Col span={12}>

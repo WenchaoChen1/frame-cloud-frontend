@@ -7,6 +7,7 @@ import {
   updateUserManageService,
 } from '@/services/base-service/system-service/userService';
 import { PlusOutlined } from '@ant-design/icons';
+import { enumsService } from '@/services/base-service/system-service/commService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   FooterToolbar,
@@ -19,10 +20,11 @@ import {
   ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
+import { statusConversionType } from '@/utils/utils';
 import { FormattedMessage, useModel } from '@umijs/max';
 import { useIntl } from "@@/exports";
 import { Button, message, Space,Row,Col } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
 
@@ -35,24 +37,19 @@ const User: React.FC = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [currentRow, setCurrentRow] = useState<APISystem.UserItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.UserItemDataType[]>([]);
+  const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+
 
   const getList = async (params: APISystem.UserItemDataType) => {
-    params.status = params?.status?.map((item: any) => {
-      if (item === '1') {
-        return 'FORBIDDEN';
-      } else if (item === '2') {
-        return 'LOCKING';
-      } else if (item === '3') {
-        return'EXPIRED';
-      } else {
-        return 'ENABLE';
-      }
-    });
+    if (params?.status?.length > 0) {
+      const list = await statusConversionType(params.status, dataItemStatus)
+      params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
+    }
 
     const roleResponse = await getUserManagePageService({
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-      status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+      status: params?.status,
       username: params?.username || '',
       phoneNumber: params?.phoneNumber || '',
       email: params?.email || '',
@@ -153,38 +150,18 @@ const User: React.FC = () => {
       },
     },
     {
-      title: 'status',
+      title: 'Status',
       dataIndex: 'status',
       hideInForm: true,
-      valueEnum: {
-        0: {
-          text: '启用',
-          status: 'ENABLE',
-        },
-        1: {
-          text: '禁用',
-          status: 'FORBIDDEN',
-        },
-        2: {
-          text: '锁定',
-          status: 'LOCKING',
-        },
-        3: {
-          text: '过期',
-          status: 'EXPIRED',
-        },
-      },
-      renderFormItem: (_, { ...rest }) => {
-        return (
-          <ProFormSelect
-            mode="multiple"
-            {...rest}
-            fieldProps={{
-              mode: 'multiple',
-            }}
-          />
-        );
-      },
+      valueType: 'select',
+      valueEnum: dataItemStatus?.reduce((result: any, type: any) => {
+        result[type?.value] = {
+          text: type?.name,
+          status: type?.value,
+        };
+        return result;
+      }, {}),
+      renderFormItem: (_, { ...rest }) => <ProFormSelect mode="multiple" {...rest} fieldProps={{mode: 'multiple'}}/>
     },
     {
       title: 'Description',
@@ -215,6 +192,17 @@ const User: React.FC = () => {
       ],
     },
   ];
+
+  const initType = async () => {
+    const response = await enumsService();
+    if (response?.success === true) {
+      setDataItemStatus(response?.data?.sysDataItemStatus);
+    }
+  };
+
+  useEffect(() => {
+    initType();
+  }, []);
 
   return (
     <PageContainer>
@@ -409,24 +397,14 @@ const User: React.FC = () => {
                 ]}
                 name="status"
                 label={'Status'}
-                options={[
-                  {
-                    label: '启用',
-                    value: 0,
-                  },
-                  {
-                    label: '禁用',
-                    value: 1,
-                  },
-                  {
-                    label: '锁定',
-                    value: 2,
-                  },
-                  {
-                    label: '过期',
-                    value: 3,
-                  },
-                ]}
+                request={async () => {
+                  return dataItemStatus?.map((item: any) => {
+                    return {
+                      label: item?.name,
+                      value: item?.value,
+                    };
+                  });
+                }}
               />
             </Col>
             <Col span={12}>

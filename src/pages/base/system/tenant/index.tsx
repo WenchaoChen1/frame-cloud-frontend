@@ -9,6 +9,7 @@ import {
   onSaveMenuInTenantService,
   updateTenantManageService,
 } from '@/services/base-service/system-service/tenantService';
+import { statusConversionType } from '@/utils/utils';
 import { enumsService } from '@/services/base-service/system-service/commService';
 import { getRoleManageRoleDetailToListService } from '@/services/base-service/system-service/roleService';
 import { getTenantManageMenuTreeService } from '@/services/base-service/system-service/menuService';
@@ -49,7 +50,8 @@ const Index: React.FC = () => {
   const [menuData,setMenuData] = useState([])
   const [showAll,setShowAll] = useState(false)
   const [permissionTypeList, setPermissionTypeList] = useState([]);
-  const [tableAdd,setTableAdd] = useState<string | undefined>('')
+  const [tableAdd,setTableAdd] = useState<string | undefined>('');
+  const [dataItemStatus, setDataItemStatus] = useState<any>([]);
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
@@ -215,35 +217,15 @@ const Index: React.FC = () => {
       title: 'Status',
       dataIndex: 'status',
       hideInForm: true,
-      valueEnum: {
-        0: {
-          text: '启用',
-          status: 'ENABLE',
-        },
-        1: {
-          text: '禁用',
-          status: 'FORBIDDEN',
-        },
-        2: {
-          text: '锁定',
-          status: 'LOCKING',
-        },
-        3: {
-          text: '过期',
-          status: 'EXPIRED',
-        },
-      },
-      renderFormItem: (_, { ...rest }) => {
-        return (
-          <ProFormSelect
-            mode="multiple"
-            {...rest}
-            fieldProps={{
-              mode: 'multiple',
-            }}
-          />
-        );
-      },
+      valueType: 'select',
+      valueEnum: dataItemStatus?.reduce((result: any, type: any) => {
+        result[type?.value] = {
+          text: type?.name,
+          status: type?.value,
+        };
+        return result;
+      }, {}),
+      renderFormItem: (_, { ...rest }) => <ProFormSelect mode="multiple" {...rest} fieldProps={{mode: 'multiple'}}/>
     },
     {
       title: 'Tenant Code',
@@ -319,19 +301,12 @@ const Index: React.FC = () => {
   ];
 
   const searchTable = async (params: any) => {
-    params.status = params?.status?.map((item: any) => {
-      if (item === '1') {
-        return 'FORBIDDEN'
-      } else if (item === '2') {
-        return 'LOCKING'
-      } else if (item === '3') {
-        return 'EXPIRED'
-      } else {
-        return 'ENABLE'
-      }
-    });
+    if (params?.status?.length > 0) {
+      const list = await statusConversionType(params.status, dataItemStatus)
+      params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
+    }
+
     let data: any = [];
-    params.status = params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [];
     const res = await getTenantManageTreeService(params);
     if (res.success) {
       data = res?.data || [];
@@ -363,10 +338,9 @@ const Index: React.FC = () => {
 
   const initPermissionTypeChange = async () => {
     const response = await enumsService();
-    console.log(response, '777777')
     if (response?.success === true) {
-      setPermissionTypeList(response?.data?.sysTenantPermissionType
-      );
+      setPermissionTypeList(response?.data?.sysTenantPermissionType);
+      setDataItemStatus(response?.data?.sysDataItemStatus);
     }
   };
 
@@ -518,7 +492,7 @@ const Index: React.FC = () => {
                 ]}
                 mode="multiple"
                 label={'TenantPermission Type'}
-                name="TenantPermissionType"
+                name="tenantPermissionTypes"
                 placeholder={'TenantPermission Type'}
                 request={async () => {
                   return permissionTypeList.map((item: any) => {
@@ -596,24 +570,14 @@ const Index: React.FC = () => {
                 ]}
                 name="status"
                 label={'Status'}
-                options={[
-                  {
-                    label: '启用',
-                    value: 0,
-                  },
-                  {
-                    label: '禁用',
-                    value: 1,
-                  },
-                  {
-                    label: '锁定',
-                    value: 2,
-                  },
-                  {
-                    label: '过期',
-                    value: 3,
-                  },
-                ]}
+                request={async () => {
+                  return dataItemStatus?.map((item: any) => {
+                    return {
+                      label: item?.name,
+                      value: item?.value,
+                    };
+                  });
+                }}
               />
             </Col>
             <Col span={24}>
