@@ -80,7 +80,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
   if (initialState){
     const {currentLoginAccountUserPermissions} = initialState?.currentUser
     userRouters = changeRouteData(currentLoginAccountUserPermissions)
-    console.log(userRouters, '查看路由数据')
   }
   return {
     actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
