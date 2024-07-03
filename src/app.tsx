@@ -160,11 +160,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       request: async () => {
         const currentPath = window.location.pathname;
         const hasPermission = userRouters.some((router: any) => router.path === currentPath);
-    
+
         if (!hasPermission && (currentPath !== '/401') && (currentPath !== '/')) {
           window.location.href = '/401';
         }
-    
+
         return [...userRouters];
       },
     },

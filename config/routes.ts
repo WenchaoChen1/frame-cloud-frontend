@@ -3,7 +3,6 @@ export default [
   {
     path: '/Welcome',
     name: 'index',
-    access: 'welcomePermission',
     component: './Welcome',
   },
   {
@@ -42,7 +41,6 @@ export default [
     name: 'system-management',
     path: '/system-management',
     icon: 'table',
-    access: 'systemManagement',
     routes: [
       {
         name: 'menu.menu-list',
@@ -71,7 +69,6 @@ export default [
       {
         name: 'role.role-list',
         icon: 'table',
-        access: 'systemManagement',
         path: '/system-management/role',
         component: './base/system/role',
       },
@@ -111,7 +108,6 @@ export default [
     name: 'identity-management',
     path: '/identity-management',
     icon: 'table',
-    access: 'systemManagement',
     routes: [
       {
         name: 'authorization.list',
@@ -143,7 +139,6 @@ export default [
     name: 'account',
     icon: 'user',
     path: '/account',
-    // access: 'accountPermission',
     routes: [
       {
         path: '/account',
