@@ -24,7 +24,7 @@ import {
 } from '@ant-design/pro-components';
 import { FormattedMessage, useModel} from '@umijs/max';
 import { useIntl } from "@@/exports";
-import { Button, message, Space,Row,Col } from 'antd';
+import { Button, message, Row,Col } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
@@ -172,21 +172,8 @@ const Account: React.FC = () => {
     }
   };
 
-  const getParentRoleTreeRequest = async (Id: any) => {
-    const Response = await getAccountManageTenantDetailToListService({
-      tenantId: Id ? Id : tenantId,
-      tenantName: '',
-    });
-    if (Response.success && Response.data) {
-      return Response.data;
-    } else {
-      return [];
-    }
-  };
-
   const onChangeTenant = (getTenantId: string) => {
     setTenantId(getTenantId);
-    // getParentRoleTreeRequest(getTenantId);
   };
 
   const formatDate = (time:string):string =>{
@@ -393,7 +380,6 @@ const Account: React.FC = () => {
               if (refTableForm.current){
                 refTableForm.current.submit()
               }
-              // actionRef.current?.reloadAndRest?.();
             }
           }}
         >

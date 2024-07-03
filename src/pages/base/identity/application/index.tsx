@@ -20,7 +20,7 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage } from '@umijs/max';
-import { Button, DatePicker, Divider, InputNumber, message, Space, Switch, Tooltip,Row,Col } from 'antd';
+import { Button, DatePicker, Divider, InputNumber, message, Switch, Tooltip,Row,Col } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import {useIntl} from "@@/exports";

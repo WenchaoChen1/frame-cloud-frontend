@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { useIntl } from "@@/exports";
 import { FormattedMessage} from '@umijs/max';
-import {Button, message, Space, Tree,Row,Col } from 'antd';
+import {Button, message, Tree,Row,Col } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import PopconfirmPage from "@/pages/base/components/popconfirm";
@@ -404,7 +404,6 @@ const BusinessPermission: React.FC = () => {
               if (refTableForm.current){
                 refTableForm.current.submit()
               }
-              // actionRef.current?.reloadAndRest?.();
             }
           }}
         >

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import commonStyle from "@/pages/common/index.less";
-import {ModalForm, ProFormText} from "@ant-design/pro-components";
+import {ModalForm} from "@ant-design/pro-components";
 import styles from "@/pages/base/system/tenant/index.less";
 import {Tree,message} from "antd";
 import {

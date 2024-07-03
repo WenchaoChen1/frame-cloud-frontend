@@ -21,7 +21,6 @@ import {createStyles} from 'antd-style';
 import React, {useState} from 'react';
 import Settings from '../../../../config/defaultSettings';
 import {removeLocalStorage, setLocalStorage, setRefreshToken, setToken} from '@/utils/utils';
-// import {SELECT_ACCOUNT_PATH} from "@/pages/common/constant";
 
 const useStyles = createStyles(({token}) => {
   return {
@@ -102,7 +101,6 @@ const Login: React.FC = () => {
   const {initialState, setInitialState} = useModel('@@initialState');
   const {styles} = useStyles();
   const intl = useIntl();
-  const [loginLoading, setLoginLoading] = useState<boolean>(false);
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -197,14 +195,8 @@ const Login: React.FC = () => {
             <ActionIcons key="icons"/>,
           ]}
           onFinish={async (values) => {
-
-            // await handleSubmit(values as API.LoginParams);
-            setLoginLoading(true);
             message.destroy();
-
             await handleSubmit(values as APIIdentity.Oauth2TokenParamsDataType);
-
-            setLoginLoading(false);
           }}
         >
           <Tabs

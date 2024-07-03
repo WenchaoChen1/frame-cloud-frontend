@@ -13,7 +13,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ModalForm, PageContainer, ProFormText, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage } from '@umijs/max';
 import { useIntl } from "@@/exports";
-import { Button, message, Space,Row,Col } from 'antd';
+import { Button, message, Row,Col } from 'antd';
 import React, { useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";

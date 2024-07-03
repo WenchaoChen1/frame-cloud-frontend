@@ -129,11 +129,6 @@ const Role: React.FC = () => {
     }
   };
 
-  // const onChangeTenant = (getTenantId: string) => {
-  //   setTenantId2(getTenantId);
-  //   formRef?.current?.setFieldValue('parentId');
-  // };
-
   const onChangeTenant = (getTenantId: string) => {
     setTenantId(getTenantId);
     formRef?.current?.setFieldValue('parentId');
@@ -259,7 +254,6 @@ const Role: React.FC = () => {
   ];
 
   const getList = async (params: APISystem.RoleTableSearchParams) => {
-    // params.tenantId = searchTenantId;
     const roleResponse = await getRoleManageTreeService(params);
     let dataSource: APISystem.RoleItemDataType[] = [];
     if (roleResponse?.success === true) {
@@ -449,7 +443,6 @@ const Role: React.FC = () => {
               if (refTableForm.current){
                 refTableForm.current.submit()
               }
-              // actionRef.current?.reloadAndRest?.();
             }
           }}
         >

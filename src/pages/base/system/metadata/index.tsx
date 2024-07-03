@@ -20,7 +20,7 @@ import {
   ProTable,
   ProFormTextArea,
 } from '@ant-design/pro-components';
-import { message, Space, Tooltip, TableColumnsType, Table,Row,Col } from 'antd';
+import { message, Tooltip, TableColumnsType, Table,Row,Col } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
 import { statusConversionType } from '@/utils/utils';
 import { useIntl } from "@@/exports";
