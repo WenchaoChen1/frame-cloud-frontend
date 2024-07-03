@@ -9,6 +9,8 @@ import { errorConfig } from './requestErrorConfig';
 import {fixMenuItemIcon, setLocalStorage} from './utils/utils'
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+// 【路由白名单】不需要校验的路由名单可添加在此
+const routeArray = ['/', '/401', '/login', '/user/login'];
 
 import {getLocalStorage} from '@/utils/utils';
 import { CURRENT_ACCOUNT_ID,USER_ROUTER } from "@/pages/common/constant";
@@ -72,6 +74,10 @@ const changeRouteData = (data: any) =>{
     }
   })
   return data
+}
+
+const isRouteInArray = (currentRoute: any, routeArray: any) => {
+  return !routeArray.some((route: any) => currentRoute.startsWith(route));
 }
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
@@ -160,8 +166,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       request: async () => {
         const currentPath = window.location.pathname;
         const hasPermission = userRouters.some((router: any) => router.path === currentPath);
-    
-        if (!hasPermission && (currentPath !== '/401') && (currentPath !== '/')) {
+        if (!hasPermission && isRouteInArray(currentPath, routeArray)) {
           window.location.href = '/401';
         }
     
