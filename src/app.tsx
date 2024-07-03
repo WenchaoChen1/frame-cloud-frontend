@@ -80,6 +80,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
   if (initialState){
     const {currentLoginAccountUserPermissions} = initialState?.currentUser
     userRouters = changeRouteData(currentLoginAccountUserPermissions)
+    console.log(userRouters, '查看路由数据')
   }
   return {
     actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
@@ -158,10 +159,14 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     ...initialState?.settings,
     menu: {
       request: async () => {
-        // initialState.currentUser 中包含了所有用户信息
-        return [
-          ...userRouters
-          ];
+        const currentPath = window.location.pathname;
+        const hasPermission = userRouters.some((router: any) => router.path === currentPath);
+    
+        if (!hasPermission && (currentPath !== '/401') && (currentPath !== '/')) {
+          window.location.href = '/401';
+        }
+    
+        return [...userRouters];
       },
     },
     // 服务器返回菜单,icon不显示的问题

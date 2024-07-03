@@ -71,6 +71,7 @@ export default [
       {
         name: 'role.role-list',
         icon: 'table',
+        access: 'systemManagement',
         path: '/system-management/role',
         component: './base/system/role',
       },
