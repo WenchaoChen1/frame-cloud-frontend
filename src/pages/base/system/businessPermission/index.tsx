@@ -55,7 +55,7 @@ const BusinessPermission: React.FC = () => {
     setOpenModal(true);
   };
 
-  const createRoleRequest = async (fields: APISystem.RoleItemDataType) => {
+  const createRoleRequest = async (fields: APISystem.BusinessPermissionItemDataType) => {
     const hide = message.loading('add');
     delete fields.id;
     fields.parentId = currentRow?.parentId;
@@ -77,7 +77,7 @@ const BusinessPermission: React.FC = () => {
     }
   };
 
-  const updateRoleRequest = async (fields: APISystem.RoleItemDataType) => {
+  const updateRoleRequest = async (fields: APISystem.BusinessPermissionItemDataType) => {
     const hide = message.loading('Update');
     try {
       await updateBusinessPermissionManageService(fields);
@@ -124,7 +124,7 @@ const BusinessPermission: React.FC = () => {
   }
 
 
-  const columns: ProColumns<APISystem.RoleItemDataType>[] = [
+  const columns: ProColumns<APISystem.BusinessPermissionItemDataType>[] = [
     { title: 'Name', dataIndex: 'name' },
     { title: 'description', hideInSearch: true, dataIndex: 'description', width: '600px' },
     { title: 'Sort', hideInSearch: true, dataIndex: 'sort' },
@@ -220,7 +220,7 @@ const BusinessPermission: React.FC = () => {
 
   const getList = async (params: APISystem.BusinessTableSearchParams) => {
     const roleResponse = await getBusinessPermissionManageTreeService(params);
-    let dataSource: APISystem.RoleItemDataType[] = [];
+    let dataSource: APISystem.BusinessTableSearchParams[] = [];
     if (roleResponse?.success === true) {
       dataSource = roleResponse?.data || [];
     }
@@ -327,7 +327,7 @@ const BusinessPermission: React.FC = () => {
 
   return (
     <PageContainer>
-        <ProTable<APISystem.RoleItemDataType, APISystem.PageParams>
+        <ProTable<APISystem.BusinessTableSearchParams, APISystem.PageParams>
           rowKey="id"
           formRef={refTableForm}
           headerTitle={'List'}
@@ -389,7 +389,7 @@ const BusinessPermission: React.FC = () => {
           formRef={formRef}
           onOpenChange={setOpenModal}
           request={getRoleInfoRequest}
-          onFinish={async (record: APISystem.RoleItemDataType) => {
+          onFinish={async (record: APISystem.BusinessTableSearchParams) => {
             let response = undefined;
             if (isEdit) {
               response = await updateRoleRequest(record);

@@ -2,10 +2,9 @@
 import type { RequestConfig } from '@umijs/max';
 import { history } from '@umijs/max';
 import {LOGIN_PATH} from "@/pages/common/constant";
-import { useLocation } from 'react-router-dom';
 import { message, notification } from 'antd';
 import {oauth2RefreshTokenService} from "@/services/base-service/identity-service/login";
-import {getRefreshToken, getToken, logOut, removeToken, setRefreshToken, setToken} from '@/utils/utils';
+import {getRefreshToken, getToken, removeToken, setRefreshToken, setToken} from '@/utils/utils';
 const axios = require('axios');
 
 // 错误处理方案： 错误类型

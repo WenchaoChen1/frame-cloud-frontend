@@ -58,6 +58,12 @@ const AvatarList: React.FC<AvatarListProps> & {
     }),
   );
   if (numToShow < numOfChildren) {
+    const avatarSizeToClassName = (size?: SizeType | 'mini') =>
+      classNames(styles.avatarItem, {
+        [styles.avatarItemLarge]: size === 'large',
+        [styles.avatarItemSmall]: size === 'small',
+        [styles.avatarItemMini]: size === 'mini',
+      });
     const cls = avatarSizeToClassName(size);
     childrenWithProps.push(
       <li key="exceed" className={cls}>

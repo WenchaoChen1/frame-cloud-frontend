@@ -161,7 +161,6 @@ declare namespace APISystem {
     updatedBy?: string;
     current?: number;
     pageSize?: number;
-    tenantId?: string;
   };
   type AccountListResponseDataType = {
     data?: AccountItemDataType[];
@@ -177,7 +176,7 @@ declare namespace APISystem {
     permissionType?: string;
     status?: any;
     current?: number;
-    pageSize?: number;
+    pageSize?: any;
   };
 
   type onSaveRelationMenuResponseDataType = {
@@ -228,6 +227,21 @@ declare namespace APISystem {
     roleName?: string;
     parentId?: string;
     code?: string;
+    status?: number,
+    sort?: number,
+    description?: string;
+    createdDate?: string;
+    createdBy?: string;
+    updatedDate?: string;
+    updatedBy?: string;
+  };
+
+  type BusinessPermissionItemDataType = {
+    id?: string;
+    tenantId?: string;
+    roleId?: string;
+    name?: string;
+    parentId?: string;
     status?: number,
     sort?: number,
     description?: string;

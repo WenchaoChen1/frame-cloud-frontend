@@ -134,8 +134,10 @@ declare namespace APIIdentity {
     deviceCodeIssuedAt?: string;
     deviceCodeExpiresAt?: string;
     deviceCodeMetadata?: string;
-    createdDate:string,
-    updatedDate:string
+    createdDate?:string,
+    updatedDate?:string,
+    current?:number,
+    pageSize?:number
   };
 
   type application = {
@@ -154,7 +156,7 @@ declare namespace APIIdentity {
     clientSecret?: string;
     logo?: string;
     homepage?: string;
-    clientAuthenticationMethods?: string;
+    clientAuthenticationMethods?: any;
     applicationType?: string;
     clientSecretExpiresAt?: string;
     redirectUris?: string;
@@ -166,6 +168,8 @@ declare namespace APIIdentity {
     description?: string;
     ranking?: number;
     reserved?: boolean;
+    current?: any;
+    pageSize?: any;
   };
 
   type scopeItemType = {
@@ -174,6 +178,8 @@ declare namespace APIIdentity {
     createdDate?: string;
     updatedDate?: string;
     scopeId?: string;
+    current?: number;
+    pageSize?: number;
   };
 
   type complianceItemType = {

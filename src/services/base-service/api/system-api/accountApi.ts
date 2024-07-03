@@ -40,7 +40,7 @@ export async function getAccountManageTenantDetailToList(params: APISystem.PageP
   });
 }
 
-export async function getAccountManageRoleTree(tenantId: APISystem.PageParams) {
+export async function getAccountManageRoleTree(tenantId: string) {
   return request<APISystem.AccountResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/account/get-account-manage-role-tree/${tenantId}`, {
     method: 'GET',
   });

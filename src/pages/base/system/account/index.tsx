@@ -3,7 +3,6 @@ import {
   deleteAccountManageService,
   getAccountManageDetailService,
   getAccountManagePageService,
-  getAccountManageTenantDetailToListService,
   insertAccountManageService,
   updateAccountManageService,
 } from '@/services/base-service/system-service/accountService';
@@ -42,7 +41,7 @@ const Account: React.FC = () => {
   const { initialState } = useModel('@@initialState');
   const currentAccountId = initialState?.currentUser?.accountId;
   const [tenantTreeData, setTenantTreeData] = useState([]);
-  const [tenantId, setTenantId] = useState<string | undefined>(undefined);
+  const [tenantId, setTenantId] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<APISystem.AccountItemDataType>();
