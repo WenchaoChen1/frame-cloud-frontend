@@ -35,8 +35,10 @@ import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const Role: React.FC = () => {
   const intl = useIntl();
+  const refTableForm = useRef<ProFormInstance>();
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
+  const [buttonTentantId,setButtonTentantId] = useState('')
   const [tenantId, setTenantId] = useState<string | undefined>(undefined);
   const [roleNameText, setRoleNameText] = useState('');
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
@@ -63,10 +65,14 @@ const Role: React.FC = () => {
     const hide = message.loading('add');
     delete fields.roleId;
     fields.parentId = currentRow?.parentId;
-
     try {
       await insertRoleManageService({ ...fields });
       hide();
+      if (refTableForm?.current){
+        refTableForm?.current.setFieldsValue({
+          tenantId: fields?.tenantId
+        })
+      }
       message.success('Added successfully');
       return true;
     } catch (error) {
@@ -81,7 +87,6 @@ const Role: React.FC = () => {
     try {
       await updateRoleManageService(fields);
       hide();
-
       message.success('Update successfully');
       return true;
     } catch (error) {
@@ -133,6 +138,7 @@ const Role: React.FC = () => {
     setTenantId(getTenantId);
     formRef?.current?.setFieldValue('parentId');
   };
+
 
   const formatDate = (time:string):string =>{
     let times = '_'
@@ -193,6 +199,7 @@ const Role: React.FC = () => {
           onClick={() => {
             setOpenbusinessModal(true);
             setRoleId(record?.roleId);
+            setButtonTentantId(record?.tenantId)
           }}
         >
           businessPermission
@@ -220,22 +227,20 @@ const Role: React.FC = () => {
       ],
     },
     {
-      title: 'Tenant',
-      key: 'tenantId',
+      title: 'tenant',
       hideInTable: true,
-      dataIndex: 'direction',
+      dataIndex: 'tenantId',
+      key:'tenantId',
       renderFormItem: () => {
         return (
           <ProFormTreeSelect
-            name="tenant"
+            name="tenantId"
             placeholder="Please select"
             allowClear={true}
             width={'lg'}
             secondary
-            // initialValue={tenantId}
             fieldProps={{
               treeDefaultExpandAll:true,
-              onChange: onChangeTenant,
               treeData: tenantTreeData,
               filterTreeNode: true,
               showSearch: true,
@@ -254,7 +259,7 @@ const Role: React.FC = () => {
   ];
 
   const getList = async (params: APISystem.RoleTableSearchParams) => {
-    params.tenantId = tenantId;
+    // params.tenantId = searchTenantId;
     const roleResponse = await getRoleManageTreeService(params);
     let dataSource: APISystem.RoleItemDataType[] = [];
     if (roleResponse?.success === true) {
@@ -369,6 +374,7 @@ const Role: React.FC = () => {
     <PageContainer>
         <ProTable<APISystem.RoleItemDataType, APISystem.PageParams>
           rowKey="id"
+          formRef={refTableForm}
           headerTitle={'List'}
           actionRef={actionRef}
           toolBarRender={() => [
@@ -386,9 +392,6 @@ const Role: React.FC = () => {
           ]}
           request={getList}
           columns={columns}
-          onReset={()=>{
-            setTenantId('')
-          }}
           search={{
             labelWidth: 'auto',
             defaultCollapsed:false,
@@ -441,7 +444,12 @@ const Role: React.FC = () => {
 
             if (response) {
               setOpenModal(false);
-              actionRef.current?.reloadAndRest?.();
+              // Because the newly added tenantId must be placed in the query condition box after the new saving,
+              // the assigned tenantId can only be obtained by re-searching
+              if (refTableForm.current){
+                refTableForm.current.submit()
+              }
+              // actionRef.current?.reloadAndRest?.();
             }
           }}
         >
@@ -487,7 +495,7 @@ const Role: React.FC = () => {
                 request={getTenantTreeRequest}
                 fieldProps={{
                   treeDefaultExpandAll:true,
-                  // onChange: onChangeTenant,
+                  onChange: onChangeTenant,
                   filterTreeNode: true,
                   showSearch: true,
                   popupMatchSelectWidth: false,
@@ -611,7 +619,7 @@ const Role: React.FC = () => {
           <BusinessPermission
             onSelectedPermissions={handleSelectedBusinessPermissions}
             Id={roleId}
-            tenantId={tenantId}
+            tenantId={buttonTentantId}
           />
         </ModalForm>
       )}

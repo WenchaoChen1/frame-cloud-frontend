@@ -16,7 +16,7 @@ import {
   FooterToolbar,
   ModalForm,
   PageContainer,
-  ProColumns,
+  ProColumns, ProFormInstance,
   ProFormSelect,
   ProFormText,
   ProFormTreeSelect,
@@ -34,6 +34,7 @@ import BinessPage from './components/biness'
 
 const Account: React.FC = () => {
   const intl = useIntl();
+  const refTableForm = useRef<ProFormInstance>();
   const [roleModal,setRoleModal] = useState(false)
   const [tenantModal,setTenantModal] = useState(false)
   const [binessModal,setBinessModal] = useState(false)
@@ -53,7 +54,7 @@ const Account: React.FC = () => {
     const roleResponse = await getAccountManagePageService({
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-      tenantId: tenantId || '',
+      tenantId: params?.tenantId || '',
       name: params?.name || '',
       identity: params?.identity || '',
     });
@@ -95,6 +96,11 @@ const Account: React.FC = () => {
     try {
       await insertAccountManageService({ ...fields });
       hide();
+      if (refTableForm?.current){
+        refTableForm?.current.setFieldsValue({
+          tenantId: fields?.tenantId
+        })
+      }
       message.success('Added successfully');
       return true;
     } catch (error) {
@@ -229,14 +235,13 @@ const Account: React.FC = () => {
     },
     {
       title: 'Tenant',
-      key: 'tenant',
+      key: 'tenantId',
       hideInTable: true,
-      hidden: true,
-      dataIndex: 'direction',
+      dataIndex: 'tenantId',
       renderFormItem: () => {
         return (
           <ProFormTreeSelect
-            name="tenant"
+            name="tenantId"
             placeholder="Please select"
             allowClear={true}
             width={'lg'}
@@ -313,14 +318,12 @@ const Account: React.FC = () => {
     <PageContainer>
       <ProTable<APISystem.AccountItemDataType, APISystem.PageParams>
         headerTitle={'List'}
+        formRef={refTableForm}
         actionRef={actionRef}
         rowKey="id"
         search={{
           labelWidth: 'auto',
           defaultCollapsed:false,
-        }}
-        onReset={()=>{
-          setTenantId('')
         }}
         toolBarRender={() => [
           <Button
@@ -385,7 +388,12 @@ const Account: React.FC = () => {
 
             if (response) {
               setOpenModal(false);
-              actionRef.current?.reloadAndRest?.();
+              // Because the newly added tenantId must be placed in the query condition box after the new saving,
+              // the assigned tenantId can only be obtained by re-searching
+              if (refTableForm.current){
+                refTableForm.current.submit()
+              }
+              // actionRef.current?.reloadAndRest?.();
             }
           }}
         >
