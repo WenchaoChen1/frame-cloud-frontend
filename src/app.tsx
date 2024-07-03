@@ -169,7 +169,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         if (!hasPermission && isRouteInArray(currentPath, routeArray)) {
           window.location.href = '/401';
         }
-    
+
         return [...userRouters];
       },
     },
