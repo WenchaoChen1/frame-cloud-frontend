@@ -489,6 +489,7 @@ const Role: React.FC = () => {
               <ProFormTreeSelect
                 label={'Tenant'}
                 name="tenantId"
+                disabled={isEdit}
                 placeholder="Please select"
                 allowClear={false}
                 secondary
