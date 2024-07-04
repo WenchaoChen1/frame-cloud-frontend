@@ -34,7 +34,7 @@ export async function getTenantManageMenuTreeService(id: string) {
   return await getTenantManageMenuTree(id);
 }
 
-export async function updateMenuAssignedAttributeService(id: string) {
+export async function updateMenuAssignedAttributeService(id: any) {
   return await updateMenuAssignedAttribute(id);
 }
 

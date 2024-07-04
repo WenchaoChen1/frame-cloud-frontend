@@ -17,7 +17,7 @@ export async function getRoleManageTreeService(params: APISystem.RoleTableSearch
   return await getRoleManageTree(params);
 }
 
-export async function getRoleManageRoleDetailToListService(params: APISystem.RoleTableSearchParams) {
+export async function getRoleManageRoleDetailToListService(params: any) {
   return await getRoleManageRoleDetailToList(params);
 }
 

@@ -233,6 +233,7 @@ declare namespace APISystem {
     menuIds: React.Key[];
   }
   type RoleItemDataType = {
+    tenantId?: string;
     roleId?: string;
     roleName?: string;
     parentId?: string;
@@ -292,6 +293,7 @@ declare namespace APISystem {
     status?: string;
     roleName?: string;
     tenantId?: string;
+    tenantName?: string;
   };
 
   type BusinessTableSearchParams = {

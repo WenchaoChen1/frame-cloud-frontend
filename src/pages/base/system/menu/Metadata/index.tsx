@@ -107,7 +107,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
       status: params?.status,
     });
 
-    let dataSource: APISystem.MetadataListItemDataType[] = [];
+    let dataSource: any = [];
     let dataTotal = 0;
     if (response?.success === true) {
       dataSource = response?.data?.content || [];

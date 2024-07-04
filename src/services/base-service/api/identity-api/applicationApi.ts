@@ -7,7 +7,7 @@ export async function getApplicationManagePage(params?: APIIdentity.Pager) {
   });
 }
 
-export async function getApplicationManageDetail(id: string) {
+export async function getApplicationManageDetail(id: any) {
   return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/application/get-application-manage-detail/${id}`, {
     method: 'GET',
   });
@@ -47,7 +47,7 @@ export async function updateApplicationManageAssignedScope(data: APISystem.Permi
 }
 
 export async function getApplicationScopeIdByApplicationId(id: string) {
-  return request<APISystem.OrganizeListResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/application/get-application-scope-id-by-application-id/${id}`, {
+  return request(`${process.env.IDENTITY_SERVICE}/v1/authorize/application/get-application-scope-id-by-application-id/${id}`, {
     method: 'GET',
   });
 }

@@ -1,20 +1,20 @@
 import {request} from '@umijs/max';
 
 export async function getBusinessPermissionManageTree(params: APISystem.RoleTableSearchParams) {
-  return request<APISystem.RoleResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/business-permission/get-business-permission-manage-tree`, {
+  return request(`${process.env.SYSTEM_SERVICE}/v1/business-permission/get-business-permission-manage-tree`, {
     method: 'GET',
     params: params
   });
 }
 
 export async function getBusinessPermissionManageDetail(id: string) {
-  return request<APISystem.RoleDetailResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/business-permission/get-business-permission-manage-detail/${id}`, {
+  return request(`${process.env.SYSTEM_SERVICE}/v1/business-permission/get-business-permission-manage-detail/${id}`, {
     method: 'GET'
   });
 }
 
-export async function getRoleManageRoleDetailToList(params: APISystem.RoleTableSearchParams) {
-  return request<APISystem.RoleResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/role/get-role-manage-role-detail-to-list`, {
+export async function getRoleManageRoleDetailToList(params: any) {
+  return request(`${process.env.SYSTEM_SERVICE}/v1/role/get-role-manage-role-detail-to-list`, {
     method: 'GET',
     params: params
   });
@@ -41,7 +41,7 @@ export async function updateBusinessPermissionManage(data?: any) {
 }
 
 export async function getBusinessPermissionManageTenantMenuTree(id: string) {
-  return request<APISystem.RoleDetailResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/business-permission/get-business-permission-manage-tenant-menu-tree/${id}`, {
+  return request(`${process.env.SYSTEM_SERVICE}/v1/business-permission/get-business-permission-manage-tenant-menu-tree/${id}`, {
     method: 'GET'
   });
 }

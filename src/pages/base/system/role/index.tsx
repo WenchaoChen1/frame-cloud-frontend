@@ -39,7 +39,7 @@ const Role: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
   const [buttonTenantId,setButtonTenantId] = useState('')
-  const [tenantId, setTenantId] = useState<string | undefined>(undefined);
+  const [tenantId, setTenantId] = useState<any>();
   const [roleNameText, setRoleNameText] = useState('');
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
   const [isEdit, setIsEdit] = useState(false);
@@ -47,7 +47,7 @@ const Role: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<APISystem.RoleItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.RoleItemDataType[]>([]);
   const [menuModalVisible, setMenuModalVisible] = useState<boolean>(false);
-  const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
+  const [selectedKeys, setSelectedKeys] = useState([]);
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
   const [checkedKeys, setCheckedKeys] = useState([]);
   const [OpenBusinessModal, setOpenBusinessModal] = useState(false);
@@ -131,7 +131,7 @@ const Role: React.FC = () => {
 
   const onChangeTenant = (getTenantId: string) => {
     setTenantId(getTenantId);
-    formRef?.current?.setFieldValue('parentId');
+    formRef?.current?.setFieldValue('parentId', undefined);
   };
 
 
@@ -188,7 +188,7 @@ const Role: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       width: '220px',
-      render: (_, record) => [
+      render: (_, record: any) => [
         <a
           key="BusinessBtn"
           onClick={() => {
@@ -599,8 +599,8 @@ const Role: React.FC = () => {
           width="80%"
           open={OpenBusinessModal}
           onOpenChange={setOpenBusinessModal}
-          onFinish={async (record) => {
-            let response = await editBusiness(record);
+          onFinish={async () => {
+            let response = await editBusiness();
 
             if (response) {
               setOpenBusinessModal(false);

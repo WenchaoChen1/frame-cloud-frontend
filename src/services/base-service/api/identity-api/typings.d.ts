@@ -173,6 +173,7 @@ declare namespace APIIdentity {
   };
 
   type scopeItemType = {
+    id?: string;
     scopeName?: string;
     scopeCode?: string;
     createdDate?: string;

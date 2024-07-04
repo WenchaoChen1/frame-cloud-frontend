@@ -3,7 +3,7 @@ import {
   getAuthorizationManagePage,
 } from "@/services/base-service/api/identity-api/authorizationApi";
 
-export async function getAuthorizationManagePageService(params: APIIdentity.Pager) {
+export async function getAuthorizationManagePageService(params: any) {
   return await getAuthorizationManagePage(params);
 }
 

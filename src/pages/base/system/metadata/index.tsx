@@ -107,7 +107,7 @@ const Metadata: React.FC = () => {
       dataIndex: 'permissionType',
       valueType: 'select',
       key: 'permissionType',
-      valueEnum: permissionTypeList.reduce((result, type) => {
+      valueEnum: permissionTypeList.reduce((result: any, type: any) => {
         result[type] = {
           text: type,
           status: type,
@@ -184,7 +184,7 @@ const Metadata: React.FC = () => {
       title: intl.formatMessage({ id: 'pages.searchTable.actions' }),
       dataIndex: 'actions',
       search: false,
-      render: (_, record) => [
+      render: (_, record: any) => [
         <a
           key='Permissions'
           onClick={() => {

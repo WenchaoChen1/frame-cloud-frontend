@@ -1,7 +1,7 @@
 import { request } from '@umijs/max';
 
 export async function getTenantManageTree(params?: any) {
-  return request<APISystem.TenantListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/tenant/get-tenant-manage-tree`, {
+  return request(`${process.env.SYSTEM_SERVICE}/v1/tenant/get-tenant-manage-tree`, {
     method: 'GET',
     params: params,
   });

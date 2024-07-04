@@ -7,7 +7,7 @@ import {
   getPermissionManageDetail,
 } from "@/services/base-service/api/system-api/permissionApi";
 
-export async function getPermissionManagePageService(params: APIIdentity.Pager) {
+export async function getPermissionManagePageService(params: any) {
   return await getPermissionManagePage(params);
 }
 

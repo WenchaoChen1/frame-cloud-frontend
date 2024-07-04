@@ -257,7 +257,7 @@ const MenuList: React.FC = () => {
     }
     const response = await getMenuManageTreeService(parameters);
 
-    let dataSource: APISystem.MenuListItemDataType[] = [];
+    let dataSource: any = [];
     let dataTotal = 0;
     if (response?.success === true) {
       dataSource = response?.data || [];

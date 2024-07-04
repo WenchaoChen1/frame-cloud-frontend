@@ -40,8 +40,8 @@ const BusinessPermission: React.FC = () => {
   const [roleNameText, setRoleNameText] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [currentRow, setCurrentRow] = useState<APISystem.RoleItemDataType>();
-  const [selectedRowsState, setSelectedRows] = useState<APISystem.RoleItemDataType[]>([]);
+  const [currentRow, setCurrentRow] = useState();
+  const [selectedRowsState, setSelectedRows] = useState([]);
   const [MenuOpenModal, setMenuOpenModal] = useState<boolean>(false);
   const [selectMenuDataList, setSelectMenuDataList] = useState<any>([]);
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
@@ -112,7 +112,7 @@ const BusinessPermission: React.FC = () => {
 
   const onChangeTenant = (getTenantId: string) => {
     setTenantId(getTenantId);
-    formRef?.current?.setFieldValue('parentId');
+    formRef?.current?.setFieldValue('parentId', undefined);
   };
 
   const formatDate = (time:string):string =>{
@@ -123,6 +123,20 @@ const BusinessPermission: React.FC = () => {
     return times
   }
 
+  const openMenuModal = async (record?: any) => {
+    const allMenuResponse = await getBusinessPermissionManageTenantMenuTreeService(record?.tenantId);
+    if (allMenuResponse.success === true) {
+      setAllMenuTree(allMenuResponse?.data || []);
+
+      const selectedMenuResponse = await getAllTenantMenuIdByBusinessPermissionIdService(record?.id);
+      if (selectedMenuResponse?.data) {
+        setSelectMenuDataList(selectedMenuResponse?.data);
+      } else {
+        setSelectMenuDataList([]);
+      }
+    }
+    setMenuOpenModal(true);
+  };
 
   const columns: ProColumns<APISystem.BusinessPermissionItemDataType>[] = [
     { title: 'Name', dataIndex: 'name' },
@@ -233,7 +247,7 @@ const BusinessPermission: React.FC = () => {
 
   const getRoleInfoRequest = async () => {
     if (isEdit) {
-      const roleDetailResponse = await getBusinessPermissionManageDetailService(currentRow?.id || '');
+      const roleDetailResponse = await getBusinessPermissionManageDetailService(currentRow?.id);
       if (roleDetailResponse.success === true && roleDetailResponse.data) {
         return roleDetailResponse.data;
       }
@@ -275,21 +289,6 @@ const BusinessPermission: React.FC = () => {
 
   const onCheck = (checkedKeysValue: any) => {
     setSelectMenuDataList(checkedKeysValue);
-  };
-
-  const openMenuModal = async (record?: any) => {
-    const allMenuResponse = await getBusinessPermissionManageTenantMenuTreeService(record?.tenantId);
-    if (allMenuResponse.success === true) {
-      setAllMenuTree(allMenuResponse?.data || []);
-
-      const selectedMenuResponse = await getAllTenantMenuIdByBusinessPermissionIdService(record?.id);
-      if (selectedMenuResponse?.data) {
-        setSelectMenuDataList(selectedMenuResponse?.data);
-      } else {
-        setSelectMenuDataList([]);
-      }
-    }
-    setMenuOpenModal(true);
   };
 
   const onSaveMenu = async (id: string) => {
@@ -352,7 +351,7 @@ const BusinessPermission: React.FC = () => {
             defaultCollapsed:false,
           }}
           rowSelection={{
-            onChange: (_, selectedRows) => {
+            onChange: (_, selectedRows: any) => {
               setSelectedRows(selectedRows);
             },
           }}
@@ -389,7 +388,7 @@ const BusinessPermission: React.FC = () => {
           formRef={formRef}
           onOpenChange={setOpenModal}
           request={getRoleInfoRequest}
-          onFinish={async (record: APISystem.BusinessTableSearchParams) => {
+          onFinish={async (record: any) => {
             let response = undefined;
             if (isEdit) {
               response = await updateRoleRequest(record);

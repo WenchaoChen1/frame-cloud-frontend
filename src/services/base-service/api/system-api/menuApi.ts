@@ -43,21 +43,21 @@ export async function getTenantManageMenuTree(tenantId: string) {
 }
 
 export async function updateMenuAssignedAttribute(data?: any) {
-  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/attribute-menu/update-menu-assigned-attribute`, {
+  return request(`${process.env.SYSTEM_SERVICE}/v1/attribute-menu/update-menu-assigned-attribute`, {
     method: 'POST',
     data: data,
   });
 }
 
 export async function getMenuManageAttributePage(data?: any) {
-  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/attribute/get-menu-manage-attribute-page`, {
+  return request(`${process.env.SYSTEM_SERVICE}/v1/attribute/get-menu-manage-attribute-page`, {
     method: 'GET',
     params: data
   });
 }
 
 export async function getAllAttributeIdByMenuId(attributeId: string) {
-  return request<APISystem.MenuListDataType>(`${process.env.SYSTEM_SERVICE}/v1/attribute-menu/get-all-attribute-id-by-menu-id/${attributeId}`, {
+  return request(`${process.env.SYSTEM_SERVICE}/v1/attribute-menu/get-all-attribute-id-by-menu-id/${attributeId}`, {
     method: 'GET',
   });
 }

@@ -8,7 +8,7 @@ import {
   getUserManagePage,
 } from "@/services/base-service/api/system-api/userApi";
 
-export async function getUserManagePageService(params: API.PageParams) {
+export async function getUserManagePageService(params: any) {
   return await getUserManagePage(params);
 }
 

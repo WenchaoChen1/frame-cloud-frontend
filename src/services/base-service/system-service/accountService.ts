@@ -32,11 +32,11 @@ export async function getAccountManageDetailService(id: string) {
   return await getAccountManageDetail(id);
 }
 
-export async function getAccountManagePageService(params: API.PageParams) {
+export async function getAccountManagePageService(params: any) {
   return await getAccountManagePage(params);
 }
 
-export async function getAccountManageTenantDetailToListService(params: API.PageParams) {
+export async function getAccountManageTenantDetailToListService(params: any) {
   return await getAccountManageTenantDetailToList(params);
 }
 export async function getAccountManageRoleTreeService(params: string) {

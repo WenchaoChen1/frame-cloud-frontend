@@ -11,7 +11,7 @@ const Organize: React.FC = () => {
   const [tenantId, setTenantId] = useState<string | undefined>(undefined);
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
   const [organTreeData, setOrganTreeData] = useState<APISystem.OrganizeListItemDataType[]>([]);
-  const [selectOrganizeId, setSelectOrganizeId] = useState<Key>('');
+  const [selectOrganizeId, setSelectOrganizeId] = useState('');
   const [isEdit, setIsEdit] = useState(true);
 
   const getTenantTreeRequest = async () => {

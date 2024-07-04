@@ -7,7 +7,7 @@ export async function getAttributeManagePage(params?: APIIdentity.Pager) {
   });
 }
 
-export async function getAttributeManageDetail(id: string) {
+export async function getAttributeManageDetail(id: any) {
   return request<APISystem.OrganizeListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/attribute/get-attribute-manage-detail/${id}`, {
     method: 'GET',
   });
@@ -28,7 +28,7 @@ export async function updateAttributeManageAssignedPermission(data: APISystem.Pe
 }
 
 export async function getAttributePermissionIdByAttributeId(id: string) {
-  return request<APISystem.OrganizeListResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/attribute/get-attribute-permission-id-by-attribute-id/${id}`, {
+  return request(`${process.env.SYSTEM_SERVICE}/v1/attribute/get-attribute-permission-id-by-attribute-id/${id}`, {
     method: 'GET',
   });
 }
