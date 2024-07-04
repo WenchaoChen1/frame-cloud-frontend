@@ -31,14 +31,14 @@ import { useIntl } from "@@/exports";
 import {Button, message, Tree, Row, Col} from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
-import PopconfirmPage from "@/pages/base/components/popconfirm";
+import ConfirmPage from "@/pages/base/components/popconfirm";
 
 const Role: React.FC = () => {
   const intl = useIntl();
   const refTableForm = useRef<ProFormInstance>();
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
-  const [buttonTentantId,setButtonTentantId] = useState('')
+  const [buttonTenantId,setButtonTenantId] = useState('')
   const [tenantId, setTenantId] = useState<string | undefined>(undefined);
   const [roleNameText, setRoleNameText] = useState('');
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
@@ -50,8 +50,8 @@ const Role: React.FC = () => {
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
   const [checkedKeys, setCheckedKeys] = useState([]);
-  const [OpenbusinessModal, setOpenbusinessModal] = useState(false);
-  const [selectedBusinesPermissions, setSelectedBusinesPermissions] = useState([]);
+  const [OpenBusinessModal, setOpenBusinessModal] = useState(false);
+  const [selectedBusinessPermissions, setSelectedBusinessPermissions] = useState([]);
   const [roleId, setRoleId] = useState('');
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
 
@@ -192,9 +192,9 @@ const Role: React.FC = () => {
         <a
           key="BusinessBtn"
           onClick={() => {
-            setOpenbusinessModal(true);
+            setOpenBusinessModal(true);
             setRoleId(record?.roleId);
-            setButtonTentantId(record?.tenantId)
+            setButtonTenantId(record?.tenantId)
           }}
         >
           businessPermission
@@ -212,12 +212,12 @@ const Role: React.FC = () => {
           Edit
         </a>,
         <div key={'Delete'}>
-          <PopconfirmPage
+          <ConfirmPage
             onConfirm={async () => {
               await deleteRoleRequest(record?.roleId || '');
             }}>
             <a key="deleteRow">Delete</a>
-          </PopconfirmPage>
+          </ConfirmPage>
         </div>
       ],
     },
@@ -314,13 +314,13 @@ const Role: React.FC = () => {
     }
   };
 
-  const editBusiness = async (record: any) => {
-    const parms = {
+  const editBusiness = async () => {
+    const params = {
       roleId: roleId || '',
-      businessPermissionIds: selectedBusinesPermissions || '',
+      businessPermissionIds: selectedBusinessPermissions || '',
     };
     try {
-      await updateRoleAssignedBusinessPermissionService(parms);
+      await updateRoleAssignedBusinessPermissionService(params);
       message.success('Added successfully');
       return true;
     } catch (error) {
@@ -334,7 +334,7 @@ const Role: React.FC = () => {
   };
 
   const handleSelectedBusinessPermissions = (newSelectedRowKeys: any) => {
-    setSelectedBusinesPermissions(newSelectedRowKeys);
+    setSelectedBusinessPermissions(newSelectedRowKeys);
   };
 
   const getParentRoleTreeRequest = async () => {
@@ -593,17 +593,17 @@ const Role: React.FC = () => {
         </ModalForm>
       )}
 
-      {OpenbusinessModal && (
+      {OpenBusinessModal && (
         <ModalForm
           title={'Permissions'}
           width="80%"
-          open={OpenbusinessModal}
-          onOpenChange={setOpenbusinessModal}
+          open={OpenBusinessModal}
+          onOpenChange={setOpenBusinessModal}
           onFinish={async (record) => {
             let response = await editBusiness(record);
 
             if (response) {
-              setOpenbusinessModal(false);
+              setOpenBusinessModal(false);
               if (actionRef.current) {
                 actionRef.current.reload();
               }
@@ -613,7 +613,7 @@ const Role: React.FC = () => {
           <BusinessPermission
             onSelectedPermissions={handleSelectedBusinessPermissions}
             Id={roleId}
-            tenantId={buttonTentantId}
+            tenantId={buttonTenantId}
           />
         </ModalForm>
       )}

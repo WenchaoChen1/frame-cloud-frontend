@@ -63,7 +63,7 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, Id, tenan
     },
   ];
 
-  const getList = async (params: APISystem.PermissionItemDataType) => {
+  const getList = async () => {
     const response = await getRoleManageBusinessPermissionTreeService(tenantId);
     let dataSource: APISystem.PermissionItemDataType[] = [];
     let dataTotal = 0;
