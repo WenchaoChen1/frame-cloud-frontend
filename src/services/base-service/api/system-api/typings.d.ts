@@ -82,7 +82,22 @@ declare namespace APISystem {
     status?: any;
     current?: number;
     pageSize?: number;
+    content?: any;
+    totalElements?: any;
   };
+  type DirctDataType = {
+    sysAccountType?: string[];
+    sysDataItemStatus?: string[];
+    sysMenuLocation?: string[];
+    sysMenuType?: string[];
+    sysTenantPermissionType?: string[];
+    sysUserType?: string[];
+    data?: any;
+    code?: string;
+    success?: boolean;
+    message?: string;
+  };
+
   type MenuListItemDataType = {
     id?: string;
     parentId?: string;
@@ -162,18 +177,13 @@ declare namespace APISystem {
     current?: number;
     pageSize?: number;
   };
-  type AccountListResponseDataType = {
-    data?: AccountItemDataType[];
-    code?: string;
-    success?: boolean;
-    message?: string;
-  };
 
   type PermissionItemDataType = {
+    id?: string;
     permissionId?: string;
     permissionName?: string;
     permissionCode?: string;
-    permissionType?: string;
+    permissionType?: any;
     status?: any;
     current?: number;
     pageSize?: any;
@@ -325,10 +335,6 @@ declare namespace APISystem {
     total?: number;
     success?: boolean;
     data?: MenuListItemDataType[];
-  };
-
-  type MenuIconDataType = {
-    [key: string]: string;
   };
 
   type SelectedRelationMenuDataType = {
