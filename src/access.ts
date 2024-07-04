@@ -1,29 +1,32 @@
 /**
  * @see https://umijs.org/zh-CN/plugins/plugin-access
  * */
+import permissions from '@/utils/permissions'
 export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
-  const { currentUser } = initialState ?? {};
-  return {
-    canAdmin: currentUser && currentUser.access === 'admin',
-    systemManagement:estimate(initialState,'systemManagement'),
-    identityManagement:estimate(initialState,'identityManagement'),
-    exceptionPermission:estimate(initialState,'exceptionPermission'),
-    welcomePermission:estimate(initialState,'welcomePermission'),
-    // TODO
-    // welcomePermission: estimate(initialState,'welcomePermission'),
-    // dashboardPermission:estimate(initialState,'dashboardPermission'),
-    // formPermission:estimate(initialState,'formPermission'),
-    // listPermission:estimate(initialState,'listPermission'),
-    // profilePermission:estimate(initialState,'profilePermission'),
-    // resultPermission:estimate(initialState,'resultPermission'),
-    // accountPermission:estimate(initialState,'accountPermission'),
-  };
-}
-const estimate = (initialState:any,permissionName:string) =>{
-  let flag = false
-  if (initialState?.currentUser){
-    const {currentLoginAccountUserPermissions:userRouters} = initialState?.currentUser
-    flag = userRouters?.some((item: any )=>item.code === permissionName);
+  const jurisdictions = {}
+  const {permissionLists} = permissions
+  const powerLists = estimate(initialState)
+  for (const Key in permissionLists) {
+    jurisdictions[Key] = powerLists?.includes(permissionLists[Key])
   }
-  return flag
+  return jurisdictions;
+}
+const estimate = (initialState:any) =>{
+  let authorityList:[] = []
+  let userRouters = null
+  if (initialState?.currentUser){
+    userRouters = initialState?.currentUser?.currentLoginAccountUserPermissions
+  }
+  const recursion = (datas) =>{
+    datas?.forEach(item=>{
+      if (item.name){
+        authorityList.push(item?.name)
+      }
+      if (item?.children && item?.children.length > 0){
+        recursion(item.children)
+      }
+    })
+  }
+  recursion(userRouters)
+  return authorityList
 }
