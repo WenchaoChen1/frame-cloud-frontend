@@ -47,6 +47,14 @@ const MenuList: React.FC = () => {
   const [menuType, setMenuType] = useState<any>([]);
   const [menuLocation, setMenuLocation] = useState<any>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+  const [columnsStateMap, setColumnsStateMap] = useState({
+    'updatedDate': { show: false },
+    'sort': { show: false },
+  });
+
+  const handleColumnsStateChange = (map: any) => {
+    setColumnsStateMap(map);
+  };
 
   const getMenuInfoRequest = async () => {
     if (isEdit) {
@@ -334,6 +342,9 @@ const MenuList: React.FC = () => {
         }}
         request={getList}
         columns={columns}
+        scroll={{ x: 'max-content' }}
+        columnsStateMap={columnsStateMap}
+        onColumnsStateChange={handleColumnsStateChange}
         expandable={{expandedRowKeys: defaultExpanded}}
         onExpand={(b, r) => {
           const newExp: any = b ? [...defaultExpanded, r.id] : defaultExpanded.filter(i => i !== r.id);

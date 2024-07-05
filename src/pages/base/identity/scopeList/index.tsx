@@ -30,6 +30,14 @@ const Scope: React.FC = () => {
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [columnsStateMap, setColumnsStateMap] = useState({
+    'updatedDate': { show: false },
+  });
+
+  const handleColumnsStateChange = (map: any) => {
+    setColumnsStateMap(map);
+  };
+
 
   const getList = async (params: APIIdentity.scopeItemType) => {
     const response = await getScopeManagePageService({
@@ -148,6 +156,7 @@ const Scope: React.FC = () => {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
+      width: '220px',
       render: (_, record: any) => [
         <a
           key={record?.scopeId}
@@ -186,6 +195,8 @@ const Scope: React.FC = () => {
       <ProTable<APIIdentity.scopeItemType, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
+        columnsStateMap={columnsStateMap}
+        onColumnsStateChange={handleColumnsStateChange}
         search={{
           labelWidth: 'auto',
           defaultCollapsed:false,

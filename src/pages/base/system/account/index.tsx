@@ -48,6 +48,13 @@ const Account: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<APISystem.AccountItemDataType[]>([]);
   const [accountType, setAccountType] = useState<any>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+  const [columnsStateMap, setColumnsStateMap] = useState({
+    'updatedDate': { show: false },
+  });
+
+  const handleColumnsStateChange = (map: any) => {
+    setColumnsStateMap(map);
+  };
 
   const getList = async (params: APISystem.AccountItemDataType) => {
     const roleResponse = await getAccountManagePageService({
@@ -306,6 +313,8 @@ const Account: React.FC = () => {
         formRef={refTableForm}
         actionRef={actionRef}
         rowKey="id"
+        columnsStateMap={columnsStateMap}
+        onColumnsStateChange={handleColumnsStateChange}
         search={{
           labelWidth: 'auto',
           defaultCollapsed:false,

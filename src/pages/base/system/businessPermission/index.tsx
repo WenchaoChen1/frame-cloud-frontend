@@ -47,7 +47,13 @@ const BusinessPermission: React.FC = () => {
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+  const [columnsStateMap, setColumnsStateMap] = useState({
+    'updatedDate': { show: false },
+  });
 
+  const handleColumnsStateChange = (map: any) => {
+    setColumnsStateMap(map);
+  };
 
   const openEdit = async (record: APISystem.RoleItemDataType) => {
     setIsEdit(true);
@@ -331,6 +337,8 @@ const BusinessPermission: React.FC = () => {
           formRef={refTableForm}
           headerTitle={'List'}
           actionRef={actionRef}
+          columnsStateMap={columnsStateMap}
+          onColumnsStateChange={handleColumnsStateChange}
           toolBarRender={() => [
             <Button
               type="primary"

@@ -37,7 +37,13 @@ const User: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+  const [columnsStateMap, setColumnsStateMap] = useState({
+    'updatedDate': { show: false },
+  });
 
+  const handleColumnsStateChange = (map: any) => {
+    setColumnsStateMap(map);
+  };
 
   const getList = async (params: APISystem.PermissionItemDataType) => {
     if (params?.status?.length > 0) {
@@ -313,6 +319,8 @@ const User: React.FC = () => {
         headerTitle={'List'}
         actionRef={actionRef}
         rowKey="permissionId"
+        columnsStateMap={columnsStateMap}
+        onColumnsStateChange={handleColumnsStateChange}
         search={{
           labelWidth: 'auto',
           defaultCollapsed:false,

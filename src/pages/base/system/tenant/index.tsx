@@ -52,6 +52,13 @@ const Index: React.FC = () => {
   const [permissionTypeList, setPermissionTypeList] = useState([]);
   const [tableAdd,setTableAdd] = useState<string | undefined>('');
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+  const [columnsStateMap, setColumnsStateMap] = useState({
+    'updatedDate': { show: false },
+  });
+
+  const handleColumnsStateChange = (map: any) => {
+    setColumnsStateMap(map);
+  };
 
   const handleAdd = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('add');
@@ -235,12 +242,12 @@ const Index: React.FC = () => {
       title: 'Description',
       dataIndex: 'description',
       valueType: 'textarea',
+      width: '300px',
       hideInSearch: true,
-      ellipsis: true,
+      // ellipsis: true,
     },
     {
       title: intl.formatMessage({ id: 'application.list.createdDate' }),
-      key: 'showTime',
       sorter: true,
       hideInSearch: true,
       dataIndex: 'createdDate'
@@ -355,6 +362,10 @@ const Index: React.FC = () => {
         headerTitle={'List'}
         actionRef={actionRef}
         rowKey="id"
+        scroll={{ x: 'max-content' }}
+        // options={false}
+        columnsStateMap={columnsStateMap}
+        onColumnsStateChange={handleColumnsStateChange}
         search={{
           labelWidth: 'auto',
           defaultCollapsed:false,

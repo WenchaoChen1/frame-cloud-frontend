@@ -54,6 +54,13 @@ const Role: React.FC = () => {
   const [selectedBusinessPermissions, setSelectedBusinessPermissions] = useState([]);
   const [roleId, setRoleId] = useState('');
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+  const [columnsStateMap, setColumnsStateMap] = useState({
+    'updatedDate': { show: false },
+  });
+
+  const handleColumnsStateChange = (map: any) => {
+    setColumnsStateMap(map);
+  };
 
   const openEdit = async (record: APISystem.RoleItemDataType) => {
     setIsEdit(true);
@@ -371,6 +378,8 @@ const Role: React.FC = () => {
           formRef={refTableForm}
           headerTitle={'List'}
           actionRef={actionRef}
+          columnsStateMap={columnsStateMap}
+          onColumnsStateChange={handleColumnsStateChange}
           toolBarRender={() => [
             <Button
               type="primary"

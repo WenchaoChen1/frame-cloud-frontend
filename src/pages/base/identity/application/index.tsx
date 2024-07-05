@@ -45,6 +45,13 @@ const Application: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectScopesList, setSelectScopesList] = useState([]);
   const [accessTokenFormat, setAccessTokenFormat] = useState([]);
+  const [columnsStateMap, setColumnsStateMap] = useState({
+    'updatedDate': { show: false },
+  });
+
+  const handleColumnsStateChange = (map: any) => {
+    setColumnsStateMap(map);
+  };
 
   const dayType = [
     {
@@ -527,6 +534,8 @@ const Application: React.FC = () => {
         className={styles.ApplicationStyle}
         rowKey="applicationId"
         scroll={{ x: 'max-content' }}
+        columnsStateMap={columnsStateMap}
+        onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
           <Button
             key="primary"

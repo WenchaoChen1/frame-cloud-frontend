@@ -38,7 +38,13 @@ const User: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<APISystem.UserItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.UserItemDataType[]>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+  const [columnsStateMap, setColumnsStateMap] = useState({
+    'updatedDate': { show: false },
+  });
 
+  const handleColumnsStateChange = (map: any) => {
+    setColumnsStateMap(map);
+  };
 
   const getList = async (params: APISystem.UserItemDataType) => {
     if (params?.status?.length > 0) {
@@ -211,6 +217,8 @@ const User: React.FC = () => {
         headerTitle={'List'}
         actionRef={actionRef}
         rowKey="id"
+        columnsStateMap={columnsStateMap}
+        onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
           <Button
             type="primary"
