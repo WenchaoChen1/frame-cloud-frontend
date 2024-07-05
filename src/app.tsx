@@ -79,6 +79,25 @@ const isRouteInArray = (currentRoute: any, routeArray: any) => {
   return !routeArray.some((item: any) => item === currentRoute);
 }
 
+const findRouteByPath = (routes, currentPath) => {
+  for (let i = 0; i < routes.length; i++) {
+      const route = routes[i];
+
+      if (route.path === currentPath) {
+          return true;
+      }
+
+      if (route.children) {
+          const foundInChildren = findRouteByPath(route.children, currentPath);
+          if (foundInChildren) {
+              return true;
+          }
+      }
+  }
+  return false;
+}
+
+
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   let userRouters:any = []
@@ -164,7 +183,10 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     menu: {
       request: async () => {
         const currentPath = window.location.pathname;
-        const hasPermission = userRouters.some((router: any) => router.path === currentPath);
+        // const hasPermission = userRouters.some((router: any) => router.path === currentPath);
+        const hasPermission = findRouteByPath(userRouters, currentPath)
+        console.log(currentPath, '+++++++', userRouters, '7777', hasPermission)
+        // debugger
         if (isRouteInArray(currentPath, routeArray)) {
           if (!hasPermission) {
             window.location.href = '/401';
