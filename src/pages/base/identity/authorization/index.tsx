@@ -79,35 +79,39 @@ const Authorization: React.FC = () => {
   }
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
-    { title: 'Client ID', dataIndex: 'id' },
+    { title: 'Client ID', dataIndex: 'id',ellipsis: true },
     { title: 'User Name', dataIndex: 'principalName' },
     { title: 'Authentication Mode', dataIndex: 'authorizationGrantType' },
     {
       title: 'accessTokenIssuedAt',
       dataIndex: 'accessTokenIssuedAt',
       search: false,
+      ellipsis: true,
       render: (text) => timeFormat(text),
     },
     {
       title: 'accessTokenExpiresAt',
       dataIndex: 'accessTokenExpiresAt',
       search: false,
+      ellipsis: true,
       render: (text) => timeFormat(text),
     },
     {
       title: 'refreshTokenIssuedAt',
       dataIndex: 'refreshTokenIssuedAt',
       search: false,
+      ellipsis: true,
       render: (text) => timeFormat(text),
     },
     {
       title: 'refreshTokenExpiresAt',
       dataIndex: 'refreshTokenExpiresAt',
       search: false,
+      ellipsis: true,
       render: (text) => timeFormat(text),
     },
-    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate) },
-    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate) },
+    { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true,ellipsis: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate) },
+    { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true,ellipsis: true, dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate) },
     {
       title: 'Operating',
       dataIndex: 'option',
