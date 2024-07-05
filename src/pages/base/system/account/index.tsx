@@ -49,7 +49,7 @@ const Account: React.FC = () => {
   const [accountType, setAccountType] = useState<any>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
   const [columnsStateMap, setColumnsStateMap] = useState({
-    'updatedDate': { show: false },
+    'createdDate': { show: false },
   });
 
   const handleColumnsStateChange = (map: any) => {

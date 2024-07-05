@@ -31,7 +31,7 @@ const Scope: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [columnsStateMap, setColumnsStateMap] = useState({
-    'updatedDate': { show: false },
+    'createdDate': { show: false },
   });
 
   const handleColumnsStateChange = (map: any) => {

@@ -46,7 +46,7 @@ const Application: React.FC = () => {
   const [selectScopesList, setSelectScopesList] = useState([]);
   const [accessTokenFormat, setAccessTokenFormat] = useState([]);
   const [columnsStateMap, setColumnsStateMap] = useState({
-    'updatedDate': { show: false },
+    'createdDate': { show: false },
   });
 
   const handleColumnsStateChange = (map: any) => {

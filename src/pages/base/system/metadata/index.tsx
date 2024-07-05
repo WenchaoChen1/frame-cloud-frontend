@@ -133,6 +133,7 @@ const Metadata: React.FC = () => {
       title: intl.formatMessage({ id: 'application.list.status' }),
       dataIndex: 'status',
       valueType: 'select',
+      width: '80px',
       valueEnum: dataItemStatus?.reduce((result: any, type: any) => {
         result[type?.value] = {
           text: type?.name,

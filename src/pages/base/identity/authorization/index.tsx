@@ -17,6 +17,13 @@ const Authorization: React.FC = () => {
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [columnsStateMap, setColumnsStateMap] = useState({
+    'createdDate': { show: false },
+  });
+
+  const handleColumnsStateChange = (map: any) => {
+    setColumnsStateMap(map);
+  };
 
   const getList = async (params: APIIdentity.authorization) => {
     const response = await getAuthorizationManagePageService({
@@ -59,17 +66,6 @@ const Authorization: React.FC = () => {
     }
   };
 
-  // const timeFormat = (timestamp: any) => {
-  //   const date = new Date(timestamp * 1000);
-  //   const year = date.getFullYear();
-  //   const month = String(date.getMonth() + 1).padStart(2, '0');
-  //   const day = String(date.getDate()).padStart(2, '0');
-  //   const hours = String(date.getHours()).padStart(2, '0');
-  //   const minutes = String(date.getMinutes()).padStart(2, '0');
-  //   const seconds = String(date.getSeconds()).padStart(2, '0');
-  //   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  // };
-
   const formatDate = (time:string):string =>{
     let times = '_'
     if (time){
@@ -87,7 +83,6 @@ const Authorization: React.FC = () => {
       dataIndex: 'accessTokenIssuedAt',
       search: false,
       ellipsis: true,
-      // render: (text) => timeFormat(text),
     },
     {
       title: 'accessTokenExpiresAt',
@@ -126,12 +121,14 @@ const Authorization: React.FC = () => {
       <ProTable<APIIdentity.authorization, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
+        scroll={{ x: 'max-content' }}
+        columnsStateMap={columnsStateMap}
+        onColumnsStateChange={handleColumnsStateChange}
         search={{
           labelWidth: 'auto',
           defaultCollapsed:false,
         }}
         rowKey="id"
-        options={false}
         request={getList}
         columns={columns}
         pagination={{

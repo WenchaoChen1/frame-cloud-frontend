@@ -48,7 +48,7 @@ const BusinessPermission: React.FC = () => {
   const [tenantTreeData, setTenantTreeData] = useState<APISystem.TenantItemDataType[]>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
   const [columnsStateMap, setColumnsStateMap] = useState({
-    'updatedDate': { show: false },
+    'createdDate': { show: false },
   });
 
   const handleColumnsStateChange = (map: any) => {

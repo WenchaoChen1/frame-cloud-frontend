@@ -53,7 +53,7 @@ const Index: React.FC = () => {
   const [tableAdd,setTableAdd] = useState<string | undefined>('');
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
   const [columnsStateMap, setColumnsStateMap] = useState({
-    'updatedDate': { show: false },
+    'createdDate': { show: false },
   });
 
   const handleColumnsStateChange = (map: any) => {

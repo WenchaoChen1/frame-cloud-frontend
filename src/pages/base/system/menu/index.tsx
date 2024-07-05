@@ -48,7 +48,7 @@ const MenuList: React.FC = () => {
   const [menuLocation, setMenuLocation] = useState<any>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
   const [columnsStateMap, setColumnsStateMap] = useState({
-    'updatedDate': { show: false },
+    'createdDate': { show: false },
     'sort': { show: false },
   });
 
