@@ -59,16 +59,16 @@ const Authorization: React.FC = () => {
     }
   };
 
-  const timeFormat = (timestamp: any) => {
-    const date = new Date(timestamp * 1000);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  };
+  // const timeFormat = (timestamp: any) => {
+  //   const date = new Date(timestamp * 1000);
+  //   const year = date.getFullYear();
+  //   const month = String(date.getMonth() + 1).padStart(2, '0');
+  //   const day = String(date.getDate()).padStart(2, '0');
+  //   const hours = String(date.getHours()).padStart(2, '0');
+  //   const minutes = String(date.getMinutes()).padStart(2, '0');
+  //   const seconds = String(date.getSeconds()).padStart(2, '0');
+  //   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  // };
 
   const formatDate = (time:string):string =>{
     let times = '_'
@@ -87,28 +87,25 @@ const Authorization: React.FC = () => {
       dataIndex: 'accessTokenIssuedAt',
       search: false,
       ellipsis: true,
-      render: (text) => timeFormat(text),
+      // render: (text) => timeFormat(text),
     },
     {
       title: 'accessTokenExpiresAt',
       dataIndex: 'accessTokenExpiresAt',
       search: false,
       ellipsis: true,
-      render: (text) => timeFormat(text),
     },
     {
       title: 'refreshTokenIssuedAt',
       dataIndex: 'refreshTokenIssuedAt',
       search: false,
       ellipsis: true,
-      render: (text) => timeFormat(text),
     },
     {
       title: 'refreshTokenExpiresAt',
       dataIndex: 'refreshTokenExpiresAt',
       search: false,
       ellipsis: true,
-      render: (text) => timeFormat(text),
     },
     { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true,ellipsis: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate) },
     { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true,ellipsis: true, dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate) },

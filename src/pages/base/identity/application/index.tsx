@@ -1,6 +1,5 @@
 import Scope from './scope/index';
 import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
-import { getAuthorizationGrantTypesService } from '@/services/base-service/identity-service/applicationDictionaryService';
 import {
   deleteApplicationService,
   getApplicationListService,
@@ -46,7 +45,6 @@ const Application: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectScopesList, setSelectScopesList] = useState([]);
   const [accessTokenFormat, setAccessTokenFormat] = useState([]);
-  // const [dataItemStatus, setDataItemStatus] = useState([]);
 
   const dayType = [
     {
@@ -436,17 +434,6 @@ const Application: React.FC = () => {
     },
   ];
 
-  const initAuthorizationGrantTypes = async () => {
-    const response: any = await getAuthorizationGrantTypesService();
-    if (response?.success === true) {
-      setIdTokenData(response?.data?.signatureJwsAlgorithm);
-      setApplicationTypeData(response?.data?.applicationType);
-      setAuthorTypes(response?.data?.grantType);
-      setAuthenticationMethod(response?.data?.authenticationMethod);
-    }
-  };
-
-
   const editScopeList = async () => {
     const params = {
       applicationId: applicationId || '',
@@ -517,15 +504,14 @@ const Application: React.FC = () => {
     };
   };
 
-  useEffect(() => {
-    initAuthorizationGrantTypes();
-  }, []);
-
   const initType = async () => {
-    const response = await enumsService();
+    const response: any = await enumsService();
     if (response?.success === true) {
+      setIdTokenData(response?.data?.signatureJwsAlgorithm);
+      setApplicationTypeData(response?.data?.applicationType);
+      setAuthorTypes(response?.data?.grantType);
+      setAuthenticationMethod(response?.data?.authenticationMethod);
       setAccessTokenFormat(response?.data?.tokenFormat);
-      // setDataItemStatus(response?.data?.sysDataItemStatus);
     }
   };
 
