@@ -471,7 +471,7 @@ const Application: React.FC = () => {
       if (responsePayMethodInfo.success === true && responsePayMethodInfo.data) {
         let list: any = { ...responsePayMethodInfo.data };
         list.clientSecretExpiresAt = list?.clientSecretExpiresAt
-          ? moment(new Date(list?.clientSecretExpiresAt).toISOString())
+          ? moment(new Date(list?.clientSecretExpiresAt * 1000).toISOString())
           : null;
         (list.dayType1 = list?.accessTokenValidity
           ? parseAccessTokenValidity(list?.accessTokenValidity)?.split(' ')?.[1]
