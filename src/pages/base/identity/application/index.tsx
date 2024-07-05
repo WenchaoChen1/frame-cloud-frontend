@@ -10,6 +10,7 @@ import {
   updateApplicationManageAssignedScopeScopeService,
 } from '@/services/base-service/identity-service/applicationService';
 import { PlusOutlined } from '@ant-design/icons';
+import { enumsService } from '@/services/base-service/identity-service/commService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   ModalForm,
@@ -44,6 +45,8 @@ const Application: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectScopesList, setSelectScopesList] = useState([]);
+  const [accessTokenFormat, setAccessTokenFormat] = useState([]);
+  // const [dataItemStatus, setDataItemStatus] = useState([]);
 
   const dayType = [
     {
@@ -518,6 +521,18 @@ const Application: React.FC = () => {
     initAuthorizationGrantTypes();
   }, []);
 
+  const initType = async () => {
+    const response = await enumsService();
+    if (response?.success === true) {
+      setAccessTokenFormat(response?.data?.tokenFormat);
+      // setDataItemStatus(response?.data?.sysDataItemStatus);
+    }
+  };
+
+  useEffect(() => {
+    initType();
+  }, []);
+
   return (
     <PageContainer>
       <ProTable<APIIdentity.application, API.PageParams>
@@ -724,15 +739,23 @@ const Application: React.FC = () => {
                 <Col span={8}>
                   <ProFormText
                     label={intl.formatMessage({ id: 'application.list.postLogoutRedirectUris' })}
-                    name="accessTokenFormat"
-                    placeholder={'accessTokenFormat'}
+                    name="postLogoutRedirectUris"
+                    placeholder={'postLogoutRedirectUris'}
                   />
                 </Col>
                 <Col span={8}>
-                  <ProFormText
+                  <ProFormSelect
                     label={intl.formatMessage({ id: 'application.list.accessTokenFormat' })}
-                    name="postLogoutRedirectUris"
-                    placeholder={'postLogoutRedirectUris'}
+                    name="accessTokenFormat"
+                    placeholder={'accessTokenFormat'}
+                    request={async () => {
+                      return accessTokenFormat.map((item: any) => {
+                        return {
+                          label: item?.format,
+                          value: item?.value,
+                        };
+                      });
+                    }}
                   />
                 </Col>
                 <Divider plain>{intl.formatMessage({ id: 'application.list.label1' })}</Divider>
