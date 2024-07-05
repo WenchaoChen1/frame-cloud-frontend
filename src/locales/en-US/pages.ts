@@ -81,6 +81,7 @@ export default {
       'clientSecretExpiresAt':'clientSecretExpiresAt',
       'redirectUris':'redirectUris',
       'postLogoutRedirectUris':'OIDC Logout callback address',
+      'accessTokenFormat':'AccessTokenFormat',
       'jwkSetUrl':'Client Keyset URL',
       'requireProofKey':'requireProofKey',
       'requireAuthorizationConsent':'requireAuthorizationConsent',

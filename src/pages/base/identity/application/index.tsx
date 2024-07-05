@@ -724,6 +724,13 @@ const Application: React.FC = () => {
                 <Col span={8}>
                   <ProFormText
                     label={intl.formatMessage({ id: 'application.list.postLogoutRedirectUris' })}
+                    name="accessTokenFormat"
+                    placeholder={'accessTokenFormat'}
+                  />
+                </Col>
+                <Col span={8}>
+                  <ProFormText
+                    label={intl.formatMessage({ id: 'application.list.accessTokenFormat' })}
                     name="postLogoutRedirectUris"
                     placeholder={'postLogoutRedirectUris'}
                   />

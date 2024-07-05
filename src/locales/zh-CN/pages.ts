@@ -78,6 +78,7 @@ export default {
       'clientSecretExpiresAt':'客户端密钥过期时间',
       'redirectUris':'回调地址',
       'postLogoutRedirectUris':'OIDC Logout 回调地址',
+      'accessTokenFormat':'访问令牌格式',
       'jwkSetUrl':'客户端密钥集URL',
       'requireProofKey':'是否需要 Proof Key',
       'requireAuthorizationConsent':'是否需要认证确认',
