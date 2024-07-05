@@ -8,6 +8,8 @@ import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from "@@/exports";
+import {enumsService} from "@/services/base-service/system-service/commService";
+import {statusConversionType} from "@/utils/utils";
 
 type TypeProp = {
   onSelectedMetadata: (permissions: React.Key[]) => void;
@@ -20,6 +22,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
   const [total, setTotal] = useState<number>(0);
   const [size, setSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [page, setPage] = useState<number>(1);
+  const [dataItemStatus, setDataItemStatus] = useState<any>([]);
 
   const columns: ProColumns<APISystem.MetadataListItemDataType>[] = [
     { title: intl.formatMessage({ id: 'metadata.list.interfaceName' }), dataIndex: 'requestMethod' },
@@ -35,24 +38,13 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
       title: intl.formatMessage({ id: 'application.list.status' }),
       dataIndex: 'status',
       valueType: 'select',
-      valueEnum: {
-        0: {
-          text: '启用',
-          status: 'ENABLE',
-        },
-        1: {
-          text: '禁用',
-          status: 'FORBIDDEN',
-        },
-        2: {
-          text: '锁定',
-          status: 'LOCKING',
-        },
-        3: {
-          text: '过期',
-          status: 'EXPIRED',
-        },
-      },
+      valueEnum: dataItemStatus?.reduce((result: any, type: any) => {
+        result[type?.value] = {
+          text: type?.name,
+          status: type?.value,
+        };
+        return result;
+      }, {}),
       render: (value: any, record: any) => {
         const { status } = record;
         if (status === 0) {
@@ -85,16 +77,9 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
   ];
 
   const getList = async (params: APISystem.MetadataListItemDataType) => {
-    if (params?.status) {
-      if (params?.status === '1') {
-        params.status = 'FORBIDDEN';
-      } else if (params?.status === '2') {
-        params.status = 'LOCKING';
-      } else if (params?.status === '3') {
-        params.status = 'EXPIRED';
-      } else {
-        params.status = 'ENABLE';
-      }
+    if (params?.status?.length > 0) {
+      const list = await statusConversionType(params.status, dataItemStatus)
+      params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
     }
     const response = await getMenuManageAttributePageService({
       pageNumber: params.current || 1,
@@ -142,6 +127,17 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
   useEffect(() => {
     initSelectChange()
   }, [Id]);
+
+  const initType = async () => {
+    const response = await enumsService();
+    if (response?.success === true) {
+      setDataItemStatus(response?.data?.sysDataItemStatus);
+    }
+  };
+
+  useEffect(() => {
+    initType();
+  }, []);
 
   return (
     <div>

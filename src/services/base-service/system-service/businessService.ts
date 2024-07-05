@@ -14,7 +14,7 @@ export async function getBusinessPermissionManageTreeService(params: APISystem.R
   return await getBusinessPermissionManageTree(params);
 }
 
-export async function getBusinessPermissionManageDetailService(id?: string) {
+export async function getBusinessPermissionManageDetailService(id?: any) {
   return await getBusinessPermissionManageDetail(id);
 }
 

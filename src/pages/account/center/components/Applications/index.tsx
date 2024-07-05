@@ -77,7 +77,11 @@ const Applications: React.FC = () => {
         <List.Item key={item.id}>
           <Card
             hoverable
-            styles={{ paddingBottom: '20px' }}
+            styles={{
+              body: {
+                paddingBottom: '20px'
+              }
+            }}
             actions={[
               <Tooltip key="download" title="下载">
                 <DownloadOutlined />

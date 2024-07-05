@@ -7,7 +7,7 @@ export async function getBusinessPermissionManageTree(params: APISystem.RoleTabl
   });
 }
 
-export async function getBusinessPermissionManageDetail(id: string) {
+export async function getBusinessPermissionManageDetail(id: any) {
   return request(`${process.env.SYSTEM_SERVICE}/v1/business-permission/get-business-permission-manage-detail/${id}`, {
     method: 'GET'
   });
