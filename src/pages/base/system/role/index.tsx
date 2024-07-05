@@ -177,8 +177,8 @@ const Role: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'application.list.createdDate' }),
-      key: 'showTime',
-      sorter: true,
+      // key: 'showTime',
+      // sorter: true,
       hideInSearch: true,
       dataIndex: 'createdDate',
       render:(_,record: any)=> formatDate(record?.createdDate)
