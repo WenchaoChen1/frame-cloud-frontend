@@ -140,7 +140,7 @@ const BusinessPermission: React.FC = () => {
 
   const columns: ProColumns<APISystem.BusinessPermissionItemDataType>[] = [
     { title: 'Name', dataIndex: 'name' },
-    { title: 'description', hideInSearch: true, dataIndex: 'description', width: '600px' },
+    { title: 'description', hideInSearch: true, dataIndex: 'description', ellipsis: true, },
     { title: 'Sort', hideInSearch: true, dataIndex: 'sort' },
     {
       title: 'Status',
