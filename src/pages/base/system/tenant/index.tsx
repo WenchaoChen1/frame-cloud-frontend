@@ -236,6 +236,7 @@ const Index: React.FC = () => {
       dataIndex: 'description',
       valueType: 'textarea',
       hideInSearch: true,
+      ellipsis: true,
     },
     {
       title: intl.formatMessage({ id: 'application.list.createdDate' }),
@@ -481,7 +482,7 @@ const Index: React.FC = () => {
                 }}
               />
             </Col>
-            
+
             <Col span={12}>
               <ProFormSelect
                 rules={[
