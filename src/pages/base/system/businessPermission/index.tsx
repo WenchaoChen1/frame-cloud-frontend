@@ -297,9 +297,9 @@ const BusinessPermission: React.FC = () => {
     setSelectMenuDataList(checkedKeysValue);
   };
 
-  const onSaveMenu = async (id: string) => {
+  const onSaveMenu = async () => {
     const menuDataBody = {
-      businessPermissionId: id,
+      businessPermissionId: currentRow?.businessPermissionId,
       tenantMenuIds: selectMenuDataList,
     };
 
@@ -531,7 +531,7 @@ const BusinessPermission: React.FC = () => {
           open={MenuOpenModal}
           onOpenChange={setMenuOpenModal}
           onFinish={async (record) => {
-            await onSaveMenu(record?.id);
+            await onSaveMenu();
           }}
         >
           <ProFormText label={'id'} name="id" hidden={true} />

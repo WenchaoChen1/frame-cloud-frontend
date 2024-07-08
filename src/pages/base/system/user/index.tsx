@@ -5,6 +5,7 @@ import {
   getUserManagePageService,
   insertUserManageService,
   updateUserManageService,
+  userManageResetPasswordService,
 } from '@/services/base-service/system-service/userService';
 import { PlusOutlined } from '@ant-design/icons';
 import { enumsService } from '@/services/base-service/system-service/commService';
@@ -34,7 +35,9 @@ const User: React.FC = () => {
   const { initialState } = useModel('@@initialState');
   const currentUserId = initialState?.currentUser?.userId;
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [passWordModal, setPassWordModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [userID, setUserID] = useState('');
   const [currentRow, setCurrentRow] = useState<APISystem.UserItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.UserItemDataType[]>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
@@ -106,6 +109,21 @@ const User: React.FC = () => {
     }
   };
 
+  const resetPasswordRequest = async (fields: APISystem.UserItemDataType) => {
+    const hide = message.loading('Update');
+    try {
+      await userManageResetPasswordService(fields);
+      hide();
+
+      message.success('Update successfully');
+      return true;
+    } catch (error) {
+      hide();
+      message.error('Update failed, please try again!');
+      return false;
+    }
+  };
+
   const deleteUserRequest = async (id: string) => {
     const hide = message.loading('delete...');
     try {
@@ -128,6 +146,12 @@ const User: React.FC = () => {
     setIsEdit(true);
     setOpenModal(true);
 
+    setCurrentRow(record);
+  };
+
+  const onReactPassWord = (record: APISystem.UserItemDataType) => {
+    setUserID(record?.userId);
+    setPassWordModal(true);
     setCurrentRow(record);
   };
 
@@ -185,8 +209,9 @@ const User: React.FC = () => {
         <a key="editUser" onClick={() => onEditUser(record)}>
           Edit
         </a>,
-
-
+        <a key="resetPassword" onClick={() => onReactPassWord(record)}>
+          ResetPassword
+        </a>,
         currentUserId !== record.userId && (
           <PopconfirmPage
             key="deleteUser"
@@ -444,6 +469,52 @@ const User: React.FC = () => {
                     label: 'female',
                   },
                 ]}
+              />
+            </Col>
+          </Row>
+        </ModalForm>
+      )}
+
+      {passWordModal && (
+        <ModalForm
+          title={'New'}
+          open={passWordModal}
+          onOpenChange={setPassWordModal}
+          onFinish={async (record) => {
+            const response = await resetPasswordRequest(record);
+
+            if (response) {
+              setPassWordModal(false);
+              actionRef.current?.reloadAndRest?.();
+            }
+          }}
+        >
+          <Row gutter={16}>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'UserId is required',
+                  },
+                ]}
+                initialValue={userID}
+                disabled
+                label={'UserId'}
+                name="userId"
+              />
+            </Col>
+            <Col span={12}>
+              <ProFormText
+                rules={[
+                  {
+                    required: true,
+                    message: 'New Password is required',
+                  },
+                ]}
+                label={'New Password'}
+                name="newPassword"
+                placeholder={'New Password'}
               />
             </Col>
           </Row>

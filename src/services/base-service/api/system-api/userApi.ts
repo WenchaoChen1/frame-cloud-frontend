@@ -32,3 +32,9 @@ export async function deleteUserManage(id: string) {
     method: 'DELETE'
   });
 }
+
+export async function userManageResetPassword(data?: any) {
+  return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/security/user-manage-reset-password/${data?.newPassword}/${data?.userId}`, {
+    method: 'PUT',
+  });
+}

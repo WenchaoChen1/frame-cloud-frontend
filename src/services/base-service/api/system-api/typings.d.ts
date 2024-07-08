@@ -52,6 +52,7 @@ declare namespace APISystem {
     updatedBy?: string;
     current?: number;
     pageSize?: number;
+    newPassword?: string;
   };
 
   type moveMenuDataType = {
