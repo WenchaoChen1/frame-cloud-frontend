@@ -38,3 +38,31 @@ export async function userManageResetPassword(data?: any) {
     method: 'PUT',
   });
 }
+
+export async function getUserSettingsDetail() {
+  return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/user/get-user-settings-detail`, {
+    method: 'GET'
+  });
+}
+export async function getAccountSettingsDetail() {
+  return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/account/get-account-settings-detail`, {
+    method: 'GET'
+  });
+}
+export async function updateAccountSettingsDetail(data:any) {
+  return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/account/update-account-settings-detail`, {
+    method: 'POST',
+    data
+  });
+}
+export async function updateUserSettingsDetail(data?: any) {
+  return request<Record<string, any>>(`${process.env.SYSTEM_SERVICE}/v1/user/update-user-settings-detail`, {
+    method: 'POST',
+    data: data,
+  });
+}
+export async function resetPassword(data?: any) {
+  return request<APISystem.UserResponseDataType>(`${process.env.SYSTEM_SERVICE}/v1/security/reset-password/${data.originalPassword}/${data.newPassword}`, {
+    method: 'put',
+  });
+}

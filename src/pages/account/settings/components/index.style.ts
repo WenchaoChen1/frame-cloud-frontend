@@ -3,7 +3,7 @@ import { createStyles } from 'antd-style';
 const useStyles = createStyles(({ token }) => {
   return {
     baseView: {
-      display: 'flex',
+      // display: 'flex',
       paddingTop: '12px',
       '.ant-legacy-form-item .ant-legacy-form-item-control-wrapper': {
         width: '100%',
@@ -14,7 +14,7 @@ const useStyles = createStyles(({ token }) => {
     },
     left: {
       minWidth: '224px',
-      maxWidth: '448px',
+      // maxWidth: '708px',
     },
     right: {
       flex: '1',
