@@ -11,6 +11,7 @@ import {useEffect, useRef, useState} from 'react';
 import {getAccountSettingsDetailService,updateAccountSettingsDetailService} from '@/services/base-service/system-service/userService'
 import { enumsService } from '@/services/base-service/system-service/commService';
 import React from 'react';
+import {message} from "antd";
 type GithubIssueItem = {
   url: string;
   id: number;
@@ -97,12 +98,20 @@ function Acount(props) {
   },[])
 
   const submitForm = async (e) =>{
-    const {type:accountId,name} = e
+    const {name} = e
+    const {accountId} = modalDatas
     const res = await updateAccountSettingsDetailService({
       accountId,
       name
     })
-    console.log(res)
+    if (res.success){
+      message.success('update successfully!')
+      actionRef?.current.reload()
+      setModalFlag(false)
+      if (modalFormDatas?.current){
+        modalFormDatas.current.resetFields()
+      }
+    }
   }
   const onOpenChangeModal = (e) =>{
     if (!e){
@@ -112,9 +121,6 @@ function Acount(props) {
       }
     }
   }
-  const getDatas = async () =>{
-    return modalDatas
-  }
   return (
     <>
       <ProTable<GithubIssueItem>
@@ -123,9 +129,7 @@ function Acount(props) {
         cardBordered
         request={getTableDatas}
         rowKey="id"
-        search={{
-          labelWidth: 'auto',
-        }}
+        search={false}
         pagination={{
           pageSize: 5,
           onChange: (page) => console.log(page),
@@ -154,25 +158,6 @@ function Acount(props) {
                 message: 'name is required',
               },
             ]}
-          />
-          <ProFormSelect
-            name="type"
-            label={'Account Type'}
-            rules={[
-              {
-                required: true,
-                message: 'Account Type is required',
-              },
-            ]}
-            request={async () => {
-              return accountType?.map((item: any) => {
-                return {
-                  label: item?.name,
-                  value: item?.value,
-                };
-              });
-            }}
-            allowClear={false}
           />
         </ModalForm>
       }
