@@ -3,7 +3,7 @@ import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import type { RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
-import { fetchUserInfo } from './utils/initialStateUtils';
+import { fetchUserInfo } from './utils/infoInitialStateUtils';
 import { getLayoutConfig } from './utils/layoutUtils';
 
 const loginPath = '/user/login';
