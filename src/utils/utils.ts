@@ -92,6 +92,14 @@ export function removeLocalStorage(key: string) {
   localStorage.removeItem(key);
 }
 
+export function getButtonPermissions(key: string) {
+  return localStorage.getItem(key);
+}
+
+export function setButtonPermissions(key: string, data: any) {
+  localStorage.setItem(key, data);
+}
+
 // token
 export function getToken() {
   const item = localStorage.getItem(ACCESS_TOKEN);

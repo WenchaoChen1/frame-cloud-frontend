@@ -19,5 +19,11 @@ export default {
     'permissions.identityManagement.compliance':'compliance',                                              // Auth管理-日志审计权限
     'permissions.identityManagement.application':'application',                                            // Auth管理-应用管理权限
     'permissions.identityManagement.authorization':'authorization.list',                                   // Auth管理-凭证权限
-  }
+  
+    // 'DeleteMenu':'DeleteMenu',
+    // 'MetadataMenu':'MetadataMenu',
+    // 'EditMenu':'EditMenu',
+    // 'addMenu':'addMenu',
+    // 'Delete':'Delete',
+  },
 }

@@ -21,6 +21,7 @@ import {
   ProTable,
   ProFormTreeSelect,
 } from '@ant-design/pro-components';
+import { useAccess, Access } from 'umi';
 import { message, Button, Row, Col } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
 import { useIntl } from "@@/exports";
@@ -29,6 +30,7 @@ import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const MenuList: React.FC = () => {
+  const access = useAccess();
   const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const [total, setTotal] = useState<number>(0);
@@ -212,35 +214,38 @@ const MenuList: React.FC = () => {
         >
           Metadata
         </a>,
-        <a
-          key="EditBtn"
-          onClick={() => {
-            setIsEdit(true);
-            setCurrentRow(record);
-            handleModalVisible(true);
-          }}
-        >
-          Edit
-        </a>,
-        <a
-          key="NewBtn"
-          onClick={() => {
-            setIsEdit(false);
-            setCurrentRow({ parentId: record?.id ? record.id : '' });
-            setTableAdd(record?.id ? record.id : '')
-            handleModalVisible(true);
-          }}
-        >
-          Add
-        </a>,
-        <div key='Delete'>
+        // <Access accessible={access?.EditMenu} key='Delete' key="EditBtn">
+          <a
+            onClick={() => {
+              setIsEdit(true);
+              setCurrentRow(record);
+              handleModalVisible(true);
+            }}
+          >
+            Edit
+          </a>,
+        // </Access>,
+        // <Access accessible={access?.addMenu} key='addMenu'>
+          <a
+            onClick={() => {
+              setIsEdit(false);
+              setCurrentRow({ parentId: record?.id ? record.id : '' });
+              setTableAdd(record?.id ? record.id : '')
+              handleModalVisible(true);
+            }}
+          >
+            Add
+          </a>,
+        // </Access>,
+        
+        // <Access accessible={access?.DeleteMenu} key='DeleteMenu'>
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRow(record?.id || '');
             }}>
             <a key="deleteRow">Delete</a>
           </PopconfirmPage>
-        </div>
+        // </Access>
       ],
     },
   ];

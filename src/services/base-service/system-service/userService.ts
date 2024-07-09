@@ -29,7 +29,7 @@ export async function deleteUserManageService(id: string) {
   return await deleteUserManage(id);
 }
 
-export async function getLoginInfoService(data: APISystem.GetAccountInfoBody) {
+export async function getLoginInfoService(data: any) {
   return await getLoginInfo(data);
 }
 
