@@ -6,7 +6,7 @@ import {
 import {
   getAttributePermissionIdByAttributeIdService,
 } from '@/services/base-service/system-service/metadataService';
-import { ProTable } from '@ant-design/pro-components';
+import {ProFormSelect, ProTable} from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
 
 type TypeProp = {
@@ -50,6 +50,17 @@ const ScopePermissions: React.FC<TypeProp> = ({
         };
         return result;
       }, {}),
+      renderFormItem: (_, { ...rest }) => {
+        return (
+          <ProFormSelect
+            mode="multiple"
+            {...rest}
+            fieldProps={{
+              mode: 'multiple',
+            }}
+          />
+        );
+      },
     },
   ];
 
@@ -64,12 +75,13 @@ const ScopePermissions: React.FC<TypeProp> = ({
   }, []);
 
   const getList = async (params: APISystem.PermissionItemDataType) => {
+    let permissionType = params?.permissionType?.join(',') || ''
     const response = await getPermissionManagePageService({
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
       permissionName: params?.permissionName || '',
       permissionCode: params?.permissionCode || '',
-      permissionType: params?.permissionType || '',
+      permissionType
     });
 
     let dataSource: APISystem.PermissionItemDataType[] = [];
@@ -118,7 +130,8 @@ const ScopePermissions: React.FC<TypeProp> = ({
         rowKey={(e: any) => e?.permissionId}
         rowSelection={rowSelection}
         search={{
-          span: 8,
+          span: 6,
+          layout: 'vertical',
           labelWidth: 'auto',
           defaultCollapsed:false,
         }}

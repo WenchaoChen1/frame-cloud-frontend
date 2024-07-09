@@ -21,7 +21,7 @@ const Settings: React.FC = () => {
     account: '账户设置',
     binding: '账号绑定',
     notification: '新消息通知',
-    loginLog:'个人登录记录'
+    loginLog:'用户在线授权'
   };
   const [initConfig, setInitConfig] = useState<SettingsState>({
     mode: 'inline',

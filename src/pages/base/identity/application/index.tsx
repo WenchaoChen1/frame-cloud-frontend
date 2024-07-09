@@ -85,7 +85,7 @@ const Application: React.FC = () => {
       authorizationGrantTypes:
         params?.authorizationGrantTypes?.map((param: any) => encodeURIComponent(param)).join(',') ||
         [],
-      status: params?.status,
+      status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
     });
 
     let dataSource: APIIdentity.application[] = [];
@@ -375,6 +375,17 @@ const Application: React.FC = () => {
         FORBIDDEN: { text: '禁用' },
         LOCKING: { text: '锁定' },
         EXPIRED: { text: '过期' },
+      },
+      renderFormItem: (_, { ...rest }) => {
+        return (
+          <ProFormSelect
+            mode="multiple"
+            {...rest}
+            fieldProps={{
+              mode: 'multiple',
+            }}
+          />
+        );
       },
       render: (value: any, record: any) => {
         const { status } = record;
