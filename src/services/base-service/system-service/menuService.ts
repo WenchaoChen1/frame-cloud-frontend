@@ -8,6 +8,8 @@ import {
   updateMenuAssignedAttribute,
   getMenuManageAttributePage,
   getAllAttributeIdByMenuId,
+  downloadMenuManage,
+  downloadMenuManageAssignedAttribute
 } from "@/services/base-service/api/system-api/menuApi";
 
 export async function getMenuManageTreeService (data?: any) {
@@ -44,4 +46,10 @@ export async function getMenuManageAttributePageService(data: any) {
 
 export async function getAllAttributeIdByMenuIdService(id: string) {
   return await getAllAttributeIdByMenuId(id);
+}
+export async function downloadMenuManageService() {
+  return await downloadMenuManage();
+}
+export async function downloadMenuManageAssignedAttributeService() {
+  return await downloadMenuManageAssignedAttribute();
 }

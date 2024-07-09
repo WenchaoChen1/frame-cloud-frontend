@@ -8,10 +8,12 @@ import {
   insertMenuManageService,
   updateMenuManageService,
   updateMenuAssignedAttributeService,
+  downloadMenuManageService,
+  downloadMenuManageAssignedAttributeService
 } from '@/services/base-service/system-service/menuService';
 import { statusConversionType } from '@/utils/utils';
 import { enumsService } from '@/services/base-service/system-service/commService';
-import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import type { ActionType, ProColumns,ProFormInstance } from '@ant-design/pro-components';
 import {
   ModalForm,
   PageContainer,
@@ -26,15 +28,19 @@ import { useAccess, Access } from 'umi';
 import { message, Button, Row, Col } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
 import { useIntl } from "@@/exports";
-import {PlusOutlined} from '@ant-design/icons'
+import {PlusOutlined,DownloadOutlined} from '@ant-design/icons'
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
+import FileSaver from 'file-saver'
+
 
 const MenuList: React.FC = () => {
+  const formRef = useRef<ProFormInstance>();
   const access = useAccess();
   const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const [total, setTotal] = useState<number>(0);
+  const [hiddenFormItem,setHiddenFormItem] = useState(false)
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [modalVisible, handleModalVisible] = useState<boolean>(false);
@@ -261,7 +267,7 @@ const MenuList: React.FC = () => {
             Add
           </a>
         </Access>,
-        
+
         <Access accessible={access?.DeleteMenu} key='DeleteMenu'>
           <PopconfirmPage
             onConfirm={async () => {
@@ -357,6 +363,36 @@ const MenuList: React.FC = () => {
     initType();
   }, []);
 
+  const downloadMenuAttribute = async () =>{
+    const res = await downloadMenuManageService()
+    if (res && res.length > 0){
+      let blob = new Blob([JSON.stringify(res)],{type: 'application/json;charset=utf-8'});
+      FileSaver.saveAs(blob,'menu-attribute.json');
+    }
+  }
+  const downloadMenu = async () =>{
+    const res = await downloadMenuManageAssignedAttributeService()
+    if (res && res.length > 0){
+      let blob = new Blob([JSON.stringify(res)],{type: 'application/json;charset=utf-8'});
+      FileSaver.saveAs(blob,'menu.json');
+    }
+  }
+  const changeData = (e) =>{
+    if (e === 2){
+      setHiddenFormItem(true)
+      return;
+    }
+    setHiddenFormItem(false)
+  }
+  const changeText = (e) =>{
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // 月份是从0开始的
+    const day = today.getDate();
+    if (formRef?.current){
+      formRef.current.setFieldsValue({'code':e.target.value + `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`})
+    }
+  }
   return (
     <PageContainer>
       <ProTable<APISystem.MenuListItemDataType, APISystem.PageParams>
@@ -390,6 +426,22 @@ const MenuList: React.FC = () => {
         toolBarRender={() => [
           <Button
             key="button"
+            icon={<DownloadOutlined />}
+            onClick={downloadMenu}
+            type="primary"
+          >
+            下载menu
+          </Button>,
+          <Button
+            key="button"
+            icon={<DownloadOutlined />}
+            onClick={downloadMenuAttribute}
+            type="primary"
+          >
+            下载menu-attribute
+          </Button>,
+          <Button
+            key="button"
             icon={<PlusOutlined />}
             onClick={() => {
               setShowAll(!showAll)
@@ -421,6 +473,7 @@ const MenuList: React.FC = () => {
         <ModalForm
           title={isEdit ? 'Edit' : 'New'}
           width="800px"
+          formRef={formRef}
           open={modalVisible}
           request={getMenuInfoRequest}
           onOpenChange={handleModalVisible}
@@ -431,7 +484,6 @@ const MenuList: React.FC = () => {
             } else {
               response = await handleAdd(record as APISystem.MenuListItemDataType)
             }
-            console.log('onFinish response', response);
 
             if (response) {
               handleModalVisible(false);
@@ -478,6 +530,9 @@ const MenuList: React.FC = () => {
                 label={'Menu name'}
                 name="menuName"
                 placeholder={'Menu name'}
+                fieldProps={{
+                  onChange: changeText,
+                }}
               />
             </Col>
             <Col span={12}>
@@ -485,6 +540,7 @@ const MenuList: React.FC = () => {
                 name="code"
                 label={'Code'}
                 placeholder={'Code'}
+                disabled
                 rules={[
                   {
                     required: true,
@@ -493,52 +549,11 @@ const MenuList: React.FC = () => {
                 ]}
               />
             </Col>
-            <Col span={12} hidden={true}><ProFormText label={'id'} name="id"/></Col>
-            <Col span={12} hidden={true}><ProFormText label={'parentId'} name="parentId"/></Col>
-            <Col span={12}>
-              <ProFormText
-                rules={[
-                  {
-                    required: true,
-                    message: 'Name is required',
-                  },
-                ]}
-                label={'Name'}
-                name="name"
-                placeholder={'Name'}
-              />
-            </Col>
-            <Col span={12}><ProFormText label={'Icon'} name="icon" placeholder={'Icon'} /></Col>
-            <Col span={12}>
-              <ProFormText
-                rules={[
-                  {
-                    required: true,
-                    message: 'Path is required',
-                  },
-                ]}
-                label={'Path'}
-                name="path"
-                placeholder={'Path'}
-              />
-            </Col>
-            <Col span={12}>
-              <ProFormDigit
-                rules={[
-                  {
-                    required: true,
-                    message: 'Sort is required',
-                  },
-                ]}
-                label={'Sort'}
-                name="sort"
-                placeholder={'Sort'}
-              />
-            </Col>
             <Col span={12}>
               <ProFormSelect
                 name="type"
                 label={'Type'}
+                onChange={changeData}
                 rules={[
                   {
                     required: true,
@@ -555,27 +570,51 @@ const MenuList: React.FC = () => {
                 }}
               />
             </Col>
+            {
+              !hiddenFormItem && <Col span={12}>
+                <ProFormText
+                  label={'Name'}
+                  name="name"
+                  placeholder={'Name'}
+                />
+              </Col>
+            }
+
+            {/*<Col span={12}><ProFormText label={'Icon'} name="icon" placeholder={'Icon'} /></Col>*/}
+            {
+              !hiddenFormItem && <Col span={12}>
+                <ProFormText
+                  label={'Path'}
+                  name="path"
+                  placeholder={'Path'}
+                />
+              </Col>
+            }
+
             <Col span={12}>
-              <ProFormSelect
-                name="location"
-                label={'Location'}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Location is required',
-                  },
-                ]}
-                allowClear={false}
-                request={async () => {
-                  return menuLocation?.map((item: any) => {
-                    return {
-                      label: item?.name,
-                      value: item?.value,
-                    };
-                  });
-                }}
+              <ProFormDigit
+                label={'Sort'}
+                name="sort"
+                placeholder={'Sort'}
               />
             </Col>
+            {
+              !hiddenFormItem && <Col span={12}>
+                <ProFormSelect
+                  name="location"
+                  label={'Location'}
+                  allowClear={false}
+                  request={async () => {
+                    return menuLocation?.map((item: any) => {
+                      return {
+                        label: item?.name,
+                        value: item?.value,
+                      };
+                    });
+                  }}
+                />
+              </Col>
+            }
             <Col span={12}>
               <ProFormSelect
                 rules={[

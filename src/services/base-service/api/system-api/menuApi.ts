@@ -61,3 +61,13 @@ export async function getAllAttributeIdByMenuId(attributeId: string) {
     method: 'GET',
   });
 }
+export async function downloadMenuManage() {
+  return request(`${process.env.SYSTEM_SERVICE}/v1/menu/download-menu-manage`, {
+    method: 'GET',
+  });
+}
+export async function downloadMenuManageAssignedAttribute() {
+  return request(`${process.env.SYSTEM_SERVICE}/v1/menu/download-menu-manage-assigned-attribute`, {
+    method: 'GET',
+  });
+}
