@@ -4,6 +4,8 @@ import { SettingDrawer } from '@ant-design/pro-components';
 import { AvatarDropdown, AvatarName, Footer, Question, SelectLang } from '@/components';
 import { changeRouteData, isRouteInArray, findRouteByPath } from './routeUtils';
 
+//TODO 此文件的内容放回app文件中，此文件中的变量都放入 BaseAppUtils中,APP.ts 文件引入appUtils
+
 // 【路由白名单】不需要校验的路由名单可添加在此
 const routeArray = ['/','/401', '/login', '/user/login'];
 const isDev = process.env.NODE_ENV === 'development';
@@ -15,7 +17,7 @@ export const getLayoutConfig = ({ initialState, setInitialState }) => {
     const { leftAndTopRoutes } = initialState?.currentUser;
     userRouters = changeRouteData(leftAndTopRoutes);
   }
-  
+
   const layoutConfig = {
     actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
     avatarProps: {
