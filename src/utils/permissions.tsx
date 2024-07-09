@@ -19,11 +19,59 @@ export default {
     'permissions.identityManagement.compliance':'compliance',                                              // Auth管理-日志审计权限
     'permissions.identityManagement.application':'application',                                            // Auth管理-应用管理权限
     'permissions.identityManagement.authorization':'authorization.list',                                   // Auth管理-凭证权限
-  
-    // 'DeleteMenu':'DeleteMenu',
-    // 'MetadataMenu':'MetadataMenu',
-    // 'EditMenu':'EditMenu',
-    // 'addMenu':'addMenu',
-    // 'Delete':'Delete',
   },
+
+  permissionButton: {
+    'MetadataMenu':'MetadataMenu',
+    'DeleteMenu':'DeleteMenu',
+    'EditMenu':'EditMenu',
+    'AddMenu':'AddMenu',
+    
+    'MenuTenant':'MenuTenant',
+    'EditTenant':'EditTenant',
+    'AddTenant':'AddTenant',
+    'DeleteTenant':'DeleteTenant',
+
+    'BusinessRole':'BusinessRole',
+    'MenuRole':'MenuRole',
+    'DeleteRole':'DeleteRole',
+    'EditRole':'EditRole',
+    'AddRole':'AddRole',
+
+    'ResetPasswordUser':'ResetPasswordUser',
+    'DeleteUser':'DeleteUser',
+    'EditUser':'EditUser',
+    'AddUser':'AddUser',
+
+    'RoleAccount':'RoleAccount',
+    'TenantAccount':'TenantAccount',
+    'BusinessAccount':'BusinessAccount',
+    'DeleteAccount':'DeleteAccount',
+    'EditAccount':'EditAccount',
+    'AddAccount':'AddAccount',
+
+    'DeletePermission':'DeletePermission',
+    'EditPermission':'EditPermission',
+    'AddPermission':'AddPermission',
+
+    'PermissionsMetadata':'PermissionsMetadata',
+    'EditMetadata':'EditMetadata',
+
+    'MenuBusiness':'MenuBusiness',
+    'DeleteBusiness':'DeleteBusiness',
+    'EditBusiness':'EditBusiness',
+    'AddBusiness':'AddBusiness',
+
+    'DeleteAuthorization':'DeleteAuthorization',
+
+    'ScopeApplication':'ScopeApplication',
+    'DeleteApplication':'DeleteApplication',
+    'EditApplication':'EditApplication',
+    'AddApplication':'AddApplication',
+
+    'PermissionsScope':'PermissionsScope',
+    'DeleteScope':'DeleteScope',
+    'EditScope':'EditScope',
+    'AddScope':'AddScope',
+  }
 }

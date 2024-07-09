@@ -10,6 +10,7 @@ import {
   updateTenantManageService,
 } from '@/services/base-service/system-service/tenantService';
 import { statusConversionType } from '@/utils/utils';
+import { useAccess, Access } from 'umi';
 import { enumsService } from '@/services/base-service/system-service/commService';
 import { getRoleManageRoleDetailToListService } from '@/services/base-service/system-service/roleService';
 import { getTenantManageMenuTreeService } from '@/services/base-service/system-service/menuService';
@@ -34,6 +35,7 @@ import PopconfirmPage from '@/pages/base/components/popconfirm/index'
 import styles from './index.less';
 
 const Index: React.FC = () => {
+  const access = useAccess();
   const intl = useIntl();
   const formRef = useRef<ProFormInstance>();
   const actionRef = useRef<ActionType>();
@@ -263,47 +265,50 @@ const Index: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record: any) => [
-        <a
-          key="MenuBtn"
-          onClick={() => {
-            setCurrentRow(record);
-            openMenuModal(record?.id || '');
-          }}
-        >
-          Menu
-        </a>,
-        <a
-          key="EditBtn"
-          onClick={() => {
-            setIsEdit(true);
-            setCurrentRow(record);
-            setTenantId(record?.id);
-            handleModalVisible(true);
-          }}
-        >
-          Edit
-        </a>,
-        <a
-          key="NewBtn"
-          onClick={() => {
-            setIsEdit(false);
-            setTenantId(record?.id);
-            setTableAdd(record?.id ? record.id : '')
-            onOpenEditModal(record);
-          }}
-        >
-          Add
-        </a>,
-        <div key='Delete'>
+        <Access accessible={access?.MenuTenant} key='MenuTenant'>
+          <a
+            onClick={() => {
+              setCurrentRow(record);
+              openMenuModal(record?.id || '');
+            }}
+          >
+            Menu
+          </a>
+        </Access>,
+        <Access accessible={access?.EditTenant} key='EditTenant'>
+          <a
+            onClick={() => {
+              setIsEdit(true);
+              setCurrentRow(record);
+              setTenantId(record?.id);
+              handleModalVisible(true);
+            }}
+          >
+            Edit
+          </a>
+        </Access>,
+        <Access accessible={access?.AddTenant} key='AddTenant'>
+          <a
+            onClick={() => {
+              setIsEdit(false);
+              setTenantId(record?.id);
+              setTableAdd(record?.id ? record.id : '')
+              onOpenEditModal(record);
+            }}
+          >
+            Add
+          </a>
+        </Access>,
+        <Access accessible={access?.DeleteTenant} key='DeleteTenant'>
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRow(record?.id || '');
               setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
             }}>
-            <a key="deleteRow">Delete</a>
+            <a>Delete</a>
           </PopconfirmPage>
-        </div>
+        </Access>,
       ],
     },
   ];
@@ -384,18 +389,19 @@ const Index: React.FC = () => {
             showAll?'收起':'展开'
           }
           </Button>,
-          <Button
-            key="button"
-            icon={<PlusOutlined />}
-            onClick={() => {
-              setIsEdit(false)
-              setTableAdd('')
-              handleModalVisible(true)
-            }}
-            type="primary"
-          >
-            新建
-          </Button>
+          <Access accessible={access?.AddTenant} key='AddTenant'>
+            <Button
+              key="button"
+              onClick={() => {
+                setIsEdit(false)
+                setTableAdd('')
+                handleModalVisible(true)
+              }}
+              type="primary"
+            >
+              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            </Button>
+          </Access>
         ]}
         request={searchTable}
         columns={columns}

@@ -19,6 +19,7 @@ import {
   ProFormText,
   ProTable,
 } from '@ant-design/pro-components';
+import { useAccess, Access } from 'umi';
 import { FormattedMessage } from '@umijs/max';
 import { Button, DatePicker, Divider, InputNumber, message, Switch, Tooltip,Row,Col } from 'antd';
 import moment from 'moment';
@@ -30,6 +31,7 @@ import ConfirmPage from "@/pages/base/components/popconfirm";
 
 const Application: React.FC = () => {
   const intl = useIntl();
+  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [ScopeOpenModal, setScopeOpenModal] = useState<boolean>(false);
@@ -412,31 +414,37 @@ const Application: React.FC = () => {
       dataIndex: 'actions',
       search: false,
       render: (_, record: any) => [
-        <a
-          key={'Scope'}
-          onClick={() => {
-            setScopeOpenModal(true);
-            setApplicationId(record?.applicationId);
-          }}
-        >
-          Scope
-        </a>,
-        <a
-          key={'Edit'}
-          style={{ marginLeft: 15 }}
-          onClick={() => {
-            setOpenModal(true);
-            setIsEdit(true);
-            setCurrentRow(record);
-          }}
-        >
-          Edit
-        </a>,
-        <div key={'Delete'} style={{ display: 'inline-block' }}>
-          <ConfirmPage onConfirm={async () => await deleteUserRequest(record?.applicationId || '')}>
-            <a style={{ marginLeft: 15 }}>Delete</a>
-          </ConfirmPage>
-        </div>
+        <Access accessible={access?.ScopeApplication} key="ScopeApplication">
+          <a
+            key={'Scope'}
+            onClick={() => {
+              setScopeOpenModal(true);
+              setApplicationId(record?.applicationId);
+            }}
+          >
+            Scope
+          </a>
+        </Access>,
+        <Access accessible={access?.EditApplication} key="EditApplication">
+          <a
+            key={'Edit'}
+            style={{ marginLeft: 15 }}
+            onClick={() => {
+              setOpenModal(true);
+              setIsEdit(true);
+              setCurrentRow(record);
+            }}
+          >
+            Edit
+          </a>
+        </Access>,
+        <Access accessible={access?.DeleteApplication} key="DeleteApplication">
+          <div key={'Delete'} style={{ display: 'inline-block' }}>
+            <ConfirmPage onConfirm={async () => await deleteUserRequest(record?.applicationId || '')}>
+              <a style={{ marginLeft: 15 }}>Delete</a>
+            </ConfirmPage>
+          </div>
+        </Access>
       ],
     },
   ];
@@ -537,16 +545,18 @@ const Application: React.FC = () => {
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
-          <Button
-            key="primary"
-            type="primary"
-            onClick={() => {
-              setIsEdit(false);
-              setOpenModal(true);
-            }}
-          >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-          </Button>,
+          <Access accessible={access?.AddApplication} key="AddApplication">
+            <Button
+              key="primary"
+              type="primary"
+              onClick={() => {
+                setIsEdit(false);
+                setOpenModal(true);
+              }}
+            >
+              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            </Button>
+          </Access>
         ]}
         request={getList}
         columns={columns}

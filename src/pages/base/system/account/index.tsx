@@ -21,6 +21,7 @@ import {
   ProFormTreeSelect,
   ProTable,
 } from '@ant-design/pro-components';
+import { useAccess, Access } from 'umi';
 import { FormattedMessage, useModel} from '@umijs/max';
 import { useIntl } from "@@/exports";
 import { Button, message, Row,Col } from 'antd';
@@ -33,6 +34,7 @@ import BinessPage from './components/biness'
 
 const Account: React.FC = () => {
   const intl = useIntl();
+  const access = useAccess();
   const refTableForm = useRef<ProFormInstance>();
   const [roleModal,setRoleModal] = useState(false)
   const [tenantModal,setTenantModal] = useState(false)
@@ -263,28 +265,38 @@ const Account: React.FC = () => {
     {
       title: 'Operating',
       dataIndex: 'option',
-      width: '220px',
+      width: '280px',
       valueType: 'option',
       render: (_, record) => [
-        <a key="Role" onClick={() => onRole(record)}>
-          Role
-        </a>,
-        <a key="Tenant" onClick={() => onEditTenant(record)}>
-          Tenant
-        </a>,
-        <a key="Biness" onClick={() => onBiness(record)}>
-          Biness
-        </a>,
-        <a key="edit" onClick={() => onEdit(record)}>
-          Edit
-        </a>,
+        <Access accessible={access?.RoleAccount} key="RoleAccount">
+          <a key="Role" onClick={() => onRole(record)}>
+            Role
+          </a>
+        </Access>,
+        <Access accessible={access?.TenantAccount} key="TenantAccount">
+          <a key="Tenant" onClick={() => onEditTenant(record)}>
+            Tenant
+          </a>
+        </Access>,
+        <Access accessible={access?.BusinessAccount} key="BusinessAccount">
+          <a key="Biness" onClick={() => onBiness(record)}>
+            Business
+          </a>
+        </Access>,
+        <Access accessible={access?.EditAccount} key="EditAccount">
+          <a key="edit" onClick={() => onEdit(record)}>
+            Edit
+          </a>
+        </Access>,
         currentAccountId !== record.accountId && (
-          <PopconfirmPage
-            onConfirm={async () => {
-              await deleteRow(record?.accountId || '');
-            }}>
-            <a key="delete">Delete</a>
-          </PopconfirmPage>
+          <Access accessible={access?.DeleteAccount} key="DeleteAccount">
+            <PopconfirmPage
+              onConfirm={async () => {
+                await deleteRow(record?.accountId || '');
+              }}>
+              <a key="delete">Delete</a>
+            </PopconfirmPage>
+          </Access>
         ),
       ],
     },
@@ -320,16 +332,17 @@ const Account: React.FC = () => {
           defaultCollapsed:false,
         }}
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              setIsEdit(false);
-              setOpenModal(true);
-            }}
-          >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-          </Button>,
+          <Access accessible={access?.AddAccount} key="AddAccount">
+            <Button
+              type="primary"
+              onClick={() => {
+                setIsEdit(false);
+                setOpenModal(true);
+              }}
+            >
+              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            </Button>
+          </Access>
         ]}
         request={getList}
         columns={columns}

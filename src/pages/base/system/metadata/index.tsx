@@ -20,6 +20,7 @@ import {
   ProTable,
   ProFormTextArea,
 } from '@ant-design/pro-components';
+import { useAccess, Access } from 'umi';
 import { message, Tooltip, TableColumnsType, Table,Row,Col } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
 import { statusConversionType } from '@/utils/utils';
@@ -28,6 +29,7 @@ import dayjs from "dayjs";
 
 const Metadata: React.FC = () => {
   const intl = useIntl();
+  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);
@@ -186,26 +188,28 @@ const Metadata: React.FC = () => {
       dataIndex: 'actions',
       search: false,
       render: (_, record: any) => [
-        <a
-          key='Permissions'
-          onClick={() => {
-            setPermissOpenModal(true);
-            setAttributeId(record?.attributeId);
-          }}
-          style={{ marginRight: '10px' }}
-        >
-          Permissions
-        </a>,
-        <a
-          key='edit'
-          onClick={() => {
-            setOpenModal(true);
-            setIsEdit(true);
-            setCurrentRow(record);
-          }}
-        >
-          Edit
-        </a>,
+        <Access accessible={access?.PermissionsMetadata} key='PermissionsMetadata'>
+          <a
+            onClick={() => {
+              setPermissOpenModal(true);
+              setAttributeId(record?.attributeId);
+            }}
+            style={{ marginRight: '10px' }}
+          >
+            Permissions
+          </a>
+        </Access>,
+        <Access accessible={access?.EditMetadata} key='EditMetadata'>
+          <a
+            onClick={() => {
+              setOpenModal(true);
+              setIsEdit(true);
+              setCurrentRow(record);
+            }}
+          >
+            Edit
+          </a>
+        </Access>
       ],
     },
   ];

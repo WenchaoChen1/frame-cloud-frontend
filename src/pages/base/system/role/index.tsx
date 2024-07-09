@@ -14,6 +14,7 @@ import BusinessPermission from './businessPermission/index';
 import { enumsService } from '@/services/base-service/system-service/commService';
 import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
 import { PlusOutlined } from '@ant-design/icons';
+import { useAccess, Access } from 'umi';
 import type { ActionType, ProColumns, ProFormInstance } from '@ant-design/pro-components';
 import {
   FooterToolbar,
@@ -35,6 +36,7 @@ import ConfirmPage from "@/pages/base/components/popconfirm";
 
 const Role: React.FC = () => {
   const intl = useIntl();
+  const access = useAccess();
   const refTableForm = useRef<ProFormInstance>();
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
@@ -196,36 +198,42 @@ const Role: React.FC = () => {
       valueType: 'option',
       width: '220px',
       render: (_, record: any) => [
-        <a
-          key="BusinessBtn"
-          onClick={() => {
-            setOpenBusinessModal(true);
-            setRoleId(record?.roleId);
-            setButtonTenantId(record?.tenantId)
-          }}
-        >
-          businessPermission
-        </a>,
-        <a
-          key="MenuBtn"
-          onClick={() => {
-            setCurrentRow(record);
-            openMenuModal(record);
-          }}
-        >
-          Menu
-        </a>,
-        <a key="editBtn" onClick={() => openEdit(record)}>
-          Edit
-        </a>,
-        <div key={'Delete'}>
+        <Access accessible={access?.BusinessRole} key="BusinessRole">
+          <a
+            key="BusinessBtn"
+            onClick={() => {
+              setOpenBusinessModal(true);
+              setRoleId(record?.roleId);
+              setButtonTenantId(record?.tenantId)
+            }}
+          >
+            business
+          </a>
+        </Access>,
+        <Access accessible={access?.MenuRole} key="MenuRole">
+          <a
+            key="MenuBtn"
+            onClick={() => {
+              setCurrentRow(record);
+              openMenuModal(record);
+            }}
+          >
+            Menu
+          </a>
+        </Access>,
+        <Access accessible={access?.EditRole} key="EditRole">
+          <a key="editBtn" onClick={() => openEdit(record)}>
+            Edit
+          </a>
+        </Access>,
+        <Access accessible={access?.DeleteRole} key="DeleteRole">
           <ConfirmPage
             onConfirm={async () => {
               await deleteRoleRequest(record?.roleId || '');
             }}>
             <a key="deleteRow">Delete</a>
           </ConfirmPage>
-        </div>
+        </Access>
       ],
     },
     {
@@ -381,17 +389,18 @@ const Role: React.FC = () => {
           columnsStateMap={columnsStateMap}
           onColumnsStateChange={handleColumnsStateChange}
           toolBarRender={() => [
-            <Button
-              type="primary"
-              key="primary"
-              onClick={() => {
-                setIsEdit(false);
-                setCurrentRow({ parentId: '0' });
-                setOpenModal(true);
-              }}
-            >
-              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-            </Button>,
+            <Access accessible={access?.AddRole} key="AddRole">
+              <Button
+                type="primary"
+                onClick={() => {
+                  setIsEdit(false);
+                  setCurrentRow({ parentId: '0' });
+                  setOpenModal(true);
+                }}
+              >
+                <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+              </Button>
+            </Access>,
           ]}
           request={getList}
           columns={columns}

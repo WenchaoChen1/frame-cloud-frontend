@@ -17,6 +17,7 @@ import {
   ProFormText,
   ProTable,
 } from '@ant-design/pro-components';
+import { useAccess, Access } from 'umi';
 import { FormattedMessage} from '@umijs/max';
 import { statusConversionType } from '@/utils/utils';
 import { enumsService } from '@/services/base-service/system-service/commService';
@@ -28,6 +29,7 @@ import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const User: React.FC = () => {
   const intl = useIntl();
+  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -283,21 +285,22 @@ const User: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="EditBtn"
-          onClick={() => {
-            setIsEdit(true);
-            setCurrentRow(record);
-            setOpenModal(true);
-          }}
-        >
-          Edit
-        </a>,
-        <div key={'Delete'}>
+        <Access accessible={access?.EditPermission} key="EditPermission">
+          <a
+            onClick={() => {
+              setIsEdit(true);
+              setCurrentRow(record);
+              setOpenModal(true);
+            }}
+          >
+            Edit
+          </a>
+        </Access>,
+        <Access accessible={access?.DeletePermission} key="DeletePermission">
           <PopconfirmPage onConfirm={() => onDeleteRequest(record?.permissionId || '')}>
             <a>Delete</a>
           </PopconfirmPage>
-        </div>
+        </Access>
       ],
     },
   ];
@@ -326,16 +329,17 @@ const User: React.FC = () => {
           defaultCollapsed:false,
         }}
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              setIsEdit(false);
-              setOpenModal(true);
-            }}
-          >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-          </Button>,
+          <Access accessible={access?.AddPermission} key="AddPermission">
+            <Button
+              type="primary"
+              onClick={() => {
+                setIsEdit(false);
+                setOpenModal(true);
+              }}
+            >
+              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            </Button>
+          </Access>
         ]}
         request={getList}
         columns={columns}

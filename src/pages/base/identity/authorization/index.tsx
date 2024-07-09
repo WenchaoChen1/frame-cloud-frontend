@@ -6,6 +6,7 @@ import {
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { message } from 'antd';
+import { useAccess, Access } from 'umi';
 import React, { useRef, useState } from 'react';
 import {useIntl} from "@@/exports";
 import dayjs from "dayjs";
@@ -13,6 +14,7 @@ import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const Authorization: React.FC = () => {
   const intl = useIntl();
+  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
@@ -109,9 +111,11 @@ const Authorization: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
-        <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.id || '')}>
-          <a>Delete</a>
-        </PopconfirmPage>
+        <Access accessible={access?.DeleteAuthorization} key="DeleteAuthorization">
+          <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.id || '')}>
+            <a>Delete</a>
+          </PopconfirmPage>
+        </Access>
       ),
     },
   ];

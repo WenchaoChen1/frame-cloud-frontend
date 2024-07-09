@@ -13,6 +13,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ModalForm, PageContainer, ProFormText, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage } from '@umijs/max';
 import { useIntl } from "@@/exports";
+import { useAccess, Access } from 'umi';
 import { Button, message, Row,Col } from 'antd';
 import React, { useRef, useState } from 'react';
 import dayjs from "dayjs";
@@ -20,6 +21,7 @@ import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const Scope: React.FC = () => {
   const intl = useIntl();
+  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);
@@ -158,30 +160,33 @@ const Scope: React.FC = () => {
       valueType: 'option',
       width: '220px',
       render: (_, record: any) => [
-        <a
-          key={record?.scopeId}
-          onClick={() => {
-            setPermissOpenModal(true);
-            setScopeId(record?.scopeId);
-          }}
-        >
-          Permissions
-        </a>,
-        <a
-          key='Edit'
-          onClick={() => {
-            setIsEdit(true);
-            setCurrentRow(record);
-            setOpenModal(true);
-          }}
-        >
-          Edit
-        </a>,
-        <div key='Delete'>
+        <Access accessible={access?.PermissionsScope} key="PermissionsScope">
+          <a
+            key={record?.scopeId}
+            onClick={() => {
+              setPermissOpenModal(true);
+              setScopeId(record?.scopeId);
+            }}
+          >
+            Permissions
+          </a>
+        </Access>,
+        <Access accessible={access?.EditScope} key="EditScope">
+          <a
+            onClick={() => {
+              setIsEdit(true);
+              setCurrentRow(record);
+              setOpenModal(true);
+            }}
+          >
+            Edit
+          </a>
+        </Access>,
+        <Access accessible={access?.DeleteScope} key="DeleteScope">
           <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.scopeId || '')}>
             <a>Delete</a>
           </PopconfirmPage>
-        </div>
+        </Access>
       ],
     },
   ];
@@ -203,16 +208,18 @@ const Scope: React.FC = () => {
         }}
         rowKey="scopeId"
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              setIsEdit(false);
-              setOpenModal(true);
-            }}
-          >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-          </Button>,
+          <Access accessible={access?.AddScope} key="AddScope">
+            <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                setIsEdit(false);
+                setOpenModal(true);
+              }}
+            >
+              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            </Button>
+          </Access>
         ]}
         request={getList}
         columns={columns}

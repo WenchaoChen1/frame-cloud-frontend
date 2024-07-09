@@ -21,6 +21,7 @@ import {
   ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
+import { useAccess, Access } from 'umi';
 import { statusConversionType } from '@/utils/utils';
 import { FormattedMessage, useModel } from '@umijs/max';
 import { useIntl } from "@@/exports";
@@ -31,6 +32,7 @@ import PopconfirmPage from "@/pages/base/components/popconfirm";
 
 const User: React.FC = () => {
   const intl = useIntl();
+  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const { initialState } = useModel('@@initialState');
   const currentUserId = initialState?.currentUser?.userId;
@@ -206,21 +208,27 @@ const User: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record:any) => [
-        <a key="editUser" onClick={() => onEditUser(record)}>
-          Edit
-        </a>,
-        <a key="resetPassword" onClick={() => onReactPassWord(record)}>
-          ResetPassword
-        </a>,
+        <Access accessible={access?.EditUser} key="EditUser">
+          <a key="editUser" onClick={() => onEditUser(record)}>
+            Edit
+          </a>
+        </Access>,
+        <Access accessible={access?.ResetPasswordUser} key="ResetPasswordUser">
+          <a key="resetPassword" onClick={() => onReactPassWord(record)}>
+            ResetPassword
+          </a>
+        </Access>,
         currentUserId !== record.userId && (
-          <PopconfirmPage
-            key="deleteUser"
-            onConfirm={async () => {
-              await deleteUserRequest(record?.userId || '');
-            }}>
-            <a>Delete</a>
-          </PopconfirmPage>
-        ),
+          <Access accessible={access?.DeleteUser} key="DeleteUser">
+            <PopconfirmPage
+              key="deleteUser"
+              onConfirm={async () => {
+                await deleteUserRequest(record?.userId || '');
+              }}>
+              <a>Delete</a>
+            </PopconfirmPage>
+          </Access>
+        )
       ],
     },
   ];
@@ -245,16 +253,17 @@ const User: React.FC = () => {
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              setIsEdit(false);
-              setOpenModal(true);
-            }}
-          >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-          </Button>,
+          <Access accessible={access?.AddUser} key="AddUser">
+            <Button
+              type="primary"
+              onClick={() => {
+                setIsEdit(false);
+                setOpenModal(true);
+              }}
+            >
+              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            </Button>
+          </Access>
         ]}
         request={getList}
         columns={columns}

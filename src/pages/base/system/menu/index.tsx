@@ -1,4 +1,5 @@
 import Metadata from './Metadata/index'
+import { FormattedMessage} from '@umijs/max';
 import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
 import {
   deleteMenuManageService,
@@ -8,7 +9,7 @@ import {
   updateMenuManageService,
   updateMenuAssignedAttributeService,
 } from '@/services/base-service/system-service/menuService';
-import { statusConversionType, menuConversionType,menuConversionTypeArr } from '@/utils/utils';
+import { statusConversionType } from '@/utils/utils';
 import { enumsService } from '@/services/base-service/system-service/commService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
@@ -226,16 +227,18 @@ const MenuList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record: any) => [
-        <a
-          key={record?.id}
-          onClick={() => {
-            setScopeOpenModal(true);
-            setMenuId(record?.id);
-          }}
-        >
-          Metadata
-        </a>,
-        // <Access accessible={access?.EditMenu} key='Delete' key="EditBtn">
+        <Access accessible={access?.EditMenu} key="Metadata">
+          <a
+            key={record?.id}
+            onClick={() => {
+              setScopeOpenModal(true);
+              setMenuId(record?.id);
+            }}
+          >
+            Metadata
+          </a>
+        </Access>,
+        <Access accessible={access?.EditMenu} key="Edit">
           <a
             onClick={() => {
               setIsEdit(true);
@@ -244,9 +247,9 @@ const MenuList: React.FC = () => {
             }}
           >
             Edit
-          </a>,
-        // </Access>,
-        // <Access accessible={access?.addMenu} key='addMenu'>
+          </a>
+        </Access>,
+        <Access accessible={access?.AddMenu} key='addMenu'>
           <a
             onClick={() => {
               setIsEdit(false);
@@ -256,17 +259,17 @@ const MenuList: React.FC = () => {
             }}
           >
             Add
-          </a>,
-        // </Access>,
+          </a>
+        </Access>,
         
-        // <Access accessible={access?.DeleteMenu} key='DeleteMenu'>
+        <Access accessible={access?.DeleteMenu} key='DeleteMenu'>
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRow(record?.id || '');
             }}>
             <a key="deleteRow">Delete</a>
           </PopconfirmPage>
-        // </Access>
+        </Access>
       ],
     },
   ];
@@ -398,18 +401,19 @@ const MenuList: React.FC = () => {
             showAll?'收起':'展开'
           }
           </Button>,
-          <Button
-            key="button"
-            icon={<PlusOutlined />}
-            onClick={() => {
-              setIsEdit(false)
-              setTableAdd('')
-              handleModalVisible(true)
-            }}
-            type="primary"
-          >
-            新建
-          </Button>
+          <Access accessible={access?.AddMenu} key="AddMenu">
+            <Button
+              key="button"
+              onClick={() => {
+                setIsEdit(false)
+                setTableAdd('')
+                handleModalVisible(true)
+              }}
+              type="primary"
+            >
+              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            </Button>
+          </Access>
         ]}
       />
 

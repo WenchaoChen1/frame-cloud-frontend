@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { useIntl } from "@@/exports";
+import { useAccess, Access } from 'umi';
 import { FormattedMessage} from '@umijs/max';
 import {Button, message, Tree,Row,Col } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -33,6 +34,7 @@ import {
 
 const BusinessPermission: React.FC = () => {
   const intl = useIntl();
+  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
   const refTableForm = useRef<ProFormInstance>();
@@ -183,26 +185,29 @@ const BusinessPermission: React.FC = () => {
       valueType: 'option',
       width: '220px',
       render: (_, record) => [
-        <a
-          key="MenuBtn"
-          onClick={() => {
-            setCurrentRow(record);
-            openMenuModal(record);
-          }}
-        >
-          Menu
-        </a>,
-        <a key="editBtn" onClick={() => openEdit(record)}>
-          Edit
-        </a>,
-        <div key={'Delete'}>
+        <Access accessible={access?.MenuBusiness} key="MenuBusiness">
+          <a
+            onClick={() => {
+              setCurrentRow(record);
+              openMenuModal(record);
+            }}
+          >
+            Menu
+          </a>
+        </Access>,
+        <Access accessible={access?.EditBusiness} key="EditBusiness">
+          <a onClick={() => openEdit(record)}>
+            Edit
+          </a>
+        </Access>,
+        <Access accessible={access?.DeleteBusiness} key="DeleteBusiness">
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRoleRequest(record?.id || '');
             }}>
             <a key="deleteRow">Delete</a>
           </PopconfirmPage>
-        </div>
+        </Access>
       ],
     },
     {
@@ -340,17 +345,19 @@ const BusinessPermission: React.FC = () => {
           columnsStateMap={columnsStateMap}
           onColumnsStateChange={handleColumnsStateChange}
           toolBarRender={() => [
-            <Button
-              type="primary"
-              key="primary"
-              onClick={() => {
-                setIsEdit(false);
-                setCurrentRow({ parentId: '0' });
-                setOpenModal(true);
-              }}
-            >
-              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-            </Button>,
+            <Access accessible={access?.AddBusiness} key="AddBusiness">
+              <Button
+                type="primary"
+                key="primary"
+                onClick={() => {
+                  setIsEdit(false);
+                  setCurrentRow({ parentId: '0' });
+                  setOpenModal(true);
+                }}
+              >
+                <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+              </Button>
+            </Access>
           ]}
           request={getList}
           columns={columns}
