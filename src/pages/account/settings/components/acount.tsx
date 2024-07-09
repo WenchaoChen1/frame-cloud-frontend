@@ -134,7 +134,6 @@ function Acount(props) {
           pageSize: 5,
           onChange: (page) => console.log(page),
         }}
-        headerTitle="高级表格"
       />
       {
         modalFlag && <ModalForm<{

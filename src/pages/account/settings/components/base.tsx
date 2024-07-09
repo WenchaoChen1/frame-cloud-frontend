@@ -139,6 +139,7 @@ const BaseView: React.FC = () => {
               <ProFormText
                 name="username"
                 label="User Name"
+                disabled
                 colProps={{
                   span: 12,
                 }}
@@ -152,6 +153,7 @@ const BaseView: React.FC = () => {
               <ProFormText
                 name="phoneNumber"
                 label="PhoneNumber"
+                disabled
                 colProps={{
                   span: 12,
                 }}
@@ -240,6 +242,7 @@ const BaseView: React.FC = () => {
                     message: 'Status is required',
                   },
                 ]}
+                disabled
                 colProps={{
                   span: 12,
                 }}

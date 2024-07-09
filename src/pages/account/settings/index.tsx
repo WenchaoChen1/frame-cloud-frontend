@@ -6,8 +6,9 @@ import BindingView from './components/binding';
 import NotificationView from './components/notification';
 import SecurityView from './components/security';
 import Acount from "@/pages/account/settings/components/acount";
+import LoginLog from "@/pages/account/settings/components/loginLog";
 import useStyles from './style.style';
-type SettingsStateKeys = 'base' | 'security' | 'account' | 'binding' | 'notification';
+type SettingsStateKeys = 'base' | 'security' | 'account' | 'binding' | 'notification' | 'loginLog';
 type SettingsState = {
   mode: 'inline' | 'horizontal';
   selectKey: SettingsStateKeys;
@@ -20,6 +21,7 @@ const Settings: React.FC = () => {
     account: '账户设置',
     binding: '账号绑定',
     notification: '新消息通知',
+    loginLog:'个人登录记录'
   };
   const [initConfig, setInitConfig] = useState<SettingsState>({
     mode: 'inline',
@@ -70,6 +72,8 @@ const Settings: React.FC = () => {
         return <NotificationView />;
       case 'account':
         return <Acount />;
+        case 'loginLog':
+        return <LoginLog />;
       default:
         return null;
     }
