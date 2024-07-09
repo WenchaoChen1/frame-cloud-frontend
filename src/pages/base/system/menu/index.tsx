@@ -8,7 +8,7 @@ import {
   updateMenuManageService,
   updateMenuAssignedAttributeService,
 } from '@/services/base-service/system-service/menuService';
-import { statusConversionType, menuConversionType } from '@/utils/utils';
+import { statusConversionType, menuConversionType,menuConversionTypeArr } from '@/utils/utils';
 import { enumsService } from '@/services/base-service/system-service/commService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
@@ -49,6 +49,20 @@ const MenuList: React.FC = () => {
   const [menuType, setMenuType] = useState<any>([]);
   const [menuLocation, setMenuLocation] = useState<any>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+  const [searchType,setSearchType] = useState([
+    {
+      name:'Catalogue',
+      value:'0'
+    },
+    {
+      name:'Page',
+      value:'1'
+    },
+    {
+      name: 'Button',
+      value: '2'
+    }
+  ])
   const [columnsStateMap, setColumnsStateMap] = useState({
     'createdDate': { show: false },
     'sort': { show: false },
@@ -186,16 +200,23 @@ const MenuList: React.FC = () => {
       dataIndex: 'type',
       valueType: 'select',
       hideInForm: true,
-      valueEnum: {
-        0: {
-          text: 'Catalogue',
-        },
-        1: {
-          text: 'Page',
-        },
-        2: {
-          text: 'Button',
-        },
+      valueEnum: menuType?.reduce((result: any, type: any) => {
+        result[type?.value] = {
+          text: type?.name,
+          status: type?.value,
+        };
+        return result;
+      }, {}),
+      renderFormItem: (_, { ...rest }) => {
+        return (
+          <ProFormSelect
+            mode="multiple"
+            {...rest}
+            fieldProps={{
+              mode: 'multiple',
+            }}
+          />
+        );
       },
     },
     { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate) },
@@ -256,9 +277,7 @@ const MenuList: React.FC = () => {
       params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
     }
 
-    if (params?.type) {
-      params.type = await menuConversionType(params?.type, menuType)
-    }
+
 
     const parameters = {
       pageNumber: params?.current || 1,

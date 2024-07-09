@@ -5,7 +5,7 @@ import {
 } from '@/services/base-service/system-service/menuService';
 import { Tooltip } from 'antd';
 import type { ProColumns } from '@ant-design/pro-components';
-import { ProTable } from '@ant-design/pro-components';
+import {ProFormSelect, ProTable} from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from "@@/exports";
 import {enumsService} from "@/services/base-service/system-service/commService";
@@ -35,6 +35,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
       hideInSearch: true,
     },
     {
+
       title: intl.formatMessage({ id: 'application.list.status' }),
       dataIndex: 'status',
       valueType: 'select',
@@ -45,33 +46,16 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
         };
         return result;
       }, {}),
-      render: (value: any, record: any) => {
-        const { status } = record;
-        if (status === 0) {
-          return (
-            <Tooltip title={'启用'}>
-              <img src={require('@/images/status_0.png')} alt={value} />
-            </Tooltip>
-          );
-        } else if (status === 1) {
-          return (
-            <Tooltip title={'禁用'}>
-              <img src={require('@/images/status_1.png')} alt={value} />
-            </Tooltip>
-          );
-        } else if (status === 2) {
-          return (
-            <Tooltip title={'锁定'}>
-              <img src={require('@/images/status_2.png')} alt={value} />
-            </Tooltip>
-          );
-        } else if (status === 3) {
-          return (
-            <Tooltip title={'过期'}>
-              <img src={require('@/images/status_3.png')} alt={value} />
-            </Tooltip>
-          );
-        }
+      renderFormItem: (_, { ...rest }) => {
+        return (
+          <ProFormSelect
+            mode="multiple"
+            {...rest}
+            fieldProps={{
+              mode: 'multiple',
+            }}
+          />
+        );
       },
     },
   ];

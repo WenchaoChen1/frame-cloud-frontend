@@ -65,7 +65,7 @@ const responseInterceptorsForAuth = async (error: any) => {
       setToken(refreshTokenResponse.access_token);
       setRefreshToken(refreshTokenResponse.refresh_token);
 
-      window.location.href = window.location.href;
+      // window.location.href = window.location.href;
     }
   }
 }
