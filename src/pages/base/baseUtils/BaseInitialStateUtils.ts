@@ -19,17 +19,25 @@ import { useModel } from '@@/plugin-model';
 //   return undefined;
 // };
 
-export const getCurrentLoginInformation = async () => {
+export const getModelCurrentLoginInformation = async () => {
   const { initialState } = useModel('@@initialState');
-  //TODO 根据当前刷新时间判断是否大于10分钟，如果大于则再次执行updateCurrentLoginInformation，返回数据
+  //TODO 根据当前刷新时间判断是否大于10分钟，如果大于则再次执行getCurrentLoginInformation，返回数据
+
  return initialState;
 };
+export const getCurrentLoginInformation = async () => {
+  const { initialState } = useModel('@@initialState');
+  //TODO 根据当前刷新时间判断是否大于10分钟，如果大于则再次执行updateModelCurrentLoginInformation，返回数据
+  //TODO 当刷新时间大于30分钟调用更新接口updateCurrentLoginInformation
 
-export const updateCurrentLoginInformation = async () => {
+  return initialState;
+};
+export const updateModelCurrentLoginInformation = async () => {
   const currentAccountId = getLocalStorage(CURRENT_ACCOUNT_ID);
   const data = {currentAccountId: currentAccountId || ''};
   const accountInfoResponse = await getLoginInfoService(data);
-  //TODO 获取接口返回的所有数据并存入缓存中，同时增加一个当前刷新时间
+  //TODO 获取接口返回的所有数据并存入缓存中，同时增加一个当前刷新时间getCurrentLoginInformation
+
   // let currentUser = accountInfoResponse.data;
   //
   // if (currentUser) {
@@ -37,11 +45,12 @@ export const updateCurrentLoginInformation = async () => {
   //   // setLocalStorage(USER_ROUTER, JSON.stringify(currentUser?.functionPermissionCode));
   //   return currentUser;
   // }
-
   return undefined;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const getUserId = async () => {
-//TODO getCurrentLoginInformation中的数据
+//TODO getModelCurrentLoginInformation中的数据
   return undefined
 };
 export const getUserName = async () => {
