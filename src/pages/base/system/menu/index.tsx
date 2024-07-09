@@ -609,7 +609,7 @@ const MenuList: React.FC = () => {
 
       {ScopeOpenModal && (
         <ModalForm
-          title={'Scope'}
+          title={'Metadata'}
           width="70%"
           open={ScopeOpenModal}
           onOpenChange={setScopeOpenModal}
