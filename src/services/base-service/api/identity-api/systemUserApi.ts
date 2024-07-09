@@ -5,3 +5,8 @@ export async function getUserOnlineAuthorization() {
     method: 'GET',
   });
 }
+export async function deleteAuthorizationForceOut(id:string) {
+  return request<APISystem.UserResponseDataType>(`${process.env.IDENTITY_SERVICE}/v1/authorize/authorization/delete-authorization-force-out/${id}`, {
+    method: 'DELETE',
+  });
+}
