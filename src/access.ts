@@ -22,3 +22,17 @@ export default function access(initialState: { currentUser?: any } | undefined) 
 
   return jurisdictions;
 }
+
+//TODO 用注释中的写法  当前业务代码知道我当前是哪个权限么？
+// src/access.ts
+// export default function (initialState) {
+//   const { userId, role } = initialState;
+//
+//   return {
+//     canReadFoo: true,
+//     canUpdateFoo: role === 'admin',
+//     canDeleteFoo: (foo) => {
+//       return foo.ownerId === userId;
+//     },
+//   };
+// }
