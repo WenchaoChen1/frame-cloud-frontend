@@ -26,6 +26,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { statusConversionType } from '@/utils/utils';
 import { useIntl } from "@@/exports";
 import dayjs from "dayjs";
+import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const Metadata: React.FC = () => {
   const intl = useIntl();
@@ -188,7 +189,7 @@ const Metadata: React.FC = () => {
       dataIndex: 'actions',
       search: false,
       render: (_, record: any) => [
-        <Access accessible={access?.buttonPermission('PermissionsMetadata')} key='PermissionsMetadata'>
+        <FunctionPermission code="PermissionsMetadata">
           <a
             onClick={() => {
               setPermissOpenModal(true);
@@ -198,8 +199,8 @@ const Metadata: React.FC = () => {
           >
             Permissions
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('EditMetadata')} key='EditMetadata'>
+        </FunctionPermission>,
+        <FunctionPermission code="EditMetadata">
           <a
             onClick={() => {
               setOpenModal(true);
@@ -209,7 +210,7 @@ const Metadata: React.FC = () => {
           >
             Edit
           </a>
-        </Access>
+        </FunctionPermission>,
       ],
     },
   ];

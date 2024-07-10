@@ -29,6 +29,7 @@ import { Button, message, Space,Row,Col } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
+import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const User: React.FC = () => {
   const intl = useIntl();
@@ -208,18 +209,18 @@ const User: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record:any) => [
-        <Access accessible={access?.buttonPermission('EditUser')} key="EditUser">
+        <FunctionPermission code="EditUser">
           <a key="editUser" onClick={() => onEditUser(record)}>
             Edit
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('ResetPasswordUser')} key="ResetPasswordUser">
+        </FunctionPermission>,
+        <FunctionPermission code="ResetPasswordUser">
           <a key="resetPassword" onClick={() => onReactPassWord(record)}>
             ResetPassword
           </a>
-        </Access>,
+        </FunctionPermission>,
         currentUserId !== record.userId && (
-          <Access accessible={access?.buttonPermission('DeleteUser')} key="DeleteUser">
+          <FunctionPermission code="DeleteUser">
             <PopconfirmPage
               key="deleteUser"
               onConfirm={async () => {
@@ -227,7 +228,7 @@ const User: React.FC = () => {
               }}>
               <a>Delete</a>
             </PopconfirmPage>
-          </Access>
+          </FunctionPermission>
         )
       ],
     },
@@ -253,7 +254,7 @@ const User: React.FC = () => {
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
-          <Access accessible={access?.buttonPermission('AddUser')} key="AddUser">
+          <FunctionPermission code="AddUser">
             <Button
               type="primary"
               onClick={() => {
@@ -263,7 +264,7 @@ const User: React.FC = () => {
             >
               <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
             </Button>
-          </Access>
+          </FunctionPermission>
         ]}
         request={getList}
         columns={columns}

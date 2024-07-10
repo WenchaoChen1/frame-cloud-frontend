@@ -18,6 +18,7 @@ import { Button, message, Row,Col } from 'antd';
 import React, { useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
+import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const Scope: React.FC = () => {
   const intl = useIntl();
@@ -160,7 +161,7 @@ const Scope: React.FC = () => {
       valueType: 'option',
       width: '220px',
       render: (_, record: any) => [
-        <Access accessible={access?.buttonPermission('PermissionsScope')} key="PermissionsScope">
+        <FunctionPermission code="PermissionsScope">
           <a
             key={record?.scopeId}
             onClick={() => {
@@ -170,8 +171,8 @@ const Scope: React.FC = () => {
           >
             Permissions
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('EditScope')} key="EditScope">
+        </FunctionPermission>,
+        <FunctionPermission code="EditScope">
           <a
             onClick={() => {
               setIsEdit(true);
@@ -181,12 +182,12 @@ const Scope: React.FC = () => {
           >
             Edit
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('DeleteScope')} key="DeleteScope">
+        </FunctionPermission>,
+        <FunctionPermission code="DeleteScope">
           <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.scopeId || '')}>
             <a>Delete</a>
           </PopconfirmPage>
-        </Access>
+        </FunctionPermission>
       ],
     },
   ];
@@ -208,7 +209,7 @@ const Scope: React.FC = () => {
         }}
         rowKey="scopeId"
         toolBarRender={() => [
-          <Access accessible={access?.buttonPermission('AddScope')} key="AddScope">
+          <FunctionPermission code="AddScope">
             <Button
               type="primary"
               key="primary"
@@ -219,7 +220,7 @@ const Scope: React.FC = () => {
             >
               <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
             </Button>
-          </Access>
+          </FunctionPermission>
         ]}
         request={getList}
         columns={columns}

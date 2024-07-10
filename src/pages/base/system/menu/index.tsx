@@ -32,6 +32,7 @@ import {PlusOutlined,DownloadOutlined} from '@ant-design/icons'
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
 import FileSaver from 'file-saver'
+import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 
 const MenuList: React.FC = () => {
@@ -233,7 +234,7 @@ const MenuList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record: any) => [
-        <Access accessible={access?.buttonPermission('EditMenu')} key="Metadata">
+        <FunctionPermission code="EditMenu">
           <a
             key={record?.id}
             onClick={() => {
@@ -243,8 +244,8 @@ const MenuList: React.FC = () => {
           >
             Metadata
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('EditMenu')} key="Edit">
+        </FunctionPermission>,
+        <FunctionPermission code="EditMenu">
           <a
             onClick={() => {
               setIsEdit(true);
@@ -254,28 +255,27 @@ const MenuList: React.FC = () => {
           >
             Edit
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('AddMenu')} key='addMenu'>
-          <a
-            onClick={() => {
-              setIsEdit(false);
-              setCurrentRow({ parentId: record?.id ? record.id : '' });
-              setTableAdd(record?.id ? record.id : '')
-              handleModalVisible(true);
-            }}
-          >
-            Add
-          </a>
-        </Access>,
-
-        <Access accessible={access?.buttonPermission('DeleteMenu')} key='DeleteMenu'>
+        </FunctionPermission>,
+        <FunctionPermission code="AddMenu">
+            <a
+              onClick={() => {
+                setIsEdit(false);
+                setCurrentRow({ parentId: record?.id ? record.id : '' });
+                setTableAdd(record?.id ? record.id : '')
+                handleModalVisible(true);
+              }}
+            >
+              Add
+            </a>
+        </FunctionPermission>,
+        <FunctionPermission code="DeleteMenu">
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRow(record?.id || '');
             }}>
             <a key="deleteRow">Delete</a>
           </PopconfirmPage>
-        </Access>
+        </FunctionPermission>
       ],
     },
   ];
@@ -453,7 +453,7 @@ const MenuList: React.FC = () => {
             showAll?'收起':'展开'
           }
           </Button>,
-          <Access accessible={access?.buttonPermission('AddMenu')} key="AddMenu">
+          <FunctionPermission code="AddMenu">
             <Button
               key="button"
               onClick={() => {
@@ -465,7 +465,7 @@ const MenuList: React.FC = () => {
             >
               <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
             </Button>
-          </Access>
+          </FunctionPermission>
         ]}
       />
 

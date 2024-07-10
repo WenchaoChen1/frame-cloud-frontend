@@ -31,6 +31,7 @@ import PopconfirmPage from "@/pages/base/components/popconfirm";
 import RolePage from './components/role'
 import TenantPage from './components/tenant'
 import BinessPage from './components/biness'
+import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const Account: React.FC = () => {
   const intl = useIntl();
@@ -268,35 +269,36 @@ const Account: React.FC = () => {
       width: '280px',
       valueType: 'option',
       render: (_, record) => [
-        <Access accessible={access?.buttonPermission('RoleAccount')} key="RoleAccount">
+        <FunctionPermission code="RoleAccount">
           <a key="Role" onClick={() => onRole(record)}>
             Role
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('TenantAccount')} key="TenantAccount">
+        </FunctionPermission>,
+        <FunctionPermission code="TenantAccount">
           <a key="Tenant" onClick={() => onEditTenant(record)}>
             Tenant
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('BusinessAccount')} key="BusinessAccount">
+        </FunctionPermission>,
+        <FunctionPermission code="BusinessAccount">
           <a key="Biness" onClick={() => onBiness(record)}>
             Business
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('EditAccount')} key="EditAccount">
+        </FunctionPermission>,
+        <FunctionPermission code="EditAccount">
           <a key="edit" onClick={() => onEdit(record)}>
             Edit
           </a>
-        </Access>,
+        </FunctionPermission>,
+
         currentAccountId !== record.accountId && (
-          <Access accessible={access?.buttonPermission('DeleteAccount')} key="DeleteAccount">
+          <FunctionPermission code="DeleteAccount">
             <PopconfirmPage
               onConfirm={async () => {
                 await deleteRow(record?.accountId || '');
               }}>
               <a key="delete">Delete</a>
             </PopconfirmPage>
-          </Access>
+          </FunctionPermission>
         ),
       ],
     },
@@ -332,7 +334,7 @@ const Account: React.FC = () => {
           defaultCollapsed:false,
         }}
         toolBarRender={() => [
-          <Access accessible={access?.buttonPermission('AddAccount')} key="AddAccount">
+          <FunctionPermission code="AddAccount">
             <Button
               type="primary"
               onClick={() => {
@@ -342,7 +344,7 @@ const Account: React.FC = () => {
             >
               <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
             </Button>
-          </Access>
+          </FunctionPermission>
         ]}
         request={getList}
         columns={columns}

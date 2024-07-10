@@ -28,6 +28,7 @@ import {useIntl} from "@@/exports";
 import styles from './index.less';
 import dayjs from "dayjs";
 import ConfirmPage from "@/pages/base/components/popconfirm";
+import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const Application: React.FC = () => {
   const intl = useIntl();
@@ -425,7 +426,7 @@ const Application: React.FC = () => {
       dataIndex: 'actions',
       search: false,
       render: (_, record: any) => [
-        <Access accessible={access?.buttonPermission('ScopeApplication')} key="ScopeApplication">
+        <FunctionPermission code="ScopeApplication">
           <a
             key={'Scope'}
             onClick={() => {
@@ -435,8 +436,8 @@ const Application: React.FC = () => {
           >
             Scope
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('EditApplication')} key="EditApplication">
+        </FunctionPermission>,
+        <FunctionPermission code="EditApplication">
           <a
             key={'Edit'}
             style={{ marginLeft: 15 }}
@@ -448,14 +449,14 @@ const Application: React.FC = () => {
           >
             Edit
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('DeleteApplication')} key="DeleteApplication">
+        </FunctionPermission>,
+        <FunctionPermission code="DeleteApplication">
           <div key={'Delete'} style={{ display: 'inline-block' }}>
             <ConfirmPage onConfirm={async () => await deleteUserRequest(record?.applicationId || '')}>
               <a style={{ marginLeft: 15 }}>Delete</a>
             </ConfirmPage>
           </div>
-        </Access>
+        </FunctionPermission>,
       ],
     },
   ];
@@ -556,7 +557,7 @@ const Application: React.FC = () => {
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
-          <Access accessible={access?.buttonPermission('AddApplication')} key="AddApplication">
+          <FunctionPermission code="AddApplication">
             <Button
               key="primary"
               type="primary"
@@ -567,7 +568,7 @@ const Application: React.FC = () => {
             >
               <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
             </Button>
-          </Access>
+          </FunctionPermission>
         ]}
         request={getList}
         columns={columns}
