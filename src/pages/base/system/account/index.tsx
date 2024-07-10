@@ -268,28 +268,28 @@ const Account: React.FC = () => {
       width: '280px',
       valueType: 'option',
       render: (_, record) => [
-        <Access accessible={access?.RoleAccount} key="RoleAccount">
+        <Access accessible={access?.buttonPermission('RoleAccount')} key="RoleAccount">
           <a key="Role" onClick={() => onRole(record)}>
             Role
           </a>
         </Access>,
-        <Access accessible={access?.TenantAccount} key="TenantAccount">
+        <Access accessible={access?.buttonPermission('TenantAccount')} key="TenantAccount">
           <a key="Tenant" onClick={() => onEditTenant(record)}>
             Tenant
           </a>
         </Access>,
-        <Access accessible={access?.BusinessAccount} key="BusinessAccount">
+        <Access accessible={access?.buttonPermission('BusinessAccount')} key="BusinessAccount">
           <a key="Biness" onClick={() => onBiness(record)}>
             Business
           </a>
         </Access>,
-        <Access accessible={access?.EditAccount} key="EditAccount">
+        <Access accessible={access?.buttonPermission('EditAccount')} key="EditAccount">
           <a key="edit" onClick={() => onEdit(record)}>
             Edit
           </a>
         </Access>,
         currentAccountId !== record.accountId && (
-          <Access accessible={access?.DeleteAccount} key="DeleteAccount">
+          <Access accessible={access?.buttonPermission('DeleteAccount')} key="DeleteAccount">
             <PopconfirmPage
               onConfirm={async () => {
                 await deleteRow(record?.accountId || '');
@@ -332,7 +332,7 @@ const Account: React.FC = () => {
           defaultCollapsed:false,
         }}
         toolBarRender={() => [
-          <Access accessible={access?.AddAccount} key="AddAccount">
+          <Access accessible={access?.buttonPermission('AddAccount')} key="AddAccount">
             <Button
               type="primary"
               onClick={() => {

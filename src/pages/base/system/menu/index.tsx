@@ -233,7 +233,7 @@ const MenuList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record: any) => [
-        <Access accessible={access?.EditMenu} key="Metadata">
+        <Access accessible={access?.buttonPermission('EditMenu')} key="Metadata">
           <a
             key={record?.id}
             onClick={() => {
@@ -244,7 +244,7 @@ const MenuList: React.FC = () => {
             Metadata
           </a>
         </Access>,
-        <Access accessible={access?.EditMenu} key="Edit">
+        <Access accessible={access?.buttonPermission('EditMenu')} key="Edit">
           <a
             onClick={() => {
               setIsEdit(true);
@@ -255,7 +255,7 @@ const MenuList: React.FC = () => {
             Edit
           </a>
         </Access>,
-        <Access accessible={access?.AddMenu} key='addMenu'>
+        <Access accessible={access?.buttonPermission('AddMenu')} key='addMenu'>
           <a
             onClick={() => {
               setIsEdit(false);
@@ -268,7 +268,7 @@ const MenuList: React.FC = () => {
           </a>
         </Access>,
 
-        <Access accessible={access?.DeleteMenu} key='DeleteMenu'>
+        <Access accessible={access?.buttonPermission('DeleteMenu')} key='DeleteMenu'>
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRow(record?.id || '');
@@ -453,7 +453,7 @@ const MenuList: React.FC = () => {
             showAll?'收起':'展开'
           }
           </Button>,
-          <Access accessible={access?.AddMenu} key="AddMenu">
+          <Access accessible={access?.buttonPermission('AddMenu')} key="AddMenu">
             <Button
               key="button"
               onClick={() => {

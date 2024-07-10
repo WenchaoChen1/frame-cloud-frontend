@@ -285,7 +285,7 @@ const User: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <Access accessible={access?.EditPermission} key="EditPermission">
+        <Access accessible={access?.buttonPermission('EditPermission')} key="EditPermission">
           <a
             onClick={() => {
               setIsEdit(true);
@@ -296,7 +296,7 @@ const User: React.FC = () => {
             Edit
           </a>
         </Access>,
-        <Access accessible={access?.DeletePermission} key="DeletePermission">
+        <Access accessible={access?.buttonPermission('DeletePermission')} key="DeletePermission">
           <PopconfirmPage onConfirm={() => onDeleteRequest(record?.permissionId || '')}>
             <a>Delete</a>
           </PopconfirmPage>
@@ -329,7 +329,7 @@ const User: React.FC = () => {
           defaultCollapsed:false,
         }}
         toolBarRender={() => [
-          <Access accessible={access?.AddPermission} key="AddPermission">
+          <Access accessible={access?.buttonPermission('AddPermission')} key="AddPermission">
             <Button
               type="primary"
               onClick={() => {

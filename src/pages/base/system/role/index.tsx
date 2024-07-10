@@ -198,7 +198,7 @@ const Role: React.FC = () => {
       valueType: 'option',
       width: '220px',
       render: (_, record: any) => [
-        <Access accessible={access?.BusinessRole} key="BusinessRole">
+        <Access accessible={access?.buttonPermission('BusinessRole')} key="BusinessRole">
           <a
             key="BusinessBtn"
             onClick={() => {
@@ -210,7 +210,7 @@ const Role: React.FC = () => {
             business
           </a>
         </Access>,
-        <Access accessible={access?.MenuRole} key="MenuRole">
+        <Access accessible={access?.buttonPermission('MenuRole')} key="MenuRole">
           <a
             key="MenuBtn"
             onClick={() => {
@@ -221,12 +221,12 @@ const Role: React.FC = () => {
             Menu
           </a>
         </Access>,
-        <Access accessible={access?.EditRole} key="EditRole">
+        <Access accessible={access?.buttonPermission('EditRole')} key="EditRole">
           <a key="editBtn" onClick={() => openEdit(record)}>
             Edit
           </a>
         </Access>,
-        <Access accessible={access?.DeleteRole} key="DeleteRole">
+        <Access accessible={access?.buttonPermission('DeleteRole')} key="DeleteRole">
           <ConfirmPage
             onConfirm={async () => {
               await deleteRoleRequest(record?.roleId || '');
@@ -389,7 +389,7 @@ const Role: React.FC = () => {
           columnsStateMap={columnsStateMap}
           onColumnsStateChange={handleColumnsStateChange}
           toolBarRender={() => [
-            <Access accessible={access?.AddRole} key="AddRole">
+            <Access accessible={access?.buttonPermission('AddRole')} key="AddRole">
               <Button
                 type="primary"
                 onClick={() => {

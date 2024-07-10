@@ -111,7 +111,7 @@ const Authorization: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
-        <Access accessible={access?.DeleteAuthorization} key="DeleteAuthorization">
+        <Access accessible={access?.buttonPermission('DeleteAuthorization')} key="DeleteAuthorization">
           <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.id || '')}>
             <a>Delete</a>
           </PopconfirmPage>

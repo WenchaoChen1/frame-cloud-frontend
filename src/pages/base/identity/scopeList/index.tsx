@@ -160,7 +160,7 @@ const Scope: React.FC = () => {
       valueType: 'option',
       width: '220px',
       render: (_, record: any) => [
-        <Access accessible={access?.PermissionsScope} key="PermissionsScope">
+        <Access accessible={access?.buttonPermission('PermissionsScope')} key="PermissionsScope">
           <a
             key={record?.scopeId}
             onClick={() => {
@@ -171,7 +171,7 @@ const Scope: React.FC = () => {
             Permissions
           </a>
         </Access>,
-        <Access accessible={access?.EditScope} key="EditScope">
+        <Access accessible={access?.buttonPermission('EditScope')} key="EditScope">
           <a
             onClick={() => {
               setIsEdit(true);
@@ -182,7 +182,7 @@ const Scope: React.FC = () => {
             Edit
           </a>
         </Access>,
-        <Access accessible={access?.DeleteScope} key="DeleteScope">
+        <Access accessible={access?.buttonPermission('DeleteScope')} key="DeleteScope">
           <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.scopeId || '')}>
             <a>Delete</a>
           </PopconfirmPage>
@@ -208,7 +208,7 @@ const Scope: React.FC = () => {
         }}
         rowKey="scopeId"
         toolBarRender={() => [
-          <Access accessible={access?.AddScope} key="AddScope">
+          <Access accessible={access?.buttonPermission('AddScope')} key="AddScope">
             <Button
               type="primary"
               key="primary"

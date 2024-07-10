@@ -425,7 +425,7 @@ const Application: React.FC = () => {
       dataIndex: 'actions',
       search: false,
       render: (_, record: any) => [
-        <Access accessible={access?.ScopeApplication} key="ScopeApplication">
+        <Access accessible={access?.buttonPermission('ScopeApplication')} key="ScopeApplication">
           <a
             key={'Scope'}
             onClick={() => {
@@ -436,7 +436,7 @@ const Application: React.FC = () => {
             Scope
           </a>
         </Access>,
-        <Access accessible={access?.EditApplication} key="EditApplication">
+        <Access accessible={access?.buttonPermission('EditApplication')} key="EditApplication">
           <a
             key={'Edit'}
             style={{ marginLeft: 15 }}
@@ -449,7 +449,7 @@ const Application: React.FC = () => {
             Edit
           </a>
         </Access>,
-        <Access accessible={access?.DeleteApplication} key="DeleteApplication">
+        <Access accessible={access?.buttonPermission('DeleteApplication')} key="DeleteApplication">
           <div key={'Delete'} style={{ display: 'inline-block' }}>
             <ConfirmPage onConfirm={async () => await deleteUserRequest(record?.applicationId || '')}>
               <a style={{ marginLeft: 15 }}>Delete</a>
@@ -556,7 +556,7 @@ const Application: React.FC = () => {
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
-          <Access accessible={access?.AddApplication} key="AddApplication">
+          <Access accessible={access?.buttonPermission('AddApplication')} key="AddApplication">
             <Button
               key="primary"
               type="primary"
