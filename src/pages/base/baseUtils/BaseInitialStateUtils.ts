@@ -1,51 +1,59 @@
 import {getLocalStorage, setLocalStorage} from '@/utils/utils';
 import {CURRENT_ACCOUNT_ID, USER_ROUTER} from "@/pages/common/constant";
-import {getLoginInfoService} from '@/services/base-service/system-service/userService';
-import {getUserId} from "@/services/swagger/identity/userController";
+import {getLoginInfoService, updateLoginInfoService} from '@/services/base-service/system-service/userService';
 import { useModel } from '@@/plugin-model';
 
-// export const fetchUserInfoService = async () => {
-//   const currentAccountId = getLocalStorage(CURRENT_ACCOUNT_ID);
-//   const data = {currentAccountId: currentAccountId || ''};
-//   const accountInfoResponse = await getLoginInfoService(data);
-//   let currentUser = accountInfoResponse.data;
-//
-//   if (currentUser) {
-//     setLocalStorage(USER_ROUTER, JSON.stringify(currentUser?.leftAndTopRoutes));
-//     // setLocalStorage(USER_ROUTER, JSON.stringify(currentUser?.functionPermissionCode));
-//     return currentUser;
-//   }
-//
-//   return undefined;
-// };
-
-export const getModelCurrentLoginInformation = async () => {
-  const { initialState } = useModel('@@initialState');
-  //TODO 根据当前刷新时间判断是否大于10分钟，如果大于则再次执行getCurrentLoginInformation，返回数据
-
- return initialState;
-};
-export const getCurrentLoginInformation = async () => {
-  const { initialState } = useModel('@@initialState');
-  //TODO 根据当前刷新时间判断是否大于10分钟，如果大于则再次执行updateModelCurrentLoginInformation，返回数据
-  //TODO 当刷新时间大于30分钟调用更新接口updateCurrentLoginInformation
-
-  return initialState;
-};
-export const updateModelCurrentLoginInformation = async () => {
+const getModelCurrentLoginInformation = async () => {
   const currentAccountId = getLocalStorage(CURRENT_ACCOUNT_ID);
   const data = {currentAccountId: currentAccountId || ''};
   const accountInfoResponse = await getLoginInfoService(data);
-  //TODO 获取接口返回的所有数据并存入缓存中，同时增加一个当前刷新时间getCurrentLoginInformation
-
-  // let currentUser = accountInfoResponse.data;
-  //
-  // if (currentUser) {
-  //   setLocalStorage(USER_ROUTER, JSON.stringify(currentUser?.leftAndTopRoutes));
-  //   // setLocalStorage(USER_ROUTER, JSON.stringify(currentUser?.functionPermissionCode));
-  //   return currentUser;
-  // }
+  let currentUser = accountInfoResponse.data;
+  
+  if (currentUser) {//TODO 时间差 > 30 或 init（初始）
+    const timestamp = new Date().getTime(); // 获取当前时间的时间戳
+    setLocalStorage('refreshTime', timestamp);
+    setLocalStorage(USER_ROUTER, JSON.stringify(currentUser));
+    return currentUser;
+  }
   return undefined;
+};
+
+const updateModelCurrentLoginInformation = async () => {//TODO 时间差大于10小于30
+  const currentAccountId = getLocalStorage(CURRENT_ACCOUNT_ID);
+  const data = {currentAccountId: currentAccountId || ''};
+  const accountInfoResponse = await updateLoginInfoService(data);
+  let currentUser = accountInfoResponse.data;
+  
+  if (currentUser) {
+    const timestamp = new Date().getTime(); // 获取当前时间的时间戳
+    setLocalStorage('refreshTime', timestamp);
+    setLocalStorage(USER_ROUTER, JSON.stringify(currentUser));
+    return currentUser;
+  }
+  return undefined;
+};
+
+
+export const fetchUserInfoService: any = async () => {
+  let nowTime = new Date().getTime();
+  let lastTime = getLocalStorage('refreshTime')
+  let TimeDifference = 0;
+
+  if (lastTime) {
+    const timeDifference = Math.abs(nowTime - Number(lastTime));
+    TimeDifference = Math.floor(timeDifference / 1000 / 60);
+  }
+
+  //TODO 根据当前刷新时间判断(TimeDifference)是否大于10分钟，如果大于updateModelCurrentLoginInformation;
+  //TODO 大于30分钟调用更新接口updateCurrentLoginInformation, 小于10分钟获取本地缓存数据
+  if (!lastTime || (TimeDifference > 30)) {
+    return getModelCurrentLoginInformation();
+  } else if (TimeDifference > 10) {
+    return updateModelCurrentLoginInformation();
+  } else {
+    let list = getLocalStorage(USER_ROUTER);
+    return JSON.parse(list);
+  }
 };
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare

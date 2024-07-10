@@ -1,4 +1,4 @@
-import {getLoginInfo} from "@/services/base-service/api/system-api/loginApi";
+import {getLoginInfo, updateAccountCurrentLoginInformation } from "@/services/base-service/api/system-api/loginApi";
 
 import {
   deleteUserManage,
@@ -11,7 +11,7 @@ import {
   getAccountSettingsDetail,
   updateUserSettingsDetail,
   resetPassword,
-  updateAccountSettingsDetail
+  updateAccountSettingsDetail,
 } from "@/services/base-service/api/system-api/userApi";
 
 export async function getUserManagePageService(params: any) {
@@ -36,6 +36,10 @@ export async function deleteUserManageService(id: string) {
 
 export async function getLoginInfoService(data: any) {
   return await getLoginInfo(data);
+}
+
+export async function updateLoginInfoService(data: any) {
+  return await updateAccountCurrentLoginInformation(data);
 }
 
 export async function userManageResetPasswordService(data: APISystem.GetAccountInfoBody) {

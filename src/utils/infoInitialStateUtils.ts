@@ -1,4 +1,4 @@
-import { fetchUserInfoService } from '@/pages/base/common/baseapp';
+import { fetchUserInfoService } from '@/pages/base/baseUtils/BaseInitialStateUtils';
 
 
 //此处继承BaseInitialStateUtils 中的方法

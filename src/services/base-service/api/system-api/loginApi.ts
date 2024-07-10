@@ -8,10 +8,10 @@ export async function getLoginInfo(data: APISystem.GetAccountInfoBody) {
   });
 }
 
-// export async function getLoginInfo(data: APISystem.GetAccountInfoBody) {
-//   return request<{data: API.CurrentUser}>(`${process.env.SYSTEM_SERVICE}/current-login-information/add-by-token-current-login-information`, {
-//     method: 'POST',
-//     data: data,
-//     options: {skipErrorHandler: true}
-//   });
-// }
+export async function updateAccountCurrentLoginInformation(data: APISystem.GetAccountInfoBody) {
+  return request<{data: API.CurrentUser}>(`${process.env.SYSTEM_SERVICE}/v1/security/update-account-current-login-information`, {
+    method: 'PUT',
+    data: data,
+    options: {skipErrorHandler: true}
+  });
+}
