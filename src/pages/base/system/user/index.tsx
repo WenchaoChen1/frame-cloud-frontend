@@ -208,18 +208,18 @@ const User: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record:any) => [
-        <Access accessible={access?.EditUser} key="EditUser">
+        <Access accessible={access?.buttonPermission('EditUser')} key="EditUser">
           <a key="editUser" onClick={() => onEditUser(record)}>
             Edit
           </a>
         </Access>,
-        <Access accessible={access?.ResetPasswordUser} key="ResetPasswordUser">
+        <Access accessible={access?.buttonPermission('ResetPasswordUser')} key="ResetPasswordUser">
           <a key="resetPassword" onClick={() => onReactPassWord(record)}>
             ResetPassword
           </a>
         </Access>,
         currentUserId !== record.userId && (
-          <Access accessible={access?.DeleteUser} key="DeleteUser">
+          <Access accessible={access?.buttonPermission('DeleteUser')} key="DeleteUser">
             <PopconfirmPage
               key="deleteUser"
               onConfirm={async () => {
@@ -253,7 +253,7 @@ const User: React.FC = () => {
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
-          <Access accessible={access?.AddUser} key="AddUser">
+          <Access accessible={access?.buttonPermission('AddUser')} key="AddUser">
             <Button
               type="primary"
               onClick={() => {

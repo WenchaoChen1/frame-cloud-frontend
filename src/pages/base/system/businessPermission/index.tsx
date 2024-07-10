@@ -185,7 +185,7 @@ const BusinessPermission: React.FC = () => {
       valueType: 'option',
       width: '220px',
       render: (_, record) => [
-        <Access accessible={access?.MenuBusiness} key="MenuBusiness">
+        <Access accessible={access?.buttonPermission('MenuBusiness')} key="MenuBusiness">
           <a
             onClick={() => {
               setCurrentRow(record);
@@ -195,12 +195,12 @@ const BusinessPermission: React.FC = () => {
             Menu
           </a>
         </Access>,
-        <Access accessible={access?.EditBusiness} key="EditBusiness">
+        <Access accessible={access?.buttonPermission('EditBusiness')} key="EditBusiness">
           <a onClick={() => openEdit(record)}>
             Edit
           </a>
         </Access>,
-        <Access accessible={access?.DeleteBusiness} key="DeleteBusiness">
+        <Access accessible={access?.buttonPermission('DeleteBusiness')} key="DeleteBusiness">
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRoleRequest(record?.id || '');
@@ -345,7 +345,7 @@ const BusinessPermission: React.FC = () => {
           columnsStateMap={columnsStateMap}
           onColumnsStateChange={handleColumnsStateChange}
           toolBarRender={() => [
-            <Access accessible={access?.AddBusiness} key="AddBusiness">
+            <Access accessible={access?.buttonPermission('AddBusiness')} key="AddBusiness">
               <Button
                 type="primary"
                 key="primary"

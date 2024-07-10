@@ -188,7 +188,7 @@ const Metadata: React.FC = () => {
       dataIndex: 'actions',
       search: false,
       render: (_, record: any) => [
-        <Access accessible={access?.PermissionsMetadata} key='PermissionsMetadata'>
+        <Access accessible={access?.buttonPermission('PermissionsMetadata')} key='PermissionsMetadata'>
           <a
             onClick={() => {
               setPermissOpenModal(true);
@@ -199,7 +199,7 @@ const Metadata: React.FC = () => {
             Permissions
           </a>
         </Access>,
-        <Access accessible={access?.EditMetadata} key='EditMetadata'>
+        <Access accessible={access?.buttonPermission('EditMetadata')} key='EditMetadata'>
           <a
             onClick={() => {
               setOpenModal(true);

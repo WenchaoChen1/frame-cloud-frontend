@@ -265,7 +265,7 @@ const Index: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record: any) => [
-        <Access accessible={access?.MenuTenant} key='MenuTenant'>
+        <Access accessible={access?.buttonPermission('MenuTenant')} key='MenuTenant'>
           <a
             onClick={() => {
               setCurrentRow(record);
@@ -275,7 +275,7 @@ const Index: React.FC = () => {
             Menu
           </a>
         </Access>,
-        <Access accessible={access?.EditTenant} key='EditTenant'>
+        <Access accessible={access?.buttonPermission('EditTenant')} key='EditTenant'>
           <a
             onClick={() => {
               setIsEdit(true);
@@ -287,7 +287,7 @@ const Index: React.FC = () => {
             Edit
           </a>
         </Access>,
-        <Access accessible={access?.AddTenant} key='AddTenant'>
+        <Access accessible={access?.buttonPermission('AddTenant')} key='AddTenant'>
           <a
             onClick={() => {
               setIsEdit(false);
@@ -299,7 +299,7 @@ const Index: React.FC = () => {
             Add
           </a>
         </Access>,
-        <Access accessible={access?.DeleteTenant} key='DeleteTenant'>
+        <Access accessible={access?.buttonPermission('DeleteTenant')} key='DeleteTenant'>
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRow(record?.id || '');
@@ -389,7 +389,7 @@ const Index: React.FC = () => {
             showAll?'收起':'展开'
           }
           </Button>,
-          <Access accessible={access?.AddTenant} key='AddTenant'>
+          <Access accessible={access?.buttonPermission('AddTenant')} key='AddTenant'>
             <Button
               key="button"
               onClick={() => {
