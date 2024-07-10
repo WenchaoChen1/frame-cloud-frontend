@@ -1,7 +1,7 @@
 import {getLocalStorage, setLocalStorage} from '@/utils/utils';
 import {CURRENT_ACCOUNT_ID, USER_ROUTER} from "@/pages/common/constant";
 import {getLoginInfoService, updateLoginInfoService} from '@/services/base-service/system-service/userService';
-import { useModel } from '@@/plugin-model';
+// import { useModel } from '@@/plugin-model';
 
 const getModelCurrentLoginInformation = async () => {
   const currentAccountId = getLocalStorage(CURRENT_ACCOUNT_ID);
