@@ -53,7 +53,7 @@ const Compliance: React.FC = () => {
   }
 
   const columns: ProColumns<APIIdentity.complianceItemType>[] = [
-    { title: 'PrincipalName', dataIndex: 'principalName',
+    { title: 'Principal Name', dataIndex: 'principalName',
       renderFormItem: () => {
         return (
           <ProFormText
@@ -62,7 +62,7 @@ const Compliance: React.FC = () => {
         )
       }
      },
-    { title: 'Client Id', dataIndex: 'clientId',
+    { title: 'Client ID', dataIndex: 'clientId',
       renderFormItem: () => {
         return (
           <ProFormText
@@ -71,8 +71,8 @@ const Compliance: React.FC = () => {
         )
       }
      },
-    { title: 'Ip', dataIndex: 'ip', search: false },
-    { title: 'Os Name', dataIndex: 'osName',
+    { title: 'IP', dataIndex: 'ip', search: false },
+    { title: 'OS Name', dataIndex: 'osName',
       renderFormItem: () => {
         return (
           <ProFormText

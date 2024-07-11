@@ -609,7 +609,7 @@ const Application: React.FC = () => {
       {openModal && (
         <ModalForm
           title={isEdit ? 'Edit' : 'New'}
-          width="70%"
+          width="80%"
           open={openModal}
           modalProps={{
             bodyStyle: {
@@ -638,18 +638,18 @@ const Application: React.FC = () => {
         <Row gutter={32} style={{width:'99%'}}>
                 <Col style={{ display: `${isEdit ? '' : 'none'}` }} span={8}>
                   <ProFormText
-                    label={'clientId'}
+                    label={'Client ID'}
                     name="clientId"
-                    placeholder={'clientId'}
+                    placeholder={'Client ID'}
                     disabled
                     hidden={!isEdit}
                   />
                 </Col>
                 <Col span={8}>
                   <ProFormText
-                    name="clientSecret"
+                    name="Client Secret"
                     label={'clientSecret'}
-                    placeholder={'clientSecret'}
+                    placeholder={'Client Secret'}
                     disabled
                     hidden={!isEdit}
                   />
@@ -659,36 +659,36 @@ const Application: React.FC = () => {
                     rules={[
                       {
                         required: true,
-                        message: 'applicationName is required',
+                        message: 'Application Name is required',
                       },
                     ]}
                     label={intl.formatMessage({ id: 'application.list.applicationName' })}
                     name="applicationName"
-                    placeholder={'applicationName'}
+                    placeholder={'Application Name'}
                   />
                 </Col>
                 <Col span={8}>
                   <ProFormText
                     name="abbreviation"
                     label={intl.formatMessage({ id: 'application.list.abbreviation' })}
-                    placeholder={'abbreviation'}
+                    placeholder={'Abbreviation'}
                   />
                 </Col>
                 <Col span={8} hidden={true}>
-                  <ProFormText label={'applicationId'} width="md" name="applicationId"  />
+                  <ProFormText label={'Application ID'} width="md" name="applicationId"  />
                 </Col>
                 <Col span={8}>
                   <ProFormText
                     label={intl.formatMessage({ id: 'application.list.logo' })}
                     name="logo"
-                    placeholder={'logo'}
+                    placeholder={'Logo'}
                   />
                 </Col>
                 <Col span={8}>
                   <ProFormText
                     label={intl.formatMessage({ id: 'application.list.homepage' })}
                     name="homepage"
-                    placeholder={'homepage'}
+                    placeholder={'Homepage'}
                   />
                 </Col>
                 <Col span={8}>
@@ -696,13 +696,13 @@ const Application: React.FC = () => {
                     rules={[
                       {
                         required: true,
-                        message: 'authorizationGrantTypes Type is required',
+                        message: 'Authorization GrantTypes Types is required',
                       },
                     ]}
                     mode="multiple"
                     label={intl.formatMessage({ id: 'application.list.authorizationGrantTypes' })}
                     name="authorizationGrantTypes"
-                    placeholder={'authorizationGrantTypes'}
+                    placeholder={'Authorization GrantTypes Types'}
                     request={async () => {
                       return authorTypes.map((item: any) => {
                         return {
@@ -718,13 +718,13 @@ const Application: React.FC = () => {
                     rules={[
                       {
                         required: true,
-                        message: 'clientAuthenticationMethods Type is required',
+                        message: 'Client Authentication Methods Type is required',
                       },
                     ]}
                     mode="multiple"
                     label={intl.formatMessage({ id: 'application.list.clientAuthenticationMethods' })}
                     name="clientAuthenticationMethods"
-                    placeholder={'clientAuthenticationMethods'}
+                    placeholder={'Client Authentication Methods'}
                     request={async () => {
                       return authenticationMethod.map((item: any) => {
                         return {
@@ -739,7 +739,7 @@ const Application: React.FC = () => {
                   <ProFormSelect
                     label={intl.formatMessage({ id: 'application.list.applicationType' })}
                     name="applicationType"
-                    placeholder={'applicationType'}
+                    placeholder={'Application Type'}
                     request={async () => {
                       return applicationTypeData.map((item: any) => {
                         return {
@@ -763,26 +763,26 @@ const Application: React.FC = () => {
                     rules={[
                       {
                         required: true,
-                        message: 'redirectUris is required',
+                        message: 'Redirect URL is required',
                       },
                     ]}
                     label={intl.formatMessage({ id: 'application.list.redirectUris' })}
                     name="redirectUris"
-                    placeholder={'redirectUris'}
+                    placeholder={'Redirect URL'}
                   />
                 </Col>
                 <Col span={8}>
                   <ProFormText
                     label={intl.formatMessage({ id: 'application.list.postLogoutRedirectUris' })}
                     name="postLogoutRedirectUris"
-                    placeholder={'postLogoutRedirectUris'}
+                    placeholder={'OIDC Logout Callback Address'}
                   />
                 </Col>
                 <Col span={8}>
                   <ProFormSelect
                     label={intl.formatMessage({ id: 'application.list.accessTokenFormat' })}
                     name="accessTokenFormat"
-                    placeholder={'accessTokenFormat'}
+                    placeholder={'Access Token Format'}
                     request={async () => {
                       return accessTokenFormat.map((item: any) => {
                         return {
@@ -819,7 +819,7 @@ const Application: React.FC = () => {
                     rules={[
                       {
                         required: true,
-                        message: 'accessTokenValidity is required',
+                        message: 'Access Token Validity is required',
                       },
                     ]}
                     label={intl.formatMessage({ id: 'application.list.accessTokenValidity' })}
@@ -830,9 +830,9 @@ const Application: React.FC = () => {
                 </Col>
                 <Col span={8}>
                   <ProFormSelect
-                    label="单位"
+                    label="Unit"
                     name="dayType1"
-                    placeholder={'单位'}
+                    placeholder={'Unit'}
                     rules={[
                       {
                         required: true,
@@ -849,7 +849,7 @@ const Application: React.FC = () => {
                     rules={[
                       {
                         required: true,
-                        message: 'refreshTokenValidity is required',
+                        message: 'Refresh Token Validity is required',
                       },
                     ]}
                   >
@@ -858,9 +858,9 @@ const Application: React.FC = () => {
                 </Col>
                 <Col span={8}>
                   <ProFormSelect
-                    label=" "
+                    label="Unit"
                     name="dayType2"
-                    placeholder={'单位'}
+                    placeholder={'Unit'}
                     options={dayType}
                     rules={[
                       {
@@ -877,7 +877,7 @@ const Application: React.FC = () => {
                     rules={[
                       {
                         required: true,
-                        message: 'authorizationCodeValidity is required',
+                        message: 'Authorization Code Validity is required',
                       },
                     ]}
                   >
@@ -886,14 +886,14 @@ const Application: React.FC = () => {
                 </Col>
                 <Col span={8}>
                   <ProFormSelect
-                    label=" "
+                    label="Unit"
                     name="dayType3"
-                    placeholder={'单位'}
+                    placeholder={'Unit'}
                     options={dayType}
                     rules={[
                       {
                         required: true,
-                        message: 'please select',
+                        message: 'Please Select',
                       },
                     ]}
                   />
@@ -905,7 +905,7 @@ const Application: React.FC = () => {
                     rules={[
                       {
                         required: true,
-                        message: 'deviceCodeValidity is required',
+                        message: 'Device Code Validity is required',
                       },
                     ]}
                   >
@@ -914,14 +914,14 @@ const Application: React.FC = () => {
                 </Col>
                 <Col span={8}>
                   <ProFormSelect
-                    label=" "
+                    label="Unit"
                     name="dayType4"
-                    placeholder={'单位'}
+                    placeholder={'Unit'}
                     options={dayType}
                     rules={[
                       {
                         required: true,
-                        message: 'please select',
+                        message: 'Please Select',
                       },
                     ]}
                   />
@@ -930,7 +930,7 @@ const Application: React.FC = () => {
                   <ProFormSelect
                     label={intl.formatMessage({ id: 'application.list.idTokenSignatureAlgorithm' })}
                     name="idTokenSignatureAlgorithm"
-                    placeholder={'idTokenSignatureAlgorithm'}
+                    placeholder={'OIDC ID Token Endpoint Authentication Signature Algorithm'}
                     request={async () => {
                       return idTokenData.map((item: any) => {
                         return {
@@ -953,7 +953,7 @@ const Application: React.FC = () => {
                   <ProFormText
                     label={intl.formatMessage({ id: 'application.list.description' })}
                     name="description"
-                    placeholder={'description'}
+                    placeholder={'Description'}
                   />
                 </Col>
                 <Col span={8}>
@@ -965,7 +965,7 @@ const Application: React.FC = () => {
                   <ProFormSelect
                     label={intl.formatMessage({ id: 'application.list.status' })}
                     name="status"
-                    placeholder={'status'}
+                    placeholder={'Status'}
                     options={[
                       {
                         label: '启用',

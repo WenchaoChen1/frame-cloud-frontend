@@ -109,25 +109,25 @@ const Authorization: React.FC = () => {
       }
      },
     {
-      title: 'AccessTokenIssuedAt',
+      title: 'Access Token Issued at',
       dataIndex: 'accessTokenIssuedAt',
       search: false,
       ellipsis: true,
     },
     {
-      title: 'AccessTokenExpiresAt',
+      title: 'Access Token Expires at',
       dataIndex: 'accessTokenExpiresAt',
       search: false,
       ellipsis: true,
     },
     {
-      title: 'RefreshTokenIssuedAt',
+      title: 'Refresh Token Issued at',
       dataIndex: 'refreshTokenIssuedAt',
       search: false,
       ellipsis: true,
     },
     {
-      title: 'RefreshTokenExpiresAt',
+      title: 'Refresh Token Expires at',
       dataIndex: 'refreshTokenExpiresAt',
       search: false,
       ellipsis: true,
