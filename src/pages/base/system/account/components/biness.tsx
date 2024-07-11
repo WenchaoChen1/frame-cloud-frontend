@@ -78,7 +78,7 @@ function Biness({currentRow,tenantId,closeRole,actionRef,binessModal}:Interface)
   return (
     <div>
       <ModalForm
-        title={'Biness Menu'}
+        title={'Business Menu'}
         width="500px"
         open={modalVisible}
         onOpenChange={onOpenChange}

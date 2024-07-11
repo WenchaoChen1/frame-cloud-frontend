@@ -123,9 +123,9 @@ const Metadata: React.FC = () => {
 
   const columns: ProColumns<APISystem.MetadataListItemDataType>[] = [
     { title: intl.formatMessage({ id: 'metadata.list.interfaceName' }), dataIndex: 'requestMethod' },
-    { title: 'Url', dataIndex: 'url', ellipsis: true, },
-    { title: 'Description', dataIndex: 'description', ellipsis: true, },
-    { title: intl.formatMessage({ id: 'metadata.list.default' }), dataIndex: 'attributeCode', ellipsis: true, },
+    { title: 'Url', dataIndex: 'url', },
+    { title: 'Description', dataIndex: 'description' },
+    { title: intl.formatMessage({ id: 'metadata.list.default' }), dataIndex: 'attributeCode' },
     {
       title: intl.formatMessage({ id: 'metadata.list.expression' }),
       dataIndex: 'webExpression',
@@ -271,6 +271,7 @@ const Metadata: React.FC = () => {
         rowKey="attributeId"
         request={getList}
         columns={columns}
+        scroll={{ x: 'max-content' }}
         search={{
           labelWidth: 'auto',
           defaultCollapsed:false,

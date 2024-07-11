@@ -209,10 +209,16 @@ const Account: React.FC = () => {
     {
       title: 'Account',
       dataIndex: 'name',
+      search: {
+        placeholder: 'Please Enter',
+      },
     },
     {
       title: 'Identity',
       dataIndex: 'identity',
+      search: {
+        placeholder: 'Please Enter',
+      },
     },
     {
       title: 'Status',
@@ -233,11 +239,13 @@ const Account: React.FC = () => {
       key: 'tenantId',
       hideInTable: true,
       dataIndex: 'tenantId',
+      search: {
+        placeholder: 'Please Select',
+      },
       renderFormItem: () => {
         return (
           <ProFormTreeSelect
             name="tenantId"
-            placeholder="Please select"
             allowClear={true}
             width={'lg'}
             secondary
@@ -441,9 +449,9 @@ const Account: React.FC = () => {
             <Col span={12} hidden={true}><ProFormText name="accountId" /></Col>
             <Col span={12}>
               <ProFormTreeSelect
-                label="Tenant name"
+                label="Tenant Name"
                 name="tenantId"
-                placeholder="Please select"
+                placeholder="Please Select"
                 allowClear
                 secondary
                 disabled={isEdit}
@@ -473,7 +481,7 @@ const Account: React.FC = () => {
               <ProFormSelect
                 label={'User'}
                 name="userId"
-                placeholder="Please select"
+                placeholder="Please Select"
                 allowClear
                 secondary
                 disabled={isEdit}
