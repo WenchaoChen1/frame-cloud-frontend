@@ -280,8 +280,23 @@ const Application: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'application.list.applicationName' }),
       dataIndex: 'applicationName',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
-    { title: intl.formatMessage({ id: 'application.list.abbreviation' }), dataIndex: 'abbreviation' },
+    { title: intl.formatMessage({ id: 'application.list.abbreviation' }), dataIndex: 'abbreviation',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
     {
       title: intl.formatMessage({ id: 'application.list.authorizationGrantTypes' }),
       dataIndex: 'authorizationGrantTypes',
@@ -297,6 +312,7 @@ const Application: React.FC = () => {
       renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
+            placeholder={'Please Select'}
             mode="multiple"
             {...rest}
             fieldProps={{
@@ -424,6 +440,7 @@ const Application: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'pages.searchTable.actions' }),
       dataIndex: 'actions',
+      fixed: 'right',
       search: false,
       render: (_, record: any) => [
         <FunctionPermission code="ScopeApplication">
