@@ -321,6 +321,39 @@ const MenuList: React.FC = () => {
     };
   };
 
+  const filterDate = async (menuData: any, Id: any) => {
+    // 父级
+    for (let i = 0; i < menuData.length; i++) {
+      const item = menuData[i];
+      if (item.id === Id) {
+        menuData.splice(i, 1)
+        continue;
+      }
+      // 子集
+      if (item?.children?.length > 0 && Array.isArray(item?.children)) {
+        for (let i = 0; i < item?.children?.length; i++) {
+          const list = item?.children[i];
+          if (list.id === Id) {
+            item?.children?.splice(i, 1)
+            continue;
+          }
+
+          // 孙子集
+          if (list?.children?.length > 0 && Array.isArray(list?.children)) {
+            for (let i = 0; i < list?.children?.length; i++) {
+              const sunList = list?.children[i];
+              if (list.id === Id) {
+                sunList?.children?.splice(i, 1)
+                continue;
+              }
+            }
+          }
+        }
+      }
+    }
+    return menuData;
+  }
+
   const openTreeData = async () =>{
     const treeDataMap = menuData
     let treeDataId: any[];
@@ -507,8 +540,8 @@ const MenuList: React.FC = () => {
                 placeholder="Please select"
                 allowClear
                 secondary
-                request={async () => menuData}
-                // tree-select args
+                // request={async () => menuData}
+                request={async () => filterDate(menuData, currentRow?.id)}
                 fieldProps={{
                   treeDefaultExpandAll:true,
                   suffixIcon: null,
