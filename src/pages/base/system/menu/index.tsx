@@ -93,6 +93,7 @@ const MenuList: React.FC = () => {
       await insertMenuManageService({ ...fields });
       hide();
       message.success('Added successfully');
+      setHiddenFormItem(false)
       return true;
     } catch (error) {
       hide();
@@ -109,6 +110,7 @@ const MenuList: React.FC = () => {
         id:currentRow?.id
       });
       hide();
+      setHiddenFormItem(false)
       message.success('Update successfully');
       return true;
     } catch (error) {
@@ -295,7 +297,7 @@ const MenuList: React.FC = () => {
       const list = await statusConversionType(params.type, menuType)
       params.type = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
     }
-    
+
     const parameters = {
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,

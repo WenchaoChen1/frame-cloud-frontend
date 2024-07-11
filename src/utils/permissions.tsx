@@ -26,7 +26,7 @@ export default {
     'DeleteMenu':'DeleteMenu',
     'EditMenu':'EditMenu',
     'AddMenu':'AddMenu',
-    
+
     'MenuTenant':'MenuTenant',
     'EditTenant':'EditTenant',
     'AddTenant':'AddTenant',
@@ -73,5 +73,12 @@ export default {
     'DeleteScope':'DeleteScope',
     'EditScope':'EditScope',
     'AddScope':'AddScope',
+
+    'basic-setup':'basic-setup',
+    'security-settings':'security-settings',
+    'account-setting':'account-setting',
+    'account-binding':'account-binding',
+    'message-notification':'message-notification',
+    'loginLog':'loginLog'
   }
 }
