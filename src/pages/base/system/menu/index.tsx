@@ -380,14 +380,15 @@ const MenuList: React.FC = () => {
   }, []);
 
   const downloadMenuAttribute = async () =>{
-    const res = await downloadMenuManageService()
+    const res = await downloadMenuManageAssignedAttributeService()
     if (res && res.length > 0){
       let blob = new Blob([JSON.stringify(res)],{type: 'application/json;charset=utf-8'});
       FileSaver.saveAs(blob,'menu-attribute.json');
     }
+
   }
   const downloadMenu = async () =>{
-    const res = await downloadMenuManageAssignedAttributeService()
+    const res = await downloadMenuManageService()
     if (res && res.length > 0){
       let blob = new Blob([JSON.stringify(res)],{type: 'application/json;charset=utf-8'});
       FileSaver.saveAs(blob,'menu.json');
