@@ -523,12 +523,12 @@ const User: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'UserId is required',
+                    message: 'User Id is required',
                   },
                 ]}
                 initialValue={userID}
                 disabled
-                label={'UserId'}
+                label={'User Id'}
                 name="userId"
               />
             </Col>
