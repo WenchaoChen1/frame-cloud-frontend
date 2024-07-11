@@ -6,7 +6,6 @@ import {
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable, ProFormText } from '@ant-design/pro-components';
 import { message } from 'antd';
-import { useAccess, Access } from 'umi';
 import React, { useRef, useState } from 'react';
 import {useIntl} from "@@/exports";
 import dayjs from "dayjs";
@@ -15,7 +14,6 @@ import FunctionPermission from '@/pages/base/components/functionPermission/index
 
 const Authorization: React.FC = () => {
   const intl = useIntl();
-  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);

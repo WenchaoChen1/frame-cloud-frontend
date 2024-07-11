@@ -9,14 +9,12 @@ import Acount from "@/pages/account/settings/components/acount";
 import LoginLog from "@/pages/account/settings/components/loginLog";
 import useStyles from './style.style';
 import FunctionPermission from '@/pages/base/components/functionPermission/index'
-import { useAccess, Access } from '@umijs/max';
 type SettingsStateKeys = 'base' | 'security' | 'account' | 'binding' | 'notification' | 'loginLog';
 type SettingsState = {
   mode: 'inline' | 'horizontal';
   selectKey: SettingsStateKeys;
 };
 const Settings: React.FC = () => {
-  const access = useAccess();
   const { styles } = useStyles();
   const menuMap: Record<string, React.ReactNode> = {
     base: '基本设置',

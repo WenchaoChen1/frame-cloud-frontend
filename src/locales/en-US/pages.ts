@@ -71,7 +71,7 @@ export default {
 
   'application':{
     'list': {
-      'applicationName':'ApplicationName',
+      'applicationName':'Application Name',
       'abbreviation':'Abbreviation',
       'logo':'Logo',
       'homepage':'Homepage',
@@ -82,7 +82,7 @@ export default {
       'redirectUris':'Redirect URL',
       'postLogoutRedirectUris':'OIDC Logout Callback Address',
       'accessTokenFormat':'Access Token Format',
-      'jwkSetUrl':'Client Keyset Url',
+      'jwkSetUrl':'Client Keyset URL',
       'requireProofKey':'Require Proof Key',
       'requireAuthorizationConsent':'Require Authorization Consent',
       'accessTokenValidity':'Access Token Validity',
@@ -98,7 +98,7 @@ export default {
       'label1': 'Client Settings',
       'label2': 'Token Settings',
       'label3': 'Data Entry Settings',
-      'createdDate':'Created At',
+      'createdDate':'Created Date',
       'updatedDate':'Updated Date'
     }
   },

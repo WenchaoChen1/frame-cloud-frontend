@@ -17,7 +17,6 @@ import {
   ProFormText,
   ProTable,
 } from '@ant-design/pro-components';
-import { useAccess, Access } from 'umi';
 import { FormattedMessage} from '@umijs/max';
 import { statusConversionType } from '@/utils/utils';
 import { enumsService } from '@/services/base-service/system-service/commService';
@@ -30,7 +29,6 @@ import FunctionPermission from '@/pages/base/components/functionPermission/index
 
 const User: React.FC = () => {
   const intl = useIntl();
-  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState(false);

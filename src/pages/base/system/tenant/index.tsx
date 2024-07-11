@@ -9,8 +9,7 @@ import {
   onSaveMenuInTenantService,
   updateTenantManageService,
 } from '@/services/base-service/system-service/tenantService';
-import { statusConversionType } from '@/utils/utils';
-import { useAccess, Access } from 'umi';
+import { statusConversionType, filterDate } from '@/utils/utils';
 import { enumsService } from '@/services/base-service/system-service/commService';
 import { getRoleManageRoleDetailToListService } from '@/services/base-service/system-service/roleService';
 import { getTenantManageMenuTreeService } from '@/services/base-service/system-service/menuService';
@@ -36,7 +35,6 @@ import styles from './index.less';
 import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const Index: React.FC = () => {
-  const access = useAccess();
   const intl = useIntl();
   const formRef = useRef<ProFormInstance>();
   const actionRef = useRef<ActionType>();
@@ -505,7 +503,8 @@ const Index: React.FC = () => {
                 name="parentId"
                 allowClear={true}
                 secondary
-                request={async ()=>menuData}
+                // request={async ()=>menuData}
+                request={async () => filterDate(menuData, currentRow?.id)}
                 fieldProps={{
                   placeholder:"Please Select",
                   treeDefaultExpandAll:true,

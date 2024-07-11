@@ -21,7 +21,6 @@ import {
   ProFormTreeSelect,
   ProTable,
 } from '@ant-design/pro-components';
-import { useAccess, Access } from 'umi';
 import { FormattedMessage, useModel} from '@umijs/max';
 import { useIntl } from "@@/exports";
 import { Button, message, Row,Col } from 'antd';
@@ -35,7 +34,6 @@ import FunctionPermission from '@/pages/base/components/functionPermission/index
 
 const Account: React.FC = () => {
   const intl = useIntl();
-  const access = useAccess();
   const refTableForm = useRef<ProFormInstance>();
   const [roleModal,setRoleModal] = useState(false)
   const [tenantModal,setTenantModal] = useState(false)

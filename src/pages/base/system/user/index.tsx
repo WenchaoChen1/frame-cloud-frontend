@@ -21,7 +21,6 @@ import {
   ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
-import { useAccess, Access } from 'umi';
 import { statusConversionType } from '@/utils/utils';
 import { FormattedMessage, useModel } from '@umijs/max';
 import { useIntl } from "@@/exports";
@@ -33,7 +32,6 @@ import FunctionPermission from '@/pages/base/components/functionPermission/index
 
 const User: React.FC = () => {
   const intl = useIntl();
-  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const { initialState } = useModel('@@initialState');
   const currentUserId = initialState?.currentUser?.userId;
@@ -223,6 +221,7 @@ const User: React.FC = () => {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
+      width: '220px',
       fixed: 'right',
       render: (_, record:any) => [
         <FunctionPermission code="EditUser">
@@ -232,7 +231,7 @@ const User: React.FC = () => {
         </FunctionPermission>,
         <FunctionPermission code="ResetPasswordUser">
           <a key="resetPassword" onClick={() => onReactPassWord(record)}>
-            ResetPassword
+            Reset Password
           </a>
         </FunctionPermission>,
         currentUserId !== record.userId && (

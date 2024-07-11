@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
 import { useIntl } from "@@/exports";
-import { useAccess, Access } from 'umi';
 import { FormattedMessage} from '@umijs/max';
 import {Button, message, Tree,Row,Col } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import PopconfirmPage from "@/pages/base/components/popconfirm";
+import { filterDate } from '@/utils/utils';
 import { enumsService } from '@/services/base-service/system-service/commService';
 import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
 import type { ActionType, ProColumns, ProFormInstance } from '@ant-design/pro-components';
@@ -35,7 +35,6 @@ import FunctionPermission from '@/pages/base/components/functionPermission/index
 
 const BusinessPermission: React.FC = () => {
   const intl = useIntl();
-  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
   const refTableForm = useRef<ProFormInstance>();
@@ -304,7 +303,8 @@ const BusinessPermission: React.FC = () => {
       tenantName: roleNameText || '',
     });
     if (Response.success && Response.data) {
-      return Response.data;
+      const list = filterDate(Response.data, currentRow?.id)
+      return list;
     } else {
       return [];
     }

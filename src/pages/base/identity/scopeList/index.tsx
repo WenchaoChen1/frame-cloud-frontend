@@ -13,7 +13,6 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ModalForm, PageContainer, ProFormText, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage } from '@umijs/max';
 import { useIntl } from "@@/exports";
-import { useAccess, Access } from 'umi';
 import { Button, message, Row,Col } from 'antd';
 import React, { useRef, useState } from 'react';
 import dayjs from "dayjs";
@@ -22,7 +21,6 @@ import FunctionPermission from '@/pages/base/components/functionPermission/index
 
 const Scope: React.FC = () => {
   const intl = useIntl();
-  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);

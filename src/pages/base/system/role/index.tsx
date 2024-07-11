@@ -11,10 +11,10 @@ import {
   updateRoleAssignedBusinessPermissionService,
 } from '@/services/base-service/system-service/roleService';
 import BusinessPermission from './businessPermission/index';
+import { filterDate } from '@/utils/utils';
 import { enumsService } from '@/services/base-service/system-service/commService';
 import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
 import { PlusOutlined } from '@ant-design/icons';
-import { useAccess, Access } from 'umi';
 import type { ActionType, ProColumns, ProFormInstance } from '@ant-design/pro-components';
 import {
   FooterToolbar,
@@ -37,7 +37,6 @@ import FunctionPermission from '@/pages/base/components/functionPermission/index
 
 const Role: React.FC = () => {
   const intl = useIntl();
-  const access = useAccess();
   const refTableForm = useRef<ProFormInstance>();
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
@@ -245,7 +244,7 @@ const Role: React.FC = () => {
       ],
     },
     {
-      title: 'tenant',
+      title: 'Tenant',
       hideInTable: true,
       dataIndex: 'tenantId',
       key:'tenantId',
@@ -367,7 +366,8 @@ const Role: React.FC = () => {
       tenantName: roleNameText || '',
     });
     if (Response.success && Response.data) {
-      return Response.data;
+      const list = filterDate(Response.data, currentRow?.id)
+      return list;
     } else {
       return [];
     }

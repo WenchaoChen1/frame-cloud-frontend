@@ -6,7 +6,7 @@ import {
 import {
   getScopePermissionIdByScopeIdService,
 } from '@/services/base-service/identity-service/scopeService';
-import { ProTable, ProFormText } from '@ant-design/pro-components';
+import { ProTable, ProFormText, ProFormSelect } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
 
 type TypeProp = {
@@ -61,6 +61,14 @@ const ScopePermissions: React.FC<TypeProp> = ({
         };
         return result;
       }, {}),
+      renderFormItem: (_, { ...rest }) => {
+        return (
+          <ProFormSelect
+            placeholder={'Please Select'}
+            {...rest}
+          />
+        );
+      },
     },
   ];
 

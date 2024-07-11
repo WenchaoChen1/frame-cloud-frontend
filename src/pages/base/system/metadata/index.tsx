@@ -20,7 +20,6 @@ import {
   ProTable,
   ProFormTextArea,
 } from '@ant-design/pro-components';
-import { useAccess, Access } from 'umi';
 import { message, Tooltip, TableColumnsType, Table,Row,Col } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
 import { statusConversionType } from '@/utils/utils';
@@ -30,7 +29,6 @@ import FunctionPermission from '@/pages/base/components/functionPermission/index
 
 const Metadata: React.FC = () => {
   const intl = useIntl();
-  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);

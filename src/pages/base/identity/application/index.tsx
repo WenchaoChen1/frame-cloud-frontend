@@ -19,7 +19,6 @@ import {
   ProFormText,
   ProTable,
 } from '@ant-design/pro-components';
-import { useAccess, Access } from 'umi';
 import { FormattedMessage } from '@umijs/max';
 import { Button, DatePicker, Divider, InputNumber, message, Switch, Tooltip,Row,Col } from 'antd';
 import moment from 'moment';
@@ -31,8 +30,7 @@ import ConfirmPage from "@/pages/base/components/popconfirm";
 import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const Application: React.FC = () => {
-  const intl = useIntl();
-  const access = useAccess();
+  const intl = useIntl(); 
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [ScopeOpenModal, setScopeOpenModal] = useState<boolean>(false);
@@ -398,6 +396,7 @@ const Application: React.FC = () => {
       renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
+            placeholder={'Please Select'}
             mode="multiple"
             {...rest}
             fieldProps={{
@@ -702,7 +701,7 @@ const Application: React.FC = () => {
                     mode="multiple"
                     label={intl.formatMessage({ id: 'application.list.authorizationGrantTypes' })}
                     name="authorizationGrantTypes"
-                    placeholder={'Authorization GrantTypes Types'}
+                    placeholder={'Authorization Grant Types'}
                     request={async () => {
                       return authorTypes.map((item: any) => {
                         return {
@@ -755,7 +754,7 @@ const Application: React.FC = () => {
                     label={intl.formatMessage({ id: 'application.list.clientSecretExpiresAt' })}
                     name="clientSecretExpiresAt"
                   >
-                    <DatePicker showTime style={{ width: '100%' }} />
+                    <DatePicker placeholder='Plase Select Date' showTime style={{ width: '100%' }} />
                   </ProForm.Item>
                 </Col>
                 <Col span={8}>
