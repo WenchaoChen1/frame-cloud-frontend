@@ -8,7 +8,7 @@ const getModelCurrentLoginInformation = async () => {
   const data = {currentAccountId: currentAccountId || ''};
   const accountInfoResponse = await getLoginInfoService(data);
   let currentUser = accountInfoResponse.data;
-  
+
   if (currentUser) {//TODO 时间差 > 30 或 init（初始）
     const timestamp = new Date().getTime(); // 获取当前时间的时间戳
     setLocalStorage('refreshTime', timestamp);
@@ -23,7 +23,7 @@ const updateModelCurrentLoginInformation = async () => {//TODO 时间差大于10
   const data = {currentAccountId: currentAccountId || ''};
   const accountInfoResponse = await updateLoginInfoService(data);
   let currentUser = accountInfoResponse.data;
-  
+
   if (currentUser) {
     const timestamp = new Date().getTime(); // 获取当前时间的时间戳
     setLocalStorage('refreshTime', timestamp);
@@ -46,14 +46,14 @@ export const fetchUserInfoService: any = async () => {
 
   //TODO 根据当前刷新时间判断(TimeDifference)是否大于10分钟，如果大于updateModelCurrentLoginInformation;
   //TODO 大于30分钟调用更新接口updateCurrentLoginInformation, 小于10分钟获取本地缓存数据
-  if (!lastTime || (TimeDifference > 30)) {
-    return getModelCurrentLoginInformation();
-  } else if (TimeDifference > 10) {
+  // if (!lastTime || (TimeDifference > 30)) {
+  //   return getModelCurrentLoginInformation();
+  // } else if (TimeDifference > 10) {
     return updateModelCurrentLoginInformation();
-  } else {
-    let list = getLocalStorage(USER_ROUTER);
-    return JSON.parse(list);
-  }
+  // } else {
+  //   let list = getLocalStorage(USER_ROUTER);
+  //   return JSON.parse(list);
+  // }
 };
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
