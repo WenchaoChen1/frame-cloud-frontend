@@ -5,7 +5,7 @@ import {
 } from '@/services/base-service/system-service/menuService';
 import { Tooltip } from 'antd';
 import type { ProColumns } from '@ant-design/pro-components';
-import {ProFormSelect, ProTable} from '@ant-design/pro-components';
+import {ProFormSelect, ProTable, ProFormText } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from "@@/exports";
 import {enumsService} from "@/services/base-service/system-service/commService";
@@ -25,10 +25,52 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
 
   const columns: ProColumns<APISystem.MetadataListItemDataType>[] = [
-    { title: intl.formatMessage({ id: 'metadata.list.interfaceName' }), dataIndex: 'requestMethod' },
-    { title: 'Url', dataIndex: 'url', ellipsis: true, },
-    { title: 'Description', dataIndex: 'description', ellipsis: true, },
-    { title: intl.formatMessage({ id: 'metadata.list.default' }), dataIndex: 'attributeCode', ellipsis: true, },
+    { 
+      title: intl.formatMessage({ id: 'metadata.list.interfaceName' }), 
+      dataIndex: 'requestMethod',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
+    { 
+      title: 'Url',
+      dataIndex: 'url',
+      // ellipsis: true,
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
+    { 
+      title: 'Description',
+      dataIndex: 'description',
+      // ellipsis: true,
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
+    { 
+      title: intl.formatMessage({ id: 'metadata.list.default' }),
+      dataIndex: 'attributeCode', 
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
     {
       title: intl.formatMessage({ id: 'metadata.list.expression' }),
       dataIndex: 'webExpression',
@@ -38,6 +80,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
 
       title: intl.formatMessage({ id: 'application.list.status' }),
       dataIndex: 'status',
+      width: '100px',
       valueType: 'select',
       valueEnum: dataItemStatus?.reduce((result: any, type: any) => {
         result[type?.value] = {
@@ -50,6 +93,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
         return (
           <ProFormSelect
             mode="multiple"
+            placeholder={'Please Select'}
             {...rest}
             fieldProps={{
               mode: 'multiple',

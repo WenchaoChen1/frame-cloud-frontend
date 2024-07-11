@@ -148,8 +148,18 @@ const BusinessPermission: React.FC = () => {
   };
 
   const columns: ProColumns<APISystem.BusinessPermissionItemDataType>[] = [
-    { title: 'Name', dataIndex: 'name' },
-    { title: 'description', hideInSearch: true, dataIndex: 'description', ellipsis: true, },
+    { 
+      title: 'Name',
+      dataIndex: 'name',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
+    { title: 'Description', hideInSearch: true, dataIndex: 'description', ellipsis: true, },
     { title: 'Sort', hideInSearch: true, dataIndex: 'sort' },
     {
       title: 'Status',
@@ -220,12 +230,12 @@ const BusinessPermission: React.FC = () => {
         return (
           <ProFormTreeSelect
             name="tenantId"
-            placeholder="Please select"
             allowClear={true}
             width={'lg'}
             secondary
             // initialValue={tenantId}
             fieldProps={{
+              placeholder:"Please Select",
               treeDefaultExpandAll:true,
               treeData: tenantTreeData,
               filterTreeNode: true,
@@ -463,6 +473,7 @@ const BusinessPermission: React.FC = () => {
                 request={getTenantTreeRequest}
                 disabled={isEdit}
                 fieldProps={{
+                  placeholder:'Please Select',
                   treeDefaultExpandAll:true,
                   onChange: onChangeTenant,
                   filterTreeNode: true,
@@ -488,11 +499,11 @@ const BusinessPermission: React.FC = () => {
                 params={tenantId}
                 label={'Parent Role'}
                 name="parentId"
-                placeholder="Please select"
                 allowClear={false}
                 secondary
                 request={getParentRoleTreeRequest}
                 fieldProps={{
+                  placeholder:'Please Select',
                   treeDefaultExpandAll:true,
                   filterTreeNode: true,
                   showSearch: true,
@@ -516,6 +527,7 @@ const BusinessPermission: React.FC = () => {
                   },
                 ]}
                 name="status"
+                placeholder={'Please Select'}
                 label={'Status'}
                 request={async () => {
                   return dataItemStatus?.map((item: any) => {
@@ -527,7 +539,7 @@ const BusinessPermission: React.FC = () => {
                 }}
               />
             </Col>
-            <Col span={12}><ProFormTextArea label={'Description'} name="description" /></Col>
+            <Col span={12}><ProFormTextArea label={'Description'} name="description" placeholder={'Please Enter Description'} /></Col>
           </Row>
         </ModalForm>
       )}

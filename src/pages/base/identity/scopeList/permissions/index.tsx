@@ -26,19 +26,19 @@ const ScopePermissions: React.FC<TypeProp> = ({
 
   const columns = [
     {
-      title: 'permissionName',
+      title: 'Permission Name',
       dataIndex: 'permissionName',
       key: 'permissionName',
       ellipsis: true,
     },
     {
-      title: 'permissionCode',
+      title: 'Permission Code',
       dataIndex: 'permissionCode',
       key: 'permissionCode',
       ellipsis: true,
     },
     {
-      title: 'permissionType',
+      title: 'Permission Type',
       dataIndex: 'permissionType',
       valueType: 'select',
       ellipsis: true,

@@ -1,7 +1,7 @@
 import { DEFAULT_PAGE_SIZE } from '@/pages/common/constant';
 import { getComplianceManagePageService } from '@/services/base-service/identity-service/complianceService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { PageContainer, ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProTable, ProFormText } from '@ant-design/pro-components';
 import React, { useRef, useState } from 'react';
 import {useIntl} from "@@/exports";
 import dayjs from "dayjs";
@@ -53,19 +53,43 @@ const Compliance: React.FC = () => {
   }
 
   const columns: ProColumns<APIIdentity.complianceItemType>[] = [
-    { title: 'principalName', dataIndex: 'principalName' },
-    { title: 'clientId', dataIndex: 'clientId' },
-    { title: 'ip', dataIndex: 'ip', search: false },
-    { title: 'osName', dataIndex: 'osName' },
+    { title: 'PrincipalName', dataIndex: 'principalName',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+     },
+    { title: 'Client Id', dataIndex: 'clientId',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+     },
+    { title: 'Ip', dataIndex: 'ip', search: false },
+    { title: 'Os Name', dataIndex: 'osName',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+     },
     {
-      title: 'android',
+      title: 'Android',
       dataIndex: 'android',
       search: false,
       render: (value) => {
         return <div>{!value ? 'false' : ''}</div>;
       },
     },
-    { title: 'operation', dataIndex: 'operation', search: false },
+    { title: 'Operation', dataIndex: 'operation', search: false },
     { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate)},
     { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate)},
   ];

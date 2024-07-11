@@ -229,22 +229,36 @@ const User: React.FC = () => {
 
   const columns: ProColumns<APISystem.PermissionItemDataType>[] = [
     {
-      title: 'permissionName',
+      title: 'Permission Name',
       dataIndex: 'permissionName',
       hideInSearch: false,
-      ellipsis: true,
+      // ellipsis: true,
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
-      title: 'permissionCode',
+      title: 'Permission Code',
       dataIndex: 'permissionCode',
       hideInSearch: false,
-      ellipsis: true,
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+      // ellipsis: true,
     },
     {
-      title: 'permissionType',
+      title: 'Permission Type',
       dataIndex: 'permissionType',
       hideInForm: true,
-      ellipsis: true,
+      // ellipsis: true,
       valueEnum: permissionTypeList.reduce((result: any, type: any) => {
           result[type] = {
             text: type,
@@ -256,6 +270,7 @@ const User: React.FC = () => {
       renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
+            placeholder={'Please Select'}
             mode="multiple"
             {...rest}
             fieldProps={{
@@ -277,7 +292,7 @@ const User: React.FC = () => {
         };
         return result;
       }, {}),
-      renderFormItem: (_, { ...rest }) => <ProFormSelect mode="multiple" {...rest} fieldProps={{mode: 'multiple'}}/>
+      renderFormItem: (_, { ...rest }) => <ProFormSelect placeholder={'Please Select'} mode="multiple" {...rest} fieldProps={{mode: 'multiple'}}/>
     },
     { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate) },
     { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate) },
@@ -323,6 +338,7 @@ const User: React.FC = () => {
         headerTitle={'List'}
         actionRef={actionRef}
         rowKey="permissionId"
+        scroll={{ x: 'max-content' }}
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         search={{
@@ -395,12 +411,12 @@ const User: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'Permission name is required',
+                    message: 'Permission Name is required',
                   },
                 ]}
                 label={'Permission Name'}
                 name="permissionName"
-                placeholder={'Permission name'}
+                placeholder={'Permission Name'}
               />
             </Col>
             <Col span={12}>
@@ -443,6 +459,7 @@ const User: React.FC = () => {
                 ]}
                 name="status"
                 label={'Status'}
+                placeholder={'Please Select'}
                 request={async () => {
                   return dataItemStatus?.map((item: any) => {
                     return {

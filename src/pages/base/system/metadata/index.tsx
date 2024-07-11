@@ -123,10 +123,50 @@ const Metadata: React.FC = () => {
   ];
 
   const columns: ProColumns<APISystem.MetadataListItemDataType>[] = [
-    { title: intl.formatMessage({ id: 'metadata.list.interfaceName' }), dataIndex: 'requestMethod' },
-    { title: 'Url', dataIndex: 'url', },
-    { title: 'Description', dataIndex: 'description' },
-    { title: intl.formatMessage({ id: 'metadata.list.default' }), dataIndex: 'attributeCode' },
+    { 
+      title: intl.formatMessage({ id: 'metadata.list.interfaceName' }),
+      dataIndex: 'requestMethod',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
+    { 
+      title: 'Url',
+      dataIndex: 'url',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
+    { 
+      title: 'Description',
+      dataIndex: 'description',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
+    { 
+      title: intl.formatMessage({ id: 'metadata.list.default' }),
+      dataIndex: 'attributeCode',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
     {
       title: intl.formatMessage({ id: 'metadata.list.expression' }),
       dataIndex: 'webExpression',
@@ -147,6 +187,7 @@ const Metadata: React.FC = () => {
       renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
+            placeholder={'Please Select'}
             mode="multiple"
             {...rest}
             fieldProps={{

@@ -151,8 +151,24 @@ const Scope: React.FC = () => {
   }
 
   const columns: ProColumns<APIIdentity.scopeItemType>[] = [
-    { title: 'scopeName', dataIndex: 'scopeName'},
-    { title: 'scopeCode', dataIndex: 'scopeCode'},
+    { title: 'Scope Name', dataIndex: 'scopeName',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
+    { title: 'Scope Code', dataIndex: 'scopeCode',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
     { title: intl.formatMessage({ id: 'application.list.createdDate' }),hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate)},
     { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate)},
     {

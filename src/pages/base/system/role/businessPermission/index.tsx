@@ -22,7 +22,7 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, Id, tenan
 
   const columns = [
     { title: 'Name', dataIndex: 'name' },
-    { title: 'description', hideInSearch: true, dataIndex: 'description' },
+    { title: 'Description', hideInSearch: true, dataIndex: 'description' },
     { title: 'Sort', hideInSearch: true, dataIndex: 'sort' },
     {
       title: 'Status',

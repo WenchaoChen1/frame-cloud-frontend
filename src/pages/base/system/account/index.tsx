@@ -213,8 +213,6 @@ const Account: React.FC = () => {
       renderFormItem: () => {
         return (
           <ProFormText
-            label={'Account'}
-            name={'name'}
             placeholder={'Please Enter'}
           />
         )
@@ -226,8 +224,6 @@ const Account: React.FC = () => {
       renderFormItem: () => {
         return (
           <ProFormText
-            label={'Identity'}
-            name={'identity'}
             placeholder={'Please Enter'}
           />
         )
@@ -436,13 +432,14 @@ const Account: React.FC = () => {
                 ]}
                 label={'Name'}
                 name={'name'}
-                placeholder={'Name'}
+                placeholder={'Please Enter'}
               />
             </Col>
             <Col span={12}>
               <ProFormSelect
                 name="type"
                 label={'Account Type'}
+                placeholder={'Please Select'}
                 rules={[
                   {
                     required: true,
@@ -465,12 +462,12 @@ const Account: React.FC = () => {
               <ProFormTreeSelect
                 label="Tenant Name"
                 name="tenantId"
-                placeholder="Please Select"
                 allowClear
                 secondary
                 disabled={isEdit}
                 request={getTenantTreeRequest}
                 fieldProps={{
+                  placeholder: "Please Select",
                   treeDefaultExpandAll:true,
                   suffixIcon: null,
                   filterTreeNode: true,
@@ -533,6 +530,7 @@ const Account: React.FC = () => {
                   },
                 ]}
                 name="status"
+                placeholder= "Please Select"
                 label={'Status'}
                 request={async () => {
                   return dataItemStatus?.map((item: any) => {

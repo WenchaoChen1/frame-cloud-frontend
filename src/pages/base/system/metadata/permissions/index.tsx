@@ -6,7 +6,7 @@ import {
 import {
   getAttributePermissionIdByAttributeIdService,
 } from '@/services/base-service/system-service/metadataService';
-import {ProFormSelect, ProTable} from '@ant-design/pro-components';
+import {ProFormSelect, ProTable, ProFormText} from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
 
 type TypeProp = {
@@ -26,19 +26,33 @@ const ScopePermissions: React.FC<TypeProp> = ({
 
   const columns = [
     {
-      title: 'permissionName',
+      title: 'Permission Name',
       dataIndex: 'permissionName',
       ellipsis: true,
       key: 'permissionName',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
-      title: 'permissionCode',
+      title: 'Permission Code',
       dataIndex: 'permissionCode',
       ellipsis: true,
       key: 'permissionCode',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
-      title: 'permissionType',
+      title: 'Permission Type',
       dataIndex: 'permissionType',
       ellipsis: true,
       valueType: 'select',
@@ -53,6 +67,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
       renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
+            placeholder={'Please Select'}
             mode="multiple"
             {...rest}
             fieldProps={{

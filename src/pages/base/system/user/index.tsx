@@ -170,16 +170,30 @@ const User: React.FC = () => {
     {
       title: 'User Name',
       dataIndex: 'username',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
       title: 'Email',
       dataIndex: 'email',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
-      title: 'PhoneNumber',
+      title: 'Phone Number',
       dataIndex: 'phoneNumber',
       renderFormItem: () => {
-        return <ProFormDigit width="md" name="phoneNumber" />;
+        return <ProFormDigit width="md" name="phoneNumber" placeholder={'Please Enter'} />;
       },
     },
     {
@@ -194,7 +208,8 @@ const User: React.FC = () => {
         };
         return result;
       }, {}),
-      renderFormItem: (_, { ...rest }) => <ProFormSelect mode="multiple" {...rest} fieldProps={{mode: 'multiple'}}/>
+      renderFormItem: (_, { ...rest }) => 
+        <ProFormSelect mode="multiple" {...rest} placeholder={'Please Select'} fieldProps={{mode: 'multiple'}}/>
     },
     {
       title: 'Description',
@@ -362,8 +377,9 @@ const User: React.FC = () => {
                     message: 'Phone Number is required',
                   },
                 ]}
+                placeholder={'Please Enter'}
                 name="phoneNumber"
-                label="PhoneNumber"
+                label="Phone Number"
               />
             </Col>
             <Col span={12}>
@@ -420,15 +436,15 @@ const User: React.FC = () => {
             </Col>
             <Col span={12}>
               <ProFormText
-                label={'Nickname'}
+                label={'Nick Name'}
                 rules={[
                   {
                     required: true,
-                    message: 'Nickname is required',
+                    message: 'Nick Name is required',
                   },
                 ]}
                 name="nickname"
-                placeholder={'Nickname'}
+                placeholder={'Nick Name'}
               />
             </Col>
             <Col span={12}>
@@ -439,6 +455,7 @@ const User: React.FC = () => {
                     message: 'Status is required',
                   },
                 ]}
+                placeholder={'Please Select'}
                 name="status"
                 label={'Status'}
                 request={async () => {
@@ -455,7 +472,7 @@ const User: React.FC = () => {
               <ProFormTextArea
                 name="description"
                 label={'Description'}
-                placeholder={'Please enter description'}
+                placeholder={'Please Enter Description'}
               />
             </Col>
             <Col span={12}>
@@ -472,11 +489,11 @@ const User: React.FC = () => {
                 options={[
                   {
                     value: 0,
-                    label: 'male',
+                    label: 'Male',
                   },
                   {
                     value: 1,
-                    label: 'female',
+                    label: 'Female',
                   },
                 ]}
               />

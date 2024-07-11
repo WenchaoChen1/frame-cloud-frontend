@@ -4,7 +4,7 @@ import {
   getAuthorizationManagePageService,
 } from '@/services/base-service/identity-service/authorizationService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { PageContainer, ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProTable, ProFormText } from '@ant-design/pro-components';
 import { message } from 'antd';
 import { useAccess, Access } from 'umi';
 import React, { useRef, useState } from 'react';
@@ -78,29 +78,56 @@ const Authorization: React.FC = () => {
   }
 
   const columns: ProColumns<APIIdentity.authorization>[] = [
-    { title: 'Client ID', dataIndex: 'id',ellipsis: true },
-    { title: 'User Name', dataIndex: 'principalName' },
-    { title: 'Authentication Mode', dataIndex: 'authorizationGrantType' },
+    { 
+      title: 'Client ID',
+      dataIndex: 'id',
+      ellipsis: true,
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
+    { title: 'User Name', dataIndex: 'principalName',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+     },
+    { title: 'Authentication Mode', dataIndex: 'authorizationGrantType',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+     },
     {
-      title: 'accessTokenIssuedAt',
+      title: 'AccessTokenIssuedAt',
       dataIndex: 'accessTokenIssuedAt',
       search: false,
       ellipsis: true,
     },
     {
-      title: 'accessTokenExpiresAt',
+      title: 'AccessTokenExpiresAt',
       dataIndex: 'accessTokenExpiresAt',
       search: false,
       ellipsis: true,
     },
     {
-      title: 'refreshTokenIssuedAt',
+      title: 'RefreshTokenIssuedAt',
       dataIndex: 'refreshTokenIssuedAt',
       search: false,
       ellipsis: true,
     },
     {
-      title: 'refreshTokenExpiresAt',
+      title: 'RefreshTokenExpiresAt',
       dataIndex: 'refreshTokenExpiresAt',
       search: false,
       ellipsis: true,

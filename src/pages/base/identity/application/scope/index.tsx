@@ -6,7 +6,7 @@ import {
   getApplicationScopeIdByApplicationIdScopeService
 } from '@/services/base-service/identity-service/applicationService';
 import type { ProColumns } from '@ant-design/pro-components';
-import { ProTable } from '@ant-design/pro-components';
+import { ProTable, ProFormText } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
 import dayjs from "dayjs";
 
@@ -33,9 +33,26 @@ const ApplicationScope: React.FC<TypeProp> = ({
   }
 
   const columns: ProColumns<APIIdentity.scopeItemType>[] = [
-    { title: 'scopeName', dataIndex: 'scopeName'},
-    { title: 'scopeCode', dataIndex: 'scopeCode'},
-    { title: 'createdDate',hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate)},
+    { title: 'Scope Name', dataIndex: 'scopeName',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            label
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
+    { title: 'Scope Code', dataIndex: 'scopeCode',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
+    },
+    { title: 'Created Date',hideInSearch: true, dataIndex: 'createdDate',render:(_,record: any)=> formatDate(record?.createdDate)},
   ];
 
   const getList = async (params: APIIdentity.scopeItemType) => {

@@ -157,8 +157,15 @@ const MenuList: React.FC = () => {
 
   const columns: ProColumns<APISystem.MenuListItemDataType>[] = [
     {
-      title: 'Menu name',
+      title: 'Menu Name',
       dataIndex: 'menuName',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
       title: 'Name',
@@ -173,6 +180,13 @@ const MenuList: React.FC = () => {
     {
       title: 'Path',
       dataIndex: 'path',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
       title: 'Sort',
@@ -194,6 +208,7 @@ const MenuList: React.FC = () => {
       renderFormItem: (_, { ...rest }) => {
         return (
           <ProFormSelect
+            placeholder={'Please Select'}
             mode="multiple"
             {...rest}
             fieldProps={{
@@ -219,6 +234,7 @@ const MenuList: React.FC = () => {
         return (
           <ProFormSelect
             mode="multiple"
+            placeholder={'Please Select'}
             {...rest}
             fieldProps={{
               mode: 'multiple',
@@ -524,12 +540,12 @@ const MenuList: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'Menu name is required',
+                    message: 'Menu Name is required',
                   },
                 ]}
-                label={'Menu name'}
+                label={'Menu Name'}
                 name="menuName"
-                placeholder={'Menu name'}
+                placeholder={'Menu Name'}
                 fieldProps={{
                   onChange: changeText,
                 }}
@@ -580,7 +596,6 @@ const MenuList: React.FC = () => {
               </Col>
             }
 
-            {/*<Col span={12}><ProFormText label={'Icon'} name="icon" placeholder={'Icon'} /></Col>*/}
             {
               !hiddenFormItem && <Col span={12}>
                 <ProFormText
@@ -603,6 +618,7 @@ const MenuList: React.FC = () => {
                 <ProFormSelect
                   name="location"
                   label={'Location'}
+                  placeholder={'Please Select'}
                   allowClear={false}
                   request={async () => {
                     return menuLocation?.map((item: any) => {
@@ -624,6 +640,7 @@ const MenuList: React.FC = () => {
                   },
                 ]}
                 name="status"
+                placeholder={'Please Select'}
                 label={'Status'}
                 request={async () => {
                   return dataItemStatus?.map((item: any) => {
@@ -639,8 +656,9 @@ const MenuList: React.FC = () => {
               <ProFormTextArea
                 name="description"
                 label={'Description'}
-                placeholder={'Please enter at least five characters'}
+                placeholder={'Please Enter Description'}
               />
+              <ProFormText name="id" hidden />
             </Col>
           </Row>
         </ModalForm>

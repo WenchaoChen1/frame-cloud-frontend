@@ -157,6 +157,13 @@ const Role: React.FC = () => {
     {
       title: 'Role Name',
       dataIndex: 'roleName',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
       title: 'Sort',
@@ -208,7 +215,7 @@ const Role: React.FC = () => {
               setButtonTenantId(record?.tenantId)
             }}
           >
-            business
+            Business
           </a>
         </FunctionPermission>,
         <FunctionPermission code="MenuRole">
@@ -251,6 +258,7 @@ const Role: React.FC = () => {
             width={'lg'}
             secondary
             fieldProps={{
+              placeholder:'Please Select',
               treeDefaultExpandAll:true,
               treeData: tenantTreeData,
               filterTreeNode: true,
@@ -502,11 +510,11 @@ const Role: React.FC = () => {
                 label={'Tenant'}
                 name="tenantId"
                 disabled={isEdit}
-                placeholder="Please select"
                 allowClear={false}
                 secondary
                 request={getTenantTreeRequest}
                 fieldProps={{
+                  placeholder:"Please Select",
                   treeDefaultExpandAll:true,
                   onChange: onChangeTenant,
                   filterTreeNode: true,
@@ -532,11 +540,11 @@ const Role: React.FC = () => {
                 params={tenantId}
                 label={'Parent Role'}
                 name="parentId"
-                placeholder="Please select"
                 allowClear={false}
                 secondary
                 request={getParentRoleTreeRequest}
                 fieldProps={{
+                  placeholder:"Please Select",
                   treeDefaultExpandAll:true,
                   filterTreeNode: true,
                   showSearch: true,
@@ -563,6 +571,7 @@ const Role: React.FC = () => {
                 ]}
                 name="status"
                 label={'Status'}
+                placeholder="Please Select"
                 request={async () => {
                   return dataItemStatus?.map((item: any) => {
                     return {
@@ -574,7 +583,7 @@ const Role: React.FC = () => {
               />
             </Col>
             <Col span={24}>
-              <ProFormTextArea label={'Description'} name="description"/>
+              <ProFormTextArea label={'Description'} placeholder={'Please Description'} name="description"/>
             </Col>
           </Row>
         </ModalForm>

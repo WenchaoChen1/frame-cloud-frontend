@@ -208,8 +208,15 @@ const Index: React.FC = () => {
 
   const columns: ProColumns<APISystem.TenantItemDataType>[] = [
     {
-      title: 'Tenant name',
+      title: 'Tenant Name',
       dataIndex: 'tenantName',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
       title: 'Type',
@@ -222,6 +229,13 @@ const Index: React.FC = () => {
           text: 'Customer',
         },
       },
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Select'}
+          />
+        )
+      }
     },
     {
       title: 'Status',
@@ -235,11 +249,19 @@ const Index: React.FC = () => {
         };
         return result;
       }, {}),
-      renderFormItem: (_, { ...rest }) => <ProFormSelect mode="multiple" {...rest} fieldProps={{mode: 'multiple'}}/>
+      renderFormItem: (_, { ...rest }) => 
+        <ProFormSelect mode="multiple" {...rest} placeholder={'Please Select'} fieldProps={{mode: 'multiple'}}/>
     },
     {
       title: 'Tenant Code',
       dataIndex: 'tenantCode',
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
       title: 'Description',
@@ -478,13 +500,13 @@ const Index: React.FC = () => {
           <Row  gutter={16}>
             <Col span={12}>
               <ProFormTreeSelect
-                label={'Parent tenant'}
+                label={'Parent Tenant'}
                 name="parentId"
-                placeholder="Please select"
                 allowClear={true}
                 secondary
                 request={async ()=>menuData}
                 fieldProps={{
+                  placeholder:"Please Select",
                   treeDefaultExpandAll:true,
                   suffixIcon: null,
                   filterTreeNode: true,
@@ -510,9 +532,9 @@ const Index: React.FC = () => {
                   },
                 ]}
                 mode="multiple"
-                label={'TenantPermission Type'}
+                label={'Tenant Permission Type'}
                 name="tenantPermissionTypes"
-                placeholder={'TenantPermission Type'}
+                placeholder={'Tenant Permission Type'}
                 request={async () => {
                   return permissionTypeList.map((item: any) => {
                     return {
@@ -534,12 +556,12 @@ const Index: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'Tenant name is required',
+                    message: 'Tenant Name is required',
                   },
                 ]}
-                label={'Tenant name'}
+                label={'Tenant Name'}
                 name="tenantName"
-                placeholder={'Tenant name'}
+                placeholder={'Tenant Name'}
               />
             </Col>
             <Col span={12}>
@@ -603,7 +625,7 @@ const Index: React.FC = () => {
               <ProFormTextArea
                 name="description"
                 label={'Description'}
-                placeholder={'Please enter description'}
+                placeholder={'Please Enter Description'}
               />
             </Col>
           </Row>
@@ -636,7 +658,7 @@ const Index: React.FC = () => {
               onSelect={onSelect}
               selectedKeys={selectedKeys}
               treeData={allMenuTree}
-              fieldNames={{ title: 'name', key: 'id' }}
+              fieldNames={{ title: 'menuName', key: 'id' }}
             />
           </div>
         </ModalForm>
