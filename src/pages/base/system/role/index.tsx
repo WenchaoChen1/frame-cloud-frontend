@@ -33,6 +33,7 @@ import {Button, message, Tree, Row, Col} from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import ConfirmPage from "@/pages/base/components/popconfirm";
+import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const Role: React.FC = () => {
   const intl = useIntl();
@@ -198,7 +199,7 @@ const Role: React.FC = () => {
       valueType: 'option',
       width: '220px',
       render: (_, record: any) => [
-        <Access accessible={access?.buttonPermission('BusinessRole')} key="BusinessRole">
+        <FunctionPermission code="BusinessRole">
           <a
             key="BusinessBtn"
             onClick={() => {
@@ -209,8 +210,8 @@ const Role: React.FC = () => {
           >
             business
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('MenuRole')} key="MenuRole">
+        </FunctionPermission>,
+        <FunctionPermission code="MenuRole">
           <a
             key="MenuBtn"
             onClick={() => {
@@ -220,20 +221,20 @@ const Role: React.FC = () => {
           >
             Menu
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('EditRole')} key="EditRole">
+        </FunctionPermission>,
+        <FunctionPermission code="EditRole">
           <a key="editBtn" onClick={() => openEdit(record)}>
             Edit
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('DeleteRole')} key="DeleteRole">
+        </FunctionPermission>,
+        <FunctionPermission code="DeleteRole">
           <ConfirmPage
             onConfirm={async () => {
               await deleteRoleRequest(record?.roleId || '');
             }}>
             <a key="deleteRow">Delete</a>
           </ConfirmPage>
-        </Access>
+        </FunctionPermission>,
       ],
     },
     {
@@ -389,7 +390,7 @@ const Role: React.FC = () => {
           columnsStateMap={columnsStateMap}
           onColumnsStateChange={handleColumnsStateChange}
           toolBarRender={() => [
-            <Access accessible={access?.buttonPermission('AddRole')} key="AddRole">
+            <FunctionPermission code="AddRole">
               <Button
                 type="primary"
                 onClick={() => {
@@ -400,7 +401,7 @@ const Role: React.FC = () => {
               >
                 <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
               </Button>
-            </Access>,
+            </FunctionPermission>
           ]}
           request={getList}
           columns={columns}

@@ -33,6 +33,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import {PlusOutlined} from '@ant-design/icons'
 import PopconfirmPage from '@/pages/base/components/popconfirm/index'
 import styles from './index.less';
+import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const Index: React.FC = () => {
   const access = useAccess();
@@ -265,7 +266,7 @@ const Index: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record: any) => [
-        <Access accessible={access?.buttonPermission('MenuTenant')} key='MenuTenant'>
+        <FunctionPermission code="MenuTenant">
           <a
             onClick={() => {
               setCurrentRow(record);
@@ -274,8 +275,8 @@ const Index: React.FC = () => {
           >
             Menu
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('EditTenant')} key='EditTenant'>
+        </FunctionPermission>,
+        <FunctionPermission code="EditTenant">
           <a
             onClick={() => {
               setIsEdit(true);
@@ -286,8 +287,8 @@ const Index: React.FC = () => {
           >
             Edit
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('AddTenant')} key='AddTenant'>
+        </FunctionPermission>,
+        <FunctionPermission code="AddTenant">
           <a
             onClick={() => {
               setIsEdit(false);
@@ -298,8 +299,8 @@ const Index: React.FC = () => {
           >
             Add
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('DeleteTenant')} key='DeleteTenant'>
+        </FunctionPermission>,
+        <FunctionPermission code="DeleteTenant">
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRow(record?.id || '');
@@ -308,7 +309,7 @@ const Index: React.FC = () => {
             }}>
             <a>Delete</a>
           </PopconfirmPage>
-        </Access>,
+        </FunctionPermission>,
       ],
     },
   ];
@@ -389,7 +390,7 @@ const Index: React.FC = () => {
             showAll?'收起':'展开'
           }
           </Button>,
-          <Access accessible={access?.buttonPermission('AddTenant')} key='AddTenant'>
+          <FunctionPermission code="AddTenant">
             <Button
               key="button"
               onClick={() => {
@@ -401,7 +402,7 @@ const Index: React.FC = () => {
             >
               <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
             </Button>
-          </Access>
+          </FunctionPermission>,
         ]}
         request={searchTable}
         columns={columns}

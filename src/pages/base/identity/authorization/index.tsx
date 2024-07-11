@@ -11,6 +11,7 @@ import React, { useRef, useState } from 'react';
 import {useIntl} from "@@/exports";
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
+import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const Authorization: React.FC = () => {
   const intl = useIntl();
@@ -111,11 +112,11 @@ const Authorization: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
-        <Access accessible={access?.buttonPermission('DeleteAuthorization')} key="DeleteAuthorization">
+        <FunctionPermission code="DeleteAuthorization">
           <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.id || '')}>
             <a>Delete</a>
           </PopconfirmPage>
-        </Access>
+        </FunctionPermission>
       ),
     },
   ];

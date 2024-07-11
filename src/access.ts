@@ -24,7 +24,7 @@ export default function access(initialState: { currentUser?: any } | undefined) 
   return{
     // ...jurisdictions,
     routePermission:(foo)=>handlePermission(foo?.name,powerLists),
-    buttonPermission:(foo)=> handleButtonPermission(foo,buttonLists)
+    buttonPermission:(foo)=> handleButtonPermission(foo?.name,buttonLists)
   }
 }
 

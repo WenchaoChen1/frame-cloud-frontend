@@ -31,6 +31,7 @@ import {
   getAllTenantMenuIdByBusinessPermissionIdService,
   updateBusinessPermissionAssignedTenantMenuService,
 } from '@/services/base-service/system-service/businessService';
+import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const BusinessPermission: React.FC = () => {
   const intl = useIntl();
@@ -185,7 +186,7 @@ const BusinessPermission: React.FC = () => {
       valueType: 'option',
       width: '220px',
       render: (_, record) => [
-        <Access accessible={access?.buttonPermission('MenuBusiness')} key="MenuBusiness">
+        <FunctionPermission code="MenuBusiness">
           <a
             onClick={() => {
               setCurrentRow(record);
@@ -194,20 +195,20 @@ const BusinessPermission: React.FC = () => {
           >
             Menu
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('EditBusiness')} key="EditBusiness">
+        </FunctionPermission>,
+        <FunctionPermission code="EditBusiness">
           <a onClick={() => openEdit(record)}>
             Edit
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('DeleteBusiness')} key="DeleteBusiness">
+        </FunctionPermission>,
+        <FunctionPermission code="DeleteBusiness">
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRoleRequest(record?.id || '');
             }}>
             <a key="deleteRow">Delete</a>
           </PopconfirmPage>
-        </Access>
+        </FunctionPermission>,
       ],
     },
     {
@@ -345,7 +346,7 @@ const BusinessPermission: React.FC = () => {
           columnsStateMap={columnsStateMap}
           onColumnsStateChange={handleColumnsStateChange}
           toolBarRender={() => [
-            <Access accessible={access?.buttonPermission('AddBusiness')} key="AddBusiness">
+            <FunctionPermission code="AddBusiness">
               <Button
                 type="primary"
                 key="primary"
@@ -357,7 +358,7 @@ const BusinessPermission: React.FC = () => {
               >
                 <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
               </Button>
-            </Access>
+            </FunctionPermission>
           ]}
           request={getList}
           columns={columns}

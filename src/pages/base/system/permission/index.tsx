@@ -26,6 +26,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import { useIntl } from "@@/exports";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
+import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const User: React.FC = () => {
   const intl = useIntl();
@@ -285,7 +286,7 @@ const User: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <Access accessible={access?.buttonPermission('EditPermission')} key="EditPermission">
+        <FunctionPermission code="EditPermission">
           <a
             onClick={() => {
               setIsEdit(true);
@@ -295,12 +296,12 @@ const User: React.FC = () => {
           >
             Edit
           </a>
-        </Access>,
-        <Access accessible={access?.buttonPermission('DeletePermission')} key="DeletePermission">
+        </FunctionPermission>,
+        <FunctionPermission code="DeletePermission">
           <PopconfirmPage onConfirm={() => onDeleteRequest(record?.permissionId || '')}>
             <a>Delete</a>
           </PopconfirmPage>
-        </Access>
+        </FunctionPermission>,
       ],
     },
   ];
@@ -329,7 +330,7 @@ const User: React.FC = () => {
           defaultCollapsed:false,
         }}
         toolBarRender={() => [
-          <Access accessible={access?.buttonPermission('AddPermission')} key="AddPermission">
+          <FunctionPermission code="AddPermission">
             <Button
               type="primary"
               onClick={() => {
@@ -339,7 +340,7 @@ const User: React.FC = () => {
             >
               <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
             </Button>
-          </Access>
+          </FunctionPermission>
         ]}
         request={getList}
         columns={columns}
