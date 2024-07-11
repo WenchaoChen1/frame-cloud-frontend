@@ -68,6 +68,9 @@ const MenuList: React.FC = () => {
     if (isEdit) {
       const accountDetailResponse = await getMenuManageDetailService(currentRow?.id || '');
       if (accountDetailResponse.success === true && accountDetailResponse.data) {
+        if (accountDetailResponse?.data?.type === 2){
+          setHiddenFormItem(true)
+        }
         accountDetailResponse.data.code = generateRandomLetters(5)
         return accountDetailResponse.data;
       }
@@ -578,7 +581,7 @@ const MenuList: React.FC = () => {
                 name="code"
                 label={'Code'}
                 placeholder={'Code'}
-                disabled={isEdit && !hiddenFormItem}
+                disabled={isEdit}
                 rules={[
                   {
                     required: true,
