@@ -11,7 +11,7 @@ import {
   downloadMenuManageService,
   downloadMenuManageAssignedAttributeService
 } from '@/services/base-service/system-service/menuService';
-import { statusConversionType } from '@/utils/utils';
+import { statusConversionType,generateRandomLetters } from '@/utils/utils';
 import { enumsService } from '@/services/base-service/system-service/commService';
 import type { ActionType, ProColumns,ProFormInstance } from '@ant-design/pro-components';
 import {
@@ -84,6 +84,7 @@ const MenuList: React.FC = () => {
     if (isEdit) {
       const accountDetailResponse = await getMenuManageDetailService(currentRow?.id || '');
       if (accountDetailResponse.success === true && accountDetailResponse.data) {
+        accountDetailResponse.data.code = generateRandomLetters(5)
         return accountDetailResponse.data;
       }
     }
@@ -119,7 +120,10 @@ const MenuList: React.FC = () => {
   const handleUpdate = async (fields: APISystem.TenantItemDataType) => {
     const hide = message.loading('Update');
     try {
-      await updateMenuManageService(fields);
+      await updateMenuManageService({
+        ...fields,
+        id:currentRow?.id
+      });
       hide();
       message.success('Update successfully');
       return true;
@@ -401,14 +405,11 @@ const MenuList: React.FC = () => {
     }
     setHiddenFormItem(false)
   }
-  const changeText = (e) =>{
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1; // 月份是从0开始的
-    const day = today.getDate();
-    if (formRef?.current){
-      formRef.current.setFieldsValue({'code':e.target.value + `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`})
+  const changeHandle = (e) =>{
+    if (!e){
+      setHiddenFormItem(false)
     }
+    handleModalVisible(e)
   }
   return (
     <PageContainer>
@@ -493,7 +494,7 @@ const MenuList: React.FC = () => {
           formRef={formRef}
           open={modalVisible}
           request={getMenuInfoRequest}
-          onOpenChange={handleModalVisible}
+          onOpenChange={changeHandle}
           onFinish={async (record: any) => {
             let response = undefined;
             if (isEdit) {
@@ -547,9 +548,6 @@ const MenuList: React.FC = () => {
                 label={'Menu Name'}
                 name="menuName"
                 placeholder={'Menu Name'}
-                fieldProps={{
-                  onChange: changeText,
-                }}
               />
             </Col>
             <Col span={12}>
@@ -557,7 +555,7 @@ const MenuList: React.FC = () => {
                 name="code"
                 label={'Code'}
                 placeholder={'Code'}
-                disabled
+                disabled={isEdit && !hiddenFormItem}
                 rules={[
                   {
                     required: true,

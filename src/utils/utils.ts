@@ -127,7 +127,7 @@ export function removeToken() {
 export function logOut() {
   history.push(LOGIN_PATH);
   removeToken();
-  localStorage.clear() 
+  localStorage.clear()
 }
 
 export const fixMenuItemIcon = (menus:MenuDataItem[]):MenuDataItem[]=>{
@@ -160,4 +160,16 @@ export const statusConversionType = async (arr:any, data: any) => {
 export const menuConversionType = async (value:any, data: any) => {
   const item = data.find((item: any) => item.value === Number(value));
   return item ? item.key : undefined;
+}
+
+
+// 随机生成字母
+export const generateRandomLetters = (length:number) => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let result = '';
+  const charactersLength = chars.length;
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result + '-' + Date.now();
 }
