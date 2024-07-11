@@ -6,7 +6,7 @@ import {
 import {
   getScopePermissionIdByScopeIdService,
 } from '@/services/base-service/identity-service/scopeService';
-import { ProTable } from '@ant-design/pro-components';
+import { ProTable, ProFormText } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
 
 type TypeProp = {
@@ -29,19 +29,30 @@ const ScopePermissions: React.FC<TypeProp> = ({
       title: 'Permission Name',
       dataIndex: 'permissionName',
       key: 'permissionName',
-      ellipsis: true,
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
       title: 'Permission Code',
       dataIndex: 'permissionCode',
       key: 'permissionCode',
-      ellipsis: true,
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
       title: 'Permission Type',
       dataIndex: 'permissionType',
       valueType: 'select',
-      ellipsis: true,
       key: 'permissionType',
       valueEnum: permissionTypeList.reduce((result: any, type: any) => {
         result[type] = {
@@ -115,13 +126,10 @@ const ScopePermissions: React.FC<TypeProp> = ({
         rowKey={(e: any) => e?.permissionId}
         rowSelection={rowSelection}
         search={{
-          defaultCollapsed: true,
-          span: 8,
           labelWidth: 'auto',
+          defaultCollapsed:false,
         }}
-        scroll={{
-          y: 300,
-        }}
+        scroll={{ x: 'max-content' }}
         request={getList}
         options={false}
         pagination={{

@@ -286,23 +286,23 @@ const Scope: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'scopeName is required',
+                    message: 'Scope Name is required',
                   },
                 ]}
-                label={'scopeName'}
+                label={'Scope Name'}
                 name="scopeName"
-                placeholder={'scopeName'}
+                placeholder={'Scope Name'}
               />
             </Col>
             <Col span={12}>
               <ProFormText
                 name="scopeCode"
-                label={'scopeCode'}
-                placeholder={'scopeCode'}
+                label={'Scope Code'}
+                placeholder={'Scope Code'}
                 rules={[
                   {
                     required: true,
-                    message: 'scopeCode is required',
+                    message: 'Scope Code is required',
                   },
                 ]}
               />
