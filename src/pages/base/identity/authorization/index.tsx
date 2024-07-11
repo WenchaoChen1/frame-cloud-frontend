@@ -138,6 +138,8 @@ const Authorization: React.FC = () => {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
+      width: '80px',
+      fixed: 'right',
       render: (_, record) => (
         <FunctionPermission code="DeleteAuthorization">
           <PopconfirmPage onConfirm={async () => await deleteUserRequest(record?.id || '')}>
