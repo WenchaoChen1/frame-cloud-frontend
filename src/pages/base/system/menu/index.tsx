@@ -11,7 +11,7 @@ import {
   downloadMenuManageService,
   downloadMenuManageAssignedAttributeService
 } from '@/services/base-service/system-service/menuService';
-import { statusConversionType,generateRandomLetters } from '@/utils/utils';
+import { statusConversionType,generateRandomLetters, menuConversionType } from '@/utils/utils';
 import { enumsService } from '@/services/base-service/system-service/commService';
 import type { ActionType, ProColumns,ProFormInstance } from '@ant-design/pro-components';
 import {
@@ -24,7 +24,6 @@ import {
   ProTable,
   ProFormTreeSelect,
 } from '@ant-design/pro-components';
-import { useAccess, Access } from 'umi';
 import { message, Button, Row, Col } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
 import { useIntl } from "@@/exports";
@@ -37,7 +36,6 @@ import FunctionPermission from '@/pages/base/components/functionPermission/index
 
 const MenuList: React.FC = () => {
   const formRef = useRef<ProFormInstance>();
-  const access = useAccess();
   const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const [total, setTotal] = useState<number>(0);
@@ -57,20 +55,6 @@ const MenuList: React.FC = () => {
   const [menuType, setMenuType] = useState<any>([]);
   const [menuLocation, setMenuLocation] = useState<any>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
-  const [searchType,setSearchType] = useState([
-    {
-      name:'Catalogue',
-      value:'0'
-    },
-    {
-      name:'Page',
-      value:'1'
-    },
-    {
-      name: 'Button',
-      value: '2'
-    }
-  ])
   const [columnsStateMap, setColumnsStateMap] = useState({
     'createdDate': { show: false },
     'sort': { show: false },
@@ -307,8 +291,11 @@ const MenuList: React.FC = () => {
       params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
     }
 
-
-
+    if (params?.type?.length > 0) {
+      const list = await statusConversionType(params.type, menuType)
+      params.type = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
+    }
+    
     const parameters = {
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
