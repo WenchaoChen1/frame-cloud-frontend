@@ -8,12 +8,15 @@ import SecurityView from './components/security';
 import Acount from "@/pages/account/settings/components/acount";
 import LoginLog from "@/pages/account/settings/components/loginLog";
 import useStyles from './style.style';
+import FunctionPermission from '@/pages/base/components/functionPermission/index'
+import { useAccess, Access } from '@umijs/max';
 type SettingsStateKeys = 'base' | 'security' | 'account' | 'binding' | 'notification' | 'loginLog';
 type SettingsState = {
   mode: 'inline' | 'horizontal';
   selectKey: SettingsStateKeys;
 };
 const Settings: React.FC = () => {
+  const access = useAccess();
   const { styles } = useStyles();
   const menuMap: Record<string, React.ReactNode> = {
     base: '基本设置',
@@ -63,17 +66,17 @@ const Settings: React.FC = () => {
     const { selectKey } = initConfig;
     switch (selectKey) {
       case 'base':
-        return <BaseView />;
+        return <FunctionPermission code="basic-setup"><BaseView /></FunctionPermission>;
       case 'security':
-        return <SecurityView />;
+        return <FunctionPermission code="security-settings"><SecurityView /></FunctionPermission>;
       case 'binding':
-        return <BindingView />;
+        return <FunctionPermission code="account-binding"><BindingView /></FunctionPermission>;
       case 'notification':
-        return <NotificationView />;
+        return <FunctionPermission code="message-notification"><NotificationView /></FunctionPermission>;
       case 'account':
-        return <Acount />;
+        return <FunctionPermission code="account-setting"><Acount /></FunctionPermission>;
         case 'loginLog':
-        return <LoginLog />;
+        return <FunctionPermission code="loginLog"><LoginLog /></FunctionPermission>;
       default:
         return null;
     }
@@ -97,9 +100,26 @@ const Settings: React.FC = () => {
                 ...initConfig,
                 selectKey: key as SettingsStateKeys,
               });
-            }}
-            items={getMenu()}
-          />
+            }}>
+            {
+              access.buttonPermission({name:'basic-setup'}) && <Menu.Item key="base">基本设置</Menu.Item>
+            }
+            {
+              access.buttonPermission({name:'security-settings'}) && <Menu.Item key="security">安全设置</Menu.Item>
+            }
+            {
+              access.buttonPermission({name:'account-setting'}) && <Menu.Item key="account">账户设置</Menu.Item>
+            }
+            {
+              access.buttonPermission({name:'account-binding'}) && <Menu.Item key="binding">账号绑定</Menu.Item>
+            }
+            {
+              access.buttonPermission({name:'message-notification'}) && <Menu.Item key="notification">新消息通知</Menu.Item>
+            }
+            {
+              access.buttonPermission({name:'loginLog'}) && <Menu.Item key="loginLog">用户在线授权</Menu.Item>
+            }
+          </Menu>
         </div>
         <div className={styles.right}>
           <div className={styles.title}>{menuMap[initConfig.selectKey]}</div>
