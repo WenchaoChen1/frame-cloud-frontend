@@ -1,5 +1,6 @@
 import { GridContent } from '@ant-design/pro-components';
 import { Menu } from 'antd';
+import { useAccess } from '@umijs/max';
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import BaseView from './components/base';
 import BindingView from './components/binding';
@@ -16,6 +17,7 @@ type SettingsState = {
 };
 const Settings: React.FC = () => {
   const { styles } = useStyles();
+  const access = useAccess();
   const menuMap: Record<string, React.ReactNode> = {
     base: '基本设置',
     security: '安全设置',
