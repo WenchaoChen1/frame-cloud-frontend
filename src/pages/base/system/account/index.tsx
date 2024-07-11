@@ -210,16 +210,28 @@ const Account: React.FC = () => {
     {
       title: 'Account',
       dataIndex: 'name',
-      search: {
-        placeholder: 'Please Enter',
-      },
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            label={'Account'}
+            name={'name'}
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
       title: 'Identity',
       dataIndex: 'identity',
-      search: {
-        placeholder: 'Please Enter',
-      },
+      renderFormItem: () => {
+        return (
+          <ProFormText
+            label={'Identity'}
+            name={'identity'}
+            placeholder={'Please Enter'}
+          />
+        )
+      }
     },
     {
       title: 'Status',
@@ -250,8 +262,8 @@ const Account: React.FC = () => {
             allowClear={true}
             width={'lg'}
             secondary
-            // initialValue={tenantId}
             fieldProps={{
+              placeholder: 'Please Select',
               treeDefaultExpandAll:true,
               onChange: onChangeTenant,
               treeData: tenantTreeData,

@@ -127,6 +127,7 @@ export function removeToken() {
 export function logOut() {
   history.push(LOGIN_PATH);
   removeToken();
+  localStorage.clear() 
 }
 
 export const fixMenuItemIcon = (menus:MenuDataItem[]):MenuDataItem[]=>{
