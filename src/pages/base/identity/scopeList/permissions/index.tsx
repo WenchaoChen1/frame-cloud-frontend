@@ -126,10 +126,14 @@ const ScopePermissions: React.FC<TypeProp> = ({
         rowKey={(e: any) => e?.permissionId}
         rowSelection={rowSelection}
         search={{
+          span: 8,
+          layout: 'vertical',
           labelWidth: 'auto',
           defaultCollapsed:false,
         }}
-        scroll={{ x: 'max-content' }}
+        scroll={{
+          y: 300,
+        }}
         request={getList}
         options={false}
         pagination={{

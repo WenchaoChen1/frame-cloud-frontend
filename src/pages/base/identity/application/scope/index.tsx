@@ -37,7 +37,6 @@ const ApplicationScope: React.FC<TypeProp> = ({
       renderFormItem: () => {
         return (
           <ProFormText
-            label
             placeholder={'Please Enter'}
           />
         )
@@ -106,9 +105,10 @@ const ApplicationScope: React.FC<TypeProp> = ({
         rowKey={(e: any) => e?.scopeId}
         rowSelection={rowSelection}
         search={{
-          defaultCollapsed: true,
           span: 8,
+          layout: 'vertical',
           labelWidth: 'auto',
+          defaultCollapsed:false,
         }}
         scroll={{
           y: 300,
