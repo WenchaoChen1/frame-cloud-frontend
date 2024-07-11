@@ -204,7 +204,7 @@ const Role: React.FC = () => {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
-      width: '220px',
+      fixed: 'right',
       render: (_, record: any) => [
         <FunctionPermission code="BusinessRole">
           <a

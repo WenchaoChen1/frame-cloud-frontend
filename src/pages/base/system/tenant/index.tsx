@@ -287,6 +287,7 @@ const Index: React.FC = () => {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
+      fixed: 'right',
       render: (_, record: any) => [
         <FunctionPermission code="MenuTenant">
           <a

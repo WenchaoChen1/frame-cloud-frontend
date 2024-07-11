@@ -194,7 +194,8 @@ const BusinessPermission: React.FC = () => {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
-      width: '220px',
+      width: '160px',
+      fixed: 'right',
       render: (_, record) => [
         <FunctionPermission code="MenuBusiness">
           <a

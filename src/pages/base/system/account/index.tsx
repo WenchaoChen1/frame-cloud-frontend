@@ -282,7 +282,7 @@ const Account: React.FC = () => {
     {
       title: 'Operating',
       dataIndex: 'option',
-      width: '280px',
+      fixed: 'right',
       valueType: 'option',
       render: (_, record) => [
         <FunctionPermission code="RoleAccount">

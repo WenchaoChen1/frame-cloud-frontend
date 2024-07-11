@@ -440,6 +440,7 @@ const Application: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'pages.searchTable.actions' }),
       dataIndex: 'actions',
+      width: '170px',
       fixed: 'right',
       search: false,
       render: (_, record: any) => [

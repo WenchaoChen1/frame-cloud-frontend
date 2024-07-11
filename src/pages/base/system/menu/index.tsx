@@ -253,6 +253,7 @@ const MenuList: React.FC = () => {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
+      fixed: 'right',
       render: (_, record: any) => [
         <FunctionPermission code="EditMenu">
           <a

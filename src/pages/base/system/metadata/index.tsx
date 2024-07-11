@@ -229,6 +229,8 @@ const Metadata: React.FC = () => {
       title: intl.formatMessage({ id: 'pages.searchTable.actions' }),
       dataIndex: 'actions',
       search: false,
+      width: '120px',
+      fixed: 'right',
       render: (_, record: any) => [
         <FunctionPermission code="PermissionsMetadata">
           <a

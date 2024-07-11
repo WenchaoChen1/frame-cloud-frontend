@@ -223,6 +223,7 @@ const User: React.FC = () => {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
+      fixed: 'right',
       render: (_, record:any) => [
         <FunctionPermission code="EditUser">
           <a key="editUser" onClick={() => onEditUser(record)}>

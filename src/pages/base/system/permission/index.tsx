@@ -300,6 +300,8 @@ const User: React.FC = () => {
       title: 'Operating',
       dataIndex: 'option',
       valueType: 'option',
+      width: '110px',
+      fixed: 'right',
       render: (_, record) => [
         <FunctionPermission code="EditPermission">
           <a
