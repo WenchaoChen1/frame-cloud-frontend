@@ -113,8 +113,6 @@ const RightContainer: React.FC<propsType> = (props) => {
   ];
 
   const getDetail = async () => {
-    console.log('getDetail() isEdit', props.selectOrganizeId, props.isEdit);
-
     if (!props.selectOrganizeId || props.isEdit === false) {
       form.setFieldsValue(initFormData);
       return initFormData;
