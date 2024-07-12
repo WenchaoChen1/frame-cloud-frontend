@@ -627,7 +627,7 @@ const Role: React.FC = () => {
 
       {OpenBusinessModal && (
         <ModalForm
-          title={'Permissions'}
+          title={'Business'}
           width="80%"
           open={OpenBusinessModal}
           onOpenChange={setOpenBusinessModal}
