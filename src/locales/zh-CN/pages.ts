@@ -96,7 +96,8 @@ export default {
       'label2': '令牌设置',
       'label3': '数据条目设置',
       'createdDate':'创建时间',
-      'updatedDate':'修改时间'
+      'updatedDate':'修改时间',
+      'showSelect':'数据筛选'
     }
   },
 

@@ -85,6 +85,7 @@ declare namespace APISystem {
     pageSize?: number;
     content?: any;
     totalElements?: any;
+    showSelect:string
   };
   type DirctDataType = {
     sysAccountType?: string[];

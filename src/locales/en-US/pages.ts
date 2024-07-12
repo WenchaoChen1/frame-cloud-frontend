@@ -99,7 +99,8 @@ export default {
       'label2': 'Token Settings',
       'label3': 'Data Entry Settings',
       'createdDate':'Created Date',
-      'updatedDate':'Updated Date'
+      'updatedDate':'Updated Date',
+      'showSelect':'Data Screening'
     }
   },
 
