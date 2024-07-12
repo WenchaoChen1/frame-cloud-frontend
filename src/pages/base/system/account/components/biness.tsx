@@ -92,6 +92,7 @@ function Biness({currentRow,tenantId,closeRole,actionRef,binessModal}:Interface)
           <Tree
             height={500}
             checkable
+            checkStrictly
             defaultExpandAll
             onCheck={onCheck}
             checkedKeys={checkedKeys}

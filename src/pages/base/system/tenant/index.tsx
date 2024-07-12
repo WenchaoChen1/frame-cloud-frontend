@@ -131,8 +131,21 @@ const Index: React.FC = () => {
     handleModalVisible(true);
   };
 
-  const onCheck = (checkedKeysValue: any) => {
-    setCheckedKeys(checkedKeysValue);
+  const onCheck = (checkedKeysValue: any, info: any) => {
+    // const parentKeys = [];
+
+    // const checkedParentIds: any = [];
+    // info?.checkedNodes.forEach((node: any) => {
+    //   const parentId = node.parentId;
+    //   if (parentId && !checkedParentIds.includes(parentId)) {
+    //     checkedParentIds.push(parentId);
+    //   }
+    // });
+    // const mergedArray = [...checkedKeysValue?.checked, ...checkedParentIds];
+    // const uniqueArray = Array.from(new Set(mergedArray));
+    // console.log(uniqueArray,) // 处理父节点自动勾选
+
+    setCheckedKeys(checkedKeysValue?.checked);
   };
 
   const onSelect = (selectedKeysValue: any) => {
@@ -655,6 +668,7 @@ const Index: React.FC = () => {
             <Tree
               height={500}
               checkable
+              checkStrictly
               defaultExpandAll
               onCheck={onCheck}
               checkedKeys={checkedKeys}

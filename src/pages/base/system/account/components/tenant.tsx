@@ -91,6 +91,7 @@ function Tenant({currentRow,tenantId,closeRole,actionRef,tenantModal}:Interface)
           <Tree
             height={500}
             checkable
+            checkStrictly
             defaultExpandAll
             onCheck={onCheck}
             checkedKeys={checkedKeys}

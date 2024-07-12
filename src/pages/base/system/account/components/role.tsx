@@ -91,6 +91,7 @@ function Role({currentRow,tenantId,closeRole,actionRef,roleModal}:Interface) {
           <Tree
             height={500}
             checkable
+            checkStrictly
             defaultExpandAll
             onCheck={onCheck}
             checkedKeys={checkedKeys}

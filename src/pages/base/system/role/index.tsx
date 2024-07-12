@@ -611,6 +611,7 @@ const Role: React.FC = () => {
             <Tree
               height={500}
               checkable
+              checkStrictly
               defaultExpandedKeys={selectedKeys}
               defaultSelectedKeys={selectedKeys}
               defaultCheckedKeys={selectedKeys}

@@ -539,6 +539,7 @@ const BusinessPermission: React.FC = () => {
           <div>
             <Tree
               checkable
+              checkStrictly
               defaultExpandedKeys={selectMenuDataList}
               defaultSelectedKeys={selectMenuDataList}
               defaultCheckedKeys={selectMenuDataList}
