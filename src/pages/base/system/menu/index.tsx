@@ -55,6 +55,7 @@ const MenuList: React.FC = () => {
   const [menuType, setMenuType] = useState<any>([]);
   const [menuLocation, setMenuLocation] = useState<any>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [columnsStateMap, setColumnsStateMap] = useState({
     'createdDate': { show: false },
     'sort': { show: false },
@@ -404,10 +405,21 @@ const MenuList: React.FC = () => {
     }
     handleModalVisible(e)
   }
+
+  const handleRowSelection = (selectedRowKeys: any) => {
+    setSelectedRowKeys(selectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: handleRowSelection,
+  };
+  
   return (
     <PageContainer>
       <ProTable<APISystem.MenuListItemDataType, APISystem.PageParams>
         headerTitle={'List'}
+        rowSelection={rowSelection}
         actionRef={actionRef}
         rowKey="id"
         search={{
@@ -433,6 +445,9 @@ const MenuList: React.FC = () => {
             setPageSize(pageSizeNumber);
             setCurrentPage(currentPageNumber);
           },
+        }}
+        tableAlertRender={()=>{
+          return `Selected ${selectedRowKeys.length} ${selectedRowKeys.length > 1 ? 'Items' : 'Item'}`
         }}
         toolBarRender={() => [
           <Button

@@ -115,6 +115,9 @@ const ScopePermissions: React.FC<TypeProp> = ({ onSelectedPermissions, Id, tenan
         scroll={{
           y: 300,
         }}
+        tableAlertRender={()=>{
+          return `Selected ${selectedRowKeys.length} ${selectedRowKeys.length > 1 ? 'Items' : 'Item'}`
+        }}
         pagination={{
           current: page,
           pageSize: size,

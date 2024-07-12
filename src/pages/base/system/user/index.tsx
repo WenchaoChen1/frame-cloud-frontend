@@ -265,7 +265,7 @@ const User: React.FC = () => {
       <ProTable<APISystem.UserItemDataType, API.PageParams>
         headerTitle={'List'}
         actionRef={actionRef}
-        rowKey="id"
+        rowKey="userId"
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
@@ -287,6 +287,9 @@ const User: React.FC = () => {
           labelWidth: 'auto',
           defaultCollapsed:false,
         }}
+        tableAlertRender={()=>{
+          return `Selected ${selectedRowsState.length} ${selectedRowsState.length > 1 ? 'Items' : 'Item'}`
+        }}
         rowSelection={{
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows);
@@ -294,30 +297,6 @@ const User: React.FC = () => {
         }}
       />
 
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="Item" />
-            </div>
-          }
-        >
-          <Button
-            onClick={async () => {
-              await deleteUserRequest('');
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          >
-            <FormattedMessage
-              id="pages.searchTable.batchDeletion"
-              defaultMessage="Batch deletion"
-            />
-          </Button>
-        </FooterToolbar>
-      )}
       {openModal && (
         <ModalForm
           title={isEdit ? 'Edit' : 'New'}
@@ -522,12 +501,12 @@ const User: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'User Id is required',
+                    message: 'User ID is required',
                   },
                 ]}
                 initialValue={userID}
                 disabled
-                label={'User Id'}
+                label={'User ID'}
                 name="userId"
               />
             </Col>

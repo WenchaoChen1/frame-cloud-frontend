@@ -25,7 +25,7 @@ const Scope: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [currentRow, setCurrentRow] = useState({});
+  const [currentRow, setCurrentRow] = useState([]);
   const [scopeId, setScopeId] = useState('');
   const [selectedPermissions, setSelectedPermissions] = useState([]);
   const [total, setTotal] = useState<number>(0);
@@ -238,6 +238,9 @@ const Scope: React.FC = () => {
         ]}
         request={getList}
         columns={columns}
+        tableAlertRender={()=>{
+          return `Selected ${currentRow.length} ${currentRow.length > 1 ? 'Items' : 'Item'}`
+        }}
         rowSelection={{
           onChange: (_, selectedRows) => {
             setCurrentRow(selectedRows);

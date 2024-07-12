@@ -103,6 +103,9 @@ const ApplicationScope: React.FC<TypeProp> = ({
       <ProTable<APIIdentity.scopeItemType, API.PageParams>
         columns={columns}
         rowKey={(e: any) => e?.scopeId}
+        tableAlertRender={()=>{
+          return `Selected ${selectedRowKeys.length} ${selectedRowKeys.length > 1 ? 'Items' : 'Item'}`
+        }}
         rowSelection={rowSelection}
         search={{
           span: 8,

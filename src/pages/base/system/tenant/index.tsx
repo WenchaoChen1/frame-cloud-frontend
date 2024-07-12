@@ -48,8 +48,8 @@ const Index: React.FC = () => {
   const [tenantId, setTenantId] = useState(null);
   const [checkedKeys, setCheckedKeys] = useState([]);
   const [defaultExpanded, setDefaultExpanded] = useState([]);
-  const [menuData,setMenuData] = useState([])
-  const [showAll,setShowAll] = useState(false)
+  const [menuData,setMenuData] = useState([]);
+  const [showAll,setShowAll] = useState(false);
   const [permissionTypeList, setPermissionTypeList] = useState([]);
   const [tableAdd,setTableAdd] = useState<string | undefined>('');
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
@@ -431,6 +431,9 @@ const Index: React.FC = () => {
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows);
           },
+        }}
+        tableAlertRender={()=>{
+          return `Selected ${selectedRowsState.length} ${selectedRowsState.length > 1 ? 'Items' : 'Item'}`
         }}
         expandable={{expandedRowKeys: defaultExpanded}}
         onExpand={(b, r) => {

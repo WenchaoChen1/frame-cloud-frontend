@@ -340,7 +340,7 @@ const Account: React.FC = () => {
         headerTitle={'List'}
         formRef={refTableForm}
         actionRef={actionRef}
-        rowKey="id"
+        rowKey="accountId"
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         search={{
@@ -362,6 +362,9 @@ const Account: React.FC = () => {
         ]}
         request={getList}
         columns={columns}
+        tableAlertRender={()=>{
+          return `Selected ${selectedRowsState.length} ${selectedRowsState.length > 1 ? 'Items' : 'Item'}`
+        }}
         rowSelection={{
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows);
@@ -369,30 +372,6 @@ const Account: React.FC = () => {
         }}
       />
 
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="Item" />
-            </div>
-          }
-        >
-          <Button
-            onClick={async () => {
-              await deleteRow('');
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          >
-            <FormattedMessage
-              id="pages.searchTable.batchDeletion"
-              defaultMessage="Batch deletion"
-            />
-          </Button>
-        </FooterToolbar>
-      )}
       {openModal && (
         <ModalForm
           title={isEdit ? 'Edit' : 'New'}

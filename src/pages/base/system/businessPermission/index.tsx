@@ -377,6 +377,9 @@ const BusinessPermission: React.FC = () => {
             labelWidth: 'auto',
             defaultCollapsed:false,
           }}
+          tableAlertRender={()=>{
+            return `Selected ${selectedRowsState.length} ${selectedRowsState.length > 1 ? 'Items' : 'Item'}`
+          }}
           rowSelection={{
             onChange: (_, selectedRows: any) => {
               setSelectedRows(selectedRows);
@@ -384,30 +387,6 @@ const BusinessPermission: React.FC = () => {
           }}
         />
 
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="Item" />
-            </div>
-          }
-        >
-          <Button
-            onClick={async () => {
-              await deleteRoleRequest('');
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          >
-            <FormattedMessage
-              id="pages.searchTable.batchDeletion"
-              defaultMessage="Batch deletion"
-            />
-          </Button>
-        </FooterToolbar>
-      )}
       {openModal && (
         <ModalForm
           title={isEdit ? 'Edit' : 'New'}

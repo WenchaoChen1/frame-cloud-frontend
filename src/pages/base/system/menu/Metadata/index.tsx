@@ -182,6 +182,9 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
         scroll={{
           y: 300,
         }}
+        tableAlertRender={()=>{
+          return `Selected ${selectedRowKeys.length} ${selectedRowKeys.length > 1 ? 'Items' : 'Item'}`
+        }}
         request={getList}
         options={false}
         pagination={{

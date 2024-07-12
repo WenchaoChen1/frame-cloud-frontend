@@ -417,6 +417,9 @@ const Role: React.FC = () => {
             labelWidth: 'auto',
             defaultCollapsed:false,
           }}
+          tableAlertRender={()=>{
+            return `Selected ${selectedRowsState.length} ${selectedRowsState.length > 1 ? 'Items' : 'Item'}`
+          }}
           rowSelection={{
             onChange: (_, selectedRows) => {
               setSelectedRows(selectedRows);
