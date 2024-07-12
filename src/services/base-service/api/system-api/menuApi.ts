@@ -51,8 +51,8 @@ export async function updateMenuAssignedAttribute(data?: any) {
 
 export async function getMenuManageAttributePage(data?: any) {
   return request(`${process.env.SYSTEM_SERVICE}/v1/attribute/get-menu-manage-attribute-page`, {
-    method: 'GET',
-    params: data
+    method: 'POST',
+    data: data
   });
 }
 
@@ -61,6 +61,7 @@ export async function getAllAttributeIdByMenuId(attributeId: string) {
     method: 'GET',
   });
 }
+
 export async function downloadMenuManage() {
   return request(`${process.env.SYSTEM_SERVICE}/v1/menu/download-menu-manage`, {
     method: 'GET',

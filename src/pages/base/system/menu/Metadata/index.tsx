@@ -126,13 +126,15 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
   ];
 
   const getList = async (params: APISystem.MetadataListItemDataType) => {
-    if (params?.status?.length > 0) {
-      const list = await statusConversionType(params.status, dataItemStatus)
-      params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
-    }
+    // if (params?.status?.length > 0) {
+    //   const list = await statusConversionType(params.status, dataItemStatus)
+    //   params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
+    // }
     const response = await getMenuManageAttributePageService({
-      pageNumber: params.current || 1,
-      pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
+      page: {
+        pageNumber: params.current || 1,
+        pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
+      },
       requestMethod: params?.requestMethod || '',
       url: params?.url || '',
       description: params?.description || '',

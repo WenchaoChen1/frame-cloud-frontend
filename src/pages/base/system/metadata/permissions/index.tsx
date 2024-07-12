@@ -109,14 +109,16 @@ const ScopePermissions: React.FC<TypeProp> = ({
   }, []);
 
   const getList = async (params: APISystem.PermissionItemDataType) => {
-    let permissionType = params?.permissionType?.join(',') || ''
+    // let permissionType = params?.permissionType?.join(',') || ''
     const response = await getPermissionManagePageService({
-      pageNumber: params?.current || 1,
-      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
+      page: {
+        pageNumber: params?.current || 1,
+        pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
+      },
       permissionName: params?.permissionName || '',
       permissionCode: params?.permissionCode || '',
       permissionId:params?.showSelect === "selected" ? selectedRowKeys :[],
-      permissionType
+      permissionType: params?.permissionType
     });
 
     let dataSource: APISystem.PermissionItemDataType[] = [];
