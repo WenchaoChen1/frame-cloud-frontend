@@ -311,7 +311,7 @@ const BusinessPermission: React.FC = () => {
   };
 
   const onCheck = (checkedKeysValue: any) => {
-    setSelectMenuDataList(checkedKeysValue);
+    setSelectMenuDataList(checkedKeysValue?.checked);
   };
 
   const onSaveMenu = async () => {

@@ -22,7 +22,7 @@ function Biness({currentRow,tenantId,closeRole,actionRef,binessModal}:Interface)
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
   const onCheck = (checkedKeysValue: any) => {
-    setCheckedKeys(checkedKeysValue);
+    setCheckedKeys(checkedKeysValue?.checked);
   };
   const onSelect = (selectedKeysValue: any) => {
     setSelectedKeys(selectedKeysValue);

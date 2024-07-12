@@ -353,7 +353,7 @@ const Role: React.FC = () => {
   };
 
   const onCheck = (checkedKeysValue: any) => {
-    setCheckedKeys(checkedKeysValue);
+    setCheckedKeys(checkedKeysValue?.checked);
   };
 
   const handleSelectedBusinessPermissions = (newSelectedRowKeys: any) => {
