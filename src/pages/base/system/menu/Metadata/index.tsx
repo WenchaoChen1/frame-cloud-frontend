@@ -3,13 +3,15 @@ import {
   getMenuManageAttributePageService,
   getAllAttributeIdByMenuIdService,
 } from '@/services/base-service/system-service/menuService';
-import { Tooltip } from 'antd';
+import {Button, Tooltip} from 'antd';
 import type { ProColumns } from '@ant-design/pro-components';
 import {ProFormSelect, ProTable, ProFormText } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from "@@/exports";
 import {enumsService} from "@/services/base-service/system-service/commService";
 import {statusConversionType} from "@/utils/utils";
+import FunctionPermission from "@/pages/base/components/functionPermission";
+import {FormattedMessage} from "@umijs/max";
 
 type TypeProp = {
   onSelectedMetadata: (permissions: React.Key[]) => void;
@@ -25,8 +27,8 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
 
   const columns: ProColumns<APISystem.MetadataListItemDataType>[] = [
-    { 
-      title: intl.formatMessage({ id: 'metadata.list.interfaceName' }), 
+    {
+      title: intl.formatMessage({ id: 'metadata.list.interfaceName' }),
       dataIndex: 'requestMethod',
       renderFormItem: () => {
         return (
@@ -36,7 +38,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
         )
       }
     },
-    { 
+    {
       title: 'Url',
       dataIndex: 'url',
       // ellipsis: true,
@@ -48,7 +50,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
         )
       }
     },
-    { 
+    {
       title: 'Description',
       dataIndex: 'description',
       // ellipsis: true,
@@ -60,9 +62,9 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
         )
       }
     },
-    { 
+    {
       title: intl.formatMessage({ id: 'metadata.list.default' }),
-      dataIndex: 'attributeCode', 
+      dataIndex: 'attributeCode',
       renderFormItem: () => {
         return (
           <ProFormText
@@ -102,6 +104,25 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
         );
       },
     },
+    {
+
+      title: intl.formatMessage({ id: 'application.list.showSelect' }),
+      dataIndex: 'showSelect',
+      width: '100px',
+      valueType: 'select',
+      valueEnum: {
+        all: {text: '全部'},
+        selected: { text: '已选中'},
+      },
+      renderFormItem: (_, { ...rest }) => {
+        return (
+          <ProFormSelect
+            placeholder={'Please Select'}
+            {...rest}
+          />
+        );
+      },
+    },
   ];
 
   const getList = async (params: APISystem.MetadataListItemDataType) => {
@@ -118,6 +139,7 @@ const ApplicationScope: React.FC<TypeProp> = ({ onSelectedMetadata, Id }) => {
       attributeCode: params?.attributeCode || '',
       webExpression: params?.webExpression || '',
       status: params?.status,
+      attributeId:params?.showSelect === "selected" ? selectedRowKeys :[]
     });
 
     let dataSource: any = [];
