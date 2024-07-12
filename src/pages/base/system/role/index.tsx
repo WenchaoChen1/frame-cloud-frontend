@@ -353,7 +353,7 @@ const Role: React.FC = () => {
   };
 
   const onCheck = (checkedKeysValue: any) => {
-    setCheckedKeys(checkedKeysValue);
+    setCheckedKeys(checkedKeysValue?.checked);
   };
 
   const handleSelectedBusinessPermissions = (newSelectedRowKeys: any) => {
@@ -611,6 +611,7 @@ const Role: React.FC = () => {
             <Tree
               height={500}
               checkable
+              checkStrictly
               defaultExpandedKeys={selectedKeys}
               defaultSelectedKeys={selectedKeys}
               defaultCheckedKeys={selectedKeys}
@@ -626,7 +627,7 @@ const Role: React.FC = () => {
 
       {OpenBusinessModal && (
         <ModalForm
-          title={'Permissions'}
+          title={'Business'}
           width="80%"
           open={OpenBusinessModal}
           onOpenChange={setOpenBusinessModal}

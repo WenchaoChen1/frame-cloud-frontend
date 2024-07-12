@@ -311,7 +311,7 @@ const BusinessPermission: React.FC = () => {
   };
 
   const onCheck = (checkedKeysValue: any) => {
-    setSelectMenuDataList(checkedKeysValue);
+    setSelectMenuDataList(checkedKeysValue?.checked);
   };
 
   const onSaveMenu = async () => {
@@ -539,6 +539,7 @@ const BusinessPermission: React.FC = () => {
           <div>
             <Tree
               checkable
+              checkStrictly
               defaultExpandedKeys={selectMenuDataList}
               defaultSelectedKeys={selectMenuDataList}
               defaultCheckedKeys={selectMenuDataList}

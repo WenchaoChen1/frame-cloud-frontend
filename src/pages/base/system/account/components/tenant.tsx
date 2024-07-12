@@ -22,7 +22,7 @@ function Tenant({currentRow,tenantId,closeRole,actionRef,tenantModal}:Interface)
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const [allMenuTree, setAllMenuTree] = useState<APISystem.MenuListItemDataType[]>([]);
   const onCheck = (checkedKeysValue: any) => {
-    setCheckedKeys(checkedKeysValue);
+    setCheckedKeys(checkedKeysValue?.checked);
   };
   const onSelect = (selectedKeysValue: any) => {
     setSelectedKeys(selectedKeysValue);
@@ -91,6 +91,7 @@ function Tenant({currentRow,tenantId,closeRole,actionRef,tenantModal}:Interface)
           <Tree
             height={500}
             checkable
+            checkStrictly
             defaultExpandAll
             onCheck={onCheck}
             checkedKeys={checkedKeys}
