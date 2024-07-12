@@ -189,6 +189,7 @@ declare namespace APISystem {
     status?: any;
     current?: number;
     pageSize?: any;
+    showSelect:string
   };
 
   type onSaveRelationMenuResponseDataType = {

@@ -8,6 +8,7 @@ import {
 } from '@/services/base-service/identity-service/scopeService';
 import { ProTable, ProFormText, ProFormSelect } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
+import {useIntl} from "@@/exports";
 
 type TypeProp = {
   onSelectedPermissions: (permissions: React.Key[]) => void;
@@ -18,6 +19,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
   onSelectedPermissions,
   Id,
 }) => {
+  const intl = useIntl();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [size, setSize] = useState<number>(DEFAULT_PAGE_SIZE);
@@ -70,6 +72,24 @@ const ScopePermissions: React.FC<TypeProp> = ({
         );
       },
     },
+    {
+      title: intl.formatMessage({ id: 'application.list.showSelect' }),
+      dataIndex: 'showSelect',
+      width: '100px',
+      valueType: 'select',
+      valueEnum: {
+        all: {text: '全部'},
+        selected: { text: '已选中'},
+      },
+      renderFormItem: (_, { ...rest }) => {
+        return (
+          <ProFormSelect
+            placeholder={'Please Select'}
+            {...rest}
+          />
+        );
+      },
+    },
   ];
 
   const initPermissionTypeChange = async () => {
@@ -89,6 +109,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
       permissionName: params?.permissionName || '',
       permissionCode: params?.permissionCode || '',
       permissionType: params?.permissionType || '',
+      permissionId:params?.showSelect === "selected" ? selectedRowKeys :[],
     });
 
     let dataSource: APISystem.PermissionItemDataType[] = [];
@@ -134,7 +155,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
         rowKey={(e: any) => e?.permissionId}
         rowSelection={rowSelection}
         search={{
-          span: 8,
+          span: 6,
           layout: 'vertical',
           labelWidth: 'auto',
           defaultCollapsed:false,
