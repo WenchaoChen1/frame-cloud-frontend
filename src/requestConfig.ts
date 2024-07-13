@@ -38,9 +38,6 @@ const authHeaderInterceptor = (config: RequestOptions) => {
 
   const url = config?.url || '';
 
-  // if (url=='/gstdev-identity/oauth2/token') {
-  //   config.headers.Authorization = `Basic cGFzc3dvcmQtY2xpZW50OjEyMzQ1Ng==`;
-  // } else {
     if (!filter.includes(url)) {
       const token = getToken();
       console.log(token, "token")
@@ -51,7 +48,6 @@ const authHeaderInterceptor = (config: RequestOptions) => {
         return history.replace(LOGIN_PATH);
       }
     }
-  // }
 
 
   console.log(config, "AAAAAAAAAAAAA")
