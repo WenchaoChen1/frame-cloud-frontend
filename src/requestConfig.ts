@@ -31,6 +31,9 @@ const authHeaderInterceptor = (config: RequestOptions) => {
     '/api/gstdev-identity/oauth2/token',
     '/api/gstdev-system/v1/user/update-customer-user-password',
   ];
+  console.log(config);
+  console.log(config?.url);
+  console.log(config?.baseURL);
   const url = config?.url || '';
   if (!filter.includes(url)) {
     const token = getToken();
@@ -42,7 +45,7 @@ const authHeaderInterceptor = (config: RequestOptions) => {
       return history.replace(LOGIN_PATH);
     }
   }
-
+  // const url="http://192.168.0.229:8201"+urla
   return { ...config, url };
 };
 
@@ -71,7 +74,7 @@ const responseInterceptorsForAuth = async (error: any) => {
 }
 export const requestConfig: RequestConfig = {
   // baseURL: 'https://proapi.azurewebsites.net',
-  baseURL:  process.env.FRAME_API_URL,
+  // baseURL:  process.env.FRAME_API_URL,
   requestInterceptors: [authHeaderInterceptor],
 
   // 错误处理： umi@3 的错误处理方案。
