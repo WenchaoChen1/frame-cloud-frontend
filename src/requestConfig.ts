@@ -48,11 +48,7 @@ const authHeaderInterceptor = (config: RequestOptions) => {
         return history.replace(LOGIN_PATH);
       }
     }
-
-
-  console.log(config, "AAAAAAAAAAAAA")
   config.baseURL = process.env.FRAME_API_URL;
-  // const url="http://192.168.0.229:8201"+urla
   return {...config, url};
 };
 
