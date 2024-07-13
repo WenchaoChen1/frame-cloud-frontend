@@ -1,4 +1,4 @@
-// TODO 
+// TODO
 // https://umijs.org/config/
 // import { join } from 'path';
 import { defineConfig } from '@umijs/max';
@@ -9,7 +9,7 @@ import routes from './routes';
 const { REACT_APP_ENV = 'dev' } = process.env;
 
 export default defineConfig({
-  // TODO 
+  // TODO
   // targets: { ie: 11, },  // 兼容性设置
   // model: {}, // 数据流插件
 
@@ -21,7 +21,7 @@ export default defineConfig({
     'root-entry-name': 'variable',
   },
   ignoreMomentLocale: true, // moment 的国际化配置
-  proxy: proxy[REACT_APP_ENV as keyof typeof proxy], // 代理配置 
+  proxy: proxy[REACT_APP_ENV as keyof typeof proxy], // 代理配置
   fastRefresh: true, // 快速热更新配置
 
   //============== 以下都是max的插件配置 ===============
@@ -56,8 +56,13 @@ export default defineConfig({
   },
   define: {  // 定义一些全局变量
     'process.env': {
-      IDENTITY_SERVICE: '/api/gstdev-identity',
-      SYSTEM_SERVICE: '/api/gstdev-system',
+      FRAME_IDENTITY_SERVICE: process.env.FRAME_IDENTITY_SERVICE,
+      FRAME_SYSTEM_SERVICE: process.env.FRAME_SYSTEM_SERVICE,
+      FRAME_API_URL:  process.env.FRAME_API_URL,
+      UMI_APP_TARGET:  process.env.UMI_APP_TARGET,
+      UMI_APP_TARGETa:  process.env.UMI_APP_TARGETa,
+      TARGET:  process.env.TARGET,
+      // REACT_APP_REQUEST_URLqq:  process.env.REACT_APP_REQUEST_URL,
     },
   },
   mfsu: {
@@ -83,7 +88,7 @@ export default defineConfig({
     //   requestLibPath: "import { request } from '@umijs/max'", // 要使用的请求库
     //   schemaPath: 'http://localhost:8201/gstdev-identity/v3/api-docs',
     //   projectName: '/swagger/identity', // 生成的api目录名（一般按模块划分）
-    //   apiPrefix: 'process.env.IDENTITY_SERVICE', // 接口声明文档中请求的前缀名
+    //   apiPrefix: 'process.env.FRAME_IDENTITY_SERVICE', // 接口声明文档中请求的前缀名
     // },
     // {
     //   requestLibPath: "import { request } from '@umijs/max'",
