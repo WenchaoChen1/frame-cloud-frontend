@@ -69,8 +69,9 @@ const responseInterceptorsForAuth = async (error: any) => {
     }
   }
 }
-
-export const errorConfig: RequestConfig = {
+export const requestConfig: RequestConfig = {
+  // baseURL: 'https://proapi.azurewebsites.net',
+  baseURL:  process.env.FRAME_API_URL,
   requestInterceptors: [authHeaderInterceptor],
 
   // 错误处理： umi@3 的错误处理方案。

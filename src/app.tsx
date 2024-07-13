@@ -1,34 +1,27 @@
-import { history } from '@umijs/max';
-import type { Settings as LayoutSettings } from '@ant-design/pro-components';
-import type { RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
+import type {RequestConfig, RunTimeLayoutConfig} from '@umijs/max';
+import {history} from '@umijs/max';
+import type {Settings as LayoutSettings} from '@ant-design/pro-components';
+import {SettingDrawer} from '@ant-design/pro-components';
 import defaultSettings from '../config/defaultSettings';
-import { errorConfig } from './requestErrorConfig';
-import { fetchUserInfo } from './utils/infoInitialStateUtils';
-import { fixMenuItemIcon } from './utils/utils'
-import { SettingDrawer } from '@ant-design/pro-components';
-import { AvatarDropdown, AvatarName, Footer, Question, SelectLang } from '@/components';
-import {
-  changeRouteData, 
-  isRouteInArray, 
-  findRouteByPath,
-  routeArray,
-  isDev,
-  loginPath,
-} from './utils/AppUtils';
+import {requestConfig} from './requestConfig';
+import {fetchUserInfo} from './utils/infoInitialStateUtils';
+import {fixMenuItemIcon} from './utils/utils'
+import {AvatarDropdown, AvatarName, Footer, Question, SelectLang} from '@/components';
+import {changeRouteData, findRouteByPath, isDev, isRouteInArray, loginPath, routeArray,} from './utils/AppUtils';
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 
 export async function getInitialState(): Promise<{
-    settings?: Partial<LayoutSettings>;
-    currentUser?: any;
-    loading?: boolean;
-    fetchUserInfo?: () => Promise<APIIdentity.CurrentUser | undefined>;
+  settings?: Partial<LayoutSettings>;
+  currentUser?: any;
+  loading?: boolean;
+  fetchUserInfo?: () => Promise<APIIdentity.CurrentUser | undefined>;
 }> {
 // export async function getInitialState() {
   // 如果不是登录页面，执行
-  const { location } = history;
+  const {location} = history;
   if (![loginPath, '/user/register', '/user/register-result'].includes(location.pathname)) {
     const currentUser = await fetchUserInfo();
     return {
@@ -45,19 +38,19 @@ export async function getInitialState(): Promise<{
 }
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
-export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
+export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
   let userRouters = [];
   if (initialState) {
     // console.log(JSON.parse(initialState?.currentUser), '******')
-    const { leftAndTopRoutes } = initialState?.currentUser;
+    const {leftAndTopRoutes} = initialState?.currentUser;
     userRouters = changeRouteData(leftAndTopRoutes);
   }
 
   const layoutConfig = {
-    actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
+    actionsRender: () => [<Question key="doc"/>, <SelectLang key="SelectLang"/>],
     avatarProps: {
       src: "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
-      title: <AvatarName />,
+      title: <AvatarName/>,
       render: (_: any, avatarChildren: any) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
@@ -65,9 +58,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     waterMarkProps: {
       content: initialState?.currentUser?.accountName,
     },
-    footerRender: () => <Footer />,
+    footerRender: () => <Footer/>,
     onPageChange: () => {
-      const { location } = history;
+      const {location} = history;
       if (!initialState?.currentUser && location.pathname !== loginPath) {
         history.push(loginPath);
       }
@@ -139,8 +132,5 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request: RequestConfig = {
-  // baseURL: 'https://proapi.azurewebsites.net',
-  ...errorConfig,
-  // requestInterceptors: [authHeaderInterceptor],
-  // responseInterceptors:[]
+  ...requestConfig,
 };
