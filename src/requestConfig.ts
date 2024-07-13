@@ -1,10 +1,11 @@
-﻿import type { RequestOptions } from '@@/plugin-request/request';
-import type { RequestConfig } from '@umijs/max';
-import { history } from '@umijs/max';
+﻿import type {RequestOptions} from '@@/plugin-request/request';
+import type {RequestConfig} from '@umijs/max';
+import {history} from '@umijs/max';
 import {LOGIN_PATH} from "@/pages/common/constant";
-import { message, notification } from 'antd';
+import {message, notification} from 'antd';
 import {oauth2RefreshTokenService} from "@/services/base-service/identity-service/login";
 import {getRefreshToken, getToken, removeToken, setRefreshToken, setToken} from '@/utils/utils';
+
 const axios = require('axios');
 
 // 错误处理方案： 错误类型
@@ -27,26 +28,36 @@ interface ResponseStructure {
 
 const authHeaderInterceptor = (config: RequestOptions) => {
   const filter = [
-    '/api/gstdev-system/user/login',
-    '/api/gstdev-identity/oauth2/token',
-    '/api/gstdev-system/v1/user/update-customer-user-password',
+    '/gstdev-system/user/login',
+    '/gstdev-identity/oauth2/token',
+    '/gstdev-system/v1/user/update-customer-user-password',
   ];
   console.log(config);
   console.log(config?.url);
   console.log(config?.baseURL);
-  const url = config?.url || '';
-  if (!filter.includes(url)) {
-    const token = getToken();
 
-    if (token && config?.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
-    } else {
-      removeToken();
-      return history.replace(LOGIN_PATH);
+  const url = config?.url || '';
+
+  // if (url=='/gstdev-identity/oauth2/token') {
+  //   config.headers.Authorization = `Basic cGFzc3dvcmQtY2xpZW50OjEyMzQ1Ng==`;
+  // } else {
+    if (!filter.includes(url)) {
+      const token = getToken();
+      console.log(token, "token")
+      if (token && config?.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        removeToken();
+        return history.replace(LOGIN_PATH);
+      }
     }
-  }
+  // }
+
+
+  console.log(config, "AAAAAAAAAAAAA")
+  config.baseURL = process.env.FRAME_API_URL;
   // const url="http://192.168.0.229:8201"+urla
-  return { ...config, url };
+  return {...config, url};
 };
 
 // TODO
@@ -81,12 +92,12 @@ export const requestConfig: RequestConfig = {
   errorConfig: {
     // 错误抛出
     errorThrower: (res) => {
-      const { success, data, errorCode, errorMessage, showType } =
+      const {success, data, errorCode, errorMessage, showType} =
         res as unknown as ResponseStructure;
-      if (!success ) {
+      if (!success) {
         const error: any = new Error(errorMessage);
         error.name = 'BizError';
-        error.info = { errorCode, errorMessage, showType, data };
+        error.info = {errorCode, errorMessage, showType, data};
         throw error; // 抛出自制的错误
       }
     },
@@ -97,7 +108,7 @@ export const requestConfig: RequestConfig = {
       if (error.name === 'BizError') {
         const errorInfo: ResponseStructure | undefined = error.info;
         if (errorInfo) {
-          const { errorMessage, errorCode } = errorInfo;
+          const {errorMessage, errorCode} = errorInfo;
           switch (errorInfo.showType) {
             case ErrorShowType.SILENT:
               // do nothing
