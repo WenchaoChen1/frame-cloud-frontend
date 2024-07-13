@@ -17,12 +17,6 @@ const InfoCard: React.FC<{
   const { useToken } = theme;
 
   const { token } = useToken();
-  console.log("aaaaaaaaaaaaaaa")
-  console.log('环境变量：', process.env, process.env.UMI_ENV);
-  console.log('环境变量：', process.env, process.env.PORT);
-  console.log('环境变量：', process.env, process.env.TARGET);
-  console.log('环境变量：', process.env, process.env.UMI_APP_TARGET);
-  console.log('环境变量：', process.env, process.env.REACT_APP_REQUEST_URL);
 
   return (
     <div

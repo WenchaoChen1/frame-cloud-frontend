@@ -46,7 +46,7 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # 复制自定义的 Nginx 配置文件，如果有的话
-#COPY nginx.prod.conf /etc/nginx/nginx.conf
+COPY nginx.prod.conf /etc/nginx/nginx.conf
 
 # 设置环境变量
 ENV UMI_APP_TARGET=production
@@ -55,5 +55,5 @@ ENV UMI_APP_TARGET_A=production
 # 暴露端口
 EXPOSE 80
 
-# 启动 Nginx
-CMD ["nginx", "-g", "daemon off;"]
+## 启动 Nginx
+#CMD ["nginx", "-g", "daemon off;"]
