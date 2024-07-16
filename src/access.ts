@@ -6,7 +6,7 @@ import {handlePermission,handleButtonPermission} from '@/utils/permissionDatas'
 
 
 export default function access(initialState: { currentUser?: any } | undefined) {
-  const jurisdictions: { [key: string]: boolean } = {};
+  // const jurisdictions: { [key: string]: boolean } = {};
   // const { permissionLists, permissionButton } = permissions;
   const powerLists = initialState?.currentUser?.pagePathAccessPermission;
   const buttonLists = initialState?.currentUser?.functionPermissionCode;
@@ -23,8 +23,8 @@ export default function access(initialState: { currentUser?: any } | undefined) 
    // return jurisdictions;
   return{
     // ...jurisdictions,
-    routePermission:(foo)=>handlePermission(foo?.name,powerLists),
-    buttonPermission:(foo)=> handleButtonPermission(foo?.name,buttonLists)
+    routePermission:(foo: any)=>handlePermission(foo?.name,powerLists),
+    buttonPermission:(foo: any)=> handleButtonPermission(foo?.name,buttonLists)
   }
 }
 

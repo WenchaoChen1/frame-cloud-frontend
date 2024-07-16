@@ -1,30 +1,18 @@
 import { UploadOutlined } from '@ant-design/icons';
 import {
   ProForm,
-  ProFormDependency,
-  ProFormFieldSet, ProFormRadio,
+  ProFormRadio,
   ProFormSelect,
   ProFormText,
   ProFormTextArea,
   ModalForm,
   ProFormInstance
 } from '@ant-design/pro-components';
-import { Button, message, Upload,Row,Col } from 'antd';
+import { Button, message, Upload } from 'antd';
 import React, {useState,useRef} from 'react';
 import {getUserSettingsDetailService,updateUserSettingsDetailService} from '@/services/base-service/system-service/userService'
 import useStyles from './index.style';
 import {enumsService} from "@/services/base-service/system-service/commService";
-import {getAccountSettingsDetailService} from '@/services/base-service/system-service/userService'
-
-const validatorPhone = (rule: any, value: string[], callback: (message?: string) => void) => {
-  if (!value[0]) {
-    callback('Please input your area code!');
-  }
-  if (!value[1]) {
-    callback('Please input your phone number!');
-  }
-  callback();
-};
 
 const BaseView: React.FC = () => {
   const { styles } = useStyles();
@@ -49,9 +37,7 @@ const BaseView: React.FC = () => {
       </Upload>
     </>
   );
-  // const { data: currentUser } = useRequest(() => {
-  //   return getUserSettingsDetailService();
-  // });
+
   const getAvatarURL = () => {
     // if (currentUser) {
     //   if (currentUser.avatar) {
@@ -61,14 +47,6 @@ const BaseView: React.FC = () => {
     //   return url;
     // }
     return '';
-  };
-  const handleFinish = async (e) => {
-    const params = {...userInfo,...e}
-    const res = await updateUserSettingsDetailService(params)
-    if (res.success){
-      message.success('update successfully!')
-      getUserInfo()
-    }
   };
 
   const getUserInfo = async () =>{
@@ -81,12 +59,21 @@ const BaseView: React.FC = () => {
     return data
   }
 
+  const handleFinish = async (e: any) => {
+    const params = {...userInfo,...e}
+    const res = await updateUserSettingsDetailService(params)
+    if (res.success){
+      message.success('update successfully!')
+      getUserInfo()
+    }
+  };
+
   const initType = async () => {
     const response = await enumsService();
     let data = []
     if (response?.success === true) {
       setDataItemStatus(response?.data?.sysDataItemStatus);
-      data = response?.data?.sysDataItemStatus?.map(item=>{
+      data = response?.data?.sysDataItemStatus?.map((item: any)=>{
         return{
           label:item.name,
           value:item.value
@@ -96,7 +83,7 @@ const BaseView: React.FC = () => {
     return data
   }
 
-  const changeValidator = (rule, value, callback) =>{
+  const changeValidator = (rule: any, value: any, callback: any) =>{
     let newPassword = ''
     if (modalForm?.current){
       newPassword = modalForm?.current?.getFieldFormatValue('newPassword')
@@ -106,7 +93,7 @@ const BaseView: React.FC = () => {
     }
     callback();
   }
-  const onOpenChangeModal = (e) =>{
+  const onOpenChangeModal = (e: any) =>{
     if (!e){
       setModalFlag(false)
       if (modalForm?.current){

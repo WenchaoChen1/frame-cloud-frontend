@@ -2,8 +2,6 @@ import { List } from 'antd';
 import React, {useRef, useState} from 'react';
 import {ModalForm, ProFormText,ProFormInstance} from "@ant-design/pro-components";
 import {resetPasswordService} from '@/services/base-service/system-service/userService'
-import {Simulate} from "react-dom/test-utils";
-import submit = Simulate.submit;
 
 type Unpacked<T> = T extends (infer U)[] ? U : T;
 
@@ -48,7 +46,7 @@ type Unpacked<T> = T extends (infer U)[] ? U : T;
         actions: [<a key="bind">绑定</a>],
       },
     ];
-    const onOpenChangeModal = (e) =>{
+    const onOpenChangeModal = (e: any) =>{
       if (!e){
         setModalFlag(false)
         if (modalForm?.current){
@@ -57,7 +55,7 @@ type Unpacked<T> = T extends (infer U)[] ? U : T;
       }
     }
 
-  const changeValidator = (rule, value, callback) =>{
+  const changeValidator = (rule: any, value: any, callback: any) =>{
     let newPassword = ''
     if (modalForm?.current){
       newPassword = modalForm?.current?.getFieldFormatValue('newPassword')
@@ -68,7 +66,7 @@ type Unpacked<T> = T extends (infer U)[] ? U : T;
     callback();
   }
 
-  const submitForm = async (e) =>{
+  const submitForm = async (e: any) =>{
     const {originalPassword,newPassword} = e
     const res = resetPasswordService({originalPassword,newPassword})
     console.log(res)

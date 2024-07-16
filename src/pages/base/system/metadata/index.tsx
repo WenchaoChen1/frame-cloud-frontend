@@ -28,10 +28,10 @@ import dayjs from "dayjs";
 import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const Metadata: React.FC = () => {
-  const intl = useIntl();
+  const int = useIntl();
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [PermissOpenModal, setPermissOpenModal] = useState<boolean>(false);
+  const [PermitsOpenModal, setPermitsOpenModal] = useState<boolean>(false);
   const [attributeId, setAttributeId] = useState('');
   const [selectedPermissions, setSelectedPermissions] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
@@ -121,8 +121,8 @@ const Metadata: React.FC = () => {
   ];
 
   const columns: ProColumns<APISystem.MetadataListItemDataType>[] = [
-    { 
-      title: intl.formatMessage({ id: 'metadata.list.interfaceName' }),
+    {
+      title: int.formatMessage({ id: 'metadata.list.interfaceName' }),
       dataIndex: 'requestMethod',
       renderFormItem: () => {
         return (
@@ -132,7 +132,7 @@ const Metadata: React.FC = () => {
         )
       }
     },
-    { 
+    {
       title: 'Url',
       dataIndex: 'url',
       renderFormItem: () => {
@@ -143,7 +143,7 @@ const Metadata: React.FC = () => {
         )
       }
     },
-    { 
+    {
       title: 'Description',
       dataIndex: 'description',
       renderFormItem: () => {
@@ -154,8 +154,8 @@ const Metadata: React.FC = () => {
         )
       }
     },
-    { 
-      title: intl.formatMessage({ id: 'metadata.list.default' }),
+    {
+      title: int.formatMessage({ id: 'metadata.list.default' }),
       dataIndex: 'attributeCode',
       renderFormItem: () => {
         return (
@@ -166,12 +166,12 @@ const Metadata: React.FC = () => {
       }
     },
     {
-      title: intl.formatMessage({ id: 'metadata.list.expression' }),
+      title: int.formatMessage({ id: 'metadata.list.expression' }),
       dataIndex: 'webExpression',
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'application.list.status' }),
+      title: int.formatMessage({ id: 'application.list.status' }),
       dataIndex: 'status',
       valueType: 'select',
       width: '80px',
@@ -224,16 +224,16 @@ const Metadata: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'pages.searchTable.actions' }),
+      title: int.formatMessage({ id: 'pages.searchTable.actions' }),
       dataIndex: 'actions',
       search: false,
       width: '120px',
       fixed: 'right',
       render: (_, record: any) => [
-        <FunctionPermission code="PermissionsMetadata">
+        <FunctionPermission code="PermissionsMetadata" key={'PermissionsMetadata'}>
           <a
             onClick={() => {
-              setPermissOpenModal(true);
+              setPermitsOpenModal(true);
               setAttributeId(record?.attributeId);
             }}
             style={{ marginRight: '10px' }}
@@ -241,7 +241,7 @@ const Metadata: React.FC = () => {
             Permissions
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="EditMetadata">
+        <FunctionPermission code="EditMetadata" key={'EditMetadata'}>
           <a
             onClick={() => {
               setOpenModal(true);
@@ -256,13 +256,13 @@ const Metadata: React.FC = () => {
     },
   ];
 
-  const editPermiss = async () => {
-    const parms = {
+  const editPermits = async () => {
+    const part = {
       attributeId: attributeId || '',
       permissionIds: selectedPermissions || '',
     };
     try {
-      await attributeManageAssignedPermissionService(parms);
+      await attributeManageAssignedPermissionService(part);
       message.success('Added successfully');
       return true;
     } catch (error) {
@@ -307,7 +307,7 @@ const Metadata: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<APISystem.MetadataListItemDataType, APISystem.PageParams>
+      <ProTable
         headerTitle={'List'}
         actionRef={actionRef}
         rowKey="attributeId"
@@ -330,7 +330,7 @@ const Metadata: React.FC = () => {
         }}
         expandable={{
           expandedRowRender: (record: any) => (
-            <Table<APISystem.scorPermissionDataType>
+            <Table
               dataSource={record?.permissions}
               columns={nestedColumns}
               rowKey="attributeId"
@@ -345,10 +345,10 @@ const Metadata: React.FC = () => {
           width="800px"
           open={openModal}
           onOpenChange={setOpenModal}
-          onFinish={async (record) => {
+          onFinish={async (record: any) => {
             let response = undefined;
             if (isEdit) {
-              response = await handleUpdate(record as APISystem.MenuListItemDataType);
+              response = await handleUpdate(record);
             }
 
             if (response) {
@@ -424,7 +424,7 @@ const Metadata: React.FC = () => {
             </Col>
             <Col span={12}>
               <ProFormSelect
-                label={intl.formatMessage({ id: 'application.list.status' })}
+                label={int.formatMessage({ id: 'application.list.status' })}
                 name="status"
                 placeholder={'status'}
                 request={async () => {
@@ -449,17 +449,17 @@ const Metadata: React.FC = () => {
         </ModalForm>
       )}
 
-      {PermissOpenModal && (
+      {PermitsOpenModal && (
         <ModalForm
           title={'Permissions'}
           width="80%"
-          open={PermissOpenModal}
-          onOpenChange={setPermissOpenModal}
+          open={PermitsOpenModal}
+          onOpenChange={setPermitsOpenModal}
           onFinish={async () => {
-            let response = await editPermiss();
+            let response = await editPermits();
 
             if (response) {
-              setPermissOpenModal(false);
+              setPermitsOpenModal(false);
               if (actionRef.current) {
                 actionRef.current.reload();
               }

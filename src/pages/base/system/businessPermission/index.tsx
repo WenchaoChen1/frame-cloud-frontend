@@ -10,7 +10,6 @@ import { enumsService } from '@/services/base-service/system-service/commService
 import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
 import type { ActionType, ProColumns, ProFormInstance } from '@ant-design/pro-components';
 import {
-  FooterToolbar,
   ModalForm,
   PageContainer,
   ProFormDigit,
@@ -147,7 +146,7 @@ const BusinessPermission: React.FC = () => {
   };
 
   const columns: ProColumns<APISystem.BusinessPermissionItemDataType>[] = [
-    { 
+    {
       title: 'Name',
       dataIndex: 'name',
       renderFormItem: () => {
@@ -195,8 +194,8 @@ const BusinessPermission: React.FC = () => {
       valueType: 'option',
       width: '160px',
       fixed: 'right',
-      render: (_, record) => [
-        <FunctionPermission code="MenuBusiness">
+      render: (_, record: any) => [
+        <FunctionPermission code="MenuBusiness" key={'MenuBusiness'}>
           <a
             onClick={() => {
               setCurrentRow(record);
@@ -206,12 +205,12 @@ const BusinessPermission: React.FC = () => {
             Menu
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="EditBusiness">
+        <FunctionPermission code="EditBusiness" key={'EditBusiness'}>
           <a onClick={() => openEdit(record)}>
             Edit
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="DeleteBusiness">
+        <FunctionPermission code="DeleteBusiness" key={'DeleteBusiness'}>
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRoleRequest(record?.id || '');
@@ -254,7 +253,7 @@ const BusinessPermission: React.FC = () => {
     },
   ];
 
-  const getList = async (params: APISystem.BusinessTableSearchParams) => {
+  const getList = async (params: any) => {
     const roleResponse = await getBusinessPermissionManageTreeService(params);
     let dataSource: APISystem.BusinessTableSearchParams[] = [];
     if (roleResponse?.success === true) {
@@ -357,7 +356,7 @@ const BusinessPermission: React.FC = () => {
           columnsStateMap={columnsStateMap}
           onColumnsStateChange={handleColumnsStateChange}
           toolBarRender={() => [
-            <FunctionPermission code="AddBusiness">
+            <FunctionPermission code="AddBusiness" key={'AddBusiness'}>
               <Button
                 type="primary"
                 key="primary"
@@ -530,7 +529,7 @@ const BusinessPermission: React.FC = () => {
           width="400px"
           open={MenuOpenModal}
           onOpenChange={setMenuOpenModal}
-          onFinish={async (record) => {
+          onFinish={async () => {
             await onSaveMenu();
           }}
         >

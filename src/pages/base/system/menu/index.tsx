@@ -72,7 +72,7 @@ const MenuList: React.FC = () => {
         if (accountDetailResponse?.data?.type === 2){
           setHiddenFormItem(true)
         }
-        accountDetailResponse.data.code = generateRandomLetters(5)
+        accountDetailResponse?.data?.code = generateRandomLetters(5)
         return accountDetailResponse.data;
       }
     }
@@ -245,7 +245,7 @@ const MenuList: React.FC = () => {
       valueType: 'option',
       fixed: 'right',
       render: (_, record: any) => [
-        <FunctionPermission code="EditMenu">
+        <FunctionPermission code="MetadataMenu" key={'MetadataMenu'}>
           <a
             key={record?.id}
             onClick={() => {
@@ -256,7 +256,7 @@ const MenuList: React.FC = () => {
             Metadata
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="EditMenu">
+        <FunctionPermission code="EditMenu" key={'EditMenu'}>
           <a
             onClick={() => {
               setIsEdit(true);
@@ -267,7 +267,7 @@ const MenuList: React.FC = () => {
             Edit
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="AddMenu">
+        <FunctionPermission code="AddMenu" key={'AddMenu'}>
             <a
               onClick={() => {
                 setIsEdit(false);
@@ -279,7 +279,7 @@ const MenuList: React.FC = () => {
               Add
             </a>
         </FunctionPermission>,
-        <FunctionPermission code="DeleteMenu">
+        <FunctionPermission code="DeleteMenu" key={'DeleteMenu'}>
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRow(record?.id || '');
@@ -392,14 +392,14 @@ const MenuList: React.FC = () => {
       FileSaver.saveAs(blob,'menu.json');
     }
   }
-  const changeData = (e) =>{
+  const changeData = (e: any) =>{
     if (e === 2){
       setHiddenFormItem(true)
       return;
     }
     setHiddenFormItem(false)
   }
-  const changeHandle = (e) =>{
+  const changeHandle = (e: any) =>{
     if (!e){
       setHiddenFormItem(false)
     }
@@ -414,7 +414,7 @@ const MenuList: React.FC = () => {
     selectedRowKeys,
     onChange: handleRowSelection,
   };
-  
+
   return (
     <PageContainer>
       <ProTable<APISystem.MenuListItemDataType, APISystem.PageParams>
@@ -479,7 +479,7 @@ const MenuList: React.FC = () => {
             showAll?'收起':'展开'
           }
           </Button>,
-          <FunctionPermission code="AddMenu">
+          <FunctionPermission code="AddMenu" key={'AddMenu'}>
             <Button
               key="button"
               onClick={() => {

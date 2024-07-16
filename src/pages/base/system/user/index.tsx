@@ -11,7 +11,6 @@ import { PlusOutlined } from '@ant-design/icons';
 import { enumsService } from '@/services/base-service/system-service/commService';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
-  FooterToolbar,
   ModalForm,
   PageContainer,
   ProFormDigit,
@@ -206,7 +205,7 @@ const User: React.FC = () => {
         };
         return result;
       }, {}),
-      renderFormItem: (_, { ...rest }) => 
+      renderFormItem: (_, { ...rest }) =>
         <ProFormSelect mode="multiple" {...rest} placeholder={'Please Select'} fieldProps={{mode: 'multiple'}}/>
     },
     {
@@ -224,18 +223,18 @@ const User: React.FC = () => {
       width: '220px',
       fixed: 'right',
       render: (_, record:any) => [
-        <FunctionPermission code="EditUser">
+        <FunctionPermission code="EditUser" key={'EditUser'}>
           <a key="editUser" onClick={() => onEditUser(record)}>
             Edit
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="ResetPasswordUser">
+        <FunctionPermission code="ResetPasswordUser" key={'ResetPasswordUser'}>
           <a key="resetPassword" onClick={() => onReactPassWord(record)}>
             Reset Password
           </a>
         </FunctionPermission>,
         currentUserId !== record.userId && (
-          <FunctionPermission code="DeleteUser">
+          <FunctionPermission code="DeleteUser" key={'DeleteUser'}>
             <PopconfirmPage
               key="deleteUser"
               onConfirm={async () => {
@@ -269,7 +268,7 @@ const User: React.FC = () => {
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
-          <FunctionPermission code="AddUser">
+          <FunctionPermission code="AddUser" key={'AddUser'}>
             <Button
               type="primary"
               onClick={() => {

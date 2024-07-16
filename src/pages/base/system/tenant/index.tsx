@@ -260,7 +260,7 @@ const Index: React.FC = () => {
         };
         return result;
       }, {}),
-      renderFormItem: (_, { ...rest }) => 
+      renderFormItem: (_, { ...rest }) =>
         <ProFormSelect mode="multiple" {...rest} placeholder={'Please Select'} fieldProps={{mode: 'multiple'}}/>
     },
     {
@@ -300,7 +300,7 @@ const Index: React.FC = () => {
       valueType: 'option',
       fixed: 'right',
       render: (_, record: any) => [
-        <FunctionPermission code="MenuTenant">
+        <FunctionPermission code="MenuTenant" key={'MenuTenant'}>
           <a
             onClick={() => {
               setCurrentRow(record);
@@ -310,7 +310,7 @@ const Index: React.FC = () => {
             Menu
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="EditTenant">
+        <FunctionPermission code="EditTenant" key={'EditTenant'}>
           <a
             onClick={() => {
               setIsEdit(true);
@@ -322,7 +322,7 @@ const Index: React.FC = () => {
             Edit
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="AddTenant">
+        <FunctionPermission code="AddTenant" key={'AddTenant'}>
           <a
             onClick={() => {
               setIsEdit(false);
@@ -334,7 +334,7 @@ const Index: React.FC = () => {
             Add
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="DeleteTenant">
+        <FunctionPermission code="DeleteTenant" key={'DeleteTenant'}>
           <PopconfirmPage
             onConfirm={async () => {
               await deleteRow(record?.id || '');
@@ -424,7 +424,7 @@ const Index: React.FC = () => {
             showAll?'收起':'展开'
           }
           </Button>,
-          <FunctionPermission code="AddTenant">
+          <FunctionPermission code="AddTenant" key={'AddTenant'}>
             <Button
               key="button"
               onClick={() => {

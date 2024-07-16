@@ -1,8 +1,8 @@
-import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import type { ActionType } from '@ant-design/pro-components';
 import {
   ProTable,
 } from '@ant-design/pro-components';
-import {useEffect, useRef, useState} from 'react';
+import { useRef} from 'react';
 import {getUserOnlineAuthorizationService,deleteAuthorizationForceOutService} from '@/services/base-service/identity-service/systemUserService'
 import React from 'react';
 import dayjs from "dayjs";
@@ -10,7 +10,7 @@ import {message, Popconfirm} from 'antd'
 
 function Acount() {
   const actionRef = useRef<ActionType>();
-  const reducedTime = (e) =>{
+  const reducedTime = (e: any) =>{
     const accessTokenExpiresAt = dayjs(e?.accessTokenExpiresAt).format('YYYY-MM-DD HH:mm:ss')
     const refreshTokenExpiresAt = dayjs(e?.refreshTokenExpiresAt).format('YYYY-MM-DD HH:mm:ss')
     let chooseTime = refreshTokenExpiresAt
@@ -24,7 +24,7 @@ function Acount() {
     console.log(res)
     if (res.success){
       message.success('operate successfully!')
-      actionRef.current.reload()
+      actionRef?.current?.reload()
     }
   }
   const columns = [
@@ -35,13 +35,13 @@ function Acount() {
     {
       title: '登录到期时间',
       dataIndex: 'refreshTokenExpiresAt',
-      render: (text, record, _, action) => reducedTime(record)
+      render: (text: any, record: any, ) => reducedTime(record)
     },
     {
       title: 'operation',
       valueType: 'option',
       key: 'option',
-      render: (text, record, _, action) => [
+      render: (text: any, record: any, ) => [
         <Popconfirm
           title="强制退出?"
           description="是否要强制退出?"

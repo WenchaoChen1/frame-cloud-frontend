@@ -8,11 +8,10 @@ import {
 } from '@/services/base-service/system-service/accountService';
 import { enumsService } from '@/services/base-service/system-service/commService';
 import { getTenantManageTreeService } from '@/services/base-service/system-service/tenantService';
-import { getUserManagePageService,updateAccountSettingsDetailService } from '@/services/base-service/system-service/userService';
+import { getUserManagePageService } from '@/services/base-service/system-service/userService';
 import { PlusOutlined } from '@ant-design/icons';
 import {
   ActionType,
-  FooterToolbar,
   ModalForm,
   PageContainer,
   ProColumns, ProFormInstance,
@@ -246,9 +245,6 @@ const Account: React.FC = () => {
       key: 'tenantId',
       hideInTable: true,
       dataIndex: 'tenantId',
-      search: {
-        placeholder: 'Please Select',
-      },
       renderFormItem: () => {
         return (
           <ProFormTreeSelect

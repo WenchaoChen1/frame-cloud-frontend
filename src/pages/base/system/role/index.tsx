@@ -205,7 +205,7 @@ const Role: React.FC = () => {
       valueType: 'option',
       fixed: 'right',
       render: (_, record: any) => [
-        <FunctionPermission code="BusinessRole">
+        <FunctionPermission code="BusinessRole" key={'BusinessRole'}>
           <a
             key="BusinessBtn"
             onClick={() => {
@@ -217,7 +217,7 @@ const Role: React.FC = () => {
             Business
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="MenuRole">
+        <FunctionPermission code="MenuRole" key={'MenuRole'}>
           <a
             key="MenuBtn"
             onClick={() => {
@@ -228,12 +228,12 @@ const Role: React.FC = () => {
             Menu
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="EditRole">
+        <FunctionPermission code="EditRole" key={'EditRole'}>
           <a key="editBtn" onClick={() => openEdit(record)}>
             Edit
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="DeleteRole">
+        <FunctionPermission code="DeleteRole" key={'DeleteRole'}>
           <ConfirmPage
             onConfirm={async () => {
               await deleteRoleRequest(record?.roleId || '');
@@ -398,7 +398,7 @@ const Role: React.FC = () => {
           columnsStateMap={columnsStateMap}
           onColumnsStateChange={handleColumnsStateChange}
           toolBarRender={() => [
-            <FunctionPermission code="AddRole">
+            <FunctionPermission code="AddRole" key={'AddRole'}>
               <Button
                 type="primary"
                 onClick={() => {

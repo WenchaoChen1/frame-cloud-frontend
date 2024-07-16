@@ -2,10 +2,8 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   ModalForm,
   ProFormInstance,
-  ProFormSelect,
-  ProFormText, ProFormTreeSelect,
+  ProFormText,
   ProTable,
-  TableDropdown
 } from '@ant-design/pro-components';
 import {useEffect, useRef, useState} from 'react';
 import {getAccountSettingsDetailService,updateAccountSettingsDetailService} from '@/services/base-service/system-service/userService'
@@ -26,13 +24,14 @@ type GithubIssueItem = {
   created_at: string;
   updated_at: string;
   closed_at?: string;
+  accountId: string;
 };
 
-function Acount(props) {
-  const modalFormDatas = useRef<ProFormInstance>();
+function Account() {
+  const modalFormData = useRef<ProFormInstance>();
   const actionRef = useRef<ActionType>();
   const [accountType,setAccountType] = useState([])
-  const [modalDatas,setModalDatas] = useState({})
+  const [modalDatas,setModalDatas] = useState({accountId: ''})
   const [modalFlag,setModalFlag] = useState(false)
   const columns: ProColumns<GithubIssueItem>[] = [
     {
@@ -63,7 +62,7 @@ function Acount(props) {
       title: 'operation',
       valueType: 'option',
       key: 'option',
-      render: (text, record, _, action) => [
+      render: (text, record) => [
         <a
           key="editable"
           onClick={() => {
@@ -76,9 +75,9 @@ function Acount(props) {
       ],
     },
   ];
-  const getTableDatas = async (params) =>{
+  const getTableDatas = async () =>{
     let data = []
-    const res = await getAccountSettingsDetailService(params)
+    const res = await getAccountSettingsDetailService()
     if (res.success){
       data = res.data
     }
@@ -97,7 +96,7 @@ function Acount(props) {
     initType()
   },[])
 
-  const submitForm = async (e) =>{
+  const submitForm = async (e: any) =>{
     const {name} = e
     const {accountId} = modalDatas
     const res = await updateAccountSettingsDetailService({
@@ -106,18 +105,18 @@ function Acount(props) {
     })
     if (res.success){
       message.success('update successfully!')
-      actionRef?.current.reload()
+      actionRef?.current?.reload()
       setModalFlag(false)
-      if (modalFormDatas?.current){
-        modalFormDatas.current.resetFields()
+      if (modalFormData?.current){
+        modalFormData.current.resetFields()
       }
     }
   }
-  const onOpenChangeModal = (e) =>{
+  const onOpenChangeModal = (e: any) =>{
     if (!e){
       setModalFlag(false)
-      if (modalFormDatas?.current){
-        modalFormDatas.current.resetFields()
+      if (modalFormData?.current){
+        modalFormData.current.resetFields()
       }
     }
   }
@@ -143,7 +142,7 @@ function Acount(props) {
           title="Edit"
           open={modalFlag}
           width={'30%'}
-          formRef={modalFormDatas}
+          formRef={modalFormData}
           onFinish={submitForm}
           onOpenChange={onOpenChangeModal}
           initialValues={{...modalDatas}}
@@ -165,4 +164,4 @@ function Acount(props) {
   );
 }
 
-export default Acount;
+export default Account;

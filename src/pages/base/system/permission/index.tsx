@@ -46,7 +46,7 @@ const User: React.FC = () => {
     setColumnsStateMap(map);
   };
 
-  const getList = async (params: APISystem.PermissionItemDataType) => {
+  const getList = async (params: any) => {
     if (params?.status?.length > 0) {
       const list = await statusConversionType(params.status, dataItemStatus)
       params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
@@ -301,7 +301,7 @@ const User: React.FC = () => {
       width: '110px',
       fixed: 'right',
       render: (_, record) => [
-        <FunctionPermission code="EditPermission">
+        <FunctionPermission code="EditPermission" key={'EditPermission'}>
           <a
             onClick={() => {
               setIsEdit(true);
@@ -312,7 +312,7 @@ const User: React.FC = () => {
             Edit
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="DeletePermission">
+        <FunctionPermission code="DeletePermission" key={'EditPermission'}>
           <PopconfirmPage onConfirm={() => onDeleteRequest(record?.permissionId || '')}>
             <a>Delete</a>
           </PopconfirmPage>
@@ -346,7 +346,7 @@ const User: React.FC = () => {
           defaultCollapsed:false,
         }}
         toolBarRender={() => [
-          <FunctionPermission code="AddPermission">
+          <FunctionPermission code="AddPermission" key={'AddPermission'}>
             <Button
               type="primary"
               onClick={() => {
@@ -372,7 +372,7 @@ const User: React.FC = () => {
         }}
         expandable={{
           expandedRowRender: (record: any) => (
-            <Table<APISystem.PerScopeDataType>
+            <Table
               dataSource={record?.sysAttributes}
               columns={nestedColumns}
               rowKey="permissionId"
@@ -387,12 +387,12 @@ const User: React.FC = () => {
           width="800px"
           open={openModal}
           onOpenChange={setOpenModal}
-          onFinish={async (record) => {
+          onFinish={async (record: any  ) => {
             let response = undefined;
             if (isEdit) {
-              response = await handleUpdate(record as APISystem.MenuListItemDataType);
+              response = await handleUpdate(record);
             } else {
-              response = await handleAdd(record as APISystem.MenuListItemDataType);
+              response = await handleAdd(record);
             }
             console.log('onFinish response', response);
 

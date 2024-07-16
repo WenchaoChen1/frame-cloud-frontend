@@ -30,7 +30,7 @@ import ConfirmPage from "@/pages/base/components/popconfirm";
 import FunctionPermission from '@/pages/base/components/functionPermission/index'
 
 const Application: React.FC = () => {
-  const intl = useIntl(); 
+  const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [ScopeOpenModal, setScopeOpenModal] = useState<boolean>(false);
@@ -443,7 +443,7 @@ const Application: React.FC = () => {
       fixed: 'right',
       search: false,
       render: (_, record: any) => [
-        <FunctionPermission code="ScopeApplication">
+        <FunctionPermission code="ScopeApplication" key={'ScopeApplication'}>
           <a
             key={'Scope'}
             onClick={() => {
@@ -454,7 +454,7 @@ const Application: React.FC = () => {
             Scope
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="EditApplication">
+        <FunctionPermission code="EditApplication" key={'EditApplication'}>
           <a
             key={'Edit'}
             style={{ marginLeft: 15 }}
@@ -467,7 +467,7 @@ const Application: React.FC = () => {
             Edit
           </a>
         </FunctionPermission>,
-        <FunctionPermission code="DeleteApplication">
+        <FunctionPermission code="DeleteApplication" key={'DeleteApplication'}>
           <div key={'Delete'} style={{ display: 'inline-block' }}>
             <ConfirmPage onConfirm={async () => await deleteUserRequest(record?.applicationId || '')}>
               <a style={{ marginLeft: 15 }}>Delete</a>
@@ -574,7 +574,7 @@ const Application: React.FC = () => {
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
-          <FunctionPermission code="AddApplication">
+          <FunctionPermission code="AddApplication" key={'AddApplication'}>
             <Button
               key="primary"
               type="primary"

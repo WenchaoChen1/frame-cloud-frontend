@@ -65,7 +65,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
         };
         return result;
       }, {}),
-      renderFormItem: (_, { ...rest }) => {
+      renderFormItem: (_: any, { ...rest }) => {
         return (
           <ProFormSelect
             placeholder={'Please Select'}
@@ -87,7 +87,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
         all: {text: '全部'},
         selected: { text: '已选中'},
       },
-      renderFormItem: (_, { ...rest }) => {
+      renderFormItem: (_: any, { ...rest }) => {
         return (
           <ProFormSelect
             placeholder={'Please Select'}

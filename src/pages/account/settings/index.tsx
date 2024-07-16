@@ -6,7 +6,7 @@ import BaseView from './components/base';
 import BindingView from './components/binding';
 import NotificationView from './components/notification';
 import SecurityView from './components/security';
-import Acount from "@/pages/account/settings/components/acount";
+import Account from "@/pages/account/settings/components/account";
 import LoginLog from "@/pages/account/settings/components/loginLog";
 import useStyles from './style.style';
 import FunctionPermission from '@/pages/base/components/functionPermission/index'
@@ -74,7 +74,7 @@ const Settings: React.FC = () => {
       case 'notification':
         return <FunctionPermission code="message-notification"><NotificationView /></FunctionPermission>;
       case 'account':
-        return <FunctionPermission code="account-setting"><Acount /></FunctionPermission>;
+        return <FunctionPermission code="account-setting"><Account /></FunctionPermission>;
         case 'loginLog':
         return <FunctionPermission code="loginLog"><LoginLog /></FunctionPermission>;
       default:
