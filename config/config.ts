@@ -62,7 +62,7 @@ export default defineConfig({
       UMI_APP_TARGET:  process.env.UMI_APP_TARGET,
       UMI_APP_TARGETa:  process.env.UMI_APP_TARGETa,
       TARGET:  process.env.TARGET,
-      // REACT_APP_REQUEST_URLqq:  process.env.REACT_APP_REQUEST_URL,
+      FRAME_SERVICE_API:  process.env.FRAME_SERVICE_API,
     },
   },
   mfsu: {

@@ -31,6 +31,9 @@ const authHeaderInterceptor = (config: RequestOptions) => {
     '/gstdev-system/user/login',
     '/gstdev-identity/oauth2/token',
     '/gstdev-system/v1/user/update-customer-user-password',
+    '/api/gstdev-system/user/login',
+    '/api/gstdev-identity/oauth2/token',
+    '/api/gstdev-system/v1/user/update-customer-user-password',
   ];
   console.log(config);
   console.log(config?.url);
@@ -38,17 +41,17 @@ const authHeaderInterceptor = (config: RequestOptions) => {
 
   const url = config?.url || '';
 
-    if (!filter.includes(url)) {
-      const token = getToken();
-      console.log(token, "token")
-      if (token && config?.headers) {
-        config.headers.Authorization = `Bearer ${token}`;
-      } else {
-        removeToken();
-        return history.replace(LOGIN_PATH);
-      }
+  if (!filter.includes(url)) {
+    const token = getToken();
+    console.log(token, "token")
+    if (token && config?.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      removeToken();
+      return history.replace(LOGIN_PATH);
     }
-  config.baseURL = process.env.FRAME_API_URL;
+  }
+  // config.baseURL = process.env.FRAME_API_URL;
   return {...config, url};
 };
 
