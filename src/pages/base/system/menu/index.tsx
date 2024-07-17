@@ -72,7 +72,7 @@ const MenuList: React.FC = () => {
         if (accountDetailResponse?.data?.type === 2){
           setHiddenFormItem(true)
         }
-        accountDetailResponse?.data?.code = generateRandomLetters(5)
+        accountDetailResponse.data.code = generateRandomLetters(5)
         return accountDetailResponse.data;
       }
     }
