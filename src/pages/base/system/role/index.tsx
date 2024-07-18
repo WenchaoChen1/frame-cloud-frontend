@@ -399,7 +399,7 @@ const Role: React.FC = () => {
           columnsStateMap={columnsStateMap}
           onColumnsStateChange={handleColumnsStateChange}
           toolBarRender={() => [
-            // <FilterQuery fields={columns} />,
+            <FilterQuery fields={columns} />,
             <FunctionPermission code="AddRole" key={'AddRole'}>
               <Button
                 type="primary"
