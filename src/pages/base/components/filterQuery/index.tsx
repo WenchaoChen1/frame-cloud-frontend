@@ -12,10 +12,10 @@ const TableFilterComponent = ({ fields }) => {
       if (prevFilter && prevFilter.some((filter) => filter.field === field?.dataIndex)) {
         // 如果已经选中，将其从数组中移除
         const list = prevFilter.filter((filter) => filter.field !== field?.dataIndex)
-        if (list?.length > 0) {
-          const fieldArray = list?.map((item) => item.field);
-          setSelectOpt(fieldArray);
-        }
+
+        const fieldArray = list?.map((item) => item.field);
+        setSelectOpt(fieldArray);
+        
         return list;
       } else {
         // 如果未选中，将其添加到数组中
@@ -57,7 +57,7 @@ const TableFilterComponent = ({ fields }) => {
       value.some((filter) => field.field === filter)
     );
     setSelectOpt(value);
-    setSelectedFilter(filteredValue);
+    setSelectedFilter(value?.length > 0? filteredValue : []);
   };
 
   return (
