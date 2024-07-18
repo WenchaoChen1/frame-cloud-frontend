@@ -34,6 +34,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import dayjs from "dayjs";
 import ConfirmPage from "@/pages/base/components/popconfirm";
 import FunctionPermission from '@/pages/base/components/functionPermission/index'
+import FilterQuery from '@/pages/base/components/filterQuery/index'
 
 const Role: React.FC = () => {
   const intl = useIntl();
@@ -398,6 +399,7 @@ const Role: React.FC = () => {
           columnsStateMap={columnsStateMap}
           onColumnsStateChange={handleColumnsStateChange}
           toolBarRender={() => [
+            // <FilterQuery fields={columns} />,
             <FunctionPermission code="AddRole" key={'AddRole'}>
               <Button
                 type="primary"
@@ -409,7 +411,7 @@ const Role: React.FC = () => {
               >
                 <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
               </Button>
-            </FunctionPermission>
+            </FunctionPermission>,
           ]}
           request={getList}
           columns={columns}
