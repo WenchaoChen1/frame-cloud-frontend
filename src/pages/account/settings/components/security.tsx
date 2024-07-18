@@ -69,7 +69,6 @@ type Unpacked<T> = T extends (infer U)[] ? U : T;
   const submitForm = async (e: any) =>{
     const {originalPassword,newPassword} = e
     const res = resetPasswordService({originalPassword,newPassword})
-    console.log(res)
   }
 
   const data = getData();

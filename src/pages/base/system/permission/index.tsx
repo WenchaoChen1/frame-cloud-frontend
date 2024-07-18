@@ -394,7 +394,6 @@ const User: React.FC = () => {
             } else {
               response = await handleAdd(record);
             }
-            console.log('onFinish response', response);
 
             if (response) {
               setOpenModal(false);

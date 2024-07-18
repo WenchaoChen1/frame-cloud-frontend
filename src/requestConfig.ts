@@ -35,15 +35,11 @@ const authHeaderInterceptor = (config: RequestOptions) => {
     '/api/gstdev-identity/oauth2/token',
     '/api/gstdev-system/v1/user/update-customer-user-password',
   ];
-  console.log(config);
-  console.log(config?.url);
-  console.log(config?.baseURL);
 
   const url = config?.url || '';
 
   if (!filter.includes(url)) {
     const token = getToken();
-    console.log(token, "token")
     if (token && config?.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     } else {

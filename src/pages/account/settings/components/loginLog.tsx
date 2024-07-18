@@ -21,7 +21,6 @@ function Acount() {
   }
   const confirm = async (id:string) =>{
     const res = await deleteAuthorizationForceOutService(id)
-    console.log(res)
     if (res.success){
       message.success('operate successfully!')
       actionRef?.current?.reload()

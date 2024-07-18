@@ -23,12 +23,6 @@ import Settings from '../../../../config/defaultSettings';
 import {removeLocalStorage, setLocalStorage, setRefreshToken, setToken} from '@/utils/utils';
 
 const useStyles = createStyles(({token}) => {
-  console.log("aaaaaaaaaaaaaaa")
-  console.log('环境变量：', process.env, process.env.UMI_ENV);
-  console.log('环境变量：', process.env, process.env.PORT);
-  console.log('环境变量：', process.env, process.env.TARGET);
-  console.log('环境变量：', process.env, process.env.UMI_APP_TARGET);
-  console.log('环境变量：', process.env, process.env.REACT_APP_REQUEST_URL);
 
   return {
     action: {
