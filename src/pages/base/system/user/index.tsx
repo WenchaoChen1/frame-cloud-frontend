@@ -27,7 +27,8 @@ import { Button, message, Space,Row,Col } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
-import FunctionPermission from '@/pages/base/components/functionPermission/index'
+import FunctionPermission from '@/pages/base/components/functionPermission/index';
+import FilterQuery from '@/pages/base/components/filterQuery/index';
 
 const User: React.FC = () => {
   const intl = useIntl();
@@ -41,6 +42,7 @@ const User: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<APISystem.UserItemDataType>();
   const [selectedRowsState, setSelectedRows] = useState<APISystem.UserItemDataType[]>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+  const [OptionSelect, setOptionSelect] = useState<any>([]);
   const [columnsStateMap, setColumnsStateMap] = useState({
     'updatedDate': { show: false },
   });
@@ -55,14 +57,19 @@ const User: React.FC = () => {
       params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
     }
 
-    const roleResponse = await getUserManagePageService({
-      pageNumber: params?.current || 1,
-      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-      status: params?.status,
-      username: params?.username || '',
-      phoneNumber: params?.phoneNumber || '',
-      email: params?.email || '',
-    });
+    if (OptionSelect?.length > 0) {
+      const directions = [];
+      const properties = [];
+      OptionSelect?.forEach((item: any) => {
+        directions.push(item.order);
+        properties.push(item.field);
+      });
+      params.directions = directions?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+      params.properties = properties?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+    }
+    console.log(OptionSelect, '数据000', params)
+
+    const roleResponse = await getUserManagePageService(params);
 
     let dataSource: APISystem.UserItemDataType[] = [];
     let total = 0;
@@ -93,6 +100,12 @@ const User: React.FC = () => {
       return false;
     }
   };
+
+  const selectSubmit = (value: any)=> {
+    console.log('副组件的数据', value)
+    setOptionSelect(value);
+  };
+
 
   const editUserRequest = async (fields: APISystem.UserItemDataType) => {
     const hide = message.loading('Update');
@@ -268,6 +281,7 @@ const User: React.FC = () => {
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
+          <FilterQuery fields={columns} selectSubmit={selectSubmit} />,
           <FunctionPermission code="AddUser" key={'AddUser'}>
             <Button
               type="primary"

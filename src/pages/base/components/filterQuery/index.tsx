@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Select, Checkbox } from 'antd';
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 
-const TableFilterComponent = ({ fields }) => {
+const TableFilterComponent = ({ fields, selectSubmit }) => {
   const [selectedFilter, setSelectedFilter] = useState([]);
   const [selectOpt, setSelectOpt] = useState([]);
 
@@ -16,14 +16,16 @@ const TableFilterComponent = ({ fields }) => {
         const fieldArray = list?.map((item) => item.field);
         setSelectOpt(fieldArray);
         
+        selectSubmit(list);
         return list;
       } else {
         // 如果未选中，将其添加到数组中
-        const list = [...prevFilter, { field: field?.dataIndex, order: '' }]
+        const list = [...prevFilter, { field: field?.dataIndex, order: 'asc' }]
         if (list?.length > 0) {
           const fieldArray = list?.map((item) => item.field);
           setSelectOpt(fieldArray);
         }
+        selectSubmit(list);
         return list;
       }
     });
@@ -38,6 +40,7 @@ const TableFilterComponent = ({ fields }) => {
         }
         return item;
       });
+      selectSubmit(updatedFilter);
       return updatedFilter;
     });
   };
@@ -57,6 +60,7 @@ const TableFilterComponent = ({ fields }) => {
       value.some((filter) => field.field === filter)
     );
     setSelectOpt(value);
+    selectSubmit(value?.length > 0? filteredValue : []);
     setSelectedFilter(value?.length > 0? filteredValue : []);
   };
 
