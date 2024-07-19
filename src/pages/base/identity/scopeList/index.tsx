@@ -17,7 +17,8 @@ import { Button, message, Row,Col } from 'antd';
 import React, { useRef, useState } from 'react';
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
-import FunctionPermission from '@/pages/base/components/functionPermission/index'
+import FunctionPermission from '@/pages/base/components/functionPermission/index';
+import FilterQuery from '@/pages/base/components/filterQuery/index';
 
 const Scope: React.FC = () => {
   const intl = useIntl();
@@ -31,6 +32,7 @@ const Scope: React.FC = () => {
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [OptionSelect, setOptionSelect] = useState<any>([]);
   const [columnsStateMap, setColumnsStateMap] = useState({
     'createdDate': { show: false },
   });
@@ -41,12 +43,17 @@ const Scope: React.FC = () => {
 
 
   const getList = async (params: APIIdentity.scopeItemType) => {
-    const response = await getScopeManagePageService({
-      pageNumber: params?.current || 1,
-      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-      scopeName: params?.scopeName || '',
-      scopeCode: params?.scopeCode || '',
-    });
+    if (OptionSelect?.length > 0) {
+      const directions = [];
+      const properties = [];
+      OptionSelect?.forEach((item: any) => {
+        directions.push(item.order);
+        properties.push(item.field);
+      });
+      params.directions = directions?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+      params.properties = properties?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+    }
+    const response = await getScopeManagePageService(params);
 
     let dataSource: APIIdentity.scopeItemType[] = [];
     let total = 0;
@@ -210,6 +217,10 @@ const Scope: React.FC = () => {
     setSelectedPermissions(permissions);
   };
 
+  const selectSubmit = (value: any)=> {
+    setOptionSelect(value);
+  };
+
   return (
     <PageContainer>
       <ProTable<APIIdentity.scopeItemType, API.PageParams>
@@ -223,6 +234,7 @@ const Scope: React.FC = () => {
         }}
         rowKey="scopeId"
         toolBarRender={() => [
+          <FilterQuery fields={columns} selectSubmit={selectSubmit} />,
           <FunctionPermission code="AddScope" key={'AddScope'}>
             <Button
               type="primary"

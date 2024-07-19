@@ -27,7 +27,8 @@ import {useIntl} from "@@/exports";
 import styles from './index.less';
 import dayjs from "dayjs";
 import ConfirmPage from "@/pages/base/components/popconfirm";
-import FunctionPermission from '@/pages/base/components/functionPermission/index'
+import FunctionPermission from '@/pages/base/components/functionPermission/index';
+import FilterQuery from '@/pages/base/components/filterQuery/index';
 
 const Application: React.FC = () => {
   const intl = useIntl();
@@ -46,6 +47,7 @@ const Application: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectScopesList, setSelectScopesList] = useState([]);
   const [accessTokenFormat, setAccessTokenFormat] = useState([]);
+  const [OptionSelect, setOptionSelect] = useState<any>([]);
   const [columnsStateMap, setColumnsStateMap] = useState({
     'createdDate': { show: false },
   });
@@ -74,20 +76,21 @@ const Application: React.FC = () => {
   ];
 
   const getList = async (params: APIIdentity.application) => {
-    const response = await getApplicationListService({
-      pageNumber: params.current || 1,
-      abbreviation:params.abbreviation,
-      pageSize: params.pageSize || DEFAULT_PAGE_SIZE,
-      applicationName: params?.applicationName,
-      clientAuthenticationMethods:
-        params?.clientAuthenticationMethods
-          ?.map((param: any) => encodeURIComponent(param))
-          .join(',') || [],
-      authorizationGrantTypes:
-        params?.authorizationGrantTypes?.map((param: any) => encodeURIComponent(param)).join(',') ||
-        [],
-      status: params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [],
-    });
+    if (OptionSelect?.length > 0) {
+      const directions = [];
+      const properties = [];
+      OptionSelect?.forEach((item: any) => {
+        directions.push(item.order);
+        properties.push(item.field);
+      });
+      params.directions = directions?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+      params.properties = properties?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+    }
+    params.clientAuthenticationMethods = params?.clientAuthenticationMethods?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+    params.authorizationGrantTypes = params?.authorizationGrantTypes?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+    params.status = params?.status?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+    
+    const response = await getApplicationListService(params);
 
     let dataSource: APIIdentity.application[] = [];
     let total = 0;
@@ -559,6 +562,10 @@ const Application: React.FC = () => {
     }
   };
 
+  const selectSubmit = (value: any)=> {
+    setOptionSelect(value);
+  };
+
   useEffect(() => {
     initType();
   }, []);
@@ -574,6 +581,7 @@ const Application: React.FC = () => {
         columnsStateMap={columnsStateMap}
         onColumnsStateChange={handleColumnsStateChange}
         toolBarRender={() => [
+          <FilterQuery fields={columns} selectSubmit={selectSubmit} />,
           <FunctionPermission code="AddApplication" key={'AddApplication'}>
             <Button
               key="primary"

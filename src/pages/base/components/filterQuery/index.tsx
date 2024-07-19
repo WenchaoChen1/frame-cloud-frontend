@@ -70,6 +70,7 @@ const TableFilterComponent = ({ fields, selectSubmit }) => {
       value={selectOpt}
       key={'dataIndex'}
       allowClear
+      placeholder={'查询'}
       onChange={changeOption}
       style={{ width: 200 }}
       dropdownRender={() => (

@@ -10,7 +10,8 @@ import React, { useRef, useState } from 'react';
 import {useIntl} from "@@/exports";
 import dayjs from "dayjs";
 import PopconfirmPage from "@/pages/base/components/popconfirm";
-import FunctionPermission from '@/pages/base/components/functionPermission/index'
+import FunctionPermission from '@/pages/base/components/functionPermission/index';
+import FilterQuery from '@/pages/base/components/filterQuery/index';
 
 const Authorization: React.FC = () => {
   const intl = useIntl();
@@ -18,6 +19,7 @@ const Authorization: React.FC = () => {
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [OptionSelect, setOptionSelect] = useState<any>([]);
   const [columnsStateMap, setColumnsStateMap] = useState({
     'createdDate': { show: false },
   });
@@ -27,13 +29,17 @@ const Authorization: React.FC = () => {
   };
 
   const getList = async (params: APIIdentity.authorization) => {
-    const response = await getAuthorizationManagePageService({
-      pageNumber: params?.current || 1,
-      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-      id: params?.id || '',
-      principalName: params.principalName || '',
-      authorizationGrantType: params.authorizationGrantType || '',
-    });
+    if (OptionSelect?.length > 0) {
+      const directions = [];
+      const properties = [];
+      OptionSelect?.forEach((item: any) => {
+        directions.push(item.order);
+        properties.push(item.field);
+      });
+      params.directions = directions?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+      params.properties = properties?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+    }
+    const response = await getAuthorizationManagePageService(params);
 
     let dataSource: APIIdentity.authorization[] = [];
     let total = 0;
@@ -148,6 +154,10 @@ const Authorization: React.FC = () => {
     },
   ];
 
+  const selectSubmit = (value: any)=> {
+    setOptionSelect(value);
+  };
+
   return (
     <PageContainer>
       <ProTable<APIIdentity.authorization, API.PageParams>
@@ -160,6 +170,9 @@ const Authorization: React.FC = () => {
           labelWidth: 'auto',
           defaultCollapsed:false,
         }}
+        toolBarRender={() => [
+          <FilterQuery fields={columns} selectSubmit={selectSubmit} />,
+        ]}
         rowKey="id"
         request={getList}
         columns={columns}

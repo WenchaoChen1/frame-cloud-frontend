@@ -83,7 +83,7 @@ const Account: React.FC = () => {
       data: dataSource,
       total: total,
     };
-  };
+  }; 
 
   const getAccountInfoRequest = async () => {
     if (isEdit) {

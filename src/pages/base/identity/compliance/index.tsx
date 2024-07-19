@@ -5,6 +5,7 @@ import { PageContainer, ProTable, ProFormText } from '@ant-design/pro-components
 import React, { useRef, useState } from 'react';
 import {useIntl} from "@@/exports";
 import dayjs from "dayjs";
+import FilterQuery from '@/pages/base/components/filterQuery/index';
 
 const Compliance: React.FC = () => {
   const intl = useIntl();
@@ -12,6 +13,7 @@ const Compliance: React.FC = () => {
   const [total, setTotal] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [OptionSelect, setOptionSelect] = useState<any>([]);
   const [columnsStateMap, setColumnsStateMap] = useState({
     'createdDate': { show: false },
   });
@@ -22,13 +24,17 @@ const Compliance: React.FC = () => {
 
 
   const getList = async (params: APIIdentity.complianceItemType) => {
-    const response = await getComplianceManagePageService({
-      pageNumber: params?.current || 1,
-      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-      principalName: params?.principalName || '',
-      clientId: params?.clientId || '',
-      osName: params?.osName || '',
-    });
+    if (OptionSelect?.length > 0) {
+      const directions = [];
+      const properties = [];
+      OptionSelect?.forEach((item: any) => {
+        directions.push(item.order);
+        properties.push(item.field);
+      });
+      params.directions = directions?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+      params.properties = properties?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+    }
+    const response = await getComplianceManagePageService(params);
 
     let dataSource: APIIdentity.complianceItemType[] = [];
     let total = 0;
@@ -94,6 +100,10 @@ const Compliance: React.FC = () => {
     { title: intl.formatMessage({ id: 'application.list.updatedDate' }),hideInSearch: true, dataIndex: 'updatedDate',render:(_,record: any)=> formatDate(record?.updatedDate)},
   ];
 
+  const selectSubmit = (value: any)=> {
+    setOptionSelect(value);
+  };
+
   return (
     <PageContainer>
       <ProTable<APIIdentity.complianceItemType, API.PageParams>
@@ -107,6 +117,9 @@ const Compliance: React.FC = () => {
           labelWidth: 'auto',
           defaultCollapsed:false,
         }}
+        toolBarRender={() => [
+          <FilterQuery fields={columns} selectSubmit={selectSubmit} />,
+        ]}
         request={getList}
         columns={columns}
         pagination={{
