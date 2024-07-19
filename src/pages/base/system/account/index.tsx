@@ -30,6 +30,7 @@ import RolePage from './components/role'
 import TenantPage from './components/tenant'
 import BinessPage from './components/biness'
 import FunctionPermission from '@/pages/base/components/functionPermission/index'
+import FilterQuery from '@/pages/base/components/filterQuery/index';
 
 const Account: React.FC = () => {
   const intl = useIntl();
@@ -48,6 +49,7 @@ const Account: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<APISystem.AccountItemDataType[]>([]);
   const [accountType, setAccountType] = useState<any>([]);
   const [dataItemStatus, setDataItemStatus] = useState<any>([]);
+  const [OptionSelect, setOptionSelect] = useState<any>([]);
   const [columnsStateMap, setColumnsStateMap] = useState({
     'createdDate': { show: false },
   });
@@ -57,13 +59,17 @@ const Account: React.FC = () => {
   };
 
   const getList = async (params: APISystem.AccountItemDataType) => {
-    const roleResponse = await getAccountManagePageService({
-      pageNumber: params?.current || 1,
-      pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-      tenantId: params?.tenantId || '',
-      name: params?.name || '',
-      identity: params?.identity || '',
-    });
+    if (OptionSelect?.length > 0) {
+      const directions = [];
+      const properties = [];
+      OptionSelect?.forEach((item: any) => {
+        directions.push(item.order);
+        properties.push(item.field);
+      });
+      params.directions = directions?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+      params.properties = properties?.map((param: any) => encodeURIComponent(param)).join(',') || [];
+    }
+    const roleResponse = await getAccountManagePageService(params);
 
     let dataSource: APISystem.AccountItemDataType[] = [];
     let total = 0;
@@ -326,6 +332,10 @@ const Account: React.FC = () => {
     }
   };
 
+  const selectSubmit = (value: any)=> {
+    setOptionSelect(value);
+  };
+
   useEffect(() => {
     initType();
   }, []);
@@ -344,6 +354,7 @@ const Account: React.FC = () => {
           defaultCollapsed:false,
         }}
         toolBarRender={() => [
+          <FilterQuery fields={columns} selectSubmit={selectSubmit} />,
           <FunctionPermission code="AddAccount">
             <Button
               type="primary"

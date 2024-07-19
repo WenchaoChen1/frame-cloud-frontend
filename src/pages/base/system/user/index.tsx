@@ -67,7 +67,6 @@ const User: React.FC = () => {
       params.directions = directions?.map((param: any) => encodeURIComponent(param)).join(',') || [];
       params.properties = properties?.map((param: any) => encodeURIComponent(param)).join(',') || [];
     }
-    console.log(OptionSelect, '数据000', params)
 
     const roleResponse = await getUserManagePageService(params);
 
@@ -102,7 +101,6 @@ const User: React.FC = () => {
   };
 
   const selectSubmit = (value: any)=> {
-    console.log('副组件的数据', value)
     setOptionSelect(value);
   };
 
