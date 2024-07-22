@@ -309,8 +309,57 @@ const BusinessPermission: React.FC = () => {
     }
   };
 
-  const onCheck = (checkedKeysValue: any) => {
-    setSelectMenuDataList(checkedKeysValue?.checked);
+  // 根据 ID 在树形结构中查找节点
+  const findNodeById = (id, treeData) => {
+    for (let i = 0; i < treeData?.length; i++) {
+      const node = treeData[i];
+      if (node.tenantMenuId === id) {
+        return node;
+      }
+      if (node?.children && node?.children?.length > 0) {
+        const foundNode = findNodeById(id, node?.children);
+        if (foundNode) {
+          return foundNode;
+        }
+      }
+    }
+    return null;
+  };
+
+  // 获取节点及其所有子节点的 ID
+  const getAllChildIds = (node: any) => {
+    let childIds = [];
+    if (node?.children && node?.children?.length > 0) {
+      for (let i = 0; i < node?.children?.length; i++) {
+        const childNode = node?.children[i];
+        childIds.push(childNode.tenantMenuId);
+        childIds = [...childIds, ...getAllChildIds(childNode)];
+      }
+    }
+    return childIds;
+  };
+
+  const onCheck = (checkedKeysValue: any, info: any) => {
+    // 当前点击的节点的id
+    const currentCheckedKey = info.node.tenantMenuId;
+    const node = findNodeById(currentCheckedKey, allMenuTree);
+    if (node) {
+      // 当前点击节点的所有子节点
+      const childIds = getAllChildIds(node);
+      const isChecked = checkedKeysValue?.checked?.includes(currentCheckedKey);
+      let updatedCheckedKeys = [];
+      // 判断当前点击节点是选中(isChecked)还是取消勾选(!isChecked)的状态
+      if (!isChecked) {
+        updatedCheckedKeys = checkedKeysValue?.checked?.filter(
+          key => !childIds.includes(key)
+        );
+      } else {
+        updatedCheckedKeys = [...checkedKeysValue?.checked, ...childIds];
+      }
+      setSelectMenuDataList(updatedCheckedKeys);
+    } else {
+      setSelectMenuDataList(checkedKeysValue?.checked);
+    }
   };
 
   const onSaveMenu = async () => {
@@ -539,9 +588,7 @@ const BusinessPermission: React.FC = () => {
             <Tree
               checkable
               checkStrictly
-              defaultExpandedKeys={selectMenuDataList}
-              defaultSelectedKeys={selectMenuDataList}
-              defaultCheckedKeys={selectMenuDataList}
+              checkedKeys={selectMenuDataList}
               defaultExpandAll={true}
               onCheck={onCheck}
               treeData={allMenuTree}

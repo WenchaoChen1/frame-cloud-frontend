@@ -292,7 +292,7 @@ const Account: React.FC = () => {
         </FunctionPermission>,
         <FunctionPermission code="TenantAccount">
           <a key="Tenant" onClick={() => onEditTenant(record)}>
-            Tenant
+            Menu
           </a>
         </FunctionPermission>,
         <FunctionPermission code="BusinessAccount">

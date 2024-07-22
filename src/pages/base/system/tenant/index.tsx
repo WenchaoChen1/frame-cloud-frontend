@@ -131,21 +131,58 @@ const Index: React.FC = () => {
     handleModalVisible(true);
   };
 
+  // 根据 ID 在树形结构中查找节点
+  const findNodeById = (id, treeData) => {
+    for (let i = 0; i < treeData?.length; i++) {
+      const node = treeData[i];
+      if (node.id === id) {
+        return node;
+      }
+      if (node?.children && node?.children?.length > 0) {
+        const foundNode = findNodeById(id, node?.children);
+        if (foundNode) {
+          return foundNode;
+        }
+      }
+    }
+    return null;
+  };
+
+  // 获取节点及其所有子节点的 ID
+  const getAllChildIds = (node: any) => {
+    let childIds = [];
+    if (node?.children && node?.children?.length > 0) {
+      for (let i = 0; i < node?.children?.length; i++) {
+        const childNode = node?.children[i];
+        childIds?.push(childNode.id);
+        childIds = [...childIds, ...getAllChildIds(childNode)];
+      }
+    }
+    return childIds;
+  };
+
   const onCheck = (checkedKeysValue: any, info: any) => {
-    // const parentKeys = [];
+    // 当前点击的节点的id
+    const currentCheckedKey = info.node.key;
+    const node = findNodeById(currentCheckedKey, allMenuTree);
+    if (node) {
+      // 当前点击节点的所有子节点
+      const childIds = getAllChildIds(node);
+      const isChecked = checkedKeysValue?.checked?.includes(currentCheckedKey);
+      let updatedCheckedKeys = [];
 
-    // const checkedParentIds: any = [];
-    // info?.checkedNodes.forEach((node: any) => {
-    //   const parentId = node.parentId;
-    //   if (parentId && !checkedParentIds.includes(parentId)) {
-    //     checkedParentIds.push(parentId);
-    //   }
-    // });
-    // const mergedArray = [...checkedKeysValue?.checked, ...checkedParentIds];
-    // const uniqueArray = Array.from(new Set(mergedArray));
-    // console.log(uniqueArray,) // 处理父节点自动勾选
-
-    setCheckedKeys(checkedKeysValue?.checked);
+      // 判断当前点击节点是选中(isChecked)还是取消勾选(!isChecked)的状态
+      if (!isChecked) {
+        updatedCheckedKeys = checkedKeysValue?.checked?.filter(
+          key => !childIds.includes(key)
+        );
+      } else {
+        updatedCheckedKeys = [...checkedKeysValue?.checked, ...childIds];
+      }
+      setCheckedKeys(updatedCheckedKeys);
+    } else {
+      setCheckedKeys(checkedKeysValue?.checked);
+    }
   };
 
   const onSelect = (selectedKeysValue: any) => {
