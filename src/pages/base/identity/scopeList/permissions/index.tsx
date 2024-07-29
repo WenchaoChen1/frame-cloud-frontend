@@ -108,7 +108,7 @@ const ScopePermissions: React.FC<TypeProp> = ({
       pageSize: params?.pageSize,
       permissionName: params?.permissionName || '',
       permissionCode: params?.permissionCode || '',
-      permissionType: params?.permissionType || '',
+      permissionType: params?.permissionType,
       permissionId:params?.showSelect === "selected" ? selectedRowKeys :[],
     });
 

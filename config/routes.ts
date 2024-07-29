@@ -162,10 +162,10 @@ export default [
         redirect: '/account/center',
       },
       {
-        name: 'center',
+        name: 'userInfo',
         icon: 'smile',
-        path: '/account/center',
-        component: './account/center',
+        path: '/account/userInfo',
+        component: './account/userInfo',
       },
       {
         name: 'settings',

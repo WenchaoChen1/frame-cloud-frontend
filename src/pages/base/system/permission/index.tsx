@@ -47,15 +47,10 @@ const User: React.FC = () => {
   };
 
   const getList = async (params: any) => {
-    if (params?.status?.length > 0) {
-      const list = await statusConversionType(params.status, dataItemStatus)
-      params.status = list?.map((param: any) => encodeURIComponent(param)).join(',') || []
-    }
     const response = await getPermissionManagePageService({
       pageNumber: params?.current || 1,
       pageSize: params?.pageSize || DEFAULT_PAGE_SIZE,
-      permissionType:
-        params?.permissionType?.map((param: any) => encodeURIComponent(param)).join(',') || [],
+      permissionType:params?.permissionType,
       status: params?.status,
       permissionName: params?.permissionName || '',
       permissionCode: params?.permissionCode || '',

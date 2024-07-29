@@ -12,6 +12,7 @@ import {
   updateUserSettingsDetail,
   resetPassword,
   updateAccountSettingsDetail,
+  getSwitchUserAccountDetail,
 } from "@/services/base-service/api/system-api/userApi";
 
 export async function getUserManagePageService(params: any) {
@@ -61,3 +62,11 @@ export async function resetPasswordService(data?: any) {
 export async function updateAccountSettingsDetailService(data?: any) {
   return await updateAccountSettingsDetail(data);
 }
+
+export async function getSwitchUserAccountDetailService() {
+  return await getSwitchUserAccountDetail();
+}
+
+// export async function updateAccountCurrentLoginInformationService() {
+//   return await updateAccountCurrentLoginInformation();
+// }

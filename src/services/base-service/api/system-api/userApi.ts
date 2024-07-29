@@ -66,3 +66,9 @@ export async function resetPassword(data?: any) {
     method: 'put',
   });
 }
+
+export async function getSwitchUserAccountDetail() {
+  return request(`${process.env.FRAME_SYSTEM_SERVICE}/v1/account/get-switch-user-account-detail`, {
+    method: 'GET'
+  });
+}
