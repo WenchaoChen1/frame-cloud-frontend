@@ -11,7 +11,7 @@ export async function getLoginInfo(data: APISystem.GetAccountInfoBody) {
 export async function updateAccountCurrentLoginInformation(data: APISystem.GetAccountInfoBody) {
   return request<{data: API.CurrentUser}>(`${process.env.FRAME_SYSTEM_SERVICE}/v1/security/update-account-current-login-information`, {
     method: 'PUT',
-    data: data,
+    params: data,
     options: {skipErrorHandler: true}
   });
 }

@@ -20,7 +20,7 @@ const getModelCurrentLoginInformation = async () => {
 
 const updateModelCurrentLoginInformation = async () => {//TODO 时间差大于10小于30
   const currentAccountId = getLocalStorage(CURRENT_ACCOUNT_ID);
-  const data = {currentAccountId: currentAccountId || ''};
+  const data = {accountId: currentAccountId || ''};
   const accountInfoResponse = await updateLoginInfoService(data);
   let currentUser = accountInfoResponse.data;
 

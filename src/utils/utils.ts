@@ -119,6 +119,10 @@ export function setRefreshToken(refreshToken: string) {
   localStorage.setItem(REFRESH_TOKEN, refreshToken);
 }
 
+export function setAccountId(accountId: string) {
+  localStorage.setItem(CURRENT_ACCOUNT_ID, accountId);
+}
+
 export function removeToken() {
   localStorage.removeItem(ACCESS_TOKEN);
   localStorage.removeItem(CURRENT_ACCOUNT_ID);

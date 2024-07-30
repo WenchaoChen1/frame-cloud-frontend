@@ -127,7 +127,6 @@ const Login: React.FC = () => {
     try {
       values.grant_type = 'password';
       const msg = await oauth2TokenService(values);
-      console.log(msg)
 
       if (msg.access_token) {
         setToken(msg.access_token);

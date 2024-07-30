@@ -1,6 +1,6 @@
 import { GridContent } from '@ant-design/pro-components';
-import { setLocalStorage} from '@/utils/utils';
-import { USER_ROUTER} from "@/pages/common/constant";
+import { setLocalStorage, setAccountId} from '@/utils/utils';
+import { USER_ROUTER, CURRENT_ACCOUNT_ID} from "@/pages/common/constant";
 import React, { useState, useEffect } from 'react';
 import useStyles from './style.style';
 import { getSwitchUserAccountDetailService, updateLoginInfoService } from '@/services/base-service/system-service/userService'
@@ -12,7 +12,6 @@ const Settings: React.FC = () => {
   const initUserList = async () => {
     const response = await getSwitchUserAccountDetailService();
     if (response?.success === true) {
-      console.log(response, '当前数据')
       setUserList(response?.data);
     }
   };
@@ -21,7 +20,11 @@ const Settings: React.FC = () => {
     const data = {accountId: accountId || ''};
     const response = await updateLoginInfoService(data);
     if (response?.success === true) {
+      console.log(response?.data?.accountId, '&&&&&&&')
+      debugger
+      setAccountId(CURRENT_ACCOUNT_ID, response?.data?.accountId)
       setLocalStorage(USER_ROUTER, JSON.stringify(response?.data));
+      window.location.reload();
     }
   };
 
