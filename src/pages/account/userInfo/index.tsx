@@ -20,9 +20,7 @@ const Settings: React.FC = () => {
     const data = {accountId: accountId || ''};
     const response = await updateLoginInfoService(data);
     if (response?.success === true) {
-      console.log(response?.data?.accountId, '&&&&&&&')
-      debugger
-      setAccountId(CURRENT_ACCOUNT_ID, response?.data?.accountId)
+      setAccountId(response?.data?.accountId)
       setLocalStorage(USER_ROUTER, JSON.stringify(response?.data));
       window.location.reload();
     }

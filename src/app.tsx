@@ -5,7 +5,8 @@ import {SettingDrawer} from '@ant-design/pro-components';
 import defaultSettings from '../config/defaultSettings';
 import {requestConfig} from './requestConfig';
 import {fetchUserInfo} from './utils/infoInitialStateUtils';
-import {fixMenuItemIcon} from './utils/utils'
+import {fixMenuItemIcon, setAccountId} from './utils/utils'
+import { CURRENT_ACCOUNT_ID} from "@/pages/common/constant";
 import {AvatarDropdown, AvatarName, Footer, Question, SelectLang} from '@/components';
 import {changeRouteData, findRouteByPath, isDev, isRouteInArray, loginPath, routeArray,} from './utils/AppUtils';
 
@@ -24,6 +25,7 @@ export async function getInitialState(): Promise<{
   const {location} = history;
   if (![loginPath, '/user/register', '/user/register-result'].includes(location.pathname)) {
     const currentUser = await fetchUserInfo();
+    setAccountId(currentUser?.accountId)
     return {
       fetchUserInfo,
       currentUser,
