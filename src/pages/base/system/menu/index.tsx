@@ -576,6 +576,7 @@ const MenuList: React.FC = () => {
               <ProFormSelect
                 name="type"
                 label={'Type'}
+                disabled={isEdit}
                 onChange={changeData}
                 rules={[
                   {

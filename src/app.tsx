@@ -6,7 +6,6 @@ import defaultSettings from '../config/defaultSettings';
 import {requestConfig} from './requestConfig';
 import {fetchUserInfo} from './utils/infoInitialStateUtils';
 import {fixMenuItemIcon, setAccountId} from './utils/utils'
-import { CURRENT_ACCOUNT_ID} from "@/pages/common/constant";
 import {AvatarDropdown, AvatarName, Footer, Question, SelectLang} from '@/components';
 import {changeRouteData, findRouteByPath, isDev, isRouteInArray, loginPath, routeArray,} from './utils/AppUtils';
 
@@ -42,10 +41,12 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
   let userRouters = [];
+  let pagePathAccessPermissionNow = [];
   if (initialState) {
     // console.log(JSON.parse(initialState?.currentUser), '******')
-    const {leftAndTopRoutes} = initialState?.currentUser;
+    const {leftAndTopRoutes,  pagePathAccessPermission} = initialState?.currentUser;
     userRouters = changeRouteData(leftAndTopRoutes);
+    pagePathAccessPermissionNow = pagePathAccessPermission
   }
 
   const layoutConfig = {
@@ -112,8 +113,19 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
       request: async () => {
         // 地址栏路由拦截
         const currentPath = window.location.pathname;
-        const hasPermission = findRouteByPath(userRouters, currentPath);
+        let hasPermission = findRouteByPath(userRouters, currentPath);
+        console.log('hasPermission:', hasPermission)
+
         if (isRouteInArray(currentPath, routeArray)) {
+          //check pageRouter setting and userInfo
+          const setting = pagePathAccessPermissionNow.includes("setting");
+          const userInfo = pagePathAccessPermissionNow.includes("userInfo")
+          if (setting) {
+            hasPermission = true
+          }
+          if (userInfo) {
+            hasPermission = true
+          }
           if (!hasPermission) {
             window.location.href = '/401';
           }

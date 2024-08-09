@@ -4,7 +4,6 @@ export const isDev = process.env.NODE_ENV === 'development';
 export const loginPath = '/user/login';
 
 export const isRouteInArray = (currentRoute: any, routeArray: any) => {
-    console.log(currentRoute, '=====', routeArray)
     return !routeArray.some((item: any) => item === currentRoute);
 }
 
